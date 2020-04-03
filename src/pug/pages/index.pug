@@ -71,8 +71,6 @@ block content
                     li.nav-item
                         a.nav-link.active#overview-pill(href='#overviewPill', data-toggle='tab', role='tab', aria-controls='overview', aria-selected='true') Overview
                     li.nav-item
-                        a.nav-link#covidUsa-pill(href='#covidUsaPill', data-toggle='tab', role='tab', aria-controls='covidUsa', aria-selected='true') Overview
-                    li.nav-item
                         a.nav-link#activities-pill(href='#activitiesPill', data-toggle='tab', role='tab', aria-controls='activities', aria-selected='false') Activities
             .card-body
                 .tab-content#cardPillContent
@@ -110,7 +108,20 @@ block content
                                     a.btn.btn-primary.btn-sm(href='javascript:void(0);')
                                         | Visit Task Center
                                         i.ml-1(data-feather='arrow-right')
-                    .tab-pane.fade#covidUsaPill(role='tabpanel', aria-labelledby='covidUsa-pill')
+
+                    .tab-pane.fade#activitiesPill(role='tabpanel', aria-labelledby='activities-pill')
+                        include includes/datatable-activity-example.pug
+
+        .card.mb-4
+            .card-header
+                ul.nav.nav-pills.card-header-pills.active#cardUsaPill(role='tablist')
+                    li.nav-item
+                        a.nav-link.active#covidUsa-pill(href='#covidUsaPill', data-toggle='tab', role='tab', aria-controls='covidUsa', aria-selected='true') Overview
+                    li.nav-item
+                        a.nav-link#usaDataTable-pill(href='#usaDataTable', data-toggle='tab', role='tab', aria-controls='usaDataTable', aria-selected='false') Activities
+            .card-body
+                .tab-content#cardUsaPillContent
+                    .tab-pane.fade.show.active#covidUsaPill(role='tabpanel', aria-labelledby='covidUsa-pill')
                         .row
                             .col-lg-8
                                 #covidUsaChart(width='100%', height='100%')
@@ -145,8 +156,8 @@ block content
                                         | Visit Task Center
                                         i.ml-1(data-feather='arrow-right')
 
-                    .tab-pane.fade#activitiesPill(role='tabpanel', aria-labelledby='activities-pill')
-                        include includes/datatable-activity-example.pug
+                    .tab-pane.fade#usaDataTable(role='tabpanel', aria-labelledby='usaDataTable-pill')
+                        include includes/datatables/datatable-usa.pug
         //- Example Charts for Dashboard Demo
         .row
             .col-md-6
@@ -173,10 +184,10 @@ block content
 append scripts
     script(src='js/chart.js', type="text/javascript")
     //- Load Chart.js via CDN
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
+    //- script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
     //- Load custom Chart.js styling and demo data
-    script(src='assets/demo/chart-area-demo.js')
-    script(src='assets/demo/chart-bar-demo.js')
+    //- script(src='assets/demo/chart-area-demo.js')
+    //- script(src='assets/demo/chart-bar-demo.js')
     //- Load dataTables via CDN
     script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')

@@ -1,9 +1,9 @@
 const API_URL_SUMMARY = 'https://corona.lmao.ninja/countries';
 const API_URL_USA = 'https://corona.lmao.ninja/jhucsse';
-const API_URL_USA_STATES = 'https://corona.lmao.ninja/states';
+const API_URL_USA_STATES = 'https://covidtracking.com/api/states';
 
 let chartWorldData = [];
-let chartUsaData = [];
+let chartUsaData = [ [ 'States', 'stats' ] ];
 
 // Fetch World Data
 fetch(API_URL_SUMMARY).then((response) => response.json()).then((countries) => {
@@ -19,30 +19,16 @@ fetch(API_URL_SUMMARY).then((response) => response.json()).then((countries) => {
 });
 
 // Fetch USA Data
-fetch(API_URL_USA).then((response) => response.json()).then((states) => {
-	states
-		.filter((state) => state.country === 'US' && state.city && state.city.toLowerCase() !== 'unassigned')
-		.forEach((state) => {
-			console.log(
-				parseFloat(state.coordinates.latitude),
-				parseFloat(state.coordinates.longitude),
-				state.city,
-				parseInt(state.stats.confirmed)
-			);
-			chartUsaData.push([
-				parseFloat(state.coordinates.latitude),
-				parseFloat(state.coordinates.longitude),
-				state.city,
-				// state.cases,
-				parseInt(state.stats.confirmed)
-			]);
-		});
+fetch(API_URL_USA_STATES).then((response) => response.json()).then((states) => {
+	states.forEach((state) => {
+		console.log(state.state, state.cases);
+		chartUsaData.push([ state.state, state.positive ]);
+	});
+	console.log(chartUsaData);
 });
 google.charts.load('current', {
 	packages: [ 'geochart' ],
-	// Note: you will need to get a mapsApiKey for your project.
-	// See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
-	mapsApiKey: 'AIzaSyDudvnzx-aqiuCwCXMo0SOnXYANk7OrckA'
+	mapsApiKey: 'AIzaSyAAmTLGFKBl8rS9lpy-EfC6XkOzuz4OpYE'
 });
 
 google.charts.setOnLoadCallback(drawMap);
@@ -60,18 +46,23 @@ function drawMap() {
 	var optionsWorld = {
 		sizeAxis: { minValue: 100 },
 		displayMode: 'markers',
-		colorAxis: { colors: [ '#A8C9FA', '#0061F1' ] }
+		colorAxis: { colors: [ '#B4D0FF', '#26539B' ] }
 	};
 
-	dataUsa.addColumn('number', 'Lat'); // Latitude Value
-	dataUsa.addColumn('number', 'Lon'); // Longitude Value
-	dataUsa.addColumn('string', 'Name'); //
-	dataUsa.addColumn('number', 'Total Cases'); //
-	dataUsa.addRows(chartUsaData);
+	// dataUsa.addColumn('string', 'Name'); //
+	// dataUsa.addColumn('number', 'Total Cases'); //
+	// dataUsa.addRows(chartUsaData);
+	// var optionsUsa = {
+	// 	region: 'US',
+	// 	displayMode: 'markers',
+	// 	colorAxis: { colors: [ '#A8C9FA', '#0061F1' ] }
+	// };
+	var dataUsa = google.visualization.arrayToDataTable(chartUsaData);
 	var optionsUsa = {
-		region: 'US',
-		displayMode: 'markers',
-		colorAxis: { colors: [ '#A8C9FA', '#0061F1' ] }
+		region: 'US', // Africa,
+		displayMode: 'regions',
+		resolution: 'provinces',
+		colorAxis: { colors: [ '#B4D0FF', '#26539B' ] }
 	};
 
 	var chartWorld = new google.visualization.GeoChart(document.getElementById('covidWorldChart'));
