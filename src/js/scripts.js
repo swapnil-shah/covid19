@@ -85,21 +85,4 @@
 	});
 
 	//API
-
-	const API_URL_SUMMARY = `https://corona.lmao.ninja/states`;
-
-	var requestOptions = {
-		method: 'GET',
-		redirect: 'follow'
-	};
-
-	function getSummary() {
-		fetch(API_URL_SUMMARY, requestOptions)
-			.then((response) => response.json())
-			.then((result) => {
-				result.forEach((element) => console.log(element.state, element.cases));
-			})
-			.catch((error) => console.log('error', error));
-	}
-	getSummary();
 })(jQuery);
