@@ -23,8 +23,7 @@ fetch(API_URL_USA_STATES).then((response) => response.json()).then((states) => {
 	});
 });
 google.charts.load('current', {
-	packages: [ 'geochart' ],
-	mapsApiKey: 'AIzaSyAAmTLGFKBl8rS9lpy-EfC6XkOzuz4OpYE'
+	packages: [ 'geochart' ]
 });
 
 google.charts.setOnLoadCallback(drawMap);
