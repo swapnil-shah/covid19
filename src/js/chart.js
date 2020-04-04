@@ -1,5 +1,4 @@
 const API_URL_SUMMARY = 'https://corona.lmao.ninja/countries';
-const API_URL_USA = 'https://corona.lmao.ninja/jhucsse';
 const API_URL_USA_STATES = 'https://covidtracking.com/api/states';
 
 let chartWorldData = [];
@@ -17,14 +16,11 @@ fetch(API_URL_SUMMARY).then((response) => response.json()).then((countries) => {
 		]);
 	});
 });
-
 // Fetch USA Data
 fetch(API_URL_USA_STATES).then((response) => response.json()).then((states) => {
 	states.forEach((state) => {
-		console.log(state.state, state.cases);
 		chartUsaData.push([ state.state, state.positive ]);
 	});
-	console.log(chartUsaData);
 });
 google.charts.load('current', {
 	packages: [ 'geochart' ],
@@ -46,7 +42,10 @@ function drawMap() {
 	var optionsWorld = {
 		sizeAxis: { minValue: 100 },
 		displayMode: 'markers',
-		colorAxis: { colors: [ '#B4D0FF', '#26539B' ] }
+		colorAxis: { colors: [ '#B4D0FF', '#26539B' ] },
+		title: 'How Much Pizza I Ate Last Night',
+		chartArea: { width: '100%', height: '80%' },
+		legend: { position: 'bottom' }
 	};
 
 	// dataUsa.addColumn('string', 'Name'); //

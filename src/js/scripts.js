@@ -83,6 +83,5 @@
 		$(this).addClass('show');
 		$('[data-target="#' + this.id + '"]').removeClass('collapsed');
 	});
-
 	//API
 })(jQuery);
