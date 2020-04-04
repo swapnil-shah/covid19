@@ -16,6 +16,10 @@ append css
 
 block content
     .page-header.pb-10(class=pageHeaderStyle, class=pageHeaderBackground)
+
+        //- Sidenav Toggle Button
+        button#sidebarToggle.btn.btn-icon.btn-transparent-dark.order-1.order-lg-0.mr-lg-2(href='#')
+            i(data-feather='menu')
         .container-fluid
             .row
                 .col-xl-6.col-md-12
@@ -27,40 +31,6 @@ block content
                                 | Dashboard
                         .page-header-subtitle
                             | Example dashboard overview and content summary
-                //- .col-xl-6.col-md-12.d-flex.justify-content-lg-end.justify-content-md-center.pt-5
-                //-     .card.mb-4.w-75
-                //-         .card-header
-                //-             | Statistics
-                //-         .list-group.list-group-flush.small
-                //-             .list-group-item.list-group-item-action.d-flex.justify-content-between.align-items-center
-                //-                 .font-weight-bold.pr-3
-                //-                     | Total Cases
-                //-                 .text-primary.font-weight-bold 
-                //-                     | 124782
-                //-             .list-group-item.list-group-item-action.d-flex.justify-content-between.align-items-center
-                //-                 .font-weight-bold.pr-3
-                //-                     | Total Cases Todat
-                //-                 .text-primary.font-weight-bold
-                //-                     | 124782
-                //-             .list-group-item.list-group-item-action.d-flex.justify-content-between.align-items-center
-                //-                 .font-weight-bold.pr-3
-                //-                     | Total Deaths
-                //-                 .text-primary.font-weight-bold 
-                //-                     | 124782
-                //-             .list-group-item.list-group-item-action.d-flex.justify-content-between.align-items-center
-                //-                 .font-weight-bold.pr-3
-                //-                     | Total Recovered
-                //-                 .text-primary.font-weight-bold 
-                //-                     | 124782
-                //-             .list-group-item.list-group-item-action.d-flex.justify-content-between.align-items-center
-                //-                 .font-weight-bold.pr-3
-                //-                     | Total Active
-                //-                 .text-primary.font-weight-bold 
-                //-                     | 124782
-                        .card-footer
-                            a(href='#!').text-xs.d-flex.align-items-center.justify-content-between
-                                | View More Reports
-                                i.fas.fa-long-arrow-alt-right
 
     .container-fluid.mt-n10
         //- Example Overview Card
@@ -114,7 +84,7 @@ block content
                                 i.fas.fa-long-arrow-alt-right
 
                     .tab-pane.fade#activitiesPill(role='tabpanel', aria-labelledby='activities-pill')
-                        include includes/datatable-activity-example.pug
+                        include includes/datatables/datatable-world.pug
 
         .card.mb-4
             .card-header
@@ -179,12 +149,14 @@ block content
 
 
         //- Example DataTable for Dashboard Demo
-        .card.mb-4
+        .card.mb-4.card-header-actions
             .card-header
                 | DataTable Example
+                .text-md-right.small.text-muted
+                    | Data from John Hopkins University
+                    <br/>
+                    | Last updated
             .card-body
-                .datatable.table-responsive
-                    table#dataTableWorld.table.table-bordered.table-hover(width='100%', cellspacing='0')
 
 append scripts
     //- script(src='js/chart.js', type="text/javascript")

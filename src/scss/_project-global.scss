@@ -1,6 +1,14 @@
 // This file is intentionally blank
 // Use this file to override SCSS within the project, or to add new SCSS for creating your own CSS components
 
+#sidebarToggle {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	border-color: transparent;
+	color: #ffffff !important;
+	z-index: 999;
+}
 @media only screen and (max-width: 600px) {
 	.container-fluid {
 		padding-left: .5rem;

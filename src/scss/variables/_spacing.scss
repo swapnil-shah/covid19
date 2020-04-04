@@ -7,50 +7,25 @@
 $spacer: 1rem !default;
 $spacers: ();
 $spacers: map-merge(
-    (
-        0: 0,
-        1: (
-            $spacer * 0.25,
-        ),
-        2: (
-            $spacer * 0.5,
-        ),
-        3: $spacer,
-        4: (
-            $spacer * 1.5,
-        ),
-        5: (
-            $spacer * 3,
-        ),
-        10: (
-            $spacer * 6,
-        ),
-        15: (
-            $spacer * 9,
-        ),
-        n1: (
-            $spacer * -0.25,
-        ),
-        n2: (
-            $spacer * -0.5,
-        ),
-        n3: (
-            $spacer * -1,
-        ),
-        n4: (
-            $spacer * -1.5,
-        ),
-        n5: (
-            $spacer * -3,
-        ),
-        n10: (
-            $spacer * -6,
-        ),
-        n15: (
-            $spacer * -9,
-        ),
-    ),
-    $spacers
+
+	(
+		0: 0,
+		1: ($spacer * 0.25),
+		2: ($spacer * 0.5),
+		3: $spacer,
+		4: ($spacer * 1.5),
+		5: ($spacer * 3),
+		10: ($spacer * 6),
+		15: ($spacer * 9),
+		n1: ($spacer * -0.25),
+		n2: ($spacer * -0.5),
+		n3: ($spacer * -1),
+		n4: ($spacer * -1.5),
+		n5: ($spacer * -3),
+		n10: ($spacer * -6),
+		n15: ($spacer * -9)
+	),
+	$spacers
 );
 
 // Sidebar expanded width variable
@@ -64,7 +39,7 @@ $sidenav-base-width: 15rem !default;
 //
 // The fixed height of the topnav
 
-$topnav-base-height: 3.625rem !default;
+$topnav-base-height: 0 !default;
 
 // Footer base height
 
