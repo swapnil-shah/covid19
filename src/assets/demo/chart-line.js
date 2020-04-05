@@ -1,19 +1,35 @@
 const API_URL_MOST_AFFECTED = 'https://corona.lmao.ninja/v2/historical/usa,italy,china,spain';
 let lineChartData = [];
-let lineLabels = [];
-let colors = [ '#3B8DC2' ];
+let lineLabelsCase = [];
+let lineLabelsDeaths = [];
+let lineLabelsRecovered = [];
+let lineChartDataCase = [];
+let lineChartDataDeaths = [];
+let lineChartDataRecovered = [];
 let ctxLine = document.getElementById('myLineChart');
 let dateSinceHistory = document.querySelectorAll('.date-since-historical');
 
+function selectCases(caseObj, caseLabel) {
+	lineChartData[0].data = caseObj[0].data;
+	lineChartData[1].data = caseObj[1].data;
+	lineChartData[2].data = caseObj[2].data;
+	lineChartData[3].data = caseObj[3].data;
+	// lineChartData[0].labels = caseLabel;
+	return lineChartData[0].data, lineChartData[1].data, lineChartData[2].data, lineChartData[3].data;
+}
 fetch(API_URL_MOST_AFFECTED)
 	.then((response) => response.json())
 	.then((countries) => {
-		console.log(Object.keys(countries[0].timeline.cases)[0]);
-		lineLabels = Object.keys(countries[0].timeline.cases);
+		lineLabelsCase = Object.keys(countries[0].timeline.cases);
+		lineLabelsDeaths = Object.keys(countries[0].timeline.deaths);
+		lineLabelsRecovered = Object.keys(countries[0].timeline.recovered);
 		dateSinceHistory.forEach(function(ele, i) {
 			dateSinceHistory[i].innerText = Object.keys(countries[0].timeline.cases)[0];
 		});
 		countries.forEach((country) => {
+			lineChartDataCase.push({ data: Object.values(country.timeline.cases) });
+			lineChartDataDeaths.push({ data: Object.values(country.timeline.deaths) });
+			lineChartDataRecovered.push({ data: Object.values(country.timeline.recovered) });
 			lineChartData.push({
 				label: country.country,
 				data: Object.values(country.timeline.cases),
@@ -24,11 +40,10 @@ fetch(API_URL_MOST_AFFECTED)
 				...(country.country.toLowerCase() === 'spain' && { borderColor: '#C45851' })
 			});
 		});
-
 		let myChart = new Chart(ctxLine, {
 			type: 'line',
 			data: {
-				labels: lineLabels,
+				labels: lineLabelsCase,
 				datasets: lineChartData
 			},
 			options: {
@@ -42,6 +57,11 @@ fetch(API_URL_MOST_AFFECTED)
 					caretPadding: 10,
 					xPadding: 10,
 					yPadding: 10
+					// callbacks: {
+					// 	label: function(tooltipItem, data) {
+					// 		console.log(tooltipItem, data);
+					// 	}
+					// }
 				},
 				cutoutPercentage: 80,
 				scales: {
@@ -65,41 +85,17 @@ fetch(API_URL_MOST_AFFECTED)
 				}
 			}
 		});
+		$('#chartType').on('change', function() {
+			if (this.value === 'death') {
+				selectCases(lineChartDataDeaths);
+				myChart.update();
+			} else if (this.value === 'recovered') {
+				selectCases(lineChartDataRecovered);
+				myChart.update();
+			} else {
+				selectCases(lineChartDataCase);
+				myChart.update();
+			}
+		});
 	})
 	.catch((error) => console.log('error', error));
-
-// // Set new default font family and font color to mimic Bootstrap's default styling
-// (Chart.defaults.global.defaultFontFamily = 'Metropolis'),
-// 	'-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-// Chart.defaults.global.defaultFontColor = '#858796';
-
-// // Pie Chart Example
-// var ctx = document.getElementById('myPieChart');
-// var myPieChart = new Chart(ctx, {
-// 	type: 'doughnut',
-// 	data: {
-// 		labels: [ 'Direct', 'Referral', 'Social' ],
-// 		datasets: [
-// 			{
-// 				data: [ 10, 15 ],
-// 				backgroundColor: [ 'rgba(0, 97, 242, 1)', 'rgba(0, 172, 105, 1)', 'rgba(88, 0, 232, 1)' ],
-// 				hoverBackgroundColor: [ 'rgba(0, 97, 242, 0.9)', 'rgba(0, 172, 105, 0.9)', 'rgba(88, 0, 232, 0.9)' ],
-// 				hoverBorderColor: 'rgba(234, 236, 244, 1)'
-// 			}
-// 		]
-// 	},
-// 	options: {
-// 		maintainAspectRatio: false,
-// 		tooltips: {
-// 			backgroundColor: 'rgb(255,255,255)',
-// 			bodyFontColor: '#858796',
-// 			borderColor: '#dddfeb',
-// 			borderWidth: 1,
-// 			xPadding: 15,
-// 			yPadding: 15,
-// 			displayColors: false,
-// 			caretPadding: 10
-// 		},
-// 		cutoutPercentage: 80
-// 	}
-// });
