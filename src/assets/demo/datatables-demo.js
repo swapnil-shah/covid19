@@ -12,12 +12,11 @@ const dateConvert = (date) => {
 	}
 	return month + '/' + dt + '/' + year;
 };
-console.log(dateConvert('2020-04-03T20:00:00Z'));
 
 $(document).ready(function() {
 	$('#dataTableWorld').DataTable({
 		ajax: {
-			url: 'https://corona.lmao.ninja/countries',
+			url: 'https://corona.lmao.ninja/countries?sort=cases',
 			type: 'GET',
 			dataSrc: ''
 		},
