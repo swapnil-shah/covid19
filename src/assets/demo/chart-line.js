@@ -55,15 +55,19 @@ fetch(API_URL_MOST_AFFECTED)
 					borderColor: '#dddfeb',
 					borderWidth: 1,
 					caretPadding: 10,
+					displayColors: false,
 					xPadding: 10,
-					yPadding: 10
-					// callbacks: {
-					// 	label: function(tooltipItem, data) {
-					// 		console.log(tooltipItem, data);
-					// 	}
-					// }
+					yPadding: 10,
+					callbacks: {
+						label: function(tooltipItem, data) {
+							return (
+								data.datasets[tooltipItem.datasetIndex].label +
+								': ' +
+								tooltipItem.yLabel.toLocaleString()
+							);
+						}
+					}
 				},
-				cutoutPercentage: 80,
 				scales: {
 					xAxes: [
 						{
@@ -76,7 +80,7 @@ fetch(API_URL_MOST_AFFECTED)
 					yAxes: [
 						{
 							ticks: {
-								callback: function(value, index, values) {
+								callback: function(value) {
 									return value.toLocaleString();
 								}
 							}
@@ -85,6 +89,7 @@ fetch(API_URL_MOST_AFFECTED)
 				}
 			}
 		});
+		Chart.defaults.global.defaultFontFamily = 'Nunito';
 		$('#chartType').on('change', function() {
 			if (this.value === 'death') {
 				selectCases(lineChartDataDeaths);

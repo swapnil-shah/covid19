@@ -38,7 +38,9 @@
         "url": "https://github.com/StartBootstrap/sb-admin-pro.git"
     },
     "dependencies": {
-        "bootstrap": "4.4.1"
+        "bootstrap": "4.4.1",
+        "dotenv": "^8.2.0",
+        "twitter": "^1.7.1"
     },
     "devDependencies": {
         "autoprefixer": "9.7.4",

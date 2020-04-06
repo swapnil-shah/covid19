@@ -115,9 +115,9 @@ google.charts.load('current', {
 	packages: [ 'geochart' ]
 });
 
-// google.charts.load('current', {
-// 	packages: [ 'geochart' ]
-// });
+google.charts.load('current', {
+	packages: [ 'geochart' ]
+});
 
 // google.charts.setOnLoadCallback(drawMap);
 // // World Map
@@ -130,9 +130,11 @@ google.charts.load('current', {
 // 	dataWorld.addColumn('number', 'Total Cases'); //
 // 	dataWorld.addRows(chartWorldData);
 // 	var optionsWorld = {
+// 		backgroundColor: '#D1DDDD',
+// 		defaultColor: '#f5f5f5',
 // 		sizeAxis: { minValue: 100 },
 // 		displayMode: 'markers',
-// 		colorAxis: { colors: [ '#B4D0FF', '#26539B' ] },
+// 		colorAxis: { colors: [ '#EFD177', '#BF3D58' ] },
 // 		chartArea: { width: '100%', height: '100%' },
 // 		legend: { position: 'bottom' },
 // 		animation: {
@@ -146,7 +148,7 @@ google.charts.load('current', {
 // 		displayMode: 'regions',
 // 		resolution: 'provinces',
 // 		chartArea: { width: '100%', height: '100%' },
-// 		colorAxis: { colors: [ '#B4D0FF', '#26539B' ] },
+// 		colorAxis: { colors: [ '#FAF2AE', '#B44620' ] },
 // 		animation: {
 // 			duration: 1000,
 // 			easing: 'out'
