@@ -6,7 +6,7 @@ const API_URL_USA_STATES = 'https://covidtracking.com/api/states';
 let chartWorldData = [];
 let chartUsaData = [ [ 'States', 'stats' ] ];
 let loader = `<div class="d-flex justify-content-center">
-					<div class="spinner-border text-body" role="status">
+					<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
 					<span class="sr-only">Loading...</span>
 					</div>
 				</div>`;
