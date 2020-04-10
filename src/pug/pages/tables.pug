@@ -20,6 +20,37 @@ block content
         .card.mb-4
             .card-header Extended DataTables
             .card-body
+                .row.justify-content-between
+                    .col-md-6.col-sm-12
+                        h6.mb-2.text-muted.lead The new cases gets update everyday. Hover over to see the exact time of update.
+                    .col-md-6.col-sm-12.pb-2.text-right
+                        p.mb-1
+                            small
+                                strong New Cases: 
+                                span.ge-2-lt-5.bg-gray-200
+                                | &ge; 2% and &lt; 5%
+                                span.ge-5-lt-8.bg-gray-500
+                                | &ge; 5% and &lt; 8
+                                span.ge-8.bg-gray-900
+                                | &ge; 8%
+                        p.mb-1
+                            small 
+                                strong New Deaths: 
+                                span.ge-2-lt-5.bg-red-200
+                                | &ge; 2% and &lt; 5%
+                                span.ge-5-lt-8.bg-red-500
+                                | &ge; 5% and &lt; 8
+                                span.ge-8.bg-red-900
+                                | &ge; 8%
+                        p.mb-1
+                            small 
+                                strong New Recovered: 
+                                span.ge-2-lt-5.bg-green-200
+                                | &ge; 2% and &lt; 5%
+                                span.ge-5-lt-8.bg-green-500
+                                | &ge; 5% and &lt; 8
+                                span.ge-8.bg-green-900
+                                | &ge; 8%
                 include includes/datatable-example.pug
 
         .card.card-icon.mb-4
@@ -38,4 +69,4 @@ block content
 append scripts    
     script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
-    script(src='assets/demo/datatables-demo.js')
+    script(src='js/news.js')

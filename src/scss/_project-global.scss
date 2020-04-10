@@ -6,7 +6,6 @@
 	width: 100%;
 	color: #555;
 	width: 25%;
-	float: right;
 
 	select {
 		display: inline-block;
@@ -158,4 +157,41 @@
 	#covidWorldChart {
 		width: 100%;
 	}
+}
+#dataTableWorldTimeline td {
+	vertical-align: middle;
+}
+.ge-2-lt-5,
+.ge-5-lt-8,
+.ge-8 {
+	height: 12px;
+	width: 14px;
+	border-radius: 3px;
+	margin-left: 2px;
+	margin-right: 2px;
+	display: inline-block;
+}
+.bg-red-200 {
+	background-color: #ffd5d5;
+	display: inline-block;
+}
+.bg-red-500 {
+	background-color: #ff8888;
+	display: inline-block;
+}
+.bg-red-900 {
+	background-color: #ff3c3c;
+	display: inline-block;
+}
+.bg-green-200 {
+	background-color: #e2f0d7;
+	display: inline-block;
+}
+.bg-green-500 {
+	background-color: #99cc72;
+	display: inline-block;
+}
+.bg-green-900 {
+	background-color: #7abc47;
+	display: inline-block;
 }

@@ -15,7 +15,7 @@ document.getElementById('usaStatistics').innerHTML = loader;
 
 // Fetch World Data
 
-fetch(API_URL_WORLD_SUMMARY).then((response) => response.json()).then((countries) => {
+fetch(API_URL_WORLD_SUMMARY, { cache: 'no-cache' }).then((response) => response.json()).then((countries) => {
 	let output = '';
 	output += `<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
 					<div class="font-weight-bold pr-3">Total Cases</div>
@@ -58,7 +58,7 @@ fetch(API_URL_WORLD_SUMMARY).then((response) => response.json()).then((countries
 				</div>`;
 	document.getElementById('worldStatistics').innerHTML = output;
 });
-fetch(API_URL_USA_SUMMARY).then((response) => response.json()).then((states) => {
+fetch(API_URL_USA_SUMMARY, { cache: 'no-cache' }).then((response) => response.json()).then((states) => {
 	let output = '';
 	output += `<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
 					<div class="font-weight-bold pr-3">Total Cases</div>
@@ -84,7 +84,7 @@ fetch(API_URL_USA_SUMMARY).then((response) => response.json()).then((states) => 
 });
 
 // Fetch World Data
-fetch(API_URL_COUNTRIES).then((response) => response.json()).then((countries) => {
+fetch(API_URL_COUNTRIES, { cache: 'no-cache' }).then((response) => response.json()).then((countries) => {
 	countries
 		.slice(0, 5)
 		.map((item) => {
@@ -102,7 +102,7 @@ fetch(API_URL_COUNTRIES).then((response) => response.json()).then((countries) =>
 	});
 });
 // Fetch USA Data
-fetch(API_URL_USA_STATES)
+fetch(API_URL_USA_STATES, { cache: 'no-cache' })
 	.then((response) => response.json())
 	.then((states) => {
 		states.forEach((state) => {

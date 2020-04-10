@@ -89,7 +89,7 @@ fetch(API_URL_MOST_AFFECTED)
 				}
 			}
 		});
-		Chart.defaults.global.defaultFontFamily = 'Nunito';
+		Chart.defaults.global.defaultFontFamily = 'Roboto';
 		$('#chartType').on('change', function() {
 			if (this.value === 'death') {
 				selectCases(lineChartDataDeaths);

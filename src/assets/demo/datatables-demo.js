@@ -18,6 +18,7 @@ $(document).ready(function() {
 		ajax: {
 			url: 'https://corona.lmao.ninja/countries?sort=cases',
 			type: 'GET',
+			cache: false,
 			dataSrc: ''
 		},
 		columns: [
@@ -33,6 +34,7 @@ $(document).ready(function() {
 		ajax: {
 			url: 'https://covidtracking.com/api/states',
 			processing: true,
+			cache: false,
 			type: 'POST',
 			dataSrc: ''
 		},
