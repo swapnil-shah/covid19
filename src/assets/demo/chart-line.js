@@ -10,12 +10,17 @@ let ctxLine = document.getElementById('myLineChart');
 let dateSinceHistory = document.querySelectorAll('.date-since-historical');
 
 function selectCases(caseObj, caseLabel) {
-	lineChartData[0].data = caseObj[0].data;
-	lineChartData[1].data = caseObj[1].data;
-	lineChartData[2].data = caseObj[2].data;
-	lineChartData[3].data = caseObj[3].data;
+	lineDashboardChartData[0].data = caseObj[0].data;
+	lineDashboardChartData[1].data = caseObj[1].data;
+	lineDashboardChartData[2].data = caseObj[2].data;
+	lineDashboardChartData[3].data = caseObj[3].data;
 	// lineChartData[0].labels = caseLabel;
-	return lineChartData[0].data, lineChartData[1].data, lineChartData[2].data, lineChartData[3].data;
+	return (
+		lineDashboardChartData[0].data,
+		lineDashboardChartData[1].data,
+		lineDashboardChartData[2].data,
+		lineDashboardChartData[3].data
+	);
 }
 fetch(API_URL_MOST_AFFECTED)
 	.then((response) => response.json())
@@ -30,7 +35,7 @@ fetch(API_URL_MOST_AFFECTED)
 			lineChartDataCase.push({ data: Object.values(country.timeline.cases) });
 			lineChartDataDeaths.push({ data: Object.values(country.timeline.deaths) });
 			lineChartDataRecovered.push({ data: Object.values(country.timeline.recovered) });
-			lineChartData.push({
+			lineDashboardChartData.push({
 				label: country.country,
 				data: Object.values(country.timeline.cases),
 				fill: false,
@@ -40,11 +45,13 @@ fetch(API_URL_MOST_AFFECTED)
 				...(country.country.toLowerCase() === 'spain' && { borderColor: '#C45851' })
 			});
 		});
+		console.log(lineLabelsCase);
+		console.log(lineDashboardChartData);
 		let myChart = new Chart(ctxLine, {
 			type: 'line',
 			data: {
 				labels: lineLabelsCase,
-				datasets: lineChartData
+				datasets: lineDashboardChartData
 			},
 			options: {
 				maintainAspectRatio: false,
@@ -89,7 +96,7 @@ fetch(API_URL_MOST_AFFECTED)
 				}
 			}
 		});
-		Chart.defaults.global.defaultFontFamily = 'Roboto';
+		Chart.defaults.global.defaultFontFamily = 'Nunito';
 		$('#chartType').on('change', function() {
 			if (this.value === 'death') {
 				selectCases(lineChartDataDeaths);

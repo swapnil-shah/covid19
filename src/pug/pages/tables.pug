@@ -24,14 +24,6 @@ block content
             .card-body        
                 .row.justify-content-md-center
                     .col-md-3.col-sm-12.mb-3
-                        .card.bg-dark.border-0
-                            .card-body
-                                h3.text-white-75 Active
-                                    i.text-white-50.float-right.fas.fa-lg.fa-hospital-symbol
-                                .mb-4
-                                    #number-active.display-4.text-white
-                                    #per-active.text-white-75.float-right Loading numbers..
-                    .col-md-3.col-sm-12.mb-3
                         .card.bg-secondary.border-0
                             .card-body
                                 h3.text-white-75 Confirmed
@@ -39,6 +31,14 @@ block content
                                 .mb-4
                                     #number-confirmed.display-4.text-white
                                     #per-confirmed.text-white-75.float-right Loading numbers..
+                    .col-md-3.col-sm-12.mb-3
+                        .card.bg-dark.border-0
+                            .card-body
+                                h3.text-white-75 Active
+                                    i.text-white-50.float-right.fas.fa-lg.fa-hospital-symbol
+                                .mb-4
+                                    #number-active.display-4.text-white
+                                    #per-active.text-white-75.float-right Loading numbers..
                     .col-md-3.col-sm-12.mb-3
                         .card.bg-success.border-0
                             .card-body
@@ -57,6 +57,10 @@ block content
                                     #per-deaths.text-white-75.float-right Loading numbers..
                     .col-sm-12.text-center.text-muted
                                     span#last-updated
+                    .col-sm-12
+                        | Click on the country box to show/hide respective graph
+                        .chart-line
+                            canvas#myDashboardChart(width='100%', height='30')
         .card.mb-4
             .card-header Extended DataTables
             .card-body
@@ -94,5 +98,6 @@ block content
                 include includes/datatable-example.pug
 append scripts    
     script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
     script(src='js/dashboard.js')

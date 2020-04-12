@@ -185,6 +185,117 @@ function addClassesToTable(newCases, color) {
 		}
 	}
 }
+let lineDashboardChartData = [];
+let lineDashboardLabelsDate = [];
+let lineDashboardChartDataActive = [];
+let lineDashboardChartDataConfirmed = [];
+let lineDashboardChartDataDeaths = [];
+let lineDashboardChartDataRecovered = [];
+let ctxDashboardLine = document.getElementById('myDashboardChart');
+
+fetch(totalCases)
+	.then((response) => response.json())
+	.then((countries) => {
+		countries.data.forEach((country) => {
+			// console.log('country', country.date);
+			lineDashboardLabelsDate.push(country.date);
+			lineDashboardChartDataConfirmed.push(country.confirmed);
+			lineDashboardChartDataActive.push(country.active);
+			lineDashboardChartDataRecovered.push(country.recovered);
+			lineDashboardChartDataDeaths.push(country.deaths);
+		});
+
+		lineDashboardChartData.push(
+			{
+				label: 'Confirmed',
+				data: lineDashboardChartDataConfirmed.reverse(),
+				borderColor: '#6900c7',
+				type: 'line'
+			},
+			{
+				label: 'Active',
+				data: lineDashboardChartDataActive.reverse(),
+				borderColor: '#1f2d41',
+				type: 'line'
+			},
+			{
+				label: 'Recovered',
+				data: lineDashboardChartDataRecovered.reverse(),
+				borderColor: '#00AC68',
+				backgroundColor: '#00AC68'
+			},
+			{
+				label: 'Deaths',
+				data: lineDashboardChartDataDeaths.reverse(),
+				borderColor: '#dc3545',
+				backgroundColor: '#dc3545'
+			}
+		);
+		let myChart = new Chart(ctxDashboardLine, {
+			type: 'bar',
+			data: {
+				labels: lineDashboardLabelsDate.reverse(),
+				datasets: lineDashboardChartData
+			},
+			options: {
+				maintainAspectRatio: false,
+				tooltips: {
+					mode: 'index',
+					backgroundColor: 'rgb(255,255,255)',
+					titleFontColor: '#858796',
+					bodyFontColor: '#858796',
+					borderColor: '#dddfeb',
+					borderWidth: 1,
+					caretPadding: 10,
+					displayColors: false,
+					xPadding: 10,
+					yPadding: 10,
+					callbacks: {
+						label: function(tooltipItem, data) {
+							return (
+								data.datasets[tooltipItem.datasetIndex].label +
+								': ' +
+								tooltipItem.yLabel.toLocaleString()
+							);
+						}
+					}
+				},
+				scales: {
+					xAxes: [
+						{
+							ticks: {
+								autoSkip: true,
+								maxTicksLimit: 30
+							}
+						}
+					],
+					yAxes: [
+						{
+							ticks: {
+								callback: function(value) {
+									return value.toLocaleString();
+								}
+							}
+						}
+					]
+				}
+			}
+		});
+		Chart.defaults.global.defaultFontFamily = 'Nunito';
+		$('#chartType').on('change', function() {
+			if (this.value === 'death') {
+				selectCases(lineChartDataDeaths);
+				myChart.update();
+			} else if (this.value === 'recovered') {
+				selectCases(lineChartDataRecovered);
+				myChart.update();
+			} else {
+				selectCases(lineChartDataCase);
+				myChart.update();
+			}
+		});
+	})
+	.catch((error) => console.log('error', error));
 
 $(document).ready(function() {
 	getDateFormatted();

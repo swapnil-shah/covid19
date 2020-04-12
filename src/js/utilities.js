@@ -17,6 +17,15 @@ let getDateFormatted = (function() {
 	};
 })();
 
+// Convert yyyy-mm-dd to mm/dd/yyyy
+function format(inputDate) {
+	var date = new Date(inputDate);
+	if (!isNaN(date.getTime())) {
+		// Months use 0 index.
+		return date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear();
+	}
+}
+let date = new Date().toISOString().split('T')[0];
 function timeDifference(date) {
 	let currenDate = new Date();
 	let msPerMinute = 60 * 1000;
