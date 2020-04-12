@@ -1,7 +1,7 @@
 extends ../layouts/dashboard.pug
 
 block config
-    - var bodyClass = 'nav-fixed'
+    - var bodyClass = 'nav-fixed sidenav-toggled'
     - var pageTitle = 'Tables'
     - var pageIcon = 'filter'
     - var pageSummary = 'An extended version of the DataTables library, customized for COVID19 Pro'
@@ -16,14 +16,55 @@ append css
 
 block content
     include includes/page-header
+        //- Sidenav Toggle Button
+        button#sidebarToggle.btn.btn-icon.btn-transparent-dark.order-1.order-lg-0.mr-lg-2(href='#')
+            i(data-feather='menu')
     .container-fluid.mt-n10
+        .card.mb-2
+            .card-body        
+                .row.justify-content-md-center
+                    .col-md-3.col-sm-12.mb-3
+                        .card.bg-dark.border-0
+                            .card-body
+                                h3.text-white-75 Active
+                                    i.text-white-50.float-right.fas.fa-lg.fa-hospital-symbol
+                                .mb-4
+                                    #number-active.display-4.text-white
+                                    #per-active.text-white-75.float-right Loading numbers..
+                    .col-md-3.col-sm-12.mb-3
+                        .card.bg-secondary.border-0
+                            .card-body
+                                h3.text-white-75 Confirmed
+                                     i.text-white-50.float-right.fas.fa-lg.fa-lungs-virus
+                                .mb-4
+                                    #number-confirmed.display-4.text-white
+                                    #per-confirmed.text-white-75.float-right Loading numbers..
+                    .col-md-3.col-sm-12.mb-3
+                        .card.bg-success.border-0
+                            .card-body
+                                h3.text-white-75 Recovered
+                                    i.text-white-50.float-right.fas.fa-lg.fa-house-user
+                                .mb-4
+                                    #number-recovered.display-4.text-white
+                                    #per-recovered.text-white-75.float-right Loading numbers..
+                    .col-md-3.col-sm-12.mb-3
+                        .card.bg-danger.border-0
+                            .card-body
+                                h3.text-white-75 Deaths
+                                    i.text-white-50.float-right.fas.fa-lg.fa-bed
+                                .mb-4
+                                    #number-deaths.display-4.text-white
+                                    #per-deaths.text-white-75.float-right Loading numbers..
+                    .col-sm-12.text-center.text-muted
+                                    span Last Updated on 
+                                    span#last-updated.text-gray-600
         .card.mb-4
             .card-header Extended DataTables
             .card-body
                 .row.justify-content-between
-                    .col-md-6.col-sm-12
+                    .col-md-8.col-sm-12
                         h6.mb-2.text-muted.lead The new cases gets update everyday. Hover over to see the exact time of update.
-                    .col-md-6.col-sm-12.pb-2.text-right
+                    .col-md-4.col-sm-12.pb-2.text-right
                         p.mb-1
                             small
                                 strong New Cases: 
@@ -52,20 +93,6 @@ block content
                                 span.ge-8.bg-green-900.ml-2
                                 | &ge; 8%
                 include includes/datatable-example.pug
-
-        .card.card-icon.mb-4
-            .row.no-gutters
-                .col-auto.card-icon-aside.bg-primary
-                    i.mr-1.text-white-50(data-feather='alert-triangle')
-                .col
-                    .card-body.py-5
-                        h5.card-title Third-Party Documentation Available
-                        p.card-text
-                            | DataTables is a third party plugin that is used to generate the demo table above. For more information about how to use DataTables with your project, please visit the official DataTables documentation.
-                        a.btn.btn-primary.btn-sm(href='https://datatables.net/', target='_blank')
-                            i.mr-1(data-feather='external-link')
-                            | Visit DataTables Docs
-
 append scripts    
     script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')

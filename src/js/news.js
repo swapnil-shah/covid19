@@ -1,5 +1,6 @@
 const newsUri = 'https://api.smartable.ai/coronavirus/news/US';
 const dasboardTableUri = 'https://corona-api.com/countries?include=timeline';
+const totalCases = 'https://corona-api.com/timeline';
 let header = new Headers();
 header.append('Accept', 'application/json');
 
@@ -20,13 +21,11 @@ var getDateFormatted = (function() {
 			hours = d.getHours(),
 			minutes = d.getMinutes(),
 			dayName = daysNames[d.getDay()];
-		// minutes < 10 ? parseInt((minutes = '0' + minutes)) : minutes;
+		minutes < 10 ? parseInt((minutes = '0' + minutes)) : minutes;
 
 		return hours > 12
-			? // ? dayName + ' ' + month + ' ' + day + ' ' + (hours - 12) + ':' + minutes + ' PM'
-				// : dayName + ' ' + month + ' ' + day + ' ' + hours + ':' + minutes + ' AM';
-				dayName + ' ' + month + ' ' + day
-			: dayName + ' ' + month + ' ' + day;
+			? dayName + ' ' + month + ' ' + day + ' ' + (hours - 12) + ':' + minutes + ' PM'
+			: dayName + ' ' + month + ' ' + day + ' ' + hours + ':' + minutes + ' AM';
 	};
 })();
 
@@ -53,6 +52,46 @@ fillNewsCards = () => {
 		});
 };
 
+//Dasboard cases
+fillNumberOfCases = () => {
+	fetch(totalCases, { cache: 'no-cache' })
+		.then((response) => {
+			if (response.ok) {
+				return response.json();
+			} else {
+				throw new Error('BAD HTTP');
+			}
+		})
+		.then((stats) => {
+			let formattedDate = getDateFormatted(stats.data[0].updated_at.toString());
+			console.log('fillNumberOfCases -> stats.data[0].updated_at', stats.data[0].updated_at);
+			document.getElementById('number-active').innerText = stats.data[0].active.toLocaleString();
+			document.getElementById('number-confirmed').innerText = stats.data[0].confirmed.toLocaleString();
+			document.getElementById('number-recovered').innerText = stats.data[0].recovered.toLocaleString();
+			document.getElementById('number-deaths').innerText = stats.data[0].deaths.toLocaleString();
+			document.getElementById('last-updated').innerText = formattedDate;
+			document.getElementById('per-active').innerHTML =
+				' (<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i> ' +
+				percentageChangeTotal(stats.data[0].active, stats.data[1].active) +
+				'%)';
+			document.getElementById('per-confirmed').innerHTML =
+				' (<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i> ' +
+				percentageChangeTable(stats.data[0].confirmed, stats.data[0].new_confirmed) +
+				'%)';
+			document.getElementById('per-recovered').innerHTML =
+				' (<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i> ' +
+				percentageChangeTable(stats.data[0].recovered, stats.data[0].new_recovered) +
+				'%)';
+			document.getElementById('per-deaths').innerHTML =
+				' (<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i> ' +
+				percentageChangeTable(stats.data[0].deaths, stats.data[0].new_deaths) +
+				'%)';
+		})
+		.catch((err) => {
+			console.log('ERROR:', err.message);
+		});
+};
+
 //World Timeline Table
 fillWorldTimelineTable = () => {
 	fetch(dasboardTableUri, { cache: 'no-cache' })
@@ -73,26 +112,26 @@ fillWorldTimelineTable = () => {
                                     <tr>
                                         <td>${item.name}<br/><small class="text-muted">${item.population.toLocaleString()}</small></td>
                                         <td>${item.timeline[0].confirmed.toLocaleString()}</td>
-                                        <td class="new-confirmed" data-percentage="${getPercentageChange(
+                                        <td class="new-confirmed" data-percentage="${percentageChangeTable(
 											item.timeline[0].confirmed,
 											item.timeline[0].new_confirmed
-										)}" >${item.timeline[0].new_confirmed.toLocaleString()} <small class="font-weight-light">(<i class="fas fa-arrow-up fa-xs" style="margin: 0 2px;"></i><small>${getPercentageChange(
+										)}" >${item.timeline[0].new_confirmed.toLocaleString()} <small class="font-weight-light container-percentage">(<i class="fas fa-arrow-up fa-xs" style="margin: 0 2px;"></i>${percentageChangeTable(
 							item.timeline[0].confirmed,
 							item.timeline[0].new_confirmed
 						)}%)</small></td>
                                         <td>${item.timeline[0].deaths.toLocaleString()}</td>
-                                        <td class="new-death" data-percentage="${getPercentageChange(
+                                        <td class="new-death" data-percentage="${percentageChangeTable(
 											item.timeline[0].deaths,
 											item.timeline[0].new_deaths
-										)}">${item.timeline[0].new_deaths.toLocaleString()} <small class="font-weight-light">(<i class="fas fa-arrow-up fa-xs" style="margin: 0 2px;"></i><small>${getPercentageChange(
+										)}">${item.timeline[0].new_deaths.toLocaleString()} <small class="font-weight-light container-percentage">(<i class="fas fa-arrow-up fa-xs" style="margin: 0 2px;"></i>${percentageChangeTable(
 							item.timeline[0].deaths,
 							item.timeline[0].new_deaths
 						)}%)</small></td>
                                         <td>${item.timeline[0].recovered.toLocaleString()}</td>
-                                        <td class="new-recovered" data-percentage="${getPercentageChange(
+                                        <td class="new-recovered" data-percentage="${percentageChangeTable(
 											item.timeline[0].recovered,
 											item.timeline[0].new_recovered
-										)}">${item.timeline[0].new_recovered.toLocaleString()} <small class="font-weight-light">(<i class="fas fa-arrow-up fa-xs" style="margin: 0 2px;"></i><small>${getPercentageChange(
+										)}">${item.timeline[0].new_recovered.toLocaleString()} <small class="font-weight-light container-percentage">(<i class="fas fa-arrow-up fa-xs" style="margin: 0 2px;"></i>${percentageChangeTable(
 							item.timeline[0].recovered,
 							item.timeline[0].new_recovered
 						)}%)</small></td>
@@ -103,26 +142,26 @@ fillWorldTimelineTable = () => {
                                 <tr>
                                     <td>${item.name}<br/><small class="text-muted">${item.population.toLocaleString()}</small></td>
                                     <td>${item.timeline[1].confirmed.toLocaleString()}</td>
-                                    <td class="new-confirmed" data-percentage="${getPercentageChange(
+                                    <td class="new-confirmed" data-percentage="${percentageChangeTable(
 										item.timeline[1].confirmed,
 										item.timeline[1].new_confirmed
-									)}" >${item.timeline[1].new_confirmed.toLocaleString()} <small class="font-weight-light">(<i class="fas fa-arrow-up fa-xs" style="margin: 0 2px;"></i><small>${getPercentageChange(
+									)}" >${item.timeline[1].new_confirmed.toLocaleString()} <small class="font-weight-light container-percentage">(<i class="fas fa-arrow-up fa-xs" style="margin: 0 2px;"></i>${percentageChangeTable(
 							item.timeline[1].confirmed,
 							item.timeline[1].new_confirmed
 						)}%)</small></td>
                                     <td>${item.timeline[1].deaths.toLocaleString()}</td>
-                                    <td class="new-death" data-percentage="${getPercentageChange(
+                                    <td class="new-death" data-percentage="${percentageChangeTable(
 										item.timeline[1].deaths,
 										item.timeline[1].new_deaths
-									)}">${item.timeline[1].new_deaths.toLocaleString()} <small class="font-weight-light">(<i class="fas fa-arrow-up fa-xs" style="margin: 0 2px;"></i><small>${getPercentageChange(
+									)}">${item.timeline[1].new_deaths.toLocaleString()} <small class="font-weight-light container-percentage">(<i class="fas fa-arrow-up fa-xs" style="margin: 0 2px;"></i>${percentageChangeTable(
 							item.timeline[1].deaths,
 							item.timeline[1].new_deaths
 						)}%)</small></td>
                                     <td>${item.timeline[1].recovered.toLocaleString()}</td>
-                                    <td class="new-recovered" data-percentage="${getPercentageChange(
+                                    <td class="new-recovered" data-percentage="${percentageChangeTable(
 										item.timeline[1].recovered,
 										item.timeline[1].new_recovered
-									)}">${item.timeline[1].new_recovered.toLocaleString()} <small class="font-weight-light">(<i class="fas fa-arrow-up fa-xs" style="margin: 0 2px;"></i><small>${getPercentageChange(
+									)}">${item.timeline[1].new_recovered.toLocaleString()} <small class="font-weight-light container-percentage">(<i class="fas fa-arrow-up fa-xs" style="margin: 0 2px;"></i>${percentageChangeTable(
 							item.timeline[1].recovered,
 							item.timeline[1].new_recovered
 						)}%)</small></td>
@@ -158,10 +197,18 @@ fillWorldTimelineTable = () => {
 				]
 			});
 			addCellColor();
+		})
+		.catch((err) => {
+			console.log('ERROR:', err.message);
 		});
 };
-function getPercentageChange(cases, newCases) {
+
+function percentageChangeTable(cases, newCases) {
 	return newCases !== 0 && cases !== 0 && cases !== newCases ? (newCases * 100 / (cases - newCases)).toFixed(2) : 0;
+}
+
+function percentageChangeTotal(total, newTotal) {
+	return total !== 0 && newTotal !== 0 && total !== newTotal ? ((total - newTotal) / total * 100).toFixed(2) : 0;
 }
 
 function addCellColor() {
@@ -213,6 +260,8 @@ function getNewsResults(data) {
 }
 
 $(document).ready(function() {
+	getDateFormatted();
+	fillNumberOfCases();
 	fillWorldTimelineTable();
 	fillNewsCards();
 });
