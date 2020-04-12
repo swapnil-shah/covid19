@@ -10,17 +10,12 @@ let ctxLine = document.getElementById('myLineChart');
 let dateSinceHistory = document.querySelectorAll('.date-since-historical');
 
 function selectCases(caseObj, caseLabel) {
-	lineDashboardChartData[0].data = caseObj[0].data;
-	lineDashboardChartData[1].data = caseObj[1].data;
-	lineDashboardChartData[2].data = caseObj[2].data;
-	lineDashboardChartData[3].data = caseObj[3].data;
+	lineChartData[0].data = caseObj[0].data;
+	lineChartData[1].data = caseObj[1].data;
+	lineChartData[2].data = caseObj[2].data;
+	lineChartData[3].data = caseObj[3].data;
 	// lineChartData[0].labels = caseLabel;
-	return (
-		lineDashboardChartData[0].data,
-		lineDashboardChartData[1].data,
-		lineDashboardChartData[2].data,
-		lineDashboardChartData[3].data
-	);
+	return lineChartData[0].data, lineChartData[1].data, lineChartData[2].data, lineChartData[3].data;
 }
 fetch(API_URL_MOST_AFFECTED)
 	.then((response) => response.json())
@@ -35,7 +30,7 @@ fetch(API_URL_MOST_AFFECTED)
 			lineChartDataCase.push({ data: Object.values(country.timeline.cases) });
 			lineChartDataDeaths.push({ data: Object.values(country.timeline.deaths) });
 			lineChartDataRecovered.push({ data: Object.values(country.timeline.recovered) });
-			lineDashboardChartData.push({
+			lineChartData.push({
 				label: country.country,
 				data: Object.values(country.timeline.cases),
 				fill: false,
@@ -45,13 +40,11 @@ fetch(API_URL_MOST_AFFECTED)
 				...(country.country.toLowerCase() === 'spain' && { borderColor: '#C45851' })
 			});
 		});
-		console.log(lineLabelsCase);
-		console.log(lineDashboardChartData);
 		let myChart = new Chart(ctxLine, {
 			type: 'line',
 			data: {
 				labels: lineLabelsCase,
-				datasets: lineDashboardChartData
+				datasets: lineChartData
 			},
 			options: {
 				maintainAspectRatio: false,
