@@ -7,10 +7,8 @@ let newsReq = new Request(newsUri, {
 	headers: header,
 	mode: 'cors'
 });
-
 //Dasboad Table
 fillNewsCards = () => {
-	console.log('hello');
 	fetch(newsReq, {
 		headers: {
 			'Cache-Control': 'no-cache',
@@ -31,7 +29,6 @@ fillNewsCards = () => {
 			console.log('ERROR:', err.message);
 		});
 };
-
 function getNewsResults(data) {
 	let output = '';
 	let newsCards = document.getElementById('cards-news');

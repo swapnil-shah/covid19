@@ -1,13 +1,5 @@
 const dasboardTableUri = 'https://corona-api.com/countries?include=timeline';
 const totalCases = 'https://corona-api.com/timeline';
-let header = new Headers();
-header.append('Accept', 'application/json');
-
-let newsReq = new Request(newsUri, {
-	method: 'GET',
-	headers: header,
-	mode: 'cors'
-});
 
 //Dasboard cases
 fillNumberOfCases = () => {
