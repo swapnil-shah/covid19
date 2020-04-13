@@ -20,6 +20,8 @@
 		e.preventDefault();
 		$('body').toggleClass('sidenav-toggled');
 	});
+	// Activate Feather icons
+	feather.replace();
 
 	// Activate Bootstrap scrollspy for the sticky nav component
 	$('body').scrollspy({

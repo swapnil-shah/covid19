@@ -15,13 +15,15 @@ append css
     link(href='https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css', rel='stylesheet', crossorigin='anonymous')
 
 block content
-    include includes/page-header
-        //- Sidenav Toggle Button
+    include includes/page-header        
         button#sidebarToggle.btn.btn-icon.btn-transparent-dark.order-1.order-lg-0.mr-lg-2(href='#')
+            i(data-feather='menu')
     .container-fluid.mt-n10
         .card.mb-2
             .card-body        
                 .row.justify-content-md-center
+                    .col-sm-12
+                        h1 Refreshed Daily
                     .col-md-3.col-sm-12.mb-3
                         .card.bg-secondary.border-0
                             .card-body
@@ -65,7 +67,7 @@ block content
             .card-body
                 .row.justify-content-between
                     .col-md-8.col-sm-12
-                        h6.mb-2.text-muted.lead The new cases gets update everyday. Hover over to see the exact time of update.
+                        h6.mb-2.text-muted.lead The new cases gets update everyday. Hover over to see the exact time of update.(Refreshed daily)
                     .col-md-4.col-sm-12.pb-2.text-right
                         p.mb-1
                             small

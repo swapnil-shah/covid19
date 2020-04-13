@@ -16,7 +16,6 @@ append css
 
 block content
     .page-header.pb-10(class=pageHeaderStyle, class=pageHeaderBackground)
-
         //- Sidenav Toggle Button
         button#sidebarToggle.btn.btn-icon.btn-transparent-dark.order-1.order-lg-0.mr-lg-2(href='#')
             i(data-feather='menu')
@@ -121,6 +120,7 @@ block content
             .card-body
 
 append scripts
+    script(src='https://www.gstatic.com/charts/loader.js', type="text/javascript")
     script(src='js/chart.js', type="text/javascript")
     //- Load Chart.js via CDN
     script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')

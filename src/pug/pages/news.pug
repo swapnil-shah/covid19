@@ -1,7 +1,7 @@
 extends ../layouts/dashboard.pug
 
 block config
-    - var bodyClass = 'nav-fixed'
+    - var bodyClass = 'nav-fixed sidenav-toggled'
     - var pageTitle = 'Dashboard'
     - var pageIcon = 'activity'
     - var pageSummary = 'Example dashboard overview and content summary'
@@ -12,7 +12,9 @@ block config
     - var footerStyle = 'footer-light'
 
 block content
-
+    include includes/page-header  
+        button#sidebarToggle.btn.btn-icon.btn-transparent-dark.order-1.order-lg-0.mr-lg-2(href='#')
+            i(data-feather='menu')
     .container-fluid.mt-5
 
         .d-flex.justify-content-between.align-items-sm-center.flex-column.flex-sm-row.mb-4

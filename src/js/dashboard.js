@@ -1,6 +1,38 @@
 const dasboardTableUri = 'https://corona-api.com/countries?include=timeline';
 const totalCases = 'https://corona-api.com/timeline';
 
+let lineDashboardChartData = [];
+let lineDashboardLabelsDate = [];
+let lineDashboardChartDataActive = [];
+let lineDashboardChartDataConfirmed = [];
+let lineDashboardChartDataDeaths = [];
+let lineDashboardChartDataRecovered = [];
+let ctxDashboardLine = document.getElementById('myDashboardChart');
+
+function addCellColor() {
+	let newConfirmed = document.querySelectorAll('.new-confirmed');
+	let newDeaths = document.querySelectorAll('.new-death');
+	let newRecovered = document.querySelectorAll('.new-recovered');
+	addClassesToTable(newConfirmed, 'yellow');
+	addClassesToTable(newDeaths, 'red');
+	addClassesToTable(newRecovered, 'green');
+}
+
+function addClassesToTable(newCases, color) {
+	for (let i = 0; i < newCases.length; i++) {
+		let percentageValue = parseFloat(newCases[i].getAttribute('data-percentage'));
+		if (percentageValue >= 2 && percentageValue < 5) {
+			newCases[i].classList.add('bg-' + color + '-200');
+		}
+		if (percentageValue >= 5 && percentageValue < 8) {
+			newCases[i].classList.add('bg-' + color + '-500');
+		}
+		if (percentageValue >= 8) {
+			newCases[i].classList.add('bg-' + color + '-900');
+		}
+	}
+}
+
 //Dasboard cases
 fillNumberOfCases = () => {
 	fetch(totalCases, { cache: 'no-cache' })
@@ -12,29 +44,55 @@ fillNumberOfCases = () => {
 			}
 		})
 		.then((stats) => {
-			let formattedDate = timeDifference(stats.data[0].updated_at.toString());
-			document.getElementById('number-active').innerText = stats.data[0].active.toLocaleString();
-			document.getElementById('number-confirmed').innerText = stats.data[0].confirmed.toLocaleString();
-			document.getElementById('number-recovered').innerText = stats.data[0].recovered.toLocaleString();
-			document.getElementById('number-deaths').innerText = stats.data[0].deaths.toLocaleString();
-			document.getElementById('last-updated').innerHTML =
-				'Last Updated <span class="text-gray-600">' + formattedDate + '</span>';
-			document.getElementById('per-active').innerHTML =
-				' (<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i> ' +
-				percentageChangeTotal(stats.data[0].active, stats.data[1].active) +
-				'%)';
-			document.getElementById('per-confirmed').innerHTML =
-				' (<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i> ' +
-				percentageChangeTable(stats.data[0].confirmed, stats.data[0].new_confirmed) +
-				'%)';
-			document.getElementById('per-recovered').innerHTML =
-				' (<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i> ' +
-				percentageChangeTable(stats.data[0].recovered, stats.data[0].new_recovered) +
-				'%)';
-			document.getElementById('per-deaths').innerHTML =
-				' (<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i> ' +
-				percentageChangeTable(stats.data[0].deaths, stats.data[0].new_deaths) +
-				'%)';
+			if (typeof stats.data[0].is_in_progress === 'undefined') {
+				let formattedDate = timeDifference(stats.data[0].updated_at.toString());
+				document.getElementById('number-active').innerText = stats.data[0].active.toLocaleString();
+				document.getElementById('number-confirmed').innerText = stats.data[0].confirmed.toLocaleString();
+				document.getElementById('number-recovered').innerText = stats.data[0].recovered.toLocaleString();
+				document.getElementById('number-deaths').innerText = stats.data[0].deaths.toLocaleString();
+				document.getElementById('last-updated').innerHTML =
+					'Last Updated <span class="text-gray-600">' + formattedDate + '</span>';
+				document.getElementById('per-active').innerHTML =
+					' (<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i> ' +
+					percentageChangeTotal(stats.data[0].active, stats.data[1].active) +
+					'%)';
+				document.getElementById('per-confirmed').innerHTML =
+					' (<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i> ' +
+					percentageChangeTable(stats.data[0].confirmed, stats.data[0].new_confirmed) +
+					'%)';
+				document.getElementById('per-recovered').innerHTML =
+					' (<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i> ' +
+					percentageChangeTable(stats.data[0].recovered, stats.data[0].new_recovered) +
+					'%)';
+				document.getElementById('per-deaths').innerHTML =
+					' (<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i> ' +
+					percentageChangeTable(stats.data[0].deaths, stats.data[0].new_deaths) +
+					'%)';
+			} else {
+				let formattedDate = timeDifference(stats.data[1].updated_at.toString());
+				document.getElementById('number-active').innerText = stats.data[1].active.toLocaleString();
+				document.getElementById('number-confirmed').innerText = stats.data[1].confirmed.toLocaleString();
+				document.getElementById('number-recovered').innerText = stats.data[1].recovered.toLocaleString();
+				document.getElementById('number-deaths').innerText = stats.data[1].deaths.toLocaleString();
+				document.getElementById('last-updated').innerHTML =
+					'Last Updated <span class="text-gray-600">' + formattedDate + '</span>';
+				document.getElementById('per-active').innerHTML =
+					' (<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i> ' +
+					percentageChangeTotal(stats.data[1].active, stats.data[0].active) +
+					'%)';
+				document.getElementById('per-confirmed').innerHTML =
+					' (<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i> ' +
+					percentageChangeTable(stats.data[1].confirmed, stats.data[1].new_confirmed) +
+					'%)';
+				document.getElementById('per-recovered').innerHTML =
+					' (<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i> ' +
+					percentageChangeTable(stats.data[1].recovered, stats.data[1].new_recovered) +
+					'%)';
+				document.getElementById('per-deaths').innerHTML =
+					' (<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i> ' +
+					percentageChangeTable(stats.data[1].deaths, stats.data[1].new_deaths) +
+					'%)';
+			}
 		})
 		.catch((err) => {
 			console.log('ERROR:', err.message);
@@ -161,37 +219,6 @@ fillWorldTimelineTable = () => {
 			console.log('ERROR:', err.message);
 		});
 };
-
-function addCellColor() {
-	let newConfirmed = document.querySelectorAll('.new-confirmed');
-	let newDeaths = document.querySelectorAll('.new-death');
-	let newRecovered = document.querySelectorAll('.new-recovered');
-	addClassesToTable(newConfirmed, 'yellow');
-	addClassesToTable(newDeaths, 'red');
-	addClassesToTable(newRecovered, 'green');
-}
-
-function addClassesToTable(newCases, color) {
-	for (let i = 0; i < newCases.length; i++) {
-		let percentageValue = parseFloat(newCases[i].getAttribute('data-percentage'));
-		if (percentageValue >= 2 && percentageValue < 5) {
-			newCases[i].classList.add('bg-' + color + '-200');
-		}
-		if (percentageValue >= 5 && percentageValue < 8) {
-			newCases[i].classList.add('bg-' + color + '-500');
-		}
-		if (percentageValue >= 8) {
-			newCases[i].classList.add('bg-' + color + '-900');
-		}
-	}
-}
-let lineDashboardChartData = [];
-let lineDashboardLabelsDate = [];
-let lineDashboardChartDataActive = [];
-let lineDashboardChartDataConfirmed = [];
-let lineDashboardChartDataDeaths = [];
-let lineDashboardChartDataRecovered = [];
-let ctxDashboardLine = document.getElementById('myDashboardChart');
 
 fetch(totalCases)
 	.then((response) => response.json())
