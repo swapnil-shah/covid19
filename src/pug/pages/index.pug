@@ -1,10 +1,10 @@
 extends ../layouts/dashboard.pug
 
 block config
-    - var bodyClass = 'nav-fixed'
-    - var pageTitle = 'Dashboard'
-    - var pageIcon = 'activity'
-    - var pageSummary = 'Example dashboard overview and content summary'
+    - var bodyClass = 'nav-fixed sidenav-toggled'
+    - var pageTitle = 'COVID19 Dahboard'
+    - var pageIcon = 'filter'
+    - var pageSummary = 'An extended version of the DataTables library, customized for COVID19 Pro'
     - var sidenavStyle = 'sidenav-light'
     - var topnavStyle = 'navbar-light bg-white'
     - var pageHeaderStyle = 'page-header-dark'
@@ -15,125 +15,88 @@ append css
     link(href='https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css', rel='stylesheet', crossorigin='anonymous')
 
 block content
-    .page-header.pb-10(class=pageHeaderStyle, class=pageHeaderBackground)
-
+    include includes/page-header
         //- Sidenav Toggle Button
         button#sidebarToggle.btn.btn-icon.btn-transparent-dark.order-1.order-lg-0.mr-lg-2(href='#')
-            i(data-feather='menu')
-        .container-fluid
-            .row
-                .col-xl-6.col-md-12
-                    .page-header-content
-                        h1.page-header-title
-                            .page-header-icon
-                                i(data-feather=pageIcon)
-                            span 
-                                | COVID19
-                        .page-header-subtitle
-                            | A comprehensive place for stats
-
     .container-fluid.mt-n10
-        //- Example Overview Card
-        //- Pill navigation card with charts and dataTables included within tab panes
-        .card.mb-4
-            .card-header
-                ul.nav.nav-pills.card-header-pills#cardPill(role='tablist')
-                    li.nav-item
-                        a.nav-link.active#overview-pill(href='#overviewPill', data-toggle='tab', role='tab', aria-controls='overview', aria-selected='true') World Overview
-                    li.nav-item
-                        a.nav-link#activities-pill(href='#activitiesPill', data-toggle='tab', role='tab', aria-controls='activities', aria-selected='false') World Data Table
-            .card-body
-                .tab-content#cardPillContent
-                    .tab-pane.fade.show.active#overviewPill(role='tabpanel', aria-labelledby='overview-pill')
-                        .row
-                            .col-lg-8
-                                #covidWorldChart(width='100%', height="100%")
-                            .col-lg-4
-                                .card.mb-4
-                                    .card-header
-                                        | World Stats
-                                    .list-group.list-group-flush.small#worldStatistics
-
-                    .tab-pane.fade#activitiesPill(role='tabpanel', aria-labelledby='activities-pill')
-                        include includes/datatables/datatable-world.pug
-
-        .card.mb-4
-            .card-header
-                ul.nav.nav-pills.card-header-pills.active#cardUsaPill(role='tablist')
-                    li.nav-item
-                        a.nav-link.active#covidUsa-pill(href='#covidUsaPill', data-toggle='tab', role='tab', aria-controls='covidUsa', aria-selected='true') USA Overview
-                    li.nav-item
-                        a.nav-link#usaDataTable-pill(href='#usaDataTable', data-toggle='tab', role='tab', aria-controls='usaDataTable', aria-selected='false') USA Data Table
-            .card-body
-                .tab-content#cardUsaPillContent
-                    .tab-pane.fade.show.active#covidUsaPill(role='tabpanel', aria-labelledby='covidUsa-pill')
-                        .row
-                            .col-lg-8
-                                #covidUsaChart(width='100%', height='100%')
-                            .col-lg-4
-                                .card.mb-4
-                                    .card-header
-                                        | Stats
-                                    .list-group.list-group-flush.small#usaStatistics
-
-                    .tab-pane.fade#usaDataTable(role='tabpanel', aria-labelledby='usaDataTable-pill')
-                        include includes/datatables/datatable-usa.pug
-        //- Example Charts for Dashboard Demo
-        .row
-            .col-md-6
-                .card.mb-4
-                    .card-header Area Chart Example
-                    .card-body
-                        .chart-area
-                            canvas#myAreaChart(width='100%', height='30')
-            .col-md-6
-                .card.mb-4
-                    .card-header Bar Chart Example
-                    .card-body
-                        .chart-bar
-                            canvas#myBarChart(width='100%', height='30')
-            
-        .row
-            .col-md-12
-                .card.mb-4
-                    .card-header Cases Overtime
-                    .card-body
-                        .card-title
-                            | Number of positive, death and recovered cases overtime for USA, China, Italy and Spain since 
-                            span.date-since-historical
-                        .card-subtitle.mb-2.text-muted.text-center.small.mt-4
-                            | Click on the country box to show/hide respective graph
+        .card.mb-2
+            .card-body        
+                .row.justify-content-md-center
+                    .col-md-3.col-sm-12.mb-3
+                        .card.bg-secondary.border-0
+                            .card-body
+                                h3.text-white-75 Confirmed
+                                     i.text-white-50.float-right.fas.fa-lg.fa-lungs-virus
+                                .mb-4
+                                    #number-confirmed.display-4.text-white
+                                    #per-confirmed.text-white-75.float-right Loading numbers..
+                    .col-md-3.col-sm-12.mb-3
+                        .card.bg-dark.border-0
+                            .card-body
+                                h3.text-white-75 Active
+                                    i.text-white-50.float-right.fas.fa-lg.fa-hospital-symbol
+                                .mb-4
+                                    #number-active.display-4.text-white
+                                    #per-active.text-white-75.float-right Loading numbers..
+                    .col-md-3.col-sm-12.mb-3
+                        .card.bg-success.border-0
+                            .card-body
+                                h3.text-white-75 Recovered
+                                    i.text-white-50.float-right.fas.fa-lg.fa-house-user
+                                .mb-4
+                                    #number-recovered.display-4.text-white
+                                    #per-recovered.text-white-75.float-right Loading numbers..
+                    .col-md-3.col-sm-12.mb-3
+                        .card.bg-danger.border-0
+                            .card-body
+                                h3.text-white-75 Deaths
+                                    i.text-white-50.float-right.fas.fa-lg.fa-bed
+                                .mb-4
+                                    #number-deaths.display-4.text-white
+                                    #per-deaths.text-white-75.float-right Loading numbers..
+                    .col-sm-12.text-center.text-muted
+                                    span#last-updated
+                    .col-sm-12
+                        | Click on the country box to show/hide respective graph
                         .chart-line
-                            canvas#myLineChart(width='100%', height='30')
-                        .select
-                            select#chartType
-                                option(value="cases" selected) Cases
-                                option(value="death") Death
-                                option(value="recovered") Recovered
-        //- Example DataTable for Dashboard Demo
-        .card.mb-4.card-header-actions
-            .card-header
-                | DataTable Example
-                .text-md-right.small.text-muted
-                    | Data from John Hopkins University
-                    <br/>
-                    | Last updated
+                            canvas#myDashboardChart(width='100%', height='30')
+        .card.mb-4
+            .card-header Extended DataTables
             .card-body
-
-append scripts
-    script(src='js/chart.js', type="text/javascript")
-    //- Load Chart.js via CDN
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
-    //- Load custom Chart.js styling and demo data
-    script(src='assets/demo/chart-area-demo.js')
-    script(src='assets/demo/chart-bar-demo.js')
-    //- script(src='assets/demo/chart-pie-demo.js')
-    script(src='assets/demo/chart-line.js')
-    //- Load dataTables via CDN
+                .row.justify-content-between
+                    .col-md-8.col-sm-12
+                        h6.mb-2.text-muted.lead The new cases gets update everyday. Hover over to see the exact time of update.
+                    .col-md-4.col-sm-12.pb-2.text-right
+                        p.mb-1
+                            small
+                                strong New Cases: 
+                                span.ge-2-lt-5.bg-yellow-200
+                                | &ge; 2% and &lt; 5%
+                                span.ge-5-lt-8.bg-yellow-500.ml-2
+                                | &ge; 5% and &lt; 8
+                                span.ge-8.bg-yellow-900.ml-2
+                                | &ge; 8%
+                        p.mb-1
+                            small 
+                                strong New Deaths: 
+                                span.ge-2-lt-5.bg-red-200
+                                | &ge; 2% and &lt; 5%
+                                span.ge-5-lt-8.bg-red-500.ml-2
+                                | &ge; 5% and &lt; 8
+                                span.ge-8.bg-red-900.ml-2
+                                | &ge; 8%
+                        p.mb-1
+                            small 
+                                strong New Recovered: 
+                                span.ge-2-lt-5.bg-green-200
+                                | &ge; 2% and &lt; 5%
+                                span.ge-5-lt-8.bg-green-500.ml-2
+                                | &ge; 5% and &lt; 8
+                                span.ge-8.bg-green-900.ml-2
+                                | &ge; 8%
+                include includes/datatables/datatable-dashboard.pug
+append scripts    
     script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
-    //- Load dataTables demo data
-    script(src='assets/demo/datatables-demo.js')
-
-
-    
+    script(src='js/dashboard.js')

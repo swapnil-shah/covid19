@@ -119,44 +119,94 @@ google.charts.load('current', {
 	packages: [ 'geochart' ]
 });
 
-// google.charts.setOnLoadCallback(drawMap);
-// // World Map
-// function drawMap() {
-// 	var dataWorld = new google.visualization.DataTable();
-// 	var dataUsa = new google.visualization.DataTable();
-// 	dataWorld.addColumn('number', 'Lat'); // Latitude Value
-// 	dataWorld.addColumn('number', 'Lon'); // Longitude Value
-// 	dataWorld.addColumn('string', 'Name'); //
-// 	dataWorld.addColumn('number', 'Total Cases'); //
-// 	dataWorld.addRows(chartWorldData);
-// 	var optionsWorld = {
-// 		backgroundColor: '#D1DDDD',
-// 		defaultColor: '#f5f5f5',
-// 		sizeAxis: { minValue: 100 },
-// 		displayMode: 'markers',
-// 		colorAxis: { colors: [ '#EFD177', '#BF3D58' ] },
-// 		chartArea: { width: '100%', height: '100%' },
-// 		legend: { position: 'bottom' },
-// 		animation: {
-// 			duration: 1000,
-// 			easing: 'out'
-// 		}
-// 	};
-// 	var dataUsa = google.visualization.arrayToDataTable(chartUsaData);
-// 	var optionsUsa = {
-// 		region: 'US',
-// 		displayMode: 'regions',
-// 		resolution: 'provinces',
-// 		chartArea: { width: '100%', height: '100%' },
-// 		colorAxis: { colors: [ '#FAF2AE', '#B44620' ] },
-// 		animation: {
-// 			duration: 1000,
-// 			easing: 'out'
-// 		}
-// 	};
+google.charts.setOnLoadCallback(drawMap);
+// World Map
+function drawMap() {
+	var dataWorld = new google.visualization.DataTable();
+	var dataUsa = new google.visualization.DataTable();
+	dataWorld.addColumn('number', 'Lat'); // Latitude Value
+	dataWorld.addColumn('number', 'Lon'); // Longitude Value
+	dataWorld.addColumn('string', 'Name'); //
+	dataWorld.addColumn('number', 'Total Cases'); //
+	dataWorld.addRows(chartWorldData);
+	var optionsWorld = {
+		backgroundColor: '#D1DDDD',
+		defaultColor: '#f5f5f5',
+		sizeAxis: { minValue: 100 },
+		displayMode: 'markers',
+		colorAxis: { colors: [ '#EFD177', '#BF3D58' ] },
+		chartArea: { width: '100%', height: '100%' },
+		legend: { position: 'bottom' },
+		animation: {
+			duration: 1000,
+			easing: 'out'
+		}
+	};
+	var dataUsa = google.visualization.arrayToDataTable(chartUsaData);
+	var optionsUsa = {
+		region: 'US',
+		displayMode: 'regions',
+		resolution: 'provinces',
+		chartArea: { width: '100%', height: '100%' },
+		colorAxis: { colors: [ '#FAF2AE', '#B44620' ] },
+		animation: {
+			duration: 1000,
+			easing: 'out'
+		}
+	};
 
-// 	var chartWorld = new google.visualization.GeoChart(document.getElementById('covidWorldChart'));
-// 	var chartUsa = new google.visualization.GeoChart(document.getElementById('covidUsaChart'));
-// 	chartWorld.draw(dataWorld, optionsWorld);
-// 	chartUsa.draw(dataUsa, optionsUsa);
-// }
+	var chartWorld = new google.visualization.GeoChart(document.getElementById('covidWorldChart'));
+	var chartUsa = new google.visualization.GeoChart(document.getElementById('covidUsaChart'));
+	chartWorld.draw(dataWorld, optionsWorld);
+	chartUsa.draw(dataUsa, optionsUsa);
+}
+const dateConvert = (date) => {
+	let dateToConvert = new Date(date);
+	year = dateToConvert.getFullYear();
+	month = dateToConvert.getMonth() + 1;
+	dt = dateToConvert.getDate();
+
+	if (dt < 10) {
+		dt = '0' + dt;
+	}
+	if (month < 10) {
+		month = '0' + month;
+	}
+	return month + '/' + dt + '/' + year;
+};
+
+$(document).ready(function() {
+	$('#dataTableWorld').DataTable({
+		ajax: {
+			url: 'https://corona.lmao.ninja/countries?sort=cases',
+			type: 'GET',
+			cache: false,
+			dataSrc: ''
+		},
+		columns: [
+			{ data: 'country', title: 'country' },
+			{ data: 'cases', title: 'cases', render: $.fn.dataTable.render.number(',') },
+			{ data: 'deaths', title: 'deaths', render: $.fn.dataTable.render.number(',') },
+			{ data: 'recovered', title: 'recovered', render: $.fn.dataTable.render.number(',') },
+			{ data: 'active', title: 'active', render: $.fn.dataTable.render.number(',') }
+		],
+		order: []
+	});
+	$('#dataTableUsa').DataTable({
+		ajax: {
+			url: 'https://covidtracking.com/api/states',
+			processing: true,
+			cache: false,
+			type: 'POST',
+			dataSrc: ''
+		},
+		columns: [
+			{ data: 'state', title: 'State' },
+			{ data: 'positive', title: 'Positive', render: $.fn.dataTable.render.number(',') }, //render: $.fn.dataTable.render.number(',') converting to comma separated number
+			{ data: 'death', title: 'Death', render: $.fn.dataTable.render.number(',') },
+			{ data: 'recovered', title: 'Recovered', render: $.fn.dataTable.render.number(',') }, //defaultContent: '0' default value 0 when null
+			{ data: 'lastUpdateEt', title: 'Last Updated' }
+		],
+		order: [ [ 1, 'desc' ] ] //order by column number
+	});
+});
