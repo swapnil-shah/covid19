@@ -34,7 +34,7 @@ function addClassesToTable(newCases, color) {
 }
 
 //Dasboard cases
-fillNumberOfCases = () => {
+let fillNumberOfCases = () => {
 	fetch(totalCases, { cache: 'no-cache' })
 		.then((response) => {
 			if (response.ok) {
@@ -100,7 +100,7 @@ fillNumberOfCases = () => {
 };
 
 //World Timeline Table
-fillWorldTimelineTable = () => {
+let fillWorldTimelineTable = () => {
 	fetch(dasboardTableUri, { cache: 'no-cache' })
 		.then((response) => {
 			if (response.ok) {
@@ -237,12 +237,14 @@ fetch(totalCases)
 				label: 'Confirmed',
 				data: lineDashboardChartDataConfirmed.reverse(),
 				borderColor: '#6900c7',
+				fill: false,
 				type: 'line'
 			},
 			{
 				label: 'Active',
 				data: lineDashboardChartDataActive.reverse(),
 				borderColor: '#1f2d41',
+				fill: false,
 				type: 'line'
 			},
 			{
@@ -258,6 +260,10 @@ fetch(totalCases)
 				backgroundColor: '#dc3545'
 			}
 		);
+		var dragOptions = {
+			animationDuration: 1000
+		};
+
 		let myChart = new Chart(ctxDashboardLine, {
 			type: 'bar',
 			data: {
@@ -267,7 +273,6 @@ fetch(totalCases)
 			options: {
 				maintainAspectRatio: false,
 				tooltips: {
-					mode: 'index',
 					backgroundColor: 'rgb(255,255,255)',
 					titleFontColor: '#858796',
 					bodyFontColor: '#858796',
@@ -305,6 +310,18 @@ fetch(totalCases)
 							}
 						}
 					]
+				},
+				plugins: {
+					zoom: {
+						pan: {
+							enabled: true,
+							mode: 'xy'
+						},
+						zoom: {
+							enabled: true,
+							mode: 'xy'
+						}
+					}
 				}
 			}
 		});
@@ -320,6 +337,10 @@ fetch(totalCases)
 				selectCases(lineChartDataCase);
 				myChart.update();
 			}
+		});
+
+		$('#resetDashboardZoom').on('click', function() {
+			myChart.resetZoom();
 		});
 	})
 	.catch((error) => console.log('error', error));
