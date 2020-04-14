@@ -1,12 +1,19 @@
 const dasboardTableUri = 'https://corona-api.com/countries?include=timeline';
 const totalCases = 'https://corona-api.com/timeline';
+const countriesUri = 'https://corona-api.com/countries/';
 
-let lineDashboardChartData = [];
-let lineDashboardLabelsDate = [];
-let lineDashboardChartDataActive = [];
-let lineDashboardChartDataConfirmed = [];
-let lineDashboardChartDataDeaths = [];
-let lineDashboardChartDataRecovered = [];
+let dashboardChartData = [];
+let dashboardLabelsDate = [];
+let dashboardChartDataActive = [];
+let dashboardChartDataConfirmed = [];
+let dashboardChartDataDeaths = [];
+let dashboardChartDataRecovered = [];
+let dashboardChartCountryData = [];
+let dashboardChartCountryLabels = [];
+let dashboardChartCountryDataActive = [];
+let dashboardChartCountryDataConfirmed = [];
+let dashboardChartCountryDataDeaths = [];
+let dashboardChartCountryDataRecovered = [];
 let ctxDashboardLine = document.getElementById('myDashboardChart');
 
 function addCellColor() {
@@ -99,6 +106,36 @@ let fillNumberOfCases = () => {
 		});
 };
 
+//Dataset object
+let dataSet = (chartData, chartDataDeaths, chartDataRecovered, chartDataActive, chartDataConfirmed) => {
+	return chartData.push(
+		{
+			label: 'Deaths',
+			data: chartDataDeaths.reverse(),
+			backgroundColorHover: '#dc3545',
+			backgroundColor: '#c45850'
+		},
+		{
+			label: 'Recovered',
+			data: chartDataRecovered.reverse(),
+			backgroundColorHover: '#00AC68',
+			backgroundColor: '#3cba9f'
+		},
+		{
+			label: 'Active',
+			data: chartDataActive.reverse(),
+			backgroundColorHover: '#1f2d41',
+			backgroundColor: '#324765'
+		},
+		{
+			label: 'Confirmed',
+			data: chartDataConfirmed.reverse(),
+			backgroundColorHover: '#6900c7',
+			backgroundColor: '#8e5ea2'
+		}
+	);
+};
+
 //World Timeline Table
 let fillWorldTimelineTable = () => {
 	fetch(dasboardTableUri, { cache: 'no-cache' })
@@ -111,82 +148,48 @@ let fillWorldTimelineTable = () => {
 		})
 		.then((jsonData) => {
 			let output = '';
+			let regionSelect = document.getElementById('selectRegion');
 			let $dasboardTableRows = $('#dataTableWorldTimeline');
 			jsonData.data.forEach(function(item) {
 				if (item.timeline.length > 0) {
-					if (typeof item.timeline[0].is_in_progress === 'undefined') {
-						output += `
-                                    <tr data-toggle="tooltip" title="Last updated on ${getDateFormatted(
+					output += `
+                                    <tr data-toggle="tooltip" title="Last updated on ${formatDateToString(
 										item.timeline[0].updated_at
 									)}">
                                         <td>${item.name}<br/><small class="text-muted">${populationFormat(
-							item.population
-						)}</small></td>
+						item.population
+					)}</small></td>
                                         <td>${item.timeline[0].confirmed.toLocaleString()}</td>
                                         <td class="new-confirmed" data-percentage="${percentageChangeTable(
 											item.timeline[0].confirmed,
 											item.timeline[0].new_confirmed
 										)}">${item.timeline[0].new_confirmed.toLocaleString()} <small class="font-weight-light container-percentage">(<i class="fas fa-arrow-up fa-xs" style="margin: 0 2px;"></i>${percentageChangeTable(
-							item.timeline[0].confirmed,
-							item.timeline[0].new_confirmed
-						)}%)</small>
+						item.timeline[0].confirmed,
+						item.timeline[0].new_confirmed
+					)}%)</small>
                         </td>
                                         <td>${item.timeline[0].deaths.toLocaleString()}</td>
                                         <td class="new-death" data-percentage="${percentageChangeTable(
 											item.timeline[0].deaths,
 											item.timeline[0].new_deaths
 										)}">${item.timeline[0].new_deaths.toLocaleString()} <small class="font-weight-light container-percentage">(<i class="fas fa-arrow-up fa-xs" style="margin: 0 2px;"></i>${percentageChangeTable(
-							item.timeline[0].deaths,
-							item.timeline[0].new_deaths
-						)}%)</small></td>
+						item.timeline[0].deaths,
+						item.timeline[0].new_deaths
+					)}%)</small></td>
                                         <td>${item.timeline[0].recovered.toLocaleString()}</td>
                                         <td class="new-recovered" data-percentage="${percentageChangeTable(
 											item.timeline[0].recovered,
 											item.timeline[0].new_recovered
 										)}">${item.timeline[0].new_recovered.toLocaleString()} <small class="font-weight-light container-percentage">(<i class="fas fa-arrow-up fa-xs" style="margin: 0 2px;"></i>${percentageChangeTable(
-							item.timeline[0].recovered,
-							item.timeline[0].new_recovered
-						)}%)</small></td>
+						item.timeline[0].recovered,
+						item.timeline[0].new_recovered
+					)}%)</small></td>
                                     </tr>
-                                `;
-					} else {
-						output += `
-                                <tr data-toggle="tooltip" title="Last updated on ${getDateFormatted(
-									item.timeline[1].updated_at
-								)}">
-                                    <td>${item.name}<br/><small class="text-muted">${populationFormat(
-							item.population
-						)}</small></td>
-                                    <td>${item.timeline[1].confirmed.toLocaleString()}</td>
-                                    <td class="new-confirmed" data-percentage="${percentageChangeTable(
-										item.timeline[1].confirmed,
-										item.timeline[1].new_confirmed
-									)}" >${item.timeline[1].new_confirmed.toLocaleString()} <small class="font-weight-light container-percentage">(<i class="fas fa-arrow-up fa-xs" style="margin: 0 2px;"></i>${percentageChangeTable(
-							item.timeline[1].confirmed,
-							item.timeline[1].new_confirmed
-						)}%)</small></td>
-                                    <td>${item.timeline[1].deaths.toLocaleString()}</td>
-                                    <td class="new-death" data-percentage="${percentageChangeTable(
-										item.timeline[1].deaths,
-										item.timeline[1].new_deaths
-									)}">${item.timeline[1].new_deaths.toLocaleString()} <small class="font-weight-light container-percentage">(<i class="fas fa-arrow-up fa-xs" style="margin: 0 2px;"></i>${percentageChangeTable(
-							item.timeline[1].deaths,
-							item.timeline[1].new_deaths
-						)}%)</small></td>
-                                    <td>${item.timeline[1].recovered.toLocaleString()}</td>
-                                    <td class="new-recovered" data-percentage="${percentageChangeTable(
-										item.timeline[1].recovered,
-										item.timeline[1].new_recovered
-									)}">${item.timeline[1].new_recovered.toLocaleString()} <small class="font-weight-light container-percentage">(<i class="fas fa-arrow-up fa-xs" style="margin: 0 2px;"></i>${percentageChangeTable(
-							item.timeline[1].recovered,
-							item.timeline[1].new_recovered
-						)}%)</small></td>
-                                </tr>
-                            `;
-					}
+								`;
+					regionSelect.options[regionSelect.options.length] = new Option(item.name, item.code);
 				} else {
 					output += `
-                        <tr data-toggle="tooltip" title="Last updated on ${getDateFormatted(item.updated_at)}">
+                        <tr data-toggle="tooltip" title="Last updated on ${formatDateToString(item.updated_at)}">
                             <td>${item.name}<br/><small class="text-muted">${item.population
 						? populationFormat(item.population)
 						: ''}</small></td>
@@ -199,7 +202,7 @@ let fillWorldTimelineTable = () => {
                         </tr>`;
 				}
 			});
-			$dasboardTableRows.children('tbody').html(output);
+			// $dasboardTableRows.children('tbody').html(output);
 			$dasboardTableRows.DataTable({
 				pageLength: 50,
 				language: {
@@ -224,62 +227,43 @@ fetch(totalCases)
 	.then((response) => response.json())
 	.then((countries) => {
 		countries.data.forEach((country) => {
-			// console.log('country', country.date);
-			lineDashboardLabelsDate.push(country.date);
-			lineDashboardChartDataConfirmed.push(country.confirmed);
-			lineDashboardChartDataActive.push(country.active);
-			lineDashboardChartDataRecovered.push(country.recovered);
-			lineDashboardChartDataDeaths.push(country.deaths);
+			dashboardLabelsDate.push(country.date);
+			dashboardChartDataConfirmed.push(country.confirmed);
+			dashboardChartDataActive.push(country.active);
+			dashboardChartDataRecovered.push(country.recovered);
+			dashboardChartDataDeaths.push(country.deaths);
 		});
-
-		lineDashboardChartData.push(
-			{
-				label: 'Confirmed',
-				data: lineDashboardChartDataConfirmed.reverse(),
-				borderColor: '#6900c7',
-				fill: false,
-				type: 'line'
-			},
-			{
-				label: 'Active',
-				data: lineDashboardChartDataActive.reverse(),
-				borderColor: '#1f2d41',
-				fill: false,
-				type: 'line'
-			},
-			{
-				label: 'Recovered',
-				data: lineDashboardChartDataRecovered.reverse(),
-				borderColor: '#00AC68',
-				backgroundColor: '#00AC68'
-			},
-			{
-				label: 'Deaths',
-				data: lineDashboardChartDataDeaths.reverse(),
-				borderColor: '#dc3545',
-				backgroundColor: '#dc3545'
-			}
+		dataSet(
+			dashboardChartData,
+			dashboardChartDataDeaths,
+			dashboardChartDataRecovered,
+			dashboardChartDataActive,
+			dashboardChartDataConfirmed
 		);
-		var dragOptions = {
-			animationDuration: 1000
-		};
-
 		let myChart = new Chart(ctxDashboardLine, {
 			type: 'bar',
 			data: {
-				labels: lineDashboardLabelsDate.reverse(),
-				datasets: lineDashboardChartData
+				labels: dashboardLabelsDate.reverse(),
+				datasets: dashboardChartData
 			},
 			options: {
 				maintainAspectRatio: false,
+				responsive: true,
+				title: {
+					display: true,
+					text: 'Click on the box to show/hide respective graph'
+				},
+				legend: {
+					reverse: true
+				},
 				tooltips: {
+					mode: 'index',
 					backgroundColor: 'rgb(255,255,255)',
 					titleFontColor: '#858796',
 					bodyFontColor: '#858796',
 					borderColor: '#dddfeb',
 					borderWidth: 1,
 					caretPadding: 10,
-					displayColors: false,
 					xPadding: 10,
 					yPadding: 10,
 					callbacks: {
@@ -290,63 +274,98 @@ fetch(totalCases)
 								tooltipItem.yLabel.toLocaleString()
 							);
 						}
+					},
+					itemSort: function(a, b) {
+						return b.datasetIndex - a.datasetIndex;
 					}
 				},
 				scales: {
 					xAxes: [
 						{
+							parser: 'YYYY-MM-DD',
+							stacked: true,
 							ticks: {
 								autoSkip: true,
-								maxTicksLimit: 30
+								maxTicksLimit: 30,
+								min: '2020-02-01',
+								callback: function(value) {
+									return formatDate(value);
+								}
+							},
+							scaleLabel: {
+								display: true,
+								labelString: 'Dates'
 							}
 						}
 					],
 					yAxes: [
 						{
+							stacked: true,
 							ticks: {
 								callback: function(value) {
-									return value.toLocaleString();
+									return populationFormat(value);
 								}
+							},
+							scaleLabel: {
+								display: true,
+								labelString: 'Cases'
 							}
 						}
 					]
-				},
-				plugins: {
-					zoom: {
-						pan: {
-							enabled: true,
-							mode: 'xy'
-						},
-						zoom: {
-							enabled: true,
-							mode: 'xy'
-						}
-					}
 				}
 			}
 		});
 		Chart.defaults.global.defaultFontFamily = 'Nunito';
-		$('#chartType').on('change', function() {
-			if (this.value === 'death') {
-				selectCases(lineChartDataDeaths);
-				myChart.update();
-			} else if (this.value === 'recovered') {
-				selectCases(lineChartDataRecovered);
+		$('#selectRegion').on('change', function() {
+			let value = $(this).val();
+			dashboardChartCountryData = [];
+			dashboardChartCountryLabels = [];
+			dashboardChartCountryDataActive = [];
+			dashboardChartCountryDataConfirmed = [];
+			dashboardChartCountryDataDeaths = [];
+			dashboardChartCountryDataRecovered = [];
+			if (value === 'world') {
+				myChart.data.datasets = dashboardChartData;
+				myChart.data.labels = dashboardLabelsDate;
 				myChart.update();
 			} else {
-				selectCases(lineChartDataCase);
-				myChart.update();
+				fetch(countriesUri + value, { cache: 'no-cache' })
+					.then((response) => {
+						if (response.ok) {
+							return response.json();
+						} else {
+							throw new Error('BAD HTTP');
+						}
+					})
+					.then((countryData) => {
+						countryData.data.timeline.forEach(function(item) {
+							dashboardChartCountryLabels.push(item.date);
+							dashboardChartCountryDataConfirmed.push(item.confirmed);
+							dashboardChartCountryDataActive.push(item.active);
+							dashboardChartCountryDataRecovered.push(item.recovered);
+							dashboardChartCountryDataDeaths.push(item.deaths);
+						});
+						dataSet(
+							dashboardChartCountryData,
+							dashboardChartCountryDataDeaths,
+							dashboardChartCountryDataRecovered,
+							dashboardChartCountryDataActive,
+							dashboardChartCountryDataConfirmed
+						);
+						myChart.data.datasets = dashboardChartCountryData;
+						myChart.data.labels = dashboardChartCountryLabels.reverse();
+						myChart.update();
+					})
+					.catch((err) => {
+						console.log('ERROR:', err.message);
+					});
 			}
-		});
-
-		$('#resetDashboardZoom').on('click', function() {
-			myChart.resetZoom();
 		});
 	})
 	.catch((error) => console.log('error', error));
 
 $(document).ready(function() {
-	getDateFormatted();
+	formatDateToString();
 	fillNumberOfCases();
 	fillWorldTimelineTable();
 });

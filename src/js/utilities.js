@@ -1,4 +1,10 @@
-let getDateFormatted = (function() {
+//Reformat a date from YYYY-MM-DD to MM/DD/YYYY
+function formatDate(date) {
+	const dateObj = new Date(date + 'T00:00:00');
+	return new Intl.DateTimeFormat('en-US').format(dateObj);
+}
+
+let formatDateToString = (function() {
 	return function(str) {
 		let daysNames = [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ],
 			monthNames = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec' ],
@@ -17,15 +23,6 @@ let getDateFormatted = (function() {
 	};
 })();
 
-// Convert yyyy-mm-dd to mm/dd/yyyy
-function format(inputDate) {
-	var date = new Date(inputDate);
-	if (!isNaN(date.getTime())) {
-		// Months use 0 index.
-		return date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear();
-	}
-}
-let date = new Date().toISOString().split('T')[0];
 function timeDifference(date) {
 	let currenDate = new Date();
 	let msPerMinute = 60 * 1000;

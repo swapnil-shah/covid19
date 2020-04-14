@@ -42,7 +42,7 @@ function getNewsResults(data) {
                             <div class="font-weight-bold text-blue mb-1">${item.title}</div>
                             <div class="h5">${item.excerpt}</div>
                         </div>
-                        <div class="ml-2">${getDateFormatted(
+                        <div class="ml-2">${formatDateToString(
 							item.publishedDateTime
 						)}<i class="fas fa-dollar-sign fa-2x text-gray-200"></i></div>
                     </div>

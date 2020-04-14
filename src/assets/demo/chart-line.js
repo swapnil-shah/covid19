@@ -9,12 +9,11 @@ let lineChartDataRecovered = [];
 let ctxLine = document.getElementById('myLineChart');
 let dateSinceHistory = document.querySelectorAll('.date-since-historical');
 
-function selectCases(caseObj, caseLabel) {
+function selectCases(caseObj) {
 	lineChartData[0].data = caseObj[0].data;
 	lineChartData[1].data = caseObj[1].data;
 	lineChartData[2].data = caseObj[2].data;
 	lineChartData[3].data = caseObj[3].data;
-	// lineChartData[0].labels = caseLabel;
 	return lineChartData[0].data, lineChartData[1].data, lineChartData[2].data, lineChartData[3].data;
 }
 fetch(API_URL_MOST_AFFECTED)
