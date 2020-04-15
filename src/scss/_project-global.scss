@@ -134,21 +134,13 @@
 		}
 	}
 }
-#sidebarToggle {
-	position: absolute;
-	top: 10px;
-	left: 10px;
-	border-color: transparent;
-	color: #ffffff !important;
-	z-index: 999;
-}
 .spinner-border {
 	margin: 1.2rem;
 }
 
 #card-legend {
 	position: absolute;
-	top: 4rem;
+	top: 6rem;
 	left: 6rem;
 	z-index: 999;
 }
@@ -170,6 +162,8 @@
 		position: relative;
 		top: 0;
 		left: 0;
+		box-shadow: none;
+		border: none;
 	}
 }
 #dataTableWorldTimeline th {

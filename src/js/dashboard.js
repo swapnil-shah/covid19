@@ -203,9 +203,10 @@ let fillWorldTimelineTable = () => {
                         </tr>`;
 				}
 			});
-			// $dasboardTableRows.children('tbody').html(output);
+			$dasboardTableRows.children('tbody').html(output);
+
 			$dasboardTableRows.DataTable({
-				pageLength: 50,
+				pageLength: 10,
 				language: {
 					searchPlaceholder: 'e.g. usa'
 				},
