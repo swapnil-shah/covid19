@@ -51,55 +51,52 @@ let fillNumberOfCases = () => {
 			}
 		})
 		.then((stats) => {
-			if (typeof stats.data[0].is_in_progress === 'undefined') {
-				let formattedDate = timeDifference(stats.data[0].updated_at.toString());
-				document.getElementById('number-active').innerText = stats.data[0].active.toLocaleString();
-				document.getElementById('number-confirmed').innerText = stats.data[0].confirmed.toLocaleString();
-				document.getElementById('number-recovered').innerText = stats.data[0].recovered.toLocaleString();
-				document.getElementById('number-deaths').innerText = stats.data[0].deaths.toLocaleString();
-				document.getElementById('last-updated').innerHTML =
-					'Last Updated <span class="text-gray-600">' + formattedDate + '</span>';
-				document.getElementById('per-active').innerHTML =
-					' (<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i> ' +
-					percentageChangeTotal(stats.data[0].active, stats.data[1].active) +
-					'%)';
-				document.getElementById('per-confirmed').innerHTML =
-					' (<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i> ' +
-					percentageChangeTable(stats.data[0].confirmed, stats.data[0].new_confirmed) +
-					'%)';
-				document.getElementById('per-recovered').innerHTML =
-					' (<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i> ' +
-					percentageChangeTable(stats.data[0].recovered, stats.data[0].new_recovered) +
-					'%)';
-				document.getElementById('per-deaths').innerHTML =
-					' (<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i> ' +
-					percentageChangeTable(stats.data[0].deaths, stats.data[0].new_deaths) +
-					'%)';
-			} else {
-				let formattedDate = timeDifference(stats.data[1].updated_at.toString());
-				document.getElementById('number-active').innerText = stats.data[1].active.toLocaleString();
-				document.getElementById('number-confirmed').innerText = stats.data[1].confirmed.toLocaleString();
-				document.getElementById('number-recovered').innerText = stats.data[1].recovered.toLocaleString();
-				document.getElementById('number-deaths').innerText = stats.data[1].deaths.toLocaleString();
-				document.getElementById('last-updated').innerHTML =
-					'Last Updated <span class="text-gray-600">' + formattedDate + '</span>';
-				document.getElementById('per-active').innerHTML =
-					' (<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i> ' +
-					percentageChangeTotal(stats.data[1].active, stats.data[0].active) +
-					'%)';
-				document.getElementById('per-confirmed').innerHTML =
-					' (<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i> ' +
-					percentageChangeTable(stats.data[1].confirmed, stats.data[1].new_confirmed) +
-					'%)';
-				document.getElementById('per-recovered').innerHTML =
-					' (<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i> ' +
-					percentageChangeTable(stats.data[1].recovered, stats.data[1].new_recovered) +
-					'%)';
-				document.getElementById('per-deaths').innerHTML =
-					' (<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i> ' +
-					percentageChangeTable(stats.data[1].deaths, stats.data[1].new_deaths) +
-					'%)';
-			}
+			document.getElementById('last-updated').innerHTML =
+				'% difference is calculated approximate between <span class="text-gray-600">' +
+				formatDateToString(stats.data[0].updated_at) +
+				' and ' +
+				formatDateToString(stats.data[1].updated_at) +
+				'</span>';
+			document.getElementById('number-active').innerText = stats.data[0].active.toLocaleString();
+			document.getElementById('number-confirmed').innerText = stats.data[0].confirmed.toLocaleString();
+			document.getElementById('number-recovered').innerText = stats.data[0].recovered.toLocaleString();
+			document.getElementById('number-deaths').innerText = stats.data[0].deaths.toLocaleString();
+			document.getElementById('per-active').innerHTML = `(<i class="${Math.sign(
+				percentageChangeTotal(stats.data[0].active, stats.data[1].active)
+			) === -1
+				? 'fas fa-arrow-down fa-sm'
+				: Math.sign(percentageChangeTotal(stats.data[0].active, stats.data[1].active)) === 1
+					? 'fas fa-arrow-up fa-sm'
+					: ''}" style="margin: 0 2px;"></i>
+				${percentageChangeTotal(stats.data[0].active, stats.data[1].active)}
+				%)`;
+			document.getElementById('per-confirmed').innerHTML = `(<i class="${Math.sign(
+				percentageChangeTotal(stats.data[0].confirmed, stats.data[1].confirmed)
+			) === -1
+				? 'fas fa-arrow-down fa-sm'
+				: Math.sign(percentageChangeTotal(stats.data[0].confirmed, stats.data[1].confirmed)) === 1
+					? 'fas fa-arrow-up fa-sm'
+					: ''}" style="margin: 0 2px;"></i>
+				${percentageChangeTotal(stats.data[0].confirmed, stats.data[1].confirmed)}
+				%)`;
+			document.getElementById('per-recovered').innerHTML = `(<i class="${Math.sign(
+				percentageChangeTotal(stats.data[0].recovered, stats.data[1].recovered)
+			) === -1
+				? 'fas fa-arrow-down fa-sm'
+				: Math.sign(percentageChangeTotal(stats.data[0].recovered, stats.data[1].recovered)) === 1
+					? 'fas fa-arrow-up fa-sm'
+					: ''}" style="margin: 0 2px;"></i>
+				${percentageChangeTotal(stats.data[0].recovered, stats.data[1].recovered)}
+				%)`;
+			document.getElementById('per-deaths').innerHTML = `(<i class="${Math.sign(
+				percentageChangeTotal(stats.data[0].deaths, stats.data[1].deaths)
+			) === -1
+				? 'fas fa-arrow-down fa-sm'
+				: Math.sign(percentageChangeTotal(stats.data[0].deaths, stats.data[1].deaths)) === 1
+					? 'fas fa-arrow-up fa-sm'
+					: ''}" style="margin: 0 2px;"></i>
+				${percentageChangeTotal(stats.data[0].deaths, stats.data[1].deaths)}
+				%)`;
 		})
 		.catch((err) => {
 			console.log('ERROR:', err.message);
@@ -118,7 +115,7 @@ let dataSet = (chartData, chartDataDeaths, chartDataRecovered, chartDataActive, 
 		{
 			label: 'Recovered',
 			data: chartDataRecovered.reverse(),
-			backgroundColorHover: '#00AC68',
+			backgroundColorHover: '#00ac69',
 			backgroundColor: '#3cba9f'
 		},
 		{
@@ -153,9 +150,7 @@ let fillWorldTimelineTable = () => {
 			jsonData.data.forEach(function(item) {
 				if (item.timeline.length > 0) {
 					output += `
-                                    <tr data-toggle="tooltip" title="Last updated on ${formatDateToString(
-										item.timeline[0].updated_at
-									)}">
+                                    <tr>
                                         <td>${item.name}<br/><small class="text-muted">${populationFormat(
 						item.population
 					)}</small></td>
@@ -189,7 +184,7 @@ let fillWorldTimelineTable = () => {
 					regionSelect.options[regionSelect.options.length] = new Option(item.name, item.code);
 				} else {
 					output += `
-                        <tr data-toggle="tooltip" title="Last updated on ${formatDateToString(item.updated_at)}">
+                        <tr>
                             <td>${item.name}<br/><small class="text-muted">${item.population
 						? populationFormat(item.population)
 						: ''}</small></td>
@@ -202,7 +197,7 @@ let fillWorldTimelineTable = () => {
                         </tr>`;
 				}
 			});
-			// $dasboardTableRows.children('tbody').html(output);
+			$dasboardTableRows.children('tbody').html(output);
 			$dasboardTableRows.DataTable({
 				pageLength: 50,
 				language: {
@@ -216,7 +211,6 @@ let fillWorldTimelineTable = () => {
 				]
 			});
 			addCellColor();
-			$('[data-toggle="tooltip"]').tooltip({ placement: 'bottom' });
 		})
 		.catch((err) => {
 			console.log('ERROR:', err.message);
@@ -286,15 +280,11 @@ fetch(totalCases)
 							stacked: true,
 							ticks: {
 								autoSkip: true,
-								maxTicksLimit: 30,
+								maxTicksLimit: 20,
 								min: '2020-02-01',
 								callback: function(value) {
 									return formatDate(value);
 								}
-							},
-							scaleLabel: {
-								display: true,
-								labelString: 'Dates'
 							}
 						}
 					],
@@ -305,16 +295,13 @@ fetch(totalCases)
 								callback: function(value) {
 									return populationFormat(value);
 								}
-							},
-							scaleLabel: {
-								display: true,
-								labelString: 'Cases'
 							}
 						}
 					]
 				}
 			}
 		});
+
 		Chart.defaults.global.defaultFontFamily = 'Nunito';
 		$('#selectRegion').on('change', function() {
 			let value = $(this).val();
@@ -324,7 +311,7 @@ fetch(totalCases)
 			dashboardChartCountryDataConfirmed = [];
 			dashboardChartCountryDataDeaths = [];
 			dashboardChartCountryDataRecovered = [];
-			if (value === 'world') {
+			if (value === 'global') {
 				myChart.data.datasets = dashboardChartData;
 				myChart.data.labels = dashboardLabelsDate;
 				myChart.update();

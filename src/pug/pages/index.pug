@@ -56,19 +56,42 @@ block content
                                 .mb-4
                                     #number-deaths.display-4.text-white
                                     #per-deaths.text-white-75.float-right Loading numbers..
-                    .col-sm-12.text-center.text-muted
-                                    span#last-updated
-                        .chart-line
-                            canvas#myDashboardChart(width='100%', height='30')
-                        .select
-                            select#selectRegion
-                                option(value="world" selected) World
+                    .col-sm-12.text-muted(style="padding:0")
+                        #last-updated
+                        .chart-line.border-top.mt-2
+                            canvas#myDashboardChart.table(style="min-height:400px")
+                        .card(style='position: absolute;top: 6rem;left: 6rem;')
+                            .card-body
+                                //- h5.card-title Card title
+                                //- small.card-subtitle.mb-2.text-muted Last Updated
+                                .container
+                                    .row
+                                        .col-md-auto
+                                        .select.w-50
+                                            select#selectRegion
+                                                option(value="global" selected) Global
+                                    .row
+                                        .col-md-3
+                                            div Variabl
+                                            div 2332444t
+                                        .col-md-3
+                                            div Variable width content
+                                            div 2342313
+                                        .col-md-3
+                                            div Variable wiontent
+                                            div 142213432
+                                        .col-md-3
+                                            div Va
+                                            div 41411231
+
+
+
         .card.mb-4
             .card-header Extended DataTables
             .card-body
                 .row.justify-content-between
                     .col-md-8.col-sm-12
-                        h6.mb-2.text-muted.lead The new cases gets update everyday. Hover over to see the exact time of update.(Refreshed daily)
+                        h6.mb-2.text-muted.lead The cases gets updated in approximately 24hours
                     .col-md-4.col-sm-12.pb-2.text-right
                         p.mb-1
                             small

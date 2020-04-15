@@ -14,16 +14,18 @@
 		padding: .5rem 2.25rem .5rem 1rem;
 		line-height: 1.5;
 		color: #555;
-		background-color: #eee;
+		background-color: #fff;
 		border: 0;
-		border: 1px solid #d0d0d0;
-		border-radius: .25rem;
+		border: 1px solid #e3e6ec;
+		border-radius: 0.25rem;
 		cursor: pointer;
 		outline: 0;
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		appearance: none;
-
+		&:hover {
+			background-color: #fbfbfb;
+		}
 		&:focus:-moz-focusring {
 			color: transparent;
 			text-shadow: 0 0 0 #000;
