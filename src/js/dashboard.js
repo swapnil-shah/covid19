@@ -15,6 +15,11 @@ let dashboardChartCountryDataConfirmed = [];
 let dashboardChartCountryDataDeaths = [];
 let dashboardChartCountryDataRecovered = [];
 let ctxDashboardLine = document.getElementById('myDashboardChart');
+let legendContainer = document.getElementById('legend-numbers');
+let legendConfirmed = document.getElementById('legend-confirmed');
+let legendRecovered = document.getElementById('legend-recovered');
+let legendDeaths = document.getElementById('legend-deaths');
+let legendUpdated = document.getElementById('last-updated-legend');
 
 function addCellColor() {
 	let newConfirmed = document.querySelectorAll('.new-confirmed');
@@ -61,6 +66,7 @@ let fillNumberOfCases = () => {
 			document.getElementById('number-confirmed').innerText = stats.data[0].confirmed.toLocaleString();
 			document.getElementById('number-recovered').innerText = stats.data[0].recovered.toLocaleString();
 			document.getElementById('number-deaths').innerText = stats.data[0].deaths.toLocaleString();
+
 			document.getElementById('per-active').innerHTML = `(<i class="${Math.sign(
 				percentageChangeTotal(stats.data[0].active, stats.data[1].active)
 			) === -1
@@ -197,7 +203,7 @@ let fillWorldTimelineTable = () => {
                         </tr>`;
 				}
 			});
-			$dasboardTableRows.children('tbody').html(output);
+			// $dasboardTableRows.children('tbody').html(output);
 			$dasboardTableRows.DataTable({
 				pageLength: 50,
 				language: {
@@ -311,7 +317,10 @@ fetch(totalCases)
 			dashboardChartCountryDataConfirmed = [];
 			dashboardChartCountryDataDeaths = [];
 			dashboardChartCountryDataRecovered = [];
-			if (value === 'global') {
+			if (value === 'worldwide') {
+				legendContainer.classList.remove('d-flex');
+				legendContainer.classList.add('d-none');
+				legendUpdated.innerHTML = 'Worldwide cases is on the cards above';
 				myChart.data.datasets = dashboardChartData;
 				myChart.data.labels = dashboardLabelsDate;
 				myChart.update();
@@ -325,6 +334,12 @@ fetch(totalCases)
 						}
 					})
 					.then((countryData) => {
+						legendConfirmed.innerText = countryData.data.latest_data.confirmed.toLocaleString();
+						legendRecovered.innerText = countryData.data.latest_data.recovered.toLocaleString();
+						legendDeaths.innerText = countryData.data.latest_data.deaths.toLocaleString();
+						legendUpdated.innerHTML = 'Last Updated ' + timeDifference(countryData.data.updated_at);
+						legendContainer.classList.remove('d-none');
+						legendContainer.classList.add('d-flex');
 						countryData.data.timeline.forEach(function(item) {
 							dashboardChartCountryLabels.push(item.date);
 							dashboardChartCountryDataConfirmed.push(item.confirmed);

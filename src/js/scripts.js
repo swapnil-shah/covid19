@@ -20,6 +20,11 @@
 		e.preventDefault();
 		$('body').toggleClass('sidenav-toggled');
 	});
+
+	$('#sidebarClose').on('click', function(e) {
+		e.preventDefault();
+		$('body').toggleClass('sidenav-toggled');
+	});
 	// Activate Feather icons
 	feather.replace();
 
@@ -51,10 +56,6 @@
 
 	// Click to collapse responsive sidebar
 	$('#layoutSidenav_content').click(function() {
-		const BOOTSTRAP_LG_WIDTH = 992;
-		if (window.innerWidth >= 992) {
-			return;
-		}
 		if ($('body').hasClass('sidenav-toggled')) {
 			$('body').toggleClass('sidenav-toggled');
 		}

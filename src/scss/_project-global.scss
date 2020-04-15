@@ -146,6 +146,12 @@
 	margin: 1.2rem;
 }
 
+#card-legend {
+	position: absolute;
+	top: 4rem;
+	left: 6rem;
+	z-index: 999;
+}
 @media only screen and (max-width: 600px) {
 	.select {
 		width: 50%;
@@ -158,6 +164,12 @@
 	}
 	#covidWorldChart {
 		width: 100%;
+	}
+
+	#card-legend {
+		position: relative;
+		top: 0;
+		left: 0;
 	}
 }
 #dataTableWorldTimeline th {

@@ -1,7 +1,7 @@
 extends ../layouts/dashboard.pug
 
 block config
-    - var bodyClass = 'nav-fixed sidenav-toggled'
+    - var bodyClass = 'nav-fixed'
     - var pageTitle = 'COVID19 Dahboard'
     - var pageIcon = 'filter'
     - var pageSummary = 'An extended version of the DataTables library, customized for COVID19 Pro'
@@ -15,16 +15,14 @@ append css
     link(href='https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css', rel='stylesheet', crossorigin='anonymous')
 
 block content
-    include includes/page-header        
-        button#sidebarToggle.btn.btn-icon.btn-transparent-dark.order-1.order-lg-0.mr-lg-2(href='#')
-            i(data-feather='menu')
+    include includes/page-header
     .container-fluid.mt-n10
         .card.mb-2
             .card-body        
                 .row.justify-content-md-center
                     .col-sm-12
-                        h1 Refreshed Daily
-                    .col-md-3.col-sm-12.mb-3
+                        h1 Worldwide
+                    .col-md-3.col-sm-6.mb-3
                         .card.bg-secondary.border-0
                             .card-body
                                 h3.text-white-75 Confirmed
@@ -32,7 +30,7 @@ block content
                                 .mb-4
                                     #number-confirmed.display-4.text-white
                                     #per-confirmed.text-white-75.float-right Loading numbers..
-                    .col-md-3.col-sm-12.mb-3
+                    .col-md-3.col-sm-6.mb-3
                         .card.bg-dark.border-0
                             .card-body
                                 h3.text-white-75 Active
@@ -40,7 +38,7 @@ block content
                                 .mb-4
                                     #number-active.display-4.text-white
                                     #per-active.text-white-75.float-right Loading numbers..
-                    .col-md-3.col-sm-12.mb-3
+                    .col-md-3.col-sm-6.mb-3
                         .card.bg-success.border-0
                             .card-body
                                 h3.text-white-75 Recovered
@@ -48,7 +46,7 @@ block content
                                 .mb-4
                                     #number-recovered.display-4.text-white
                                     #per-recovered.text-white-75.float-right Loading numbers..
-                    .col-md-3.col-sm-12.mb-3
+                    .col-md-3.col-sm-6.mb-3
                         .card.bg-danger.border-0
                             .card-body
                                 h3.text-white-75 Deaths
@@ -56,36 +54,36 @@ block content
                                 .mb-4
                                     #number-deaths.display-4.text-white
                                     #per-deaths.text-white-75.float-right Loading numbers..
-                    .col-sm-12.text-muted(style="padding:0")
+                    .col-sm-12(style="padding:0")
                         #last-updated
-                        .chart-line.border-top.mt-2
-                            canvas#myDashboardChart.table(style="min-height:400px")
-                        .card(style='position: absolute;top: 6rem;left: 6rem;')
-                            .card-body
+                        .chart-line.border-top
+                            canvas#myDashboardChart.table
+                        .card#card-legend
+                            .card-body(style="padding:0.5rem")
                                 //- h5.card-title Card title
                                 //- small.card-subtitle.mb-2.text-muted Last Updated
-                                .container
-                                    .row
-                                        .col-md-auto
-                                        .select.w-50
+                                .row
+                                    .col.text-center
+                                        p.font-italic.font-weight-300.text-left.mb-1
+                                            small Select a region
+                                        .select(style="width:20rem")
                                             select#selectRegion
-                                                option(value="global" selected) Global
-                                    .row
-                                        .col-md-3
-                                            div Variabl
-                                            div 2332444t
-                                        .col-md-3
-                                            div Variable width content
-                                            div 2342313
-                                        .col-md-3
-                                            div Variable wiontent
-                                            div 142213432
-                                        .col-md-3
-                                            div Va
-                                            div 41411231
-
-
-
+                                                option(value="worldwide" selected) Worldwide
+                                .row#legend-numbers.d-none.justify-content-around.pb-1.pt-1.text-center.border-bottom
+                                    .col(style="padding:0.5rem")
+                                        p.mb-1
+                                            small.font-weight-light.mb-1 Confirmed
+                                        p#legend-confirmed.card-text.text-dark
+                                    .col(style="padding:0.5rem")
+                                        p.mb-1
+                                            small.font-weight-light.mb-1 Recovered
+                                        p#legend-recovered.card-text.text-dark
+                                    .col(style="padding:0.5rem")
+                                        p.mb-1
+                                            small.font-weight-light.mb-1 Deaths
+                                        p#legend-deaths.card-text.text-dark
+                                p.card-text.float-right.mt-1
+                                    small.text-muted#last-updated-legend.font-weight-light
         .card.mb-4
             .card-header Extended DataTables
             .card-body
