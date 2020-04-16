@@ -12,10 +12,63 @@ block config
 
 append css
     link(href='https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css', rel='stylesheet', crossorigin='anonymous')
+    script(src='https://www.gstatic.com/charts/loader.js', type="text/javascript")
+    style(type='text/css').
+           circle {
+                stroke-width:0px;
+            }
+    script(type="text/javascript").
+        let chartWorldData = [];
+
+        // Fetch World Data
+        fetch("https://corona-api.com/countries", { cache: 'no-cache' }).then((response) => response.json()).then((countries) => {
+            countries.data.forEach((country) => {
+                chartWorldData.push([
+                    country.coordinates.latitude,
+                    country.coordinates.longitude,
+                    country.name,
+                    country.latest_data.confirmed
+                ]);
+            });
+            console.log(chartWorldData)
+        });
+        google.charts.load('current', {
+            packages: [ 'geochart' ]
+        });
+        google.charts.setOnLoadCallback(drawMap);
+        // World Map
+        function drawMap() {
+            var dataWorld = new google.visualization.DataTable();
+            dataWorld.addColumn('number', 'Lat'); // Latitude Value
+            dataWorld.addColumn('number', 'Lon'); // Longitude Value
+            dataWorld.addColumn('string', 'Name'); //
+            dataWorld.addColumn('number', 'Total Cases'); //
+            dataWorld.addRows(chartWorldData);
+            var optionsWorld = {
+                theme: 'maximized',
+                legend:'none',
+                backgroundColor: { fill: '#202327', stroke: '#202327', strokeWidth:2},
+                datalessRegionColor: '#3B3B3B',
+                sizeAxis: { minValue: 100 },
+                displayMode: 'markers',
+                markerOpacity:0.8,
+                colorAxis: { colors: [ '#FF8726', '#FF8726' ] },
+                animation: {
+                    duration: 1000,
+                    easing: 'out'
+                }
+            };
+            optionsWorld['backgroundColor.stroke'] = "#ffffff"
+            var chartWorld = new google.visualization.GeoChart(document.getElementById('covidWorldChart'));
+            chartWorld.draw(dataWorld, optionsWorld);
+        }
+    
 
 block content
-    include includes/page-header
-    .container-fluid.mt-n10
+    .page-header#chart-container
+        #covidWorldChart
+    h1.geo-chat-header.text-center COVID 19 World Spread Data
+    .container-fluid(style="z-index: 1050;")
         .card.mb-2
             .card-body        
                 .row.justify-content-md-center
@@ -25,7 +78,7 @@ block content
                         .card.bg-secondary.border-0
                             .card-body
                                 h3.text-white-75 Confirmed
-                                     i.text-white-50.float-right.fas.fa-lg.fa-lungs-virus
+                                    i.text-white-50.float-right.fas.fa-lg.fa-lungs-virus
                                 .mb-4
                                     #number-confirmed.display-4.text-white
                                     #per-confirmed.text-white-75.float-right Loading numbers..
@@ -116,7 +169,8 @@ block content
                                 span.ge-8.bg-green-900.ml-2
                                 | &ge; 8%
                 include includes/datatables/datatable-dashboard.pug
-append scripts    
+
+append scripts
     script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')

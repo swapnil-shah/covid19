@@ -144,6 +144,25 @@
 	left: 6rem;
 	z-index: 999;
 }
+#chart-container {
+	height: 70vh;
+}
+#covidWorldChart {
+	height: 70vh;
+	width: 100%;
+	position: fixed;
+	padding: 1.5rem 0.25rem 0rem 0.25rem;
+	background-color: #1f2327;
+}
+.geo-chat-header {
+	height: 3rem;
+	color: #ffffff;
+	width: 100%;
+	font-weight: 700;
+	margin-top: 1.5rem;
+	margin-bottom: 3rem;
+}
+
 @media only screen and (max-width: 600px) {
 	.select {
 		width: 50%;
@@ -154,10 +173,9 @@
 		padding-left: .5rem;
 		padding-right: .5rem;
 	}
-	#covidWorldChart {
-		width: 100%;
+	#chart-container {
+		padding-top: 0;
 	}
-
 	#card-legend {
 		position: relative;
 		top: 0;
@@ -269,4 +287,22 @@
 .container-percentage {
 	display: block;
 	font-size: 0.7em;
+}
+.heart {
+	color: #e73f33;
+	position: relative;
+	width: 50px;
+	animation: pulse 1.5s ease infinite;
+}
+
+@keyframes pulse {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.3);
+	}
+	100% {
+		transform: scale(1);
+	}
 }

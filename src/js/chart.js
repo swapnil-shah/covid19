@@ -108,12 +108,9 @@ fetch(API_URL_USA_STATES, { cache: 'no-cache' })
 		states.forEach((state) => {
 			chartUsaData.push([ state.state, state.positive ]);
 		});
+		console.log('chartUsaData', chartUsaData);
 	})
 	.catch((error) => console.log('error', error));
-
-google.charts.load('current', {
-	packages: [ 'geochart' ]
-});
 
 google.charts.load('current', {
 	packages: [ 'geochart' ]

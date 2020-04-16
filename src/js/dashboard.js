@@ -1,6 +1,6 @@
 const dasboardTableUri = 'https://corona-api.com/countries?include=timeline';
 const totalCases = 'https://corona-api.com/timeline';
-const countriesUri = 'https://corona-api.com/countries/';
+const countriesUri = 'https://corona-api.com/countries';
 
 let dashboardChartData = [];
 let dashboardLabelsDate = [];
@@ -326,7 +326,7 @@ fetch(totalCases)
 				myChart.data.labels = dashboardLabelsDate;
 				myChart.update();
 			} else {
-				fetch(countriesUri + value, { cache: 'no-cache' })
+				fetch(countriesUri + '/' + value, { cache: 'no-cache' })
 					.then((response) => {
 						if (response.ok) {
 							return response.json();
