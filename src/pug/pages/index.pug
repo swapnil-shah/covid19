@@ -55,55 +55,8 @@ append css
     link(href='https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css', rel='stylesheet', crossorigin='anonymous')
     script(src='https://www.gstatic.com/charts/loader.js', type="text/javascript")
 
-    script(type="text/javascript").
-        
-        //- document.addEventListener('DOMContentLoaded', (event) => {
-        //- //the event occurred
-        //- })
-        let chartWorldData = [];
-
-        // Fetch World Data
-        fetch("https://corona-api.com/countries", { cache: 'no-cache' }).then((response) => response.json()).then((countries) => {
-            countries.data.forEach((country) => {
-                chartWorldData.push([
-                    country.coordinates.latitude,
-                    country.coordinates.longitude,
-                    country.name,
-                    country.latest_data.confirmed
-                ]);
-            });
-            console.log(chartWorldData)
-        });
-        google.charts.load('current', {
-            packages: [ 'geochart' ]
-        });
-        google.charts.setOnLoadCallback(drawMap);
-        // World Map
-        function drawMap() {
-            var dataWorld = new google.visualization.DataTable();
-            dataWorld.addColumn('number', 'Lat'); // Latitude Value
-            dataWorld.addColumn('number', 'Lon'); // Longitude Value
-            dataWorld.addColumn('string', 'Name'); //
-            dataWorld.addColumn('number', 'Total Cases'); //
-            dataWorld.addRows(chartWorldData);
-            var optionsWorld = {
-                theme: 'maximized',
-                legend:'none',
-                backgroundColor: { fill: '#202327', stroke: '#202327', strokeWidth:2},
-                datalessRegionColor: '#3B3B3B',
-                sizeAxis: { minValue: 100 },
-                displayMode: 'markers',
-                markerOpacity:0.8,
-                colorAxis: { colors: [ '#FF8726', '#FF8726' ] },
-                animation: {
-                    duration: 1000,
-                    easing: 'out'
-                }
-            };
-            optionsWorld['backgroundColor.stroke'] = "#ffffff"
-            var chartWorld = new google.visualization.GeoChart(document.getElementById('covidWorldChart'));
-            chartWorld.draw(dataWorld, optionsWorld);
-        }
+    include includes/world-map-js.pug
+    
     
 
 block content
