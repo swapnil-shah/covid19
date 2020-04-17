@@ -10,14 +10,56 @@ block config
     - var pageHeaderBackground = 'bg-gradient-primary-to-secondary'
     - var footerStyle = 'footer-light'
 
+    style(type='text/css').
+
+        @-webkit-keyframes rotating {
+            from {
+                -webkit-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            to {
+                -webkit-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+        @keyframes rotating {
+            from {
+                -ms-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -webkit-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            to {
+                -ms-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -webkit-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+        .rotating {
+            -webkit-animation: rotating 3s linear infinite;
+            -moz-animation: rotating 3s linear infinite;
+            -ms-animation: rotating 3s linear infinite;
+            -o-animation: rotating 3s linear infinite;
+            animation: rotating 3s linear infinite;
+        }
+
+        circle {
+            stroke-width:0px;
+        }
 append css
     link(href='https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css', rel='stylesheet', crossorigin='anonymous')
     script(src='https://www.gstatic.com/charts/loader.js', type="text/javascript")
-    style(type='text/css').
-           circle {
-                stroke-width:0px;
-            }
+
     script(type="text/javascript").
+        
+        //- document.addEventListener('DOMContentLoaded', (event) => {
+        //- //the event occurred
+        //- })
         let chartWorldData = [];
 
         // Fetch World Data
@@ -139,7 +181,6 @@ block content
                                         p#legend-deaths.card-text.text-dark
                                 p.card-text.float-right.mt-1
                                     small.text-muted#last-updated-legend.font-weight-light
-        .card.mb-4
             .card-header Extended DataTables
             .card-body
                 .row.justify-content-between
@@ -177,7 +218,7 @@ block content
                 include includes/datatables/datatable-dashboard.pug
 
 append scripts
-    //- script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
-    //- script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
-    //- script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
-    //- script(src='js/dashboard.js')
+    script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
+    script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
+    script(src='js/dashboard.js')

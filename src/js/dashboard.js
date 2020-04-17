@@ -372,3 +372,10 @@ $(document).ready(function() {
 	fillNumberOfCases();
 	fillWorldTimelineTable();
 });
+$(window).on('load', function() {
+	let $logo = $('#brand-logo');
+	$logo.removeClass('rotating');
+	$logo.hover(function() {
+		$(this).addClass('rotating'), $(this).removeClass('rotating');
+	});
+});

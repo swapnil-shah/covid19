@@ -1,18 +1,20 @@
 // Base styling for the topnav
 
 .topnav {
-	padding-left: 0;
 	height: $topnav-base-height;
 	font-size: 0.9rem;
 	.navbar-brand {
-		width: $sidenav-base-width;
 		padding-left: $navbar-padding-x;
 		padding-right: $navbar-padding-x;
 		margin: 0;
 		font-size: 1rem;
 		font-weight: bold;
 		img {
-			height: 0.8rem;
+			transition: all 3s ease-out;
+
+			&:hover {
+				transform: rotate(360deg);
+			}
 		}
 	}
 	&.navbar-dark {
