@@ -67,8 +67,13 @@ append css
 block content
     .page-header#chart-container
         #covidWorldChart
-    h1.geo-chat-header.text-center COVID 19 World Spread Data
-    .container-fluid(style="z-index: 1050;")
+    h1.geo-chart-title-wrapper
+        span.geo-chart-title.text-center
+            | COVID19 WORLD SPREAD DATA
+            br
+            span Tap/click on the marker for more information
+
+    .container-fluid.mt-n5.mb-5(style="z-index: 1050;")
         .card.mb-2
             .card-body        
                 .row.justify-content-md-center
@@ -168,10 +173,11 @@ block content
                                 | &ge; 5% and &lt; 8
                                 span.ge-8.bg-green-900.ml-2
                                 | &ge; 8%
+                                
                 include includes/datatables/datatable-dashboard.pug
 
 append scripts
-    script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
-    script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
-    script(src='js/dashboard.js')
+    //- script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
+    //- script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
+    //- script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
+    //- script(src='js/dashboard.js')

@@ -145,33 +145,44 @@
 	z-index: 999;
 }
 #chart-container {
-	height: 70vh;
+	height: 50vh;
 }
 #covidWorldChart {
-	height: 70vh;
+	height: 50vh;
 	width: 100%;
 	position: fixed;
 	padding: 1.5rem 0.25rem 0rem 0.25rem;
 	background-color: #1f2327;
 }
-.geo-chat-header {
-	height: 3rem;
-	color: #ffffff;
+.geo-chart-title-wrapper {
+	height: 10rem;
 	width: 100%;
-	font-weight: 700;
-	margin-top: 1.5rem;
-	margin-bottom: 3rem;
+	padding-top: 1.5rem;
+	background-color: #202327;
 }
-
+.geo-chart-title {
+	font-size: 1.5rem;
+	font-weight: 700;
+	color: rgba(255, 135, 38, 0.8);
+	position: fixed;
+	width: 100%;
+}
+.geo-chart-title span {
+	font-size: 1rem;
+}
 @media only screen and (max-width: 600px) {
+	.navbar {
+		padding-right: 0;
+	}
 	.select {
 		width: 50%;
 		float: none;
 		margin: 0 auto;
 	}
 	.container-fluid {
-		padding-left: .5rem;
-		padding-right: .5rem;
+		padding-left: 0rem;
+		padding-right: 0rem;
+		overflow: hidden;
 	}
 	#chart-container {
 		padding-top: 0;
@@ -182,6 +193,19 @@
 		left: 0;
 		box-shadow: none;
 		border: none;
+	}
+	#covidWorldChart {
+		padding-top: 0;
+	}
+	.geo-chart-title-wrapper {
+		padding: 0;
+	}
+	.geo-chart-title {
+		font-size: 1rem;
+	}
+
+	.geo-chart-title span {
+		font-size: 0.8rem;
 	}
 }
 #dataTableWorldTimeline th {
