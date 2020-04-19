@@ -315,6 +315,7 @@ $('#dataTableWorldTimeline').DataTable({
 			return json.data;
 		}
 	},
+	pagingType: 'numbers',
 	pageLength: 25,
 	language: {
 		searchPlaceholder: 'e.g. usa'

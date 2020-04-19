@@ -2,7 +2,7 @@ extends ../layouts/dashboard.pug
 
 block config
     - var bodyClass = 'nav-fixed'
-    - var pageTitle = 'COVID19 Dahboard'
+    - var pageTitle = 'COVID19 Dashboard'
     - var pageIcon = 'filter'
     - var pageSummary = 'An extended version of the DataTables library, customized for COVID19 Pro'
     - var sidenavStyle = 'sidenav-light'
@@ -61,13 +61,14 @@ block content
     .page-header#chart-container
         #covidWorldChart
     h1.geo-chart-title-wrapper
-        span.geo-chart-title.text-center
-            | COVID19 WORLD SPREAD DATA
-            br
-            span Tap/click on the marker for more information
+        div(style="height:10rem; background-color:#202327: postion:fixed")
+            span.geo-chart-title.text-center
+                | COVID19 WORLD SPREAD DATA
+                br
+                span Tap/click on the marker for more information
 
-    .container-fluid.mt-n5.mb-5(style="z-index: 1050;")
-        .card.mb-2
+    .container-fluid.mt-n5(style="z-index: 1050;")
+        .card.pb-2
             .card-header.bg-light.text-dark
                 h3 World Overview
             .card-body        
@@ -146,7 +147,7 @@ block content
                 .row.justify-content-between
                     .col-md-8.col-sm-12
                         p.mb-2 The cases in the below table gets updated in approximately 24hours. Last updated <span id="last-updated-datatable" class="text-dark">...</span>
-                    .col-md-4.col-sm-12.pb-2.text-right
+                    .col-md-4.col-sm-12.pb-2.text-right.pr-0.pl-0
                         p.mb-1
                             small
                                 strong New Cases: 

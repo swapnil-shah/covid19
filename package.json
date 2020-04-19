@@ -7,7 +7,7 @@
 		"build:assets": "node scripts/build-assets.js",
 		"build:pug": "node scripts/build-pug.js",
 		"build:scripts": "babel src/js -d dist/js",
-		"build:scss": "node scripts/build-scss.js",
+		"build:scss": "node scripts/build-scss.js && npm run minify-css",
 		"clean": "node scripts/clean.js",
 		"start": "npm run build && node scripts/start.js",
 		"start:debug": "npm run build && node scripts/start-debug.js",

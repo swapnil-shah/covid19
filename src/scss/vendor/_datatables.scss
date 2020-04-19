@@ -1,10 +1,15 @@
 .datatable {
-	font-size: 1rem;
+	font-size: 0.8rem;
+	font-family: Verdana;
+
+	td {
+		vertical-align: middle;
+		color: #485260 !important;
+	}
 	@extend .table-responsive;
 	@include media-breakpoint-up(md) {
 		overflow: visible;
 	}
-
 	// Change the color of the table headings
 	table.dataTable thead,
 	table.dataTable tfoot {
@@ -12,6 +17,14 @@
 		th {
 			vertical-align: middle;
 			font-weight: 600;
+			// min-width: 90px;
+		}
+	}
+	table.dataTable tbody {
+		tr {
+			&:hover {
+				color: #1f2d41;
+			}
 		}
 	}
 
@@ -99,4 +112,13 @@
 			color: fade-out($white, 0.25);
 		}
 	}
+}
+
+div.dataTables_wrapper div.dataTables_paginate ul.pagination {
+	justify-content: left;
+	padding-top: 10px;
+}
+#dataTableWorldTimeline_info {
+	text-align: left;
+	padding-left: 0.75rem;
 }
