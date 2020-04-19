@@ -30,18 +30,16 @@ function addCellColor() {
 	addClassesToTable(newRecovered, 'green');
 }
 
-function addClassesToTable(newCases, color) {
-	for (let i = 0; i < newCases.length; i++) {
-		let percentageValue = parseFloat(newCases[i].getAttribute('data-percentage'));
-		if (percentageValue >= 2 && percentageValue < 5) {
-			newCases[i].classList.add('bg-' + color + '-200');
-		}
-		if (percentageValue >= 5 && percentageValue < 8) {
-			newCases[i].classList.add('bg-' + color + '-500');
-		}
-		if (percentageValue >= 8) {
-			newCases[i].classList.add('bg-' + color + '-900');
-		}
+function addClassesToDataTable(newCases, oldCases, tableColumn, color) {
+	let percentageValue = percentageChangeTotal(newCases, oldCases);
+	if (percentageValue >= 2 && percentageValue < 5) {
+		$(tableColumn).addClass('bg-' + color + '-200');
+	} else if (percentageValue >= 5 && percentageValue < 8) {
+		$(tableColumn).addClass('bg-' + color + '-500');
+	} else if (percentageValue >= 8) {
+		$(tableColumn).addClass('bg-' + color + '-900');
+	} else {
+		return;
 	}
 }
 
@@ -139,8 +137,8 @@ let dataSet = (chartData, chartDataDeaths, chartDataRecovered, chartDataActive, 
 	);
 };
 
-//World Timeline Table
-let fillWorldTimelineTable = () => {
+// add option to dropdown
+let addCountriesToDropdown = () => {
 	fetch(dasboardTableUri, { cache: 'no-cache' })
 		.then((response) => {
 			if (response.ok) {
@@ -150,74 +148,12 @@ let fillWorldTimelineTable = () => {
 			}
 		})
 		.then((jsonData) => {
-			let output = '';
-			let regionSelect = document.getElementById('selectRegion');
-			let $dasboardTableRows = $('#dataTableWorldTimeline');
 			jsonData.data.forEach(function(item) {
 				if (item.timeline.length > 0) {
-					output += `
-                                    <tr>
-                                        <td>${item.name}<br/><small class="text-muted">${populationFormat(
-						item.population
-					)}</small></td>
-                                        <td>${item.timeline[0].confirmed.toLocaleString()}</td>
-                                        <td class="new-confirmed" data-percentage="${percentageChangeTable(
-											item.timeline[0].confirmed,
-											item.timeline[0].new_confirmed
-										)}">${item.timeline[0].new_confirmed.toLocaleString()} <small class="font-weight-light container-percentage">(<i class="fas fa-arrow-up fa-xs" style="margin: 0 2px;"></i>${percentageChangeTable(
-						item.timeline[0].confirmed,
-						item.timeline[0].new_confirmed
-					)}%)</small>
-                        </td>
-                                        <td>${item.timeline[0].deaths.toLocaleString()}</td>
-                                        <td class="new-death" data-percentage="${percentageChangeTable(
-											item.timeline[0].deaths,
-											item.timeline[0].new_deaths
-										)}">${item.timeline[0].new_deaths.toLocaleString()} <small class="font-weight-light container-percentage">(<i class="fas fa-arrow-up fa-xs" style="margin: 0 2px;"></i>${percentageChangeTable(
-						item.timeline[0].deaths,
-						item.timeline[0].new_deaths
-					)}%)</small></td>
-                                        <td>${item.timeline[0].recovered.toLocaleString()}</td>
-                                        <td class="new-recovered" data-percentage="${percentageChangeTable(
-											item.timeline[0].recovered,
-											item.timeline[0].new_recovered
-										)}">${item.timeline[0].new_recovered.toLocaleString()} <small class="font-weight-light container-percentage">(<i class="fas fa-arrow-up fa-xs" style="margin: 0 2px;"></i>${percentageChangeTable(
-						item.timeline[0].recovered,
-						item.timeline[0].new_recovered
-					)}%)</small></td>
-                                    </tr>
-								`;
+					let regionSelect = document.getElementById('selectRegion');
 					regionSelect.options[regionSelect.options.length] = new Option(item.name, item.code);
-				} else {
-					output += `
-                        <tr>
-                            <td>${item.name}<br/><small class="text-muted">${item.population
-						? populationFormat(item.population)
-						: ''}</small></td>
-                            <td>${item.latest_data.confirmed ? item.latest_data.confirmed.toLocaleString() : ''}</td>
-                            <td>${item.today.confirmed ? item.latest_data.confirmed.toLocaleString() : ''}</td>
-                            <td>${item.latest_data.deaths ? item.latest_data.deaths.toLocaleString() : ''}</td>
-                            <td>${item.today.deaths ? item.today.deaths.toLocaleString() : ''}</td>
-                            <td>${item.latest_data.recovered ? item.latest_data.recovered.toLocaleString() : ''}</td>
-                            <td>${item.latest_data.recovered ? item.latest_data.recovered.toLocaleString() : ''}</td>
-                        </tr>`;
 				}
 			});
-			$dasboardTableRows.children('tbody').html(output);
-
-			$dasboardTableRows.DataTable({
-				pageLength: 10,
-				language: {
-					searchPlaceholder: 'e.g. usa'
-				},
-				order: [ [ 1, 'desc' ] ],
-				columnDefs: [
-					{ orderable: false, targets: [ 2 ] },
-					{ orderable: false, targets: [ 4 ] },
-					{ orderable: false, targets: [ 6 ] }
-				]
-			});
-			addCellColor();
 		})
 		.catch((err) => {
 			console.log('ERROR:', err.message);
@@ -367,10 +303,160 @@ fetch(totalCases)
 	})
 	.catch((error) => console.log('error', error));
 
+// World Timeline Table
+$('#dataTableWorldTimeline').DataTable({
+	ajax: {
+		url: dasboardTableUri,
+		type: 'GET',
+		cache: false,
+		data: function(json) {
+			return json.data;
+		}
+	},
+	pageLength: 25,
+	language: {
+		searchPlaceholder: 'e.g. usa'
+	},
+	columns: [
+		{
+			data: 'name',
+			title: 'Name',
+			render: function(data, type, row) {
+				if (type === 'type' || type === 'sort') {
+					return data;
+				}
+				return `${data}<p class="text-muted small">${populationFormat(row.population)}</p>`;
+			}
+		},
+		{
+			data: 'latest_data.confirmed',
+			title: 'Confirmed',
+			render: function(data, type, row) {
+				if (type === 'type' || type === 'sort') {
+					return data;
+				}
+				let output = '';
+				if (row.timeline.length > 0) {
+					output += row.timeline[0].confirmed.toLocaleString();
+					if (row.timeline[0].new_confirmed > 0) {
+						output +=
+							'<small class="font-weight-light container-percentage">+' +
+							row.timeline[0].new_confirmed.toLocaleString() +
+							'</small>';
+					} else {
+						output += '<small class="font-weight-light container-percentage">Update in progress</small>';
+					}
+					if (Math.sign(percentageChangeTotal(row.timeline[0].confirmed, row.timeline[1].confirmed)) === -1) {
+						output +=
+							'<small>(<i class="fas fa-arrow-down fa-sm style="margin: 0 2px;"></i>' +
+							percentageChangeTotal(row.timeline[0].confirmed, row.timeline[1].confirmed) +
+							'%)</small>';
+					}
+					if (Math.sign(percentageChangeTotal(row.timeline[0].confirmed, row.timeline[1].confirmed)) === 1) {
+						output +=
+							'<small>(<i class="fas fa-arrow-up fa-sm style="margin: 0 2px;"></i>' +
+							percentageChangeTotal(row.timeline[0].confirmed, row.timeline[1].confirmed) +
+							'%)</small>';
+					}
+				} else {
+					output += row.latest_data.confirmed;
+				}
+				return output;
+			},
+			createdCell: function(td, cellData, rowData) {
+				if (rowData.timeline.length > 0) {
+					addClassesToDataTable(rowData.timeline[0].confirmed, rowData.timeline[1].confirmed, td, 'yellow');
+				}
+			}
+		},
+		{
+			data: 'latest_data.recovered',
+			title: 'Recovered',
+			render: function(data, type, row) {
+				if (type === 'type' || type === 'sort') {
+					return data;
+				}
+				let output = '';
+				if (row.timeline.length > 0) {
+					output += row.timeline[0].recovered.toLocaleString();
+					if (row.timeline[0].new_recovered > 0) {
+						output +=
+							'<small class="font-weight-light container-percentage">+' +
+							row.timeline[0].new_recovered.toLocaleString() +
+							'</small>';
+					} else {
+						output += '<small class="font-weight-light container-percentage">Update in progress</small>';
+					}
+					if (Math.sign(percentageChangeTotal(row.timeline[0].recovered, row.timeline[1].recovered)) === -1) {
+						output +=
+							'<small>(<i class="fas fa-arrow-down fa-sm style="margin: 0 2px;"></i>' +
+							percentageChangeTotal(row.timeline[0].recovered, row.timeline[1].recovered) +
+							'%)</small>';
+					}
+					if (Math.sign(percentageChangeTotal(row.timeline[0].recovered, row.timeline[1].recovered)) === 1) {
+						output +=
+							'<small>(<i class="fas fa-arrow-up fa-sm style="margin: 0 2px;"></i>' +
+							percentageChangeTotal(row.timeline[0].recovered, row.timeline[1].recovered) +
+							'%)</small>';
+					}
+				} else {
+					output += row.latest_data.recovered;
+				}
+				return output;
+			},
+			createdCell: function(td, cellData, rowData) {
+				if (rowData.timeline.length > 0) {
+					addClassesToDataTable(rowData.timeline[0].recovered, rowData.timeline[1].recovered, td, 'green');
+				}
+			}
+		},
+		{
+			data: 'latest_data.deaths',
+			title: 'Deaths',
+			render: function(data, type, row) {
+				if (type === 'type' || type === 'sort') {
+					return data;
+				}
+				let output = '';
+				if (row.timeline.length > 0) {
+					output += row.timeline[0].deaths.toLocaleString();
+					if (row.timeline[0].new_deaths > 0) {
+						output +=
+							'<small class="font-weight-light container-percentage">+' +
+							row.timeline[0].new_deaths.toLocaleString() +
+							'</small>';
+					} else {
+						output += '<small class="font-weight-light container-percentage">Update in progress</small>';
+					}
+					if (Math.sign(percentageChangeTotal(row.timeline[0].deaths, row.timeline[1].deaths)) === -1) {
+						output +=
+							'<small>(<i class="fas fa-arrow-down fa-sm style="margin: 0 2px;"></i>' +
+							percentageChangeTotal(row.timeline[0].deaths, row.timeline[1].deaths) +
+							'%)</small>';
+					}
+					if (Math.sign(percentageChangeTotal(row.timeline[0].deaths, row.timeline[1].deaths)) === 1) {
+						output +=
+							'<small>(<i class="fas fa-arrow-up fa-sm style="margin: 0 2px;"></i>' +
+							percentageChangeTotal(row.timeline[0].deaths, row.timeline[1].deaths) +
+							'%)</small>';
+					}
+				} else {
+					output += row.latest_data.deaths;
+				}
+				return output;
+			},
+			createdCell: function(td, cellData, rowData) {
+				if (rowData.timeline.length > 1) {
+					addClassesToDataTable(rowData.timeline[0].deaths, rowData.timeline[1].deaths, td, 'red');
+				}
+			}
+		}
+	],
+	order: [ [ 1, 'desc' ] ]
+});
 $(document).ready(function() {
-	formatDateToString();
 	fillNumberOfCases();
-	fillWorldTimelineTable();
+	addCountriesToDropdown();
 });
 $(window).on('load', function() {
 	let $logo = $('#brand-logo');

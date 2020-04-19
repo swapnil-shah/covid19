@@ -59,8 +59,10 @@ function percentageChangeTable(cases, newCases) {
 	return newCases !== 0 && cases !== 0 && cases !== newCases ? (newCases * 100 / (cases - newCases)).toFixed(2) : 0;
 }
 
-function percentageChangeTotal(total, newTotal) {
-	return total !== 0 && newTotal !== 0 && total !== newTotal ? ((total - newTotal) / total * 100).toFixed(2) : 0;
+function percentageChangeTotal(newCases, oldCases) {
+	return newCases !== 0 && oldCases !== 0 && newCases !== oldCases
+		? ((newCases - oldCases) / newCases * 100).toFixed(2)
+		: 0;
 }
 
 function populationFormat(labelValue) {
