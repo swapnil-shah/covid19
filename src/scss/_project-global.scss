@@ -337,3 +337,10 @@
 		transform: scale(1);
 	}
 }
+.google-visualization-tooltip-item-list .google-visualization-tooltip-item:first-child {
+	margin: 1em 0em 0 0em !important;
+}
+.google-visualization-tooltip-item {
+	margin: 0 0em 0.65em 0em !important;
+	padding: 0em 1em 0em 1em !important;
+}

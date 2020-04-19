@@ -10,26 +10,41 @@ script(type="text/javascript").
                     country.coordinates.latitude,
                     country.coordinates.longitude,
                     country.name,
-                    country.latest_data.confirmed
+                    country.latest_data.confirmed,
+                    createCustomHTMLContent("https://www.countryflags.io/"+country.code.toLowerCase()+"/shiny/32.png", country.latest_data.confirmed, country.latest_data.recovered, country.latest_data.deaths)
                 ]);
             });
+            
+            console.log("chartWorldData", chartWorldData)
         });
         google.charts.load('current', {
             packages: [ 'geochart' ]
         });
         google.charts.setOnLoadCallback(drawMap);
         // World Map
+        function createCustomHTMLContent(flagURL, confirmed, recovered, deaths) {
+            return '<img src="' + flagURL + '" style="width:32px;height:32px;margin-bottom:1rem;"><br/>' +
+                    '<div>' +
+                    '<p style="margin-bottom:0.7rem"><b>Confirmed</b><br/>' + confirmed.toLocaleString() + '</p>' +
+                    '<p style="margin-bottom:0.7rem"><b>Recovered</b><br/>' + recovered.toLocaleString() + '</p>' +
+                    '<p style="margin-bottom:0.7rem"><b>Deaths</b><br/>' + deaths.toLocaleString() + '</p>'
+                    '</div>';
+                }
         function drawMap() {
             var dataWorld = new google.visualization.DataTable();
             dataWorld.addColumn('number', 'Lat'); // Latitude Value
             dataWorld.addColumn('number', 'Lon'); // Longitude Value
             dataWorld.addColumn('string', 'Name'); //
-            dataWorld.addColumn('number', 'Total Cases'); //
+            dataWorld.addColumn('number', 'Confirmed'); //
+            dataWorld.addColumn({'type': 'string', 'role': 'tooltip', 'p': {'html': true}}); //
+            //- dataWorld.addColumn('number', 'Deaths'); //
             dataWorld.addRows(chartWorldData);
             var optionsWorld = {
                 theme: 'maximized',
                 legend:'none',
-                backgroundColor: { fill: '#202327', stroke: '#202327'},
+                focusTarget: 'category',
+                tooltip: { isHtml: true },
+                backgroundColor: { fill: '#202327'},
                 datalessRegionColor: '#3B3B3B',
                 sizeAxis: { minValue: 100 },
                 displayMode: 'markers',
