@@ -19,7 +19,6 @@
 		"babel-cli": "^6.26.0",
 		"babel-preset-env": "^1.7.0",
 		"bootstrap": "^4.4.1",
-		"browser-sync": "2.26.7",
 		"chokidar": "3.3.1",
 		"concurrently": "5.1.0",
 		"cssnano": "^4.1.10",
@@ -32,5 +31,8 @@
 		"sass": "1.26.0",
 		"shelljs": "0.8.3",
 		"upath": "1.2.0"
+	},
+	"devDependencies": {
+		"browser-sync": "2.26.7"
 	}
 }
