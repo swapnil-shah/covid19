@@ -55,9 +55,9 @@ let fillNumberOfCases = () => {
 		})
 		.then((stats) => {
 			document.getElementById('last-updated').innerHTML =
-				'% difference is calculated approximate between <span class="text-gray-600">' +
+				'% difference was calculated approximately between <span class="text-dark">' +
 				formatDateToString(stats.data[0].updated_at) +
-				' and ' +
+				'</span> and <span class="text-dark">' +
 				formatDateToString(stats.data[1].updated_at) +
 				'</span>';
 			document.getElementById('number-active').innerText = stats.data[0].active.toLocaleString();
@@ -148,6 +148,8 @@ let addCountriesToDropdown = () => {
 			}
 		})
 		.then((jsonData) => {
+			console.log('addCountriesToDropdown -> jsonData', jsonData);
+			document.getElementById('last-updated-datatable').innerHTML = timeDifference(jsonData.data[0].updated_at);
 			jsonData.data.forEach(function(item) {
 				if (item.timeline.length > 0) {
 					let regionSelect = document.getElementById('selectRegion');
@@ -325,7 +327,9 @@ $('#dataTableWorldTimeline').DataTable({
 				if (type === 'type' || type === 'sort') {
 					return data;
 				}
-				return `${data}<p class="text-muted small">${populationFormat(row.population)}</p>`;
+				return `${data}<p class="text-muted small"><i class="fas fa-users fa-sm" style="margin: 0 3px;"></i>${populationFormat(
+					row.population
+				)}</p>`;
 			}
 		},
 		{
@@ -348,13 +352,13 @@ $('#dataTableWorldTimeline').DataTable({
 					}
 					if (Math.sign(percentageChangeTotal(row.timeline[0].confirmed, row.timeline[1].confirmed)) === -1) {
 						output +=
-							'<small>(<i class="fas fa-arrow-down fa-sm style="margin: 0 2px;"></i>' +
+							'<small>(<i class="fas fa-arrow-down fa-sm" style="margin: 0 2px;"></i>' +
 							percentageChangeTotal(row.timeline[0].confirmed, row.timeline[1].confirmed) +
 							'%)</small>';
 					}
 					if (Math.sign(percentageChangeTotal(row.timeline[0].confirmed, row.timeline[1].confirmed)) === 1) {
 						output +=
-							'<small>(<i class="fas fa-arrow-up fa-sm style="margin: 0 2px;"></i>' +
+							'<small>(<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i>' +
 							percentageChangeTotal(row.timeline[0].confirmed, row.timeline[1].confirmed) +
 							'%)</small>';
 					}
@@ -389,13 +393,13 @@ $('#dataTableWorldTimeline').DataTable({
 					}
 					if (Math.sign(percentageChangeTotal(row.timeline[0].recovered, row.timeline[1].recovered)) === -1) {
 						output +=
-							'<small>(<i class="fas fa-arrow-down fa-sm style="margin: 0 2px;"></i>' +
+							'<small>(<i class="fas fa-arrow-down fa-sm" style="margin: 0 2px;"></i>' +
 							percentageChangeTotal(row.timeline[0].recovered, row.timeline[1].recovered) +
 							'%)</small>';
 					}
 					if (Math.sign(percentageChangeTotal(row.timeline[0].recovered, row.timeline[1].recovered)) === 1) {
 						output +=
-							'<small>(<i class="fas fa-arrow-up fa-sm style="margin: 0 2px;"></i>' +
+							'<small>(<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i>' +
 							percentageChangeTotal(row.timeline[0].recovered, row.timeline[1].recovered) +
 							'%)</small>';
 					}
@@ -430,13 +434,13 @@ $('#dataTableWorldTimeline').DataTable({
 					}
 					if (Math.sign(percentageChangeTotal(row.timeline[0].deaths, row.timeline[1].deaths)) === -1) {
 						output +=
-							'<small>(<i class="fas fa-arrow-down fa-sm style="margin: 0 2px;"></i>' +
+							'<small>(<i class="fas fa-arrow-down fa-sm" style="margin: 0 2px;"></i>' +
 							percentageChangeTotal(row.timeline[0].deaths, row.timeline[1].deaths) +
 							'%)</small>';
 					}
 					if (Math.sign(percentageChangeTotal(row.timeline[0].deaths, row.timeline[1].deaths)) === 1) {
 						output +=
-							'<small>(<i class="fas fa-arrow-up fa-sm style="margin: 0 2px;"></i>' +
+							'<small>(<i class="fas fa-arrow-up fa-sm" style="margin: 0 2px;"></i>' +
 							percentageChangeTotal(row.timeline[0].deaths, row.timeline[1].deaths) +
 							'%)</small>';
 					}

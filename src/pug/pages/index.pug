@@ -8,7 +8,7 @@ block config
     - var sidenavStyle = 'sidenav-light'
     - var pageHeaderStyle = 'page-header-dark'
     - var pageHeaderBackground = 'bg-gradient-primary-to-secondary'
-    - var footerStyle = 'footer-light'
+    - var footerStyle = 'footer-dark bg-dark'
 
     style(type='text/css').
 
@@ -56,8 +56,6 @@ append css
     script(src='https://www.gstatic.com/charts/loader.js', type="text/javascript")
 
     include includes/world-map-js.pug
-    
-    
 
 block content
     .page-header#chart-container
@@ -70,10 +68,12 @@ block content
 
     .container-fluid.mt-n5.mb-5(style="z-index: 1050;")
         .card.mb-2
+            .card-header.bg-light.text-dark
+                h3 World Overview
             .card-body        
-                .row.justify-content-md-center
-                    .col-sm-12
-                        h1 Worldwide
+                .row.justify-content-md-center.pb-5
+                    //- .col-sm-12
+                    //-     h1.card-header Worldwide
                     .col-md-3.col-sm-6.mb-3
                         .card.bg-secondary.border-0
                             .card-body
@@ -106,9 +106,14 @@ block content
                                 .mb-4
                                     #number-deaths.display-4.text-white
                                     #per-deaths.text-white-75.float-right Loading numbers..
-                    .col-sm-12(style="padding:0")
+                    .col-sm-12.p-0.text-center
                         #last-updated
-                        .chart-line.border-top
+                        
+            .card-header.bg-light.text-dark
+                h3 Bar Chart
+            .card-body   
+                .row.justify-content-md-center.pb-5(style="position:relative")
+                        .chart-line
                             canvas#myDashboardChart.table
                         .card#card-legend
                             .card-body(style="padding:0.5rem")
@@ -119,7 +124,7 @@ block content
                                         .select(style="width:20rem")
                                             select#selectRegion
                                                 option(value="worldwide" selected) Worldwide
-                                .row#legend-numbers.d-none.justify-content-around.pb-1.pt-1.text-center.border-bottom
+                                .row#legend-numbers.d-none.justify-content-around.pb-1.pt-1.text-center
                                     .col(style="padding:0.5rem")
                                         p.mb-1
                                             small.font-weight-light.mb-1 Confirmed
@@ -134,11 +139,13 @@ block content
                                         p#legend-deaths.card-text.text-dark
                                 p.card-text.float-right.mt-1
                                     small.text-muted#last-updated-legend.font-weight-light
-            .card-header Extended DataTables
+
+            .card-header.bg-light.text-dark
+                h3 World Datatable 
             .card-body
                 .row.justify-content-between
                     .col-md-8.col-sm-12
-                        h6.mb-2.text-muted.lead The cases gets updated in approximately 24hours
+                        h6.mb-2.text-muted.lead The cases in the below gets updated in approximately 24hours. Last Updated <span id="last-updated-datatable" class="font-weight-600 text-body">...</span>
                     .col-md-4.col-sm-12.pb-2.text-right
                         p.mb-1
                             small
@@ -168,8 +175,7 @@ block content
                                 span.ge-8.bg-green-900.ml-2
                                 | &ge; 8%
                                 
-                include includes/datatables/datatable-dashboard.pug
-
+                    include includes/datatables/datatable-dashboard.pug         
 append scripts
     script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')

@@ -207,6 +207,13 @@
 	.geo-chart-title span {
 		font-size: 0.8rem;
 	}
+	.footer .row.justify-content-around {
+		text-align: center;
+
+		a {
+			padding: 10px 0;
+		}
+	}
 }
 #dataTableWorldTimeline th {
 	min-width: 90px;
