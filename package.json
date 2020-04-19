@@ -13,13 +13,10 @@
 		"start:debug": "npm run build && node scripts/start-debug.js",
 		"minify-css": "postcss dist/css/styles.css > dist/css/styles.min.css"
 	},
-
 	"author": "Swapnil Shah",
 	"dependencies": {
 		"bootstrap": "^4.4.1",
-		"dotenv": "^8.2.0"
-	},
-	"devDependencies": {
+		"dotenv": "^8.2.0",
 		"autoprefixer": "9.7.4",
 		"babel-cli": "^6.26.0",
 		"babel-preset-env": "^1.7.0",
