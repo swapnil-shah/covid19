@@ -4,7 +4,7 @@ block config
     - var bodyClass = 'nav-fixed'
     - var pageTitle = 'COVID19 Dashboard'
     - var pageIcon = 'filter'
-    - var pageSummary = 'An extended version of the DataTables library, customized for COVID19 Pro'
+    - var pageSummary = ''
     - var sidenavStyle = 'sidenav-light'
     - var pageHeaderStyle = 'page-header-dark'
     - var pageHeaderBackground = 'bg-gradient-primary-to-secondary'
@@ -61,11 +61,10 @@ block content
     .page-header#chart-container
         #covidWorldChart
     h1.geo-chart-title-wrapper
-        div(style="height:10rem; background-color:#202327: postion:fixed")
-            span.geo-chart-title.text-center
-                | COVID19 WORLD SPREAD DATA
-                br
-                span Tap/click on the marker for more information
+        span.geo-chart-title.text-center
+            | COVID19 WORLD SPREAD DATA
+            br
+            span Tap/click on the marker for more information
 
     .container-fluid.mt-n5(style="z-index: 1050;")
         .card.pb-2

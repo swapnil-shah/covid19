@@ -229,10 +229,12 @@
 	margin-right: 2px;
 	display: inline-block;
 }
-.datatable td.bg-yellow-200 {
+.datatable td.bg-yellow-200,
+.bg-yellow-200 {
 	background-color: #fff6b7;
 }
-.datatable td.bg-yellow-500 {
+.datatable td.bg-yellow-200,
+.bg-yellow-200 {
 	background-color: #ffe77d;
 }
 .datatable td.bg-yellow-900 {
@@ -244,7 +246,8 @@
 .datatable td.bg-red-500 {
 	background-color: #ffa299;
 }
-.datatable td.bg-red-900 {
+.datatable td.bg-red-900,
+.bg-red-900 {
 	background-color: #d83c2d;
 	color: white !important;
 }
@@ -254,7 +257,8 @@
 .datatable td.bg-green-500 {
 	background-color: #c1fbae;
 }
-.datatable td.bg-green-900 {
+.datatable td.bg-green-900,
+.bg-green-900 {
 	background-color: #58aa3d;
 	color: white !important;
 }
