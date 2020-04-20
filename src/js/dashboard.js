@@ -5,19 +5,18 @@ const countriesUri = 'https://corona-api.com/countries';
 let dashboardChartData = [];
 let dashboardLabelsDate = [];
 let dashboardChartDataActive = [];
-let dashboardChartDataConfirmed = [];
 let dashboardChartDataDeaths = [];
 let dashboardChartDataRecovered = [];
 let dashboardChartCountryData = [];
 let dashboardChartCountryLabels = [];
 let dashboardChartCountryDataActive = [];
-let dashboardChartCountryDataConfirmed = [];
 let dashboardChartCountryDataDeaths = [];
 let dashboardChartCountryDataRecovered = [];
 let ctxDashboardLine = document.getElementById('myDashboardChart');
 let legendContainer = document.getElementById('legend-numbers');
 let legendConfirmed = document.getElementById('legend-confirmed');
 let legendRecovered = document.getElementById('legend-recovered');
+let legendActive = document.getElementById('legend-active');
 let legendDeaths = document.getElementById('legend-deaths');
 let legendUpdated = document.getElementById('last-updated-legend');
 
@@ -56,9 +55,9 @@ let fillNumberOfCases = () => {
 		.then((stats) => {
 			document.getElementById('last-updated').innerHTML =
 				'% difference was calculated approximately between <span class="text-dark">' +
-				formatDateToString(stats.data[0].updated_at) +
-				'</span> and <span class="text-dark">' +
 				formatDateToString(stats.data[1].updated_at) +
+				'</span> and <span class="text-dark">' +
+				formatDateToString(stats.data[0].updated_at) +
 				'</span>';
 			document.getElementById('number-active').innerText = stats.data[0].active.toLocaleString();
 			document.getElementById('number-confirmed').innerText = stats.data[0].confirmed.toLocaleString();
@@ -127,12 +126,6 @@ let dataSet = (chartData, chartDataDeaths, chartDataRecovered, chartDataActive, 
 			data: chartDataActive.reverse(),
 			backgroundColorHover: '#1f2d41',
 			backgroundColor: '#324765'
-		},
-		{
-			label: 'Confirmed',
-			data: chartDataConfirmed.reverse(),
-			backgroundColorHover: '#6900c7',
-			backgroundColor: '#8e5ea2'
 		}
 	);
 };
@@ -148,7 +141,6 @@ let addCountriesToDropdown = () => {
 			}
 		})
 		.then((jsonData) => {
-			console.log('addCountriesToDropdown -> jsonData', jsonData);
 			document.getElementById('last-updated-datatable').innerHTML = timeDifference(jsonData.data[0].updated_at);
 			jsonData.data.forEach(function(item) {
 				if (item.timeline.length > 0) {
@@ -167,18 +159,11 @@ fetch(totalCases)
 	.then((countries) => {
 		countries.data.forEach((country) => {
 			dashboardLabelsDate.push(country.date);
-			dashboardChartDataConfirmed.push(country.confirmed);
 			dashboardChartDataActive.push(country.active);
 			dashboardChartDataRecovered.push(country.recovered);
 			dashboardChartDataDeaths.push(country.deaths);
 		});
-		dataSet(
-			dashboardChartData,
-			dashboardChartDataDeaths,
-			dashboardChartDataRecovered,
-			dashboardChartDataActive,
-			dashboardChartDataConfirmed
-		);
+		dataSet(dashboardChartData, dashboardChartDataDeaths, dashboardChartDataRecovered, dashboardChartDataActive);
 		let myChart = new Chart(ctxDashboardLine, {
 			type: 'bar',
 			data: {
@@ -205,7 +190,17 @@ fetch(totalCases)
 					caretPadding: 10,
 					xPadding: 10,
 					yPadding: 10,
+					footerFontStyle: 'normal',
+					footerFontColor: '#00000',
 					callbacks: {
+						footer: function(tooltipItems, data) {
+							var sum = 0;
+
+							tooltipItems.forEach(function(tooltipItem) {
+								sum += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+							});
+							return 'Confirmed: ' + sum.toLocaleString();
+						},
 						label: function(tooltipItem, data) {
 							return (
 								data.datasets[tooltipItem.datasetIndex].label +
@@ -217,6 +212,7 @@ fetch(totalCases)
 					itemSort: function(a, b) {
 						return b.datasetIndex - a.datasetIndex;
 					}
+					// Use the footer callback to display the sum of the items showing in the tooltip
 				},
 				scales: {
 					xAxes: [
@@ -253,7 +249,6 @@ fetch(totalCases)
 			dashboardChartCountryData = [];
 			dashboardChartCountryLabels = [];
 			dashboardChartCountryDataActive = [];
-			dashboardChartCountryDataConfirmed = [];
 			dashboardChartCountryDataDeaths = [];
 			dashboardChartCountryDataRecovered = [];
 			if (value === 'worldwide') {
@@ -273,15 +268,15 @@ fetch(totalCases)
 						}
 					})
 					.then((countryData) => {
-						legendConfirmed.innerText = countryData.data.latest_data.confirmed.toLocaleString();
-						legendRecovered.innerText = countryData.data.latest_data.recovered.toLocaleString();
-						legendDeaths.innerText = countryData.data.latest_data.deaths.toLocaleString();
+						legendConfirmed.innerText = countryData.data.timeline[0].confirmed.toLocaleString();
+						legendRecovered.innerText = countryData.data.timeline[0].recovered.toLocaleString();
+						legendActive.innerText = countryData.data.timeline[0].active.toLocaleString();
+						legendDeaths.innerText = countryData.data.timeline[0].deaths.toLocaleString();
 						legendUpdated.innerHTML = 'Last Updated ' + timeDifference(countryData.data.updated_at);
 						legendContainer.classList.remove('d-none');
 						legendContainer.classList.add('d-flex');
 						countryData.data.timeline.forEach(function(item) {
 							dashboardChartCountryLabels.push(item.date);
-							dashboardChartCountryDataConfirmed.push(item.confirmed);
 							dashboardChartCountryDataActive.push(item.active);
 							dashboardChartCountryDataRecovered.push(item.recovered);
 							dashboardChartCountryDataDeaths.push(item.deaths);
@@ -290,8 +285,7 @@ fetch(totalCases)
 							dashboardChartCountryData,
 							dashboardChartCountryDataDeaths,
 							dashboardChartCountryDataRecovered,
-							dashboardChartCountryDataActive,
-							dashboardChartCountryDataConfirmed
+							dashboardChartCountryDataActive
 						);
 						myChart.data.datasets = dashboardChartCountryData;
 						myChart.data.labels = dashboardChartCountryLabels.reverse();

@@ -78,7 +78,7 @@ block content
                         .card.bg-secondary.border-0
                             .card-body
                                 h3.text-white-75 Confirmed
-                                    i.text-white-50.float-right.fas.fa-lg.fa-lungs-virus
+                                    i.text-white-50.float-right.fas.fa-lg.fa-viruses
                                 .mb-4
                                     #number-confirmed.display-4.text-white
                                     #per-confirmed.text-white-75.float-right Loading numbers..
@@ -86,7 +86,7 @@ block content
                         .card.bg-dark.border-0
                             .card-body
                                 h3.text-white-75 Active
-                                    i.text-white-50.float-right.fas.fa-lg.fa-hospital-symbol
+                                    i.text-white-50.float-right.fas.fa-lg.fa-clinic-medical
                                 .mb-4
                                     #number-active.display-4.text-white
                                     #per-active.text-white-75.float-right Loading numbers..
@@ -124,11 +124,11 @@ block content
                                         .select(style="width:20rem")
                                             select#selectRegion
                                                 option(value="worldwide" selected) Worldwide
-                                .row#legend-numbers.d-none.justify-content-around.pb-1.pt-1.text-center
+                                .row#legend-numbers.d-none.justify-content-around.pb-1.pt-1.text-center.border-bottom
                                     .col(style="padding:0.5rem")
                                         p.mb-1
-                                            small.font-weight-light.mb-1 Confirmed
-                                        p#legend-confirmed.card-text.text-dark
+                                            small.font-weight-light.mb-1 Active
+                                        p#legend-active.card-text.text-dark
                                     .col(style="padding:0.5rem")
                                         p.mb-1
                                             small.font-weight-light.mb-1 Recovered
@@ -137,6 +137,10 @@ block content
                                         p.mb-1
                                             small.font-weight-light.mb-1 Deaths
                                         p#legend-deaths.card-text.text-dark
+                                    .col(style="padding:0.5rem")
+                                        p.mb-1
+                                            small.font-weight-light.mb-1 Confirmed
+                                        p#legend-confirmed.card-text.text-dark
                                 p.card-text.float-right.mt-1
                                     small.text-muted#last-updated-legend.font-weight-light
 
@@ -145,8 +149,9 @@ block content
             .card-body
                 .row.justify-content-between
                     .col-md-8.col-sm-12
-                        p.mb-2 The cases in the below table gets updated in approximately 24hours. Last updated <span id="last-updated-datatable" class="text-dark">...</span>
-                    .col-md-4.col-sm-12.pb-2.text-right.pr-0.pl-0
+                        p.pb-4 The cases in the below table gets updated in approximately 24hours. Last updated 
+                            strong#last-updated-datatable.text-gray-700 ...
+                    .col-md-4.col-sm-12.pb-2.text-md-right.text-sm-left.pr-0.pl-0
                         p.mb-1
                             small
                                 strong New Cases: 

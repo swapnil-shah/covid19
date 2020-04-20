@@ -14,8 +14,6 @@ script(type="text/javascript").
                     createCustomHTMLContent("https://www.countryflags.io/"+country.code.toLowerCase()+"/shiny/32.png", country.latest_data.confirmed, country.latest_data.recovered, country.latest_data.deaths)
                 ]);
             });
-            
-            console.log("chartWorldData", chartWorldData)
         });
         google.charts.load('current', {
             packages: [ 'geochart' ]
@@ -37,7 +35,6 @@ script(type="text/javascript").
             dataWorld.addColumn('string', 'Name'); //
             dataWorld.addColumn('number', 'Confirmed'); //
             dataWorld.addColumn({'type': 'string', 'role': 'tooltip', 'p': {'html': true}}); //
-            //- dataWorld.addColumn('number', 'Deaths'); //
             dataWorld.addRows(chartWorldData);
             var optionsWorld = {
                 theme: 'maximized',
