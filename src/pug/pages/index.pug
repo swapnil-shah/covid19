@@ -57,6 +57,33 @@ append css
 
     include includes/world-map-js.pug
 
+    script.
+
+        let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+
+
+            // Fetch World Data
+            fetch('https://bing.com/covid/data', {
+                mode: 'cors',
+                method: 'GET',
+                headers: headers
+            })
+                .then((response) => {
+                console.log("response", response)
+                    
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('BAD HTTP');
+                    }
+                })
+                .then((jsonData) => {
+                    console.log('fillNewsCards -> jsonData', jsonData);
+                })
+                .catch((err) => {
+                    console.log('ERROR:', err.message);
+                });
 block content
     .page-header#chart-container
         #covidWorldChart
