@@ -3,12 +3,10 @@ let countryChartData = [];
 let countryLabelsDate = [];
 let countryChartDataPositive = [];
 let countryChartDataNegative = [];
-let countryChartDataDeaths = [];
 let stateData = [];
 let stateLabelsDate = [];
 let stateChartDataPositive = [];
 let stateChartDataNegative = [];
-let stateChartDataDeaths = [];
 
 let ctxDashboardLine = document.getElementById('myDashboardChart');
 let legendContainer = document.getElementById('legend-numbers');
@@ -16,25 +14,19 @@ let legendtotal = document.getElementById('legend-total');
 let legendpositive = document.getElementById('legend-positive');
 let legendNegative = document.getElementById('legend-negative');
 let legendUpdated = document.getElementById('last-updated-legend');
-let dataSet = (chartData, chartDataDeaths, chartDataNegative, chartDataPositive) => {
+let dataSet = (chartData, chartDataNegative, chartDataPositive) => {
 	return chartData.push(
-		{
-			label: 'Deaths',
-			data: chartDataDeaths.reverse(),
-			fill: false,
-			borderColor: '#C45851'
-		},
 		{
 			label: 'Negative',
 			data: chartDataNegative.reverse(),
-			fill: false,
-			borderColor: '#61C5B1'
+			backgroundColorHover: '#00ac69',
+			backgroundColor: '#3cba9f'
 		},
 		{
 			label: 'Positive',
 			data: chartDataPositive.reverse(),
-			fill: false,
-			borderColor: '#3F95CD'
+			backgroundColorHover: '#1f2d41',
+			backgroundColor: '#324765'
 		}
 	);
 };
@@ -54,12 +46,11 @@ fetch('https://covidtracking.com/api/v1/us/daily.json')
 				countryLabelsDate.push(formatYYYYMMDD(state.date));
 				countryChartDataPositive.push(state.positive);
 				countryChartDataNegative.push(state.negative);
-				countryChartDataDeaths.push(state.death);
 			});
-		dataSet(countryChartData, countryChartDataDeaths, countryChartDataPositive, countryChartDataNegative);
+		dataSet(countryChartData, countryChartDataPositive, countryChartDataNegative);
 
 		let myChart = new Chart(ctxCountryLine, {
-			type: 'line',
+			type: 'bar',
 			data: {
 				labels: countryLabelsDate.reverse(),
 				datasets: countryChartData
@@ -87,6 +78,14 @@ fetch('https://covidtracking.com/api/v1/us/daily.json')
 					footerFontStyle: 'normal',
 					footerFontColor: '#00000',
 					callbacks: {
+						footer: function(tooltipItems, data) {
+							var sum = 0;
+
+							tooltipItems.forEach(function(tooltipItem) {
+								sum += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+							});
+							return 'Confirmed: ' + sum.toLocaleString();
+						},
 						label: function(tooltipItem, data) {
 							return (
 								data.datasets[tooltipItem.datasetIndex].label +
@@ -99,6 +98,7 @@ fetch('https://covidtracking.com/api/v1/us/daily.json')
 				scales: {
 					xAxes: [
 						{
+							stacked: true,
 							ticks: {
 								maxTicksLimit: 20
 							}
@@ -106,6 +106,7 @@ fetch('https://covidtracking.com/api/v1/us/daily.json')
 					],
 					yAxes: [
 						{
+							stacked: true,
 							ticks: {
 								callback: function(value) {
 									return populationFormat(value);
@@ -147,7 +148,6 @@ fetch('https://covidtracking.com/api/v1/us/daily.json')
 			let stateLabelsDate = [];
 			let stateChartDataPositive = [];
 			let stateChartDataNegative = [];
-			let stateChartDataDeaths = [];
 			if (value === 'usa') {
 				legendContainer.classList.remove('d-flex');
 				legendContainer.classList.add('d-none');
@@ -177,10 +177,9 @@ fetch('https://covidtracking.com/api/v1/us/daily.json')
 								stateLabelsDate.push(formatYYYYMMDD(state.date));
 								stateChartDataPositive.push(state.positive);
 								stateChartDataNegative.push(state.negative);
-								stateChartDataDeaths.push(state.death);
 							});
 
-						dataSet(stateData, stateChartDataDeaths, stateChartDataPositive, stateChartDataNegative);
+						dataSet(stateData, stateChartDataPositive, stateChartDataNegative);
 						console.log('stateData', stateData);
 						myChart.data.datasets = stateData;
 						myChart.data.labels = stateLabelsDate.reverse();
