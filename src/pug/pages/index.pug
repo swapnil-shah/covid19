@@ -47,48 +47,17 @@ block config
             -o-animation: rotating 3s linear infinite;
             animation: rotating 3s linear infinite;
         }
-
-        circle {
-            stroke-width:0px;
-        }
 append css
     link(href='https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css', rel='stylesheet', crossorigin='anonymous')
     script(src='https://www.gstatic.com/charts/loader.js', type="text/javascript")
 
     include includes/world-map-js.pug
 
-    script.
-
-        let headers = new Headers();
-            headers.append('Content-Type', 'application/json');
-
-
-            // Fetch World Data
-            fetch('https://bing.com/covid/data', {
-                mode: 'cors',
-                method: 'GET',
-                headers: headers
-            })
-                .then((response) => {
-                console.log("response", response)
-                    
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error('BAD HTTP');
-                    }
-                })
-                .then((jsonData) => {
-                    console.log('fillNewsCards -> jsonData', jsonData);
-                })
-                .catch((err) => {
-                    console.log('ERROR:', err.message);
-                });
 block content
     .page-header#chart-container
         #covidWorldChart
     h1.geo-chart-title-wrapper
-        span.geo-chart-title.text-center
+        span.geo-chart-title.text-center.text-chart-world
             | COVID19 WORLD SPREAD DATA
             br
             span Tap/click on the marker for more information

@@ -147,7 +147,8 @@
 #chart-container {
 	height: 50vh;
 }
-#covidWorldChart {
+#covidWorldChart,
+#covidCountryChart {
 	height: 50vh;
 	width: 100%;
 	position: fixed;
@@ -158,14 +159,20 @@
 	height: 10rem;
 	width: 100%;
 	padding-top: 1.5rem;
-	background-color: #202327;
+	background-color: #212327;
 }
 .geo-chart-title {
 	font-size: 1.5rem;
 	font-weight: 700;
-	color: rgba(255, 135, 38, 0.8);
+
 	position: fixed;
 	width: 100%;
+}
+.text-chart-world {
+	color: rgba(255, 135, 38, 0.8);
+}
+.text-chart-country {
+	color: rgba(210, 26, 26, 0.7);
 }
 .geo-chart-title span {
 	font-size: 1rem;
@@ -197,7 +204,8 @@
 		box-shadow: none;
 		border: none;
 	}
-	#covidWorldChart {
+	#covidWorldChart,
+	#covidCountryChart {
 		padding-top: 0;
 	}
 	.geo-chart-title-wrapper {
@@ -339,9 +347,34 @@
 	}
 }
 .google-visualization-tooltip-item-list .google-visualization-tooltip-item:first-child {
-	margin: 1em 0em 0 0em !important;
+	margin: 0.5em 0.5em 0.5em 0 !important;
 }
 .google-visualization-tooltip-item {
 	margin: 0 0em 0.65em 0em !important;
-	padding: 0em 1em 0em 1em !important;
+	padding: 0em 0.5em 0em 0.5em !important;
+}
+.google-visualization-tooltip-item-list {
+	margin: 0.5em 0 0.5em 0;
+}
+.google-visualization-tooltip {
+	min-width: 150px;
+}
+
+circle {
+	stroke-width: 0px;
+}
+.google-visualization-tooltip {
+	background: black !important;
+	opacity: 0.9;
+	border: 1px solid rgba(210, 26, 26, 0.4) !important;
+	box-shadow: 0px 2px 2px 0px rgba(210, 26, 26, 0.4) !important;
+	-moz-box-shadow: 0px 2px 2px 0px rgba(210, 26, 26, 0.4) !important;
+	-webkit-box-shadow: 0px 2px 2px 0px rgba(210, 26, 26, 0.4) !important;
+	.google-visualization-tooltip-item-list {
+		.google-visualization-tooltip-item {
+			span {
+				color: #ffffff !important;
+			}
+		}
+	}
 }

@@ -1,0 +1,147 @@
+extends ../layouts/dashboard.pug
+
+block config
+    - var bodyClass = 'nav-fixed'
+    - var pageTitle = 'COVID19'
+    - var pageIcon = 'activity'
+    - var pageSummary = 'Example dashboard overview and content summary'
+    - var sidenavStyle = 'sidenav-light'
+    - var topnavStyle = 'navbar-light bg-white'
+    - var pageHeaderStyle = 'page-header-dark'
+    - var pageHeaderBackground = 'bg-gradient-primary-to-secondary'
+    - var footerStyle = 'footer-light'
+
+append css
+    //- link(href='https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css', rel='stylesheet', crossorigin='anonymous')
+    script(src='https://www.gstatic.com/charts/loader.js', type="text/javascript")
+    script.
+        let chartData = [];
+        fetch('https://covid19.mathdro.id/api/countries/usa/confirmed', { cache: 'no-cache' })
+            .then((states) => states.json())
+            .then((state) => {
+                state.forEach(function(province) {
+                    chartData.push([
+                        province.lat,
+                        province.long,
+                        province.admin2,
+                        province.confirmed,
+                        createCustomHTMLContent(province.confirmed, province.deaths)
+                    ]);
+                });
+            });
+        // .catch((error) => console.log('error', error));
+        google.charts.load('current', {
+            packages: [ 'geochart' ]
+        });
+
+        google.charts.setOnLoadCallback(drawMap);
+        function createCustomHTMLContent(confirmed = '', deaths = '') {
+            let output = '';
+            if (confirmed) {
+                output +=
+                    '<div><p style="margin-bottom:0.3rem"><b style="font-size:12px">Confirmed</b><br/>' +
+                    confirmed.toLocaleString() +
+                    '</p>';
+            }
+            if (deaths) {
+                output +=
+                    '<div><p style="margin-bottom:0.3rem"><b style="font-size:12px">Deaths</b><br/>' +
+                    deaths.toLocaleString() +
+                    '</p>';
+            }
+            return output;
+        }
+        // World Map
+        function drawMap() {
+            var mapData = new google.visualization.DataTable();
+            mapData.addColumn('number', 'Lat'); // Latitude Value
+            mapData.addColumn('number', 'Lon'); // Longitude Value
+            mapData.addColumn('string', 'Name'); //
+            mapData.addColumn('number', 'Confirmed'); //
+            mapData.addColumn({ type: 'string', role: 'tooltip', p: { html: true } });
+            mapData.addRows(chartData);
+            var options = {
+                region: 'US',
+                resolution: 'provinces' ,
+                displayMode: 'markers',
+                theme: 'maximized',
+                legend: 'none',
+                focusTarget: 'category',
+                tooltip: { isHtml: true },
+                backgroundColor: { fill: '#202327' },
+                datalessRegionColor: '#3B3B3B',
+                displayMode: 'markers',
+                markerOpacity: 0.4,
+                colorAxis: { colors: [ '#D21A1A', '#D21A1A' ] },
+                magnifyingGlass: {
+                    zoomFactor: 7.5
+                },
+                animation: {
+                    duration: 1000,
+                    easing: 'out'
+                }
+            };
+            var chart = new google.visualization.GeoChart(document.getElementById('covidCountryChart'));
+            chart.draw(mapData, options);
+        }
+    
+block content
+    .page-header#chart-container
+        #covidCountryChart
+    h1.geo-chart-title-wrapper
+        span.geo-chart-title.text-center.text-chart-country
+            | COVID19 USA SPREAD DATA
+            br
+            span Tap/click on the marker for more information
+    .container-fluid.mt-n5(style="z-index: 1050;")
+         .card.pb-2
+            .card-body  
+                //- Example card deck with image cap cards
+                .card-deck
+                    .card.mb-4
+                        img.card-img-top(src='assets/img/drawkit/color/drawkit-charts-and-graphs.svg', alt='...')
+                        .card-body
+                            h5.card-title.text-primary Interactive Charts
+                            p.card-text
+                                | The interactive charts in this theme are powered by Chart.js, a simple, yet flexible, JavaScript charting library for designers &amp; developers.
+                        a.card-footer.d-flex.align-items-center.justify-content-between(href='/charts.html')
+                            | View charts
+                            i(data-feather='arrow-right')
+                    .card.mb-4
+                        img.card-img-top(src='assets/img/drawkit/color/drawkit-developer-woman.svg', alt='...')
+                        .card-body
+                            h5.card-title.text-primary Documentation
+                            p.card-text
+                                | This theme includes code samples for each component, along with detailed documentation and usage instructions!
+                        a.card-footer.d-flex.align-items-center.justify-content-between(href='https://docs.startbootstrap.com/sb-admin-pro/')
+                            | View documentation
+                            i(data-feather='arrow-right')
+                    .card.mb-4
+                        img.card-img-top(src='assets/img/drawkit/color/drawkit-folder-man.svg', alt='...')
+                        .card-body
+                            h5.card-title.text-primary Pre-Built Pages
+                            p.card-text
+                                | A number of pre-built page examples and page layouts are included with this theme to make prototyping your next web application fast and efficient!
+                        a.card-footer.d-flex.align-items-center.justify-content-between(href='#!')
+                            | Explore pages
+                            i(data-feather='arrow-right')
+                    .card.mb-4
+                        img.card-img-top(src='assets/img/drawkit/color/drawkit-content-man.svg', alt='...')
+                        .card-body
+                            h5.card-title.text-primary Deep Customization
+                            p.card-text
+                                | Overried and extend the SCSS variables included with this project to deeply customize the theme to make it pefrectly fit your brand!
+                        a.card-footer.d-flex.align-items-center.justify-content-between(href='#!')
+                            | Learn more
+                            i(data-feather='arrow-right')
+                    include includes/datatables/datatable-country.pug 
+
+append scripts
+    //- Load Chart.js via CDN
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
+    //- Load custom Chart.js styling and demo data
+    //- Load dataTables via CDN
+    script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
+    script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
+    //- Load dataTables demo data
+    script(src='js/countries/us.js')

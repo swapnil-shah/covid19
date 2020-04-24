@@ -15,96 +15,95 @@ document.getElementById('usaStatistics').innerHTML = loader;
 
 // Fetch World Data
 
-fetch(API_URL_WORLD_SUMMARY, { cache: 'no-cache' }).then((response) => response.json()).then((countries) => {
-	let output = '';
-	output += `<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-					<div class="font-weight-bold pr-3">Total Cases</div>
-					<div class="text-primary font-weight-bold lead">${countries.cases.toLocaleString()}</div>
-				</div>
-			
-				<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-					<div class="font-weight-bold pr-3">Today's Cases</div>
-					<div class="text-primary font-weight-bold lead">${countries.todayCases.toLocaleString()}</div>
-				</div>
-			
-				<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-					<div class="font-weight-bold pr-3">Total Deaths</div>
-					<div class="text-primary font-weight-bold lead">${countries.deaths.toLocaleString()}</div>
-				</div>
-			
-				<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-					<div class="font-weight-bold pr-3">Today's Deaths</div>
-					<div class="text-primary font-weight-bold lead">${countries.cases.toLocaleString()}</div>
-				</div>
-			
-				<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-					<div class="font-weight-bold pr-3">Recovered</div>
-					<div class="text-primary font-weight-bold lead">${countries.recovered.toLocaleString()}</div>
-				</div>
-			
-				<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-					<div class="font-weight-bold pr-3">Active</div>
-					<div class="text-primary font-weight-bold lead">${countries.active.toLocaleString()}</div>
-				</div>
-			
-				<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-					<div class="font-weight-bold pr-3">Critical</div>
-					<div class="text-primary font-weight-bold lead">${countries.critical.toLocaleString()}</div>
-				</div>
-			
-				<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-					<div class="font-weight-bold pr-3">Affected Countries</div>
-					<div class="text-primary font-weight-bold lead">${countries.affectedCountries.toLocaleString()}</div>
-				</div>`;
-	document.getElementById('worldStatistics').innerHTML = output;
-});
-fetch(API_URL_USA_SUMMARY, { cache: 'no-cache' }).then((response) => response.json()).then((states) => {
-	let output = '';
-	output += `<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-					<div class="font-weight-bold pr-3">Total Cases</div>
-					<div class="text-primary font-weight-bold lead">${states[0].positive.toLocaleString()}</div>
-				</div>
-				<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-					<div class="font-weight-bold pr-3">Negative Cases</div>
-					<div class="text-primary font-weight-bold lead">${states[0].negative.toLocaleString()}</div>
-				</div>
-				<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-					<div class="font-weight-bold pr-3">Deaths</div>
-					<div class="text-primary font-weight-bold lead">${states[0].death.toLocaleString()}</div>
-				</div>
-				<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-					<div class="font-weight-bold pr-3">Recovered</div>
-					<div class="text-primary font-weight-bold lead">${states[0].recovered.toLocaleString()}</div>
-				</div>
-				<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-					<div class="font-weight-bold pr-3">Active</div>
-					<div class="text-primary font-weight-bold lead">${states[0].hospitalized.toLocaleString()}</div>
-				</div>`;
-	document.getElementById('usaStatistics').innerHTML = output;
-});
+// fetch(API_URL_WORLD_SUMMARY, { cache: 'no-cache' }).then((response) => response.json()).then((countries) => {
+// 	let output = '';
+// 	output += `<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+// 					<div class="font-weight-bold pr-3">Total Cases</div>
+// 					<div class="text-primary font-weight-bold lead">${countries.cases.toLocaleString()}</div>
+// 				</div>
+
+// 				<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+// 					<div class="font-weight-bold pr-3">Today's Cases</div>
+// 					<div class="text-primary font-weight-bold lead">${countries.todayCases.toLocaleString()}</div>
+// 				</div>
+
+// 				<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+// 					<div class="font-weight-bold pr-3">Total Deaths</div>
+// 					<div class="text-primary font-weight-bold lead">${countries.deaths.toLocaleString()}</div>
+// 				</div>
+
+// 				<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+// 					<div class="font-weight-bold pr-3">Today's Deaths</div>
+// 					<div class="text-primary font-weight-bold lead">${countries.cases.toLocaleString()}</div>
+// 				</div>
+
+// 				<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+// 					<div class="font-weight-bold pr-3">Recovered</div>
+// 					<div class="text-primary font-weight-bold lead">${countries.recovered.toLocaleString()}</div>
+// 				</div>
+
+// 				<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+// 					<div class="font-weight-bold pr-3">Active</div>
+// 					<div class="text-primary font-weight-bold lead">${countries.active.toLocaleString()}</div>
+// 				</div>
+
+// 				<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+// 					<div class="font-weight-bold pr-3">Critical</div>
+// 					<div class="text-primary font-weight-bold lead">${countries.critical.toLocaleString()}</div>
+// 				</div>
+
+// 				<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+// 					<div class="font-weight-bold pr-3">Affected Countries</div>
+// 					<div class="text-primary font-weight-bold lead">${countries.affectedCountries.toLocaleString()}</div>
+// 				</div>`;
+// 	document.getElementById('worldStatistics').innerHTML = output;
+// });
+// fetch(API_URL_USA_SUMMARY, { cache: 'no-cache' }).then((response) => response.json()).then((states) => {
+// 	let output = '';
+// 	output += `<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+// 					<div class="font-weight-bold pr-3">Total Cases</div>
+// 					<div class="text-primary font-weight-bold lead">${states[0].positive.toLocaleString()}</div>
+// 				</div>
+// 				<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+// 					<div class="font-weight-bold pr-3">Negative Cases</div>
+// 					<div class="text-primary font-weight-bold lead">${states[0].negative.toLocaleString()}</div>
+// 				</div>
+// 				<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+// 					<div class="font-weight-bold pr-3">Deaths</div>
+// 					<div class="text-primary font-weight-bold lead">${states[0].death.toLocaleString()}</div>
+// 				</div>
+// 				<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+// 					<div class="font-weight-bold pr-3">Recovered</div>
+// 					<div class="text-primary font-weight-bold lead">${states[0].recovered.toLocaleString()}</div>
+// 				</div>
+// 				<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+// 					<div class="font-weight-bold pr-3">Active</div>
+// 					<div class="text-primary font-weight-bold lead">${states[0].hospitalized.toLocaleString()}</div>
+// 				</div>`;
+// 	document.getElementById('usaStatistics').innerHTML = output;
+// });
 
 // Fetch World Data
-fetch(API_URL_COUNTRIES, { cache: 'no-cache' }).then((response) => response.json()).then((countries) => {
-	countries
-		.slice(0, 5)
-		.map((item) => {
-			return item;
-		})
-		.forEach(function(country) {});
-	countries.forEach((country) => {
-		chartWorldData.push([
-			country.countryInfo.lat,
-			country.countryInfo.long,
-			country.country,
-			// country.cases,
-			country.cases
-		]);
-	});
-});
+// fetch(API_URL_COUNTRIES, { cache: 'no-cache' }).then((response) => response.json()).then((countries) => {
+// 	countries.slice(0, 5).map((item) => {
+// 		return item;
+// 	});
+// 	countries.forEach((country) => {
+// 		chartWorldData.push([
+// 			country.countryInfo.lat,
+// 			country.countryInfo.long,
+// 			country.country,
+// 			// country.cases,
+// 			country.cases
+// 		]);
+// 	});
+// });
 // Fetch USA Data
 fetch(API_URL_USA_STATES, { cache: 'no-cache' })
 	.then((response) => response.json())
 	.then((states) => {
+		console.log('states', states);
+
 		states.forEach((state) => {
 			chartUsaData.push([ state.state, state.positive ]);
 		});
