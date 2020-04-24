@@ -4,6 +4,12 @@ function formatDate(date) {
 	return new Intl.DateTimeFormat('en-US').format(dateObj);
 }
 
+function formatYYYYMMDD(date) {
+	let year = date.toString().substring(0, 4);
+	let month = date.toString().substring(4, 6);
+	let day = date.toString().substring(6, 8);
+	return `${month}/${day}/${year}`;
+}
 let formatDateToString = (function() {
 	return function(str) {
 		let daysNames = [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ],
