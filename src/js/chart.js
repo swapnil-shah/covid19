@@ -150,7 +150,7 @@ function drawMap() {
 		}
 	};
 
-	var chartWorld = new google.visualization.GeoChart(document.getElementById('covidWorldChart'));
+	var chartWorld = new google.visualization.GeoChart(document.getElementById('covidWorldMap'));
 	var chartUsa = new google.visualization.GeoChart(document.getElementById('covidUsaChart'));
 	chartWorld.draw(dataWorld, optionsWorld);
 	chartUsa.draw(dataUsa, optionsUsa);

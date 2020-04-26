@@ -22171,7 +22171,7 @@ pre[class*=language-] {
 	height: 50vh;
 }
 
-#covidWorldChart {
+#covidWorldMap {
 	height: 50vh;
 	width: 100%;
 	position: fixed;
@@ -22231,7 +22231,7 @@ pre[class*=language-] {
 		border: none;
 	}
 
-	#covidWorldChart {
+	#covidWorldMap {
 		padding-top: 0;
 	}
 

@@ -144,39 +144,6 @@
 	left: 6rem;
 	z-index: 999;
 }
-#chart-container {
-	height: 50vh;
-}
-#covidWorldChart,
-#covidCountryChart {
-	height: 50vh;
-	width: 100%;
-	position: fixed;
-	padding: 1.5rem 0.25rem 0rem 0.25rem;
-	background-color: #1f2327;
-}
-.geo-chart-title-wrapper {
-	height: 10rem;
-	width: 100%;
-	padding-top: 1.5rem;
-	background-color: #212327;
-}
-.geo-chart-title {
-	font-size: 1.5rem;
-	font-weight: 700;
-
-	position: fixed;
-	width: 100%;
-}
-.text-chart-world {
-	color: rgba(255, 135, 38, 0.8);
-}
-.text-chart-country {
-	color: rgba(210, 26, 26, 0.7);
-}
-.geo-chart-title span {
-	font-size: 1rem;
-}
 @media only screen and (max-width: 600px) {
 	body {
 		background-color: #1f2227;
@@ -194,9 +161,7 @@
 		padding-right: 0rem;
 		overflow: hidden;
 	}
-	#chart-container {
-		padding-top: 0;
-	}
+
 	#card-legend {
 		position: relative;
 		top: 0;
@@ -204,26 +169,15 @@
 		box-shadow: none;
 		border: none;
 	}
-	#covidWorldChart,
-	#covidCountryChart {
-		padding-top: 0;
-	}
-	.geo-chart-title-wrapper {
-		padding: 0;
-	}
-	.geo-chart-title {
-		font-size: 1rem;
-	}
-
-	.geo-chart-title span {
-		font-size: 0.8rem;
-	}
 	.footer .row.justify-content-around {
 		text-align: center;
 
 		a {
 			padding: 10px 0;
 		}
+	}
+	.map-info {
+		margin-right: 10px !important;
 	}
 }
 
@@ -377,4 +331,23 @@ circle {
 			}
 		}
 	}
+}
+#covidWorldMap,
+#covidCountryMap,
+.leaflet-control-attribution {
+	background-color: #191a1a !important;
+}
+.map-info {
+	padding: 6px 8px;
+	font: '14px/16px Nunito, Arial, Helvetica, sans-serif';
+	background: white !important;
+	background: #191a1a !important;
+	border-radius: 5px;
+	margin-bottom: 0 !important;
+	margin-right: 0 !important;
+}
+.map-info h4,
+.leaflet-control-attribution {
+	margin: 0 0 5px;
+	color: #fff !important;
 }

@@ -49,25 +49,18 @@ block config
         }
 append css
     link(href='https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css', rel='stylesheet', crossorigin='anonymous')
-    script(src='https://www.gstatic.com/charts/loader.js', type="text/javascript")
-
+    script(src='js/config.js', type="text/javascript")
     include includes/world-map-js.pug
 
 block content
-    .page-header#chart-container
-        #covidWorldChart
-    h1.geo-chart-title-wrapper
-        span.geo-chart-title.text-center.text-chart-world
-            | COVID19 WORLD SPREAD DATA
-            br
-            span Tap/click on the marker for more information
-
-    .container-fluid.mt-n5(style="z-index: 1050;")
+       
+    .container-fluid
         .card.pb-2
             .card-header.bg-light.text-dark
                 h3 World Overview
-            .card-body        
-                .row.justify-content-md-center.pb-5
+            .card-body
+                #covidWorldMap(style="height:520px")    
+                .row.justify-content-md-center.pb-5.pt-5
                     //- .col-sm-12
                     //-     h1.card-header Worldwide
                     .col-md-3.col-sm-6.mb-3
