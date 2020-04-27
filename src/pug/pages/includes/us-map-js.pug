@@ -3,7 +3,7 @@ script.
         .then((states) => states.json())
         .then((data) => {
             var mymap = L.map('covidCountryMap').setView([ 37.8, -96 ], 3);
-            let mapboxAccessToken = config.API_KET_MAPBOX;mapbox://styles/mapbox/
+            let mapboxAccessToken = API_KET_MAPBOX;
             L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
                 id: 'mapbox/dark-v10',
                 attribution:
@@ -38,7 +38,7 @@ script.
                 var latlng = L.latLng({ lat: points.lat, lng: points.long });
                 var circle = L.circleMarker(latlng, {
                     fillOpacity: 0.5,
-                    radius: 5,
+                    radius: 3,
                     stroke: false,
                     fillColor:'#ff8725',
                     renderer: myRenderer
@@ -50,7 +50,7 @@ script.
 
             info.onAdd = function (map) {
                 this._div = L.DomUtil.create('div', 'map-info'); // create a div with a class "info"
-               this._div.innerHTML =  '<h4>COVID19 WORLD SPREAD DATA</h4><p>Tap/hover on the marker for more information</p>';
+               this._div.innerHTML =  '<h4>COVID19 USA SPREAD DATA</h4><p>Tap/hover on the marker for more information</p>';
                return this._div
             };
             info.addTo(mymap);
