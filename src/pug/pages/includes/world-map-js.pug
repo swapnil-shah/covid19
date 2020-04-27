@@ -3,7 +3,7 @@ script(type="text/javascript").
         .then((response) => response.json())
         .then((countries) => {
             var mymap = L.map('covidWorldMap').setView([20, 0], 2);
-            let mapboxAccessToken = API_KET_MAPBOX;
+            let mapboxAccessToken = config.API_KET_MAPBOX;
             L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
                 id: 'mapbox/dark-v10',
                 attribution:

@@ -1,9 +1,65 @@
+function pieLegend(tot, pos, neg, hosp, ven, icu, hospCurrent, venCurrent, icuCurrent) {
+	let pieNumbersContainer = '';
+	if (tot) {
+		pieNumbersContainer += `<h6 class="list-group-item list-group-item text-dark card-text mt-2 mb-0">
+		<span class="text-gray-600 mr-1">Total Test Results </span>${tot.toLocaleString()}</h6>`;
+	}
+	if (pos) {
+		pieNumbersContainer += `<div class="list-group-item list-group-item text-dark card-text"><span class="legend-marker mr-1 ml-2 shakespeare"></span>
+		<span class="text-muted mr-1">Positive </span>${pos.toLocaleString()}</div>`;
+	}
+	if (neg) {
+		pieNumbersContainer += `<div class="list-group-item list-group-item text-dark card-text"><span class="legend-marker mr-1 ml-2 keppel"></span>
+		<span class="text-muted mr-1">Negative </span>${neg.toLocaleString()}</div>`;
+	}
+	if (hosp) {
+		pieNumbersContainer += `<h6 class="list-group-item list-group-item text-dark card-text mt-2 mb-0">
+		<span class="text-gray-600 mr-1">Hospitalized Cumulative </span>${hosp.toLocaleString()}</h6>`;
+	}
+	if (hospCurrent) {
+		pieNumbersContainer += `<div class="list-group-item list-group-item text-dark card-text"><span class="legend-marker mr-1 ml-2 tuatara"></span>
+		<span class="text-muted mr-1">Hospitalized Currently </span>${hospCurrent.toLocaleString()}</div>`;
+	}
+	if (ven) {
+		pieNumbersContainer += `<h6 class="list-group-item list-group-item text-dark card-text mt-2 mb-0">
+		<span class="text-gray-600 mr-1">On Ventilator Cumulative </span>${ven.toLocaleString()}</h6>`;
+	}
+	if (venCurrent) {
+		pieNumbersContainer += `<div class="list-group-item list-group-item text-dark card-text"><span class="legend-marker mr-1 ml-2 yellow-orange"></span>
+		<span class="text-muted mr-1">On Ventilator Currently </span>${venCurrent.toLocaleString()}</div>`;
+	}
+	if (icu) {
+		pieNumbersContainer += `<h6 class="list-group-item list-group-item text-dark card-text mt-2 mb-0">
+		<span class="text-gray-600 mr-1">In ICU Cumulative </span>${icu.toLocaleString()}</h6>`;
+	}
+	if (icuCurrent) {
+		pieNumbersContainer += `<div class="list-group-item list-group-item text-dark card-text"><span class="legend-marker mr-1 ml-2 wild-watermelon"></span>
+		<span class="text-muted mr-1">In ICU Currently </span>${icuCurrent.toLocaleString()}</div>`;
+	}
+	return pieNumbersContainer;
+}
 $(document).ready(function() {
 	//Building pie chart
 	// https://covidtracking.com/api/v1/states/ny/current.json
 	fetch('https://covidtracking.com/api/v1/us/current.json').then((response) => response.json()).then(function(state) {
 		var ctxTotalCases = document.getElementById('pie-chart-total-cases');
 		var ctxhospitliazed = document.getElementById('pie-chart-hospitliazed');
+		let lastUpdatedPie = document.getElementById('last-updated-pie');
+		let pieNumberContainer = document.getElementById('pie-numbers');
+		let lastUpdatedHtmlUs = `Last updated ${timeDifference(state[0].lastModified)}`;
+		let usPieNumbers = pieLegend(
+			state[0].totalTestResults,
+			state[0].positive,
+			state[0].negative,
+			state[0].hospitalizedCumulative,
+			state[0].hospitalizedCurrently,
+			state[0].inIcuCumulative,
+			state[0].inIcuCurrently,
+			state[0].onVentilatorCumulative,
+			state[0].onVentilatorCurrently
+		);
+		pieNumberContainer.innerHTML = usPieNumbers;
+		lastUpdatedPie.innerHTML = lastUpdatedHtmlUs;
 		var usaDataTotal = [
 			{
 				data: [ state[0].positive, state[0].negative ],
@@ -12,8 +68,8 @@ $(document).ready(function() {
 		];
 		var usaDataHospitalize = [
 			{
-				data: [ state[0].hospitalizedCurrently, state[0].inIcuCurrently, state[0].onVentilatorCurrently ],
-				backgroundColor: [ '#FF6385', '#FF9F40', '#FFCD56' ]
+				data: [ state[0].inIcuCurrently, state[0].onVentilatorCurrently ],
+				backgroundColor: [ '#FF6385', '#FF9F40' ]
 			}
 		];
 		var myPieChartTotalCases = new Chart(ctxTotalCases, {
@@ -24,6 +80,11 @@ $(document).ready(function() {
 			},
 			options: {
 				maintainAspectRatio: false,
+				responsive: true,
+				title: {
+					display: true,
+					text: 'Total Cases'
+				},
 				tooltips: {
 					backgroundColor: 'rgb(255,255,255)',
 					bodyFontColor: '#858796',
@@ -57,11 +118,16 @@ $(document).ready(function() {
 		var myPieChartHospitliazed = new Chart(ctxhospitliazed, {
 			type: 'pie',
 			data: {
-				labels: [ 'Hospitalized Currently', 'In ICU Currently', 'On Ventilator Currently' ],
+				labels: [ 'In ICU Currently', 'On Ventilator Currently' ],
 				datasets: usaDataHospitalize
 			},
 			options: {
 				maintainAspectRatio: false,
+				responsive: true,
+				title: {
+					display: true,
+					text: 'Hospitalized cases'
+				},
 				tooltips: {
 					backgroundColor: 'rgb(255,255,255)',
 					bodyFontColor: '#858796',
@@ -94,7 +160,8 @@ $(document).ready(function() {
 		$('#selectRegion').on('change', function() {
 			let value = $(this).val();
 			if (value === 'usa') {
-				console.log(usaDataTotal);
+				lastUpdatedPie.innerHTML = lastUpdatedHtmlUs;
+				pieNumberContainer.innerHTML = usPieNumbers;
 				myPieChartTotalCases.data.datasets = usaDataTotal;
 				myPieChartTotalCases.update();
 				myPieChartTotalCases.options.animation.duration = 1000;
@@ -111,6 +178,15 @@ $(document).ready(function() {
 						}
 					})
 					.then((state) => {
+						pieNumberContainer.innerHTML = pieLegend(
+							state.totalTestResults,
+							state.positive,
+							state.negative,
+							state.hospitalizedCurrently,
+							state.inIcuCurrently,
+							state.onVentilatorCurrently
+						);
+						lastUpdatedPie.innerHTML = `Last updated ${timeDifference(state.dateChecked)}`;
 						myPieChartTotalCases.data.datasets = [
 							{
 								data: [ state.positive, state.negative ],
@@ -119,15 +195,11 @@ $(document).ready(function() {
 						];
 						myPieChartTotalCases.update();
 						myPieChartTotalCases.options.animation.duration = 1000;
-						if (state.hospitalizedCurrently && state.inIcuCurrently && state.onVentilatorCurrently) {
+						if (state.inIcuCurrently && state.onVentilatorCurrently) {
 							myPieChartHospitliazed.data.datasets = [
 								{
-									data: [
-										state.hospitalizedCurrently,
-										state.inIcuCurrently,
-										state.onVentilatorCurrently
-									],
-									backgroundColor: [ '#FF6385', '#FF9F40', '#FFCD56' ]
+									data: [ state.inIcuCurrently, state.onVentilatorCurrently ],
+									backgroundColor: [ '#FF6385', '#FF9F40', '#8e5ea2' ]
 								}
 							];
 						} else {
@@ -206,18 +278,28 @@ $(document).ready(function() {
 							if (type === 'type' || type === 'sort') {
 								return data;
 							}
-							return `${data.toLocaleString()}<p class="text-muted small">Total tested: <span class="text-body">${row.totalTestResults.toLocaleString()}</span></p><p class="text-muted small">Negative: <span class="text-body">${row.negative.toLocaleString()}</span></p>`;
+							return data ? data.toLocaleString() : '-';
 						}
 					},
 					{
 						title: 'Recovered',
 						data: 'recovered',
-						render: $.fn.dataTable.render.number(',')
+						render: function(data, type, row) {
+							if (type === 'type' || type === 'sort') {
+								return data;
+							}
+							return data ? data.toLocaleString() : '-';
+						}
 					},
 					{
 						title: 'Death',
 						data: 'death',
-						render: $.fn.dataTable.render.number(',')
+						render: function(data, type, row) {
+							if (type === 'type' || type === 'sort') {
+								return data;
+							}
+							return data ? data.toLocaleString() : '-';
+						}
 					}
 				],
 				order: [ [ 1, 'desc' ] ]
