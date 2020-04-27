@@ -112,6 +112,9 @@
 			color: fade-out($white, 0.25);
 		}
 	}
+	.small {
+		margin-bottom: 5px;
+	}
 }
 
 div.dataTables_wrapper div.dataTables_paginate ul.pagination {
