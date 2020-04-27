@@ -11,14 +11,15 @@ block config
     - var pageHeaderBackground = 'bg-gradient-primary-to-secondary'
     - var footerStyle = 'footer-light'
 
-    script(src='js/config.js', type="text/javascript")
     include includes/us-map-js.pug
     
 append css
     link(href='https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css', rel='stylesheet', crossorigin='anonymous')
 block content
-    .container-fluid
-        .card.pb-2
+    include includes/page-header
+    .container-fluid.mt-n10
+        .card.mb-4
+            .card-header USA Map
             .card-body  
                 #covidCountryMap(style="height:520px")
         .row
@@ -39,12 +40,22 @@ block content
                                 .select(style="width:20rem")
                                     select#selectRegion
                                         option(value="usa" selected) USA
-
-                    .card-footer.small.text-muted Updated yesterday at 11:59 PM
+                                #pie-numbers
+                                    .list-group.list-group-flush.small
+                                        .list-group-item.list-group-item.list-group-item-action
+                                            p.text-dark.card-text
+                                                span.font-weight-light.mr-1 Cases
+                                                | 455,154,
+                                        
+                    .card-footer.small.text-muted.justify-content-between.d-flex
+                        #last-updated-pie
+                        a(href="https://covidtracking.com/" target="_blank" style="text-decoration:underline")
+                                    | Data source 
+                                    i.fas.fa-external-link-alt.mr-1  
                 //- Example card deck with image cap cards
+            .col-lg-4
                 .card-deck
                     .card.mb-4
-                        img.card-img-top(src='assets/img/drawkit/color/drawkit-charts-and-graphs.svg', alt='...')
                         .card-body
                             h5.card-title.text-primary Interactive Charts
                             p.card-text
@@ -52,34 +63,13 @@ block content
                         a.card-footer.d-flex.align-items-center.justify-content-between(href='/charts.html')
                             | View charts
                             i(data-feather='arrow-right')
-                    .card.mb-4
-                        img.card-img-top(src='assets/img/drawkit/color/drawkit-developer-woman.svg', alt='...')
-                        .card-body
-                            h5.card-title.text-primary Documentation
-                            p.card-text
-                                | This theme includes code samples for each component, along with detailed documentation and usage instructions!
-                        a.card-footer.d-flex.align-items-center.justify-content-between(href='https://docs.startbootstrap.com/sb-admin-pro/')
-                            | View documentation
-                            i(data-feather='arrow-right')
-                    .card.mb-4
-                        img.card-img-top(src='assets/img/drawkit/color/drawkit-folder-man.svg', alt='...')
-                        .card-body
-                            h5.card-title.text-primary Pre-Built Pages
-                            p.card-text
-                                | A number of pre-built page examples and page layouts are included with this theme to make prototyping your next web application fast and efficient!
-                        a.card-footer.d-flex.align-items-center.justify-content-between(href='#!')
-                            | Explore pages
-                            i(data-feather='arrow-right')
-                    .card.mb-4
-                        img.card-img-top(src='assets/img/drawkit/color/drawkit-content-man.svg', alt='...')
-                        .card-body
-                            h5.card-title.text-primary Deep Customization
-                            p.card-text
-                                | Overried and extend the SCSS variables included with this project to deeply customize the theme to make it pefrectly fit your brand!
-                        a.card-footer.d-flex.align-items-center.justify-content-between(href='#!')
-                            | Learn more
-                            i(data-feather='arrow-right')
-                    include includes/datatables/datatable-country.pug 
+            .col-sm-12
+                .card.pb-2
+                    .card-body  
+                        include includes/datatables/datatable-country.pug 
+                        a.float-right(href="https://covidtracking.com/" target="_blank" style="text-decoration:underline")
+                                    | Data source 
+                                    i.fas.fa-external-link-alt.mr-1
 
 append scripts
     //- Load Chart.js via CDN
