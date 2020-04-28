@@ -43,7 +43,7 @@ fillNewsCards = () => {
 	fetch(newsUri, {
 		headers: {
 			'Cache-Control': 'no-cache',
-			'Subscription-Key': API_KET_SMARTTABLE
+			'Subscription-Key': process.env.API_KET_SMARTTABLE
 		}
 	})
 		.then((response) => {
@@ -410,7 +410,7 @@ $(document).ready(function() {
 		fetch(newsUri, {
 			headers: {
 				'Cache-Control': 'no-cache',
-				'Subscription-Key': API_KET_SMARTTABLE
+				'Subscription-Key': process.env.API_KET_SMARTTABLE
 			}
 		})
 			.then((response) => {
