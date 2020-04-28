@@ -8,7 +8,7 @@ let newsReq = new Request(newsUri, {
 	mode: 'cors'
 });
 //Dasboad Table
-fillNewsCards = () => {
+let fillNewsCards = () => {
 	fetch(newsReq, {
 		headers: {
 			'Cache-Control': 'no-cache',
