@@ -1,3 +1,4 @@
+require('dotenv').config();
 const newsUri = 'https://api.smartable.ai/coronavirus/news/US'; //https://api.smartable.ai/coronavirus/news/:location
 let header = new Headers();
 header.append('Accept', 'application/json');
@@ -12,7 +13,7 @@ let fillNewsCards = () => {
 	fetch(newsReq, {
 		headers: {
 			'Cache-Control': 'no-cache',
-			'Subscription-Key': API_KET_SMARTTABLE
+			'Subscription-Key': process.env.API_KET_SMARTTABLE
 		}
 	})
 		.then((response) => {

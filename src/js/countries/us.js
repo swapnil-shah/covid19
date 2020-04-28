@@ -1,5 +1,4 @@
-console.log('process.env.API_KET_SMARTTABLE', process.env.API_KET_SMARTTABLE);
-console.log('API_KET_SMARTTABLE', API_KET_SMARTTABLE);
+require('dotenv').config();
 function pieLegend(tot, pos, neg, hosp, ven, icu, hospCurrent, venCurrent, icuCurrent) {
 	let pieNumbersContainer = '';
 	if (tot) {
@@ -412,7 +411,7 @@ $(document).ready(function() {
 		fetch(newsUri, {
 			headers: {
 				'Cache-Control': 'no-cache',
-				'Subscription-Key': API_KET_SMARTTABLE
+				'Subscription-Key': process.env.API_KET_SMARTTABLE
 			}
 		})
 			.then((response) => {
