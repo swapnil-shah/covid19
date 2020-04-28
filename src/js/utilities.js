@@ -84,7 +84,7 @@ function populationFormat(labelValue) {
 				: Math.abs(Number(labelValue));
 }
 function acronymToFullName(acronym) {
-	state = {
+	let state = {
 		AZ: 'Arizona',
 		AL: 'Alabama',
 		AK: 'Alaska',

@@ -1,3 +1,5 @@
+console.log('process.env.API_KET_SMARTTABLE', process.env.API_KET_SMARTTABLE);
+console.log('API_KET_SMARTTABLE', API_KET_SMARTTABLE);
 function pieLegend(tot, pos, neg, hosp, ven, icu, hospCurrent, venCurrent, icuCurrent) {
 	let pieNumbersContainer = '';
 	if (tot) {
@@ -43,7 +45,7 @@ let fillNewsCards = () => {
 	fetch(newsUri, {
 		headers: {
 			'Cache-Control': 'no-cache',
-			'Subscription-Key': API_KET_SMARTTABLE
+			'Subscription-Key': process.env.API_KET_SMARTTABLE
 		}
 	})
 		.then((response) => {
