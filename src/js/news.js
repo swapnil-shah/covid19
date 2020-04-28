@@ -1,4 +1,3 @@
-require('dotenv').config();
 const newsUri = 'https://api.smartable.ai/coronavirus/news/US'; //https://api.smartable.ai/coronavirus/news/:location
 let header = new Headers();
 header.append('Accept', 'application/json');

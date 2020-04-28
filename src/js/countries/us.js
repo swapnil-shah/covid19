@@ -1,4 +1,3 @@
-require('dotenv').config();
 function pieLegend(tot, pos, neg, hosp, ven, icu, hospCurrent, venCurrent, icuCurrent) {
 	let pieNumbersContainer = '';
 	if (tot) {

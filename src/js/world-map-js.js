@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 console.log('process.env.API_KET_MAPBOX', process.env.API_KET_MAPBOX);
 fetch('https://corona-api.com/countries', { cache: 'no-cache' })
 	.then((response) => response.json())

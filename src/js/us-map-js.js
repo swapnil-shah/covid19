@@ -1,4 +1,3 @@
-require('dotenv').config();
 fetch('https://covid19.mathdro.id/api/countries/usa/confirmed', { cache: 'no-cache' })
 	.then((states) => states.json())
 	.then((data) => {
