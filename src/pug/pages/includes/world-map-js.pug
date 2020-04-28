@@ -37,7 +37,7 @@ script(type="text/javascript").
                 var latlng = L.latLng({ lat: points.coordinates.latitude, lng: points.coordinates.longitude });
                 var circle = L.circleMarker(latlng, {
                     fillOpacity: 0.5,
-                    radius: Math.sqrt(points.latest_data.confirmed)*0.04,
+                    radius: Math.sqrt(points.latest_data.confirmed)*0.03,
                     stroke: false,
                     fillColor:'#d11a1a',
                     renderer: myRenderer
@@ -46,5 +46,14 @@ script(type="text/javascript").
                 .bindTooltip(htmlPopup(points.name, points.code, points.latest_data.confirmed, points.latest_data.recovered, points.latest_data.deaths));
             }
                 });
+
+            var info = L.control({position: 'bottomright'});
+
+            info.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'map-info'); // create a div with a class "info"
+                this._div.innerHTML =  '<h4>COVID19 WORLD SPREAD DATA</h4><p>Tap/hover on the marker for more information</p>';
+                return this._div
+            };
+            info.addTo(mymap);
 
         });

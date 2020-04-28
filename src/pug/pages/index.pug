@@ -2,7 +2,7 @@ extends ../layouts/dashboard.pug
 
 block config
     - var bodyClass = 'nav-fixed'
-    - var pageTitle = 'COVID19 Dashboard'
+    - var pageTitle = 'COVID19 World Dashboard'
     - var pageIcon = 'filter'
     - var pageSummary = ''
     - var sidenavStyle = 'sidenav-light'
@@ -49,11 +49,10 @@ block config
         }
 append css
     link(href='https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css', rel='stylesheet', crossorigin='anonymous')
-    script(src='js/config.js', type="text/javascript")
     include includes/world-map-js.pug
 
 block content
-       
+    include includes/page-header
     .container-fluid
         .card.pb-2
             .card-header.bg-light.text-dark

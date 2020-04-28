@@ -38,6 +38,98 @@ function pieLegend(tot, pos, neg, hosp, ven, icu, hospCurrent, venCurrent, icuCu
 	}
 	return pieNumbersContainer;
 }
+const newsUri = 'https://api.smartable.ai/coronavirus/news/US';
+fillNewsCards = () => {
+	fetch(newsUri, {
+		headers: {
+			'Cache-Control': 'no-cache',
+			'Subscription-Key': config.API_KET_SMARTTABLE
+		}
+	})
+		.then((response) => {
+			if (response.ok) {
+				return response.json();
+			} else {
+				throw new Error('BAD HTTP');
+			}
+		})
+		.then((jsonData) => {
+			getNewsResults(jsonData);
+		})
+		.catch((err) => {
+			console.log('ERROR:', err.message);
+		});
+};
+fillTravelNotices = () => {
+	fetch('https://covid19-server.chrismichael.now.sh/api/v1/TravelHealthNotices', { cache: 'no-cache' })
+		.then((response) => {
+			if (response.ok) {
+				return response.json();
+			} else {
+				throw new Error('BAD HTTP');
+			}
+		})
+		.then((notices) => {
+			let output = '';
+			notices.data.travelHealthNotices.alert.forEach(function(notice) {
+				output += `<div class="list-group-item list-group-item-action border-top-0 border-bottom-0 border-right-0 border-left-lg border-red my-1">
+							<h6>${notice.title}</h6>
+							<p class="mb-0">${notice.summary}</p>
+							<p class="small text-muted float-right">${notice.date}</p>
+						</div>`;
+			});
+			notices.data.travelHealthNotices.warning.forEach(function(notice) {
+				output += `<div class="list-group-item list-group-item-action border-top-0 border-bottom-0 border-right-0 border-left-lg border-yellow my-1">
+							<h6>${notice.title}</h6>
+							<p class="mb-0">${notice.summary}</p>
+							<p class="small text-muted float-right">${notice.date}</p>
+						</div>`;
+			});
+			notices.data.travelHealthNotices.watch.forEach(function(notice) {
+				output += `<div class="list-group-item list-group-item-action border-top-0 border-bottom-0 border-right-0 border-left-lg border-dark my-1">
+							<h6>${notice.title}</h6>
+							<p class="mb-0">${notice.summary}</p>
+							<p class="small text-muted float-right">${notice.date}</p>
+						</div>`;
+			});
+			document.getElementById('travel-notices').innerHTML = output;
+		})
+		.catch((err) => {
+			console.log('ERROR:', err.message);
+		});
+};
+
+function getNewsResults(data) {
+	let newsCards = document.getElementById('card-deck');
+	let newsResultsNumber = document.getElementById('news-results-number');
+	newsCards.innerHtml = `<div class="d-flex justify-content-center">
+								<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+								<span class="sr-only">Loading...</span>
+								</div>
+							</div>`;
+	let output = '';
+	if (data.news) {
+		newsResultsNumber.innerText = `${data.news.length} results found`;
+		data.news.forEach(function(item) {
+			output += `
+				<div class="col-sm-12 my-2">
+					<a class="card lift p-3 news-card" href="${item.webUrl}" target="_blank">
+						<h3 class="text-dark">${item.title}</h3>
+						<p class="text-gray-600">${item.excerpt}</p>
+						<p class="text-primary mb-0">View full article
+						<span class="mb-0 text-muted float-right small"><i class="far fa-newspaper"></i> Published by <span class="font-weight-600 text-gray-600">${item
+							.provider.name}</span> ${timeDifference(item.publishedDateTime)}</span>
+						</p>
+					</a>
+				</div>
+				`;
+		});
+	} else {
+		output += `<div class="col-sm-12 p-4 mx-auto text-muted">No data available for this region. Please selet another option.</div>`;
+	}
+	newsCards.innerHTML = output;
+}
+// function
 $(document).ready(function() {
 	//Building pie chart
 	// https://covidtracking.com/api/v1/states/ny/current.json
@@ -246,6 +338,11 @@ $(document).ready(function() {
 				})
 				.forEach(function(state) {
 					let regionSelect = document.getElementById('selectRegion');
+					let regionNewsSelect = document.getElementById('selectNewsRegion');
+					regionNewsSelect.options[regionSelect.options.length] = new Option(
+						acronymToFullName(state.state),
+						'US-' + state.state
+					);
 					regionSelect.options[regionSelect.options.length] = new Option(
 						acronymToFullName(state.state),
 						state.state
@@ -254,7 +351,7 @@ $(document).ready(function() {
 			$('#dataTableCountry').DataTable({
 				data: states,
 				pagingType: 'numbers',
-				pageLength: 50,
+				pageLength: 25,
 				language: {
 					searchPlaceholder: 'e.g. usa'
 				},
@@ -305,4 +402,32 @@ $(document).ready(function() {
 				order: [ [ 1, 'desc' ] ]
 			});
 		});
+	fillNewsCards();
+	fillTravelNotices();
+	$('#selectNewsRegion').on('change', function() {
+		let value = $(this).val();
+		const newsUri = 'https://api.smartable.ai/coronavirus/news/' + value;
+		fetch(newsUri, {
+			headers: {
+				'Cache-Control': 'no-cache',
+				'Subscription-Key': config.API_KET_SMARTTABLE
+			}
+		})
+			.then((response) => {
+				if (response.ok) {
+					return response.json();
+				} else {
+					document.getElementById(
+						'card-deck'
+					).innerHTML = `<div class="col-sm-12 p-4 mx-auto text-muted">Sorry, something went wrong. Please try again later.</div>`;
+					throw new Error('BAD HTTP');
+				}
+			})
+			.then((jsonData) => {
+				getNewsResults(jsonData);
+			})
+			.catch((err) => {
+				console.log('ERROR:', err.message);
+			});
+	});
 });

@@ -2,16 +2,15 @@ extends ../layouts/dashboard.pug
 
 block config
     - var bodyClass = 'nav-fixed'
-    - var pageTitle = 'COVID19'
+    - var pageTitle = 'COVID19 USA'
     - var pageIcon = 'activity'
-    - var pageSummary = 'Example dashboard overview and content summary'
+    - var pageSummary = ''
     - var sidenavStyle = 'sidenav-light'
     - var topnavStyle = 'navbar-light bg-white'
     - var pageHeaderStyle = 'page-header-dark'
     - var pageHeaderBackground = 'bg-gradient-primary-to-secondary'
-    - var footerStyle = 'footer-light'
+    - var footerStyle = 'footer-dark bg-dark'
 
-    script(src='js/config.js', type="text/javascript")
     include includes/us-map-js.pug
     
 append css
@@ -24,6 +23,13 @@ block content
             .card-body  
                 #covidCountryMap(style="height:520px")
         .row
+            .col-sm-12
+                .card.pb-2.mb-4
+                    .card-body  
+                        include includes/datatables/datatable-country.pug 
+                        a.float-right(href="https://covidtracking.com/" target="_blank" style="text-decoration:underline")
+                                    | Data source 
+                                    i.fas.fa-external-link-alt.mr-1
             .col-lg-12
                 .card.mb-4
                     .card-header Distribution in States
@@ -46,25 +52,39 @@ block content
                         #last-updated-pie
                         a(href="https://covidtracking.com/" target="_blank" style="text-decoration:underline")
                                     | Data source 
-                                    i.fas.fa-external-link-alt.mr-1  
-                //- Example card deck with image cap cards
-            .col-lg-4
-                .card-deck
-                    .card.mb-4
-                        .card-body
-                            h5.card-title.text-primary Interactive Charts
-                            p.card-text
-                                | The interactive charts in this theme are powered by Chart.js, a simple, yet flexible, JavaScript charting library for designers &amp; developers.
-                        a.card-footer.d-flex.align-items-center.justify-content-between(href='/charts.html')
-                            | View charts
-                            i(data-feather='arrow-right')
-            .col-sm-12
-                .card.pb-2
-                    .card-body  
-                        include includes/datatables/datatable-country.pug 
-                        a.float-right(href="https://covidtracking.com/" target="_blank" style="text-decoration:underline")
-                                    | Data source 
                                     i.fas.fa-external-link-alt.mr-1
+            .col-sm-12
+                .card
+                    .card-body
+                        h2.card-title Trending Coronavirus News in USA
+                        p.font-italic.font-weight-300.text-left.mb-1
+                            small Select a region
+                        .select(style="width:20rem")
+                            select#selectNewsRegion
+                                option(value="US" selected) USA
+                        .row.mt-3.d-flex.justify-content-between
+                            .col-sm-12.col-md-7
+                                .row
+                                    .text-gray-400.small#news-results-number.pl-3
+                                    #card-deck.my-2
+                                    a.small.w-100.text-md-right(href="https://smartable.ai/" target="_blank") 
+                                        | Data Source
+                                        i.fas.fa-external-link-alt.mr-1
+                            .col-sm-12.col-md-4
+                                .card.mt-4.mb-2.px-3.travel-notices-container.border-top-0.border-right-0.border-bottom-0.border-left-0
+                                    h4.card-title 
+                                        | Travel Health Notices
+                                        span.float-right
+                                            span.bg-red.ml-4.mr-2(style="width: 10px;height: 7px;display: inline-block;vertical-align: middle;") 
+                                            span.small.text-muted Alert
+                                            span.bg-yellow.ml-4.mr-2(style="width: 10px;height: 7px;display: inline-block;vertical-align: middle;") 
+                                            span.small.text-muted Warning
+                                            span.bg-dark.ml-4.mr-2(style="width: 10px;height: 7px;display: inline-block;vertical-align: middle;") 
+                                            span.small.text-muted Watch
+                                    .list-group.list-group-flush.small#travel-notices
+                                    a.small.w-100.text-md-right(href="https://covid19-docs.chrismichael.now.sh/" target="_blank") 
+                                        | Data Source
+                                        i.fas.fa-external-link-alt.mr-1      
 
 append scripts
     //- Load Chart.js via CDN
