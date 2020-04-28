@@ -12,7 +12,7 @@ let fillNewsCards = () => {
 	fetch(newsReq, {
 		headers: {
 			'Cache-Control': 'no-cache',
-			'Subscription-Key': config.API_KET_SMARTTABLE
+			'Subscription-Key': API_KET_SMARTTABLE
 		}
 	})
 		.then((response) => {
