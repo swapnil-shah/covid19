@@ -1,4 +1,5 @@
-const newsUri = 'https://api.smartable.ai/coronavirus/news/US'; //https://api.smartable.ai/coronavirus/news/:location
+const newsUri = 'https://api.smartable.ai/coronavirus/news/US';
+const API_KEY_SMARTTABLE = 'cf8e77731fb345d381334aff5e844f3f';
 let header = new Headers();
 header.append('Accept', 'application/json');
 
@@ -8,11 +9,11 @@ let newsReq = new Request(newsUri, {
 	mode: 'cors'
 });
 //Dasboad Table
-fillNewsCards = () => {
+let fillNewsCards = () => {
 	fetch(newsReq, {
 		headers: {
 			'Cache-Control': 'no-cache',
-			'Subscription-Key': config.API_KET_SMARTTABLE
+			'Subscription-Key': API_KEY_SMARTTABLE
 		}
 	})
 		.then((response) => {

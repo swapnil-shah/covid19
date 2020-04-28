@@ -1,3 +1,4 @@
+const API_KEY_SMARTTABLE = 'cf8e77731fb345d381334aff5e844f3f';
 function pieLegend(tot, pos, neg, hosp, ven, icu, hospCurrent, venCurrent, icuCurrent) {
 	let pieNumbersContainer = '';
 	if (tot) {
@@ -39,11 +40,11 @@ function pieLegend(tot, pos, neg, hosp, ven, icu, hospCurrent, venCurrent, icuCu
 	return pieNumbersContainer;
 }
 const newsUri = 'https://api.smartable.ai/coronavirus/news/US';
-fillNewsCards = () => {
+let fillNewsCards = () => {
 	fetch(newsUri, {
 		headers: {
 			'Cache-Control': 'no-cache',
-			'Subscription-Key': process.env.API_KET_SMARTTABLE
+			'Subscription-Key': API_KEY_SMARTTABLE
 		}
 	})
 		.then((response) => {
@@ -60,7 +61,7 @@ fillNewsCards = () => {
 			console.log('ERROR:', err.message);
 		});
 };
-fillTravelNotices = () => {
+let fillTravelNotices = () => {
 	fetch('https://covid19-server.chrismichael.now.sh/api/v1/TravelHealthNotices', { cache: 'no-cache' })
 		.then((response) => {
 			if (response.ok) {
@@ -410,7 +411,7 @@ $(document).ready(function() {
 		fetch(newsUri, {
 			headers: {
 				'Cache-Control': 'no-cache',
-				'Subscription-Key': process.env.API_KET_SMARTTABLE
+				'Subscription-Key': API_KEY_SMARTTABLE
 			}
 		})
 			.then((response) => {

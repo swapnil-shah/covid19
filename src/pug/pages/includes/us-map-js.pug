@@ -3,7 +3,7 @@ script.
         .then((states) => states.json())
         .then((data) => {
             var mymap = L.map('covidCountryMap').setView([ 37.8, -96 ], 3);
-            let mapboxAccessToken = process.env.API_KET_MAPBOX;
+            let mapboxAccessToken = 'pk.eyJ1Ijoic3dhcG5pbDciLCJhIjoiY2s5ZnRtZXh1MGVuYTNkbGNhNWtrcmt0diJ9.fzy5HcciZYupAiuzpVmlWA';
             L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
                 id: 'mapbox/dark-v10',
                 attribution:
