@@ -10,11 +10,11 @@ block config
     - var pageHeaderStyle = 'page-header-dark'
     - var pageHeaderBackground = 'bg-gradient-primary-to-secondary'
     - var footerStyle = 'footer-dark bg-dark'
-
-    include includes/us-map-js.pug
     
 append css
     link(href='https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css', rel='stylesheet', crossorigin='anonymous')
+    include includes/us-map-js.pug
+
 block content
     include includes/page-header
     .container-fluid.mt-n10
