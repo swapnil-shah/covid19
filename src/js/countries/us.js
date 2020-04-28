@@ -60,7 +60,7 @@ let fillNewsCards = () => {
 			console.log('ERROR:', err.message);
 		});
 };
-fillTravelNotices = () => {
+let fillTravelNotices = () => {
 	fetch('https://covid19-server.chrismichael.now.sh/api/v1/TravelHealthNotices', { cache: 'no-cache' })
 		.then((response) => {
 			if (response.ok) {
