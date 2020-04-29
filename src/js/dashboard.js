@@ -1,6 +1,8 @@
 const dasboardTableUri = 'https://corona-api.com/countries?include=timeline';
 const totalCases = 'https://corona-api.com/timeline';
 const countriesUri = 'https://corona-api.com/countries';
+const newsUri = 'https://api.smartable.ai/coronavirus/news/global';
+const API_KEY_SMARTTABLE = 'cf8e77731fb345d381334aff5e844f3f';
 
 let dashboardChartData = [];
 let dashboardLabelsDate = [];
@@ -41,6 +43,57 @@ function addClassesToDataTable(newCases, oldCases, tableColumn, color) {
 		return;
 	}
 }
+
+function getNewsResults(data) {
+	let newsCards = document.getElementById('card-deck');
+	let newsResultsNumber = document.getElementById('news-results-number');
+	let optionName = $('#selectNewsRegion option:selected').text();
+	let output = '';
+
+	if (data.news.length > 0) {
+		newsResultsNumber.innerText = `${data.news.length} results found for ${optionName}`;
+		data.news.forEach(function(item) {
+			output += `
+				<div class="col-sm-12 my-3 pl-0 pr-1">
+					<a class="card lift lift-sm p-3 news-card" href="${item.webUrl}" target="_blank">
+						<h3 class="text-dark">${item.title}</h3>
+						<p class="text-gray-600 mb-1"">${item.excerpt}</p>
+						<p class="text-primary mb-3">View full article</p>
+						<p class="mb-0 text-muted small"><i class="far fa-newspaper"></i> Published by <span class="font-weight-600 text-gray-600">${item
+							.provider.name}</span> ${timeDifference(item.publishedDateTime)}</p>
+						</>
+					</a>
+				</div>
+				`;
+		});
+	} else {
+		newsResultsNumber.innerText = '';
+		output += `<div class="col-sm-12 p-4 mx-auto text-muted">No data available for this region. Please selet another option.</div>`;
+	}
+	newsCards.innerHTML = output;
+}
+let fillNewsCards = () => {
+	fetch(newsUri, {
+		headers: {
+			'Cache-Control': 'no-cache',
+			'Subscription-Key': API_KEY_SMARTTABLE
+		}
+	})
+		.then((response) => {
+			if (response.ok) {
+				return response.json();
+			} else {
+				throw new Error('BAD HTTP');
+			}
+		})
+		.then((jsonData) => {
+			document.getElementById('card-deck').Text = 'Loadimg..';
+			getNewsResults(jsonData);
+		})
+		.catch((err) => {
+			console.log('ERROR:', err.message);
+		});
+};
 
 //Dasboard cases
 let fillNumberOfCases = () => {
@@ -145,6 +198,8 @@ let addCountriesToDropdown = () => {
 			jsonData.data.forEach(function(item) {
 				if (item.timeline.length > 0) {
 					let regionSelect = document.getElementById('selectRegion');
+					let regionNewsSelect = document.getElementById('selectNewsRegion');
+					regionNewsSelect.options[regionSelect.options.length] = new Option(item.name, item.code);
 					regionSelect.options[regionSelect.options.length] = new Option(item.name, item.code);
 				}
 			});
@@ -154,6 +209,27 @@ let addCountriesToDropdown = () => {
 		});
 };
 
+let fillSituationReports = () => {
+	fetch('https://covid19-server.chrismichael.now.sh/api/v1/SituationReports', { cache: 'no-cache' })
+		.then((response) => {
+			if (response.ok) {
+				return response.json();
+			} else {
+				throw new Error('BAD HTTP');
+			}
+		})
+		.then((response) => {
+			let output = '';
+			response.reports.forEach(function(report) {
+				output += `<a class="list-group-item list-group-item-action" target="_blank" href="${report.pdf}"><i class="far fa-file-pdf fa-fw text-blue mr-2"></i>${report.report}<span class="float-right small text-muted">${report.date}</span></a>
+						`;
+			});
+			document.getElementById('left-panel-reports').innerHTML = output;
+		})
+		.catch((err) => {
+			console.log('ERROR:', err.message);
+		});
+};
 fetch(totalCases)
 	.then((response) => response.json())
 	.then((countries) => {
@@ -194,7 +270,7 @@ fetch(totalCases)
 					footerFontColor: '#00000',
 					callbacks: {
 						footer: function(tooltipItems, data) {
-							var sum = 0;
+							let sum = 0;
 
 							tooltipItems.forEach(function(tooltipItem) {
 								sum += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
@@ -457,6 +533,37 @@ $('#dataTableWorldTimeline').DataTable({
 $(document).ready(function() {
 	fillNumberOfCases();
 	addCountriesToDropdown();
+	fillNewsCards();
+	fillSituationReports();
+	$('#selectNewsRegion').on('change', function() {
+		let value = $(this).val();
+		document.getElementById('card-deck').innerHTML =
+			'<div class="text-center"><i class="fa fa-spinner fa-spin fa-2x fa-fw"></i></div>';
+		const newsUri = 'https://api.smartable.ai/coronavirus/news/' + value;
+
+		fetch(newsUri, {
+			headers: {
+				'Cache-Control': 'no-cache',
+				'Subscription-Key': API_KEY_SMARTTABLE
+			}
+		})
+			.then((response) => {
+				if (response.ok) {
+					return response.json();
+				} else {
+					document.getElementById(
+						'card-deck'
+					).innerHTML = `<div class="col-sm-12 p-4 mx-auto text-muted">Sorry, something went wrong. Please try again later.</div>`;
+					throw new Error('BAD HTTP');
+				}
+			})
+			.then((jsonData) => {
+				getNewsResults(jsonData);
+			})
+			.catch((err) => {
+				console.log('ERROR:', err.message);
+			});
+	});
 });
 $(window).on('load', function() {
 	let $logo = $('#brand-logo');
