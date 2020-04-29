@@ -1,12 +1,12 @@
-/* prefixed by https://autoprefixer.github.io (PostCSS: v7.0.26, autoprefixer: v9.7.3) */
-
+// This file is intentionally blank
+// Use this file to override SCSS within the project, or to add new SCSS for creating your own CSS components
 .select {
 	position: relative;
 	display: inline-block;
 	width: 100%;
 	color: #555;
 	width: 25%;
-	margin-bottom: 0.75rem;
+
 	select {
 		display: inline-block;
 		width: 100%;
@@ -302,40 +302,52 @@
 	color: #e73f33;
 	position: relative;
 	width: 50px;
-	-webkit-animation: pulse 1.5s ease infinite;
 	animation: pulse 1.5s ease infinite;
-}
-
-@-webkit-keyframes pulse {
-	0% {
-		-webkit-transform: scale(1);
-		transform: scale(1);
-	}
-	50% {
-		-webkit-transform: scale(1.3);
-		transform: scale(1.3);
-	}
-	100% {
-		-webkit-transform: scale(1);
-		transform: scale(1);
-	}
 }
 
 @keyframes pulse {
 	0% {
-		-webkit-transform: scale(1);
 		transform: scale(1);
 	}
 	50% {
-		-webkit-transform: scale(1.3);
 		transform: scale(1.3);
 	}
 	100% {
-		-webkit-transform: scale(1);
 		transform: scale(1);
 	}
 }
+.google-visualization-tooltip-item-list .google-visualization-tooltip-item:first-child {
+	margin: 0.5em 0.5em 0.5em 0 !important;
+}
+.google-visualization-tooltip-item {
+	margin: 0 0em 0.65em 0em !important;
+	padding: 0em 0.5em 0em 0.5em !important;
+}
+.google-visualization-tooltip-item-list {
+	margin: 0.5em 0 0.5em 0;
+}
+.google-visualization-tooltip {
+	min-width: 150px;
+}
 
+circle {
+	stroke-width: 0px;
+}
+.google-visualization-tooltip {
+	background: black !important;
+	opacity: 0.9;
+	border: 1px solid rgba(210, 26, 26, 0.4) !important;
+	box-shadow: 0px 2px 2px 0px rgba(210, 26, 26, 0.4) !important;
+	-moz-box-shadow: 0px 2px 2px 0px rgba(210, 26, 26, 0.4) !important;
+	-webkit-box-shadow: 0px 2px 2px 0px rgba(210, 26, 26, 0.4) !important;
+	.google-visualization-tooltip-item-list {
+		.google-visualization-tooltip-item {
+			span {
+				color: #ffffff !important;
+			}
+		}
+	}
+}
 #covidWorldMap,
 #covidCountryMap,
 .leaflet-control-attribution {
@@ -365,6 +377,7 @@
 		width: 5px;
 	}
 	&::-webkit-scrollbar-track {
+		// -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 		border: 1px solid rgba(31, 45, 65, 0.1);
 		border-radius: 10px;
 	}
@@ -376,13 +389,14 @@
 }
 
 #card-deck,
-#left-panel-reports {
+#travel-notices {
 	max-height: 50rem;
 	overflow: auto;
 	&::-webkit-scrollbar {
 		width: 5px;
 	}
 	&::-webkit-scrollbar-track {
+		// -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 		border: 0.5em solid rgba(31, 45, 65, 0.06);
 		border-radius: 10px;
 	}
@@ -419,7 +433,7 @@
 	background-color: #343332;
 }
 .news-card,
-.left-panel-reports-container {
+.travel-notices-container {
 	box-shadow: none;
 }
 .border-left-warning {
@@ -430,12 +444,4 @@
 }
 .border-left-dark {
 	border-left: 0.25rem solid #1f2d41 !important;
-}
-.topheader {
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	background: #e3ffd2;
-	-webkit-transition: all 0.5s;
-	transition: all 0.5s;
 }

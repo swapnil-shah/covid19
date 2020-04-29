@@ -93,7 +93,7 @@ let fillTravelNotices = () => {
 							<p class="small text-muted float-right">${notice.date}</p>
 						</div>`;
 			});
-			document.getElementById('left-panel-reports').innerHTML = output;
+			document.getElementById('travel-notices').innerHTML = output;
 		})
 		.catch((err) => {
 			console.log('ERROR:', err.message);
@@ -104,6 +104,9 @@ function getNewsResults(data) {
 	let newsCards = document.getElementById('card-deck');
 	let newsResultsNumber = document.getElementById('news-results-number');
 	let optionName = $('#selectNewsRegion option:selected').text();
+	newsCards.innerHtml = `<div class="spinner-border" role="status">
+								<span class="sr-only">Loading...</span>
+							</div>`;
 	let output = '';
 
 	if (data.news) {
@@ -111,7 +114,7 @@ function getNewsResults(data) {
 		data.news.forEach(function(item) {
 			output += `
 				<div class="col-sm-12 my-3 pl-0 pr-1">
-					<a class="card lift lift-sm p-3 news-card" href="${item.webUrl}" target="_blank">
+					<a class="card lift p-3 news-card" href="${item.webUrl}" target="_blank">
 						<h3 class="text-dark">${item.title}</h3>
 						<p class="text-gray-600 mb-1"">${item.excerpt}</p>
 						<p class="text-primary mb-3">View full article</p>
@@ -130,8 +133,8 @@ function getNewsResults(data) {
 // function
 $(document).ready(function() {
 	fetch('https://covidtracking.com/api/v1/us/current.json').then((response) => response.json()).then(function(state) {
-		let ctxTotalCases = document.getElementById('pie-chart-total-cases');
-		let ctxhospitliazed = document.getElementById('pie-chart-hospitliazed');
+		var ctxTotalCases = document.getElementById('pie-chart-total-cases');
+		var ctxhospitliazed = document.getElementById('pie-chart-hospitliazed');
 		let lastUpdatedPie = document.getElementById('last-updated-pie');
 		let pieNumberContainer = document.getElementById('pie-numbers');
 		let lastUpdatedHtmlUs = `Last updated ${timeDifference(state[0].lastModified)}`;
@@ -148,19 +151,19 @@ $(document).ready(function() {
 		);
 		pieNumberContainer.innerHTML = usPieNumbers;
 		lastUpdatedPie.innerHTML = lastUpdatedHtmlUs;
-		let usaDataTotal = [
+		var usaDataTotal = [
 			{
 				data: [ state[0].positive, state[0].negative ],
 				backgroundColor: [ '#3e95cd', '#3cba9f' ]
 			}
 		];
-		let usaDataHospitalize = [
+		var usaDataHospitalize = [
 			{
 				data: [ state[0].inIcuCurrently, state[0].onVentilatorCurrently ],
 				backgroundColor: [ '#FF6385', '#FF9F40' ]
 			}
 		];
-		let myPieChartTotalCases = new Chart(ctxTotalCases, {
+		var myPieChartTotalCases = new Chart(ctxTotalCases, {
 			type: 'pie',
 			data: {
 				labels: [ 'Positive', 'Negative' ],
@@ -185,8 +188,8 @@ $(document).ready(function() {
 					mode: 'label',
 					callbacks: {
 						label: function(tooltipItem, data) {
-							let dataLabel = data.labels[tooltipItem.index];
-							let value =
+							var dataLabel = data.labels[tooltipItem.index];
+							var value =
 								': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString();
 							if (Chart.helpers.isArray(dataLabel)) {
 								dataLabel = dataLabel.slice();
@@ -203,7 +206,7 @@ $(document).ready(function() {
 				}
 			}
 		});
-		let myPieChartHospitliazed = new Chart(ctxhospitliazed, {
+		var myPieChartHospitliazed = new Chart(ctxhospitliazed, {
 			type: 'pie',
 			data: {
 				labels: [ 'In ICU Currently', 'On Ventilator Currently' ],
@@ -227,8 +230,8 @@ $(document).ready(function() {
 					caretPadding: 10,
 					callbacks: {
 						label: function(tooltipItem, data) {
-							let dataLabel = data.labels[tooltipItem.index];
-							let value =
+							var dataLabel = data.labels[tooltipItem.index];
+							var value =
 								': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString();
 							if (Chart.helpers.isArray(dataLabel)) {
 								dataLabel = dataLabel.slice();
@@ -310,9 +313,9 @@ $(document).ready(function() {
 			afterDraw: function(chart) {
 				if (myPieChartHospitliazed.data.datasets.length === 0) {
 					// No data is present
-					let ctx = myPieChartHospitliazed.chart.ctx;
-					let width = myPieChartHospitliazed.chart.width;
-					let height = myPieChartHospitliazed.chart.height;
+					var ctx = myPieChartHospitliazed.chart.ctx;
+					var width = myPieChartHospitliazed.chart.width;
+					var height = myPieChartHospitliazed.chart.height;
 					myPieChartHospitliazed.clear();
 					ctx.save();
 					ctx.textAlign = 'center';
@@ -323,9 +326,9 @@ $(document).ready(function() {
 			},
 			beforeDraw: function(chart) {
 				// No data is present
-				let ctx = myPieChartHospitliazed.chart.ctx;
-				let width = myPieChartHospitliazed.chart.width;
-				let height = myPieChartHospitliazed.chart.height;
+				var ctx = myPieChartHospitliazed.chart.ctx;
+				var width = myPieChartHospitliazed.chart.width;
+				var height = myPieChartHospitliazed.chart.height;
 				myPieChartHospitliazed.clear();
 				ctx.save();
 				ctx.textAlign = 'center';
@@ -420,8 +423,6 @@ $(document).ready(function() {
 	fillTravelNotices();
 	$('#selectNewsRegion').on('change', function() {
 		let value = $(this).val();
-		document.getElementById('card-deck').innerHTML =
-			'<div class="text-center"><i class="fa fa-spinner fa-spin fa-2x fa-fw"></i></div>';
 		const newsUri = 'https://api.smartable.ai/coronavirus/news/' + value;
 		fetch(newsUri, {
 			headers: {
