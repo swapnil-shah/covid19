@@ -93,7 +93,7 @@ let fillTravelNotices = () => {
 							<p class="small text-muted float-right">${notice.date}</p>
 						</div>`;
 			});
-			document.getElementById('travel-notices').innerHTML = output;
+			document.getElementById('left-panel-reports').innerHTML = output;
 		})
 		.catch((err) => {
 			console.log('ERROR:', err.message);

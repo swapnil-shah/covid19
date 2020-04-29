@@ -389,8 +389,8 @@ circle {
 }
 
 #card-deck,
-#travel-notices {
-	max-height: 50rem;
+#left-panel-reports {
+	max-height: 40rem;
 	overflow: auto;
 	&::-webkit-scrollbar {
 		width: 5px;
@@ -433,7 +433,7 @@ circle {
 	background-color: #343332;
 }
 .news-card,
-.travel-notices-container {
+.left-panel-reports-container {
 	box-shadow: none;
 }
 .border-left-warning {
