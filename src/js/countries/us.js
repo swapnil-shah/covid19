@@ -339,86 +339,85 @@ $(document).ready(function() {
 		});
 	});
 	//Building Datatable
-
 	fetch('https://covidtracking.com/api/v1/states/current.json')
 		.then((response) => response.json())
 		.then(function(states) {
-			states
-				.filter(function(posNeg) {
-					return posNeg.positive && posNeg.negative;
-				})
-				.forEach(function(state) {
-					let regionSelect = document.getElementById('selectRegion');
-					let regionNewsSelect = document.getElementById('selectNewsRegion');
-					regionNewsSelect.options[regionSelect.options.length] = new Option(
-						acronymToFullName(state.state),
-						'US-' + state.state
-					);
-					regionSelect.options[regionSelect.options.length] = new Option(
-						acronymToFullName(state.state),
-						state.state
-					);
-				});
-			$('#dataTableCountry')
-				.on('init.dt', function() {
-					$('#message-container').hide();
-				})
-				.DataTable({
-					data: states,
-					pagingType: 'numbers',
-					pageLength: 25,
-					processing: true,
-					language: {
-						searchPlaceholder: 'e.g. new jersey',
-						loadingRecords: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>'
-					},
-					columns: [
-						{
-							title: 'State',
-							data: 'state',
-							render: function(data, type, row) {
-								if (type === 'type' || type === 'sort') {
-									return data;
-								}
-								return `${acronymToFullName(
-									data
-								)}<p class="text-muted small"> Last updated ${timeDifference(row.dateChecked)}</p>`;
-							}
-						},
-						{
-							title: 'Positive',
-							data: 'positive',
-							render: function(data, type, row) {
-								if (type === 'type' || type === 'sort') {
-									return data;
-								}
-								return data ? data.toLocaleString() : '-';
-							}
-						},
-						{
-							title: 'Recovered',
-							data: 'recovered',
-							render: function(data, type, row) {
-								if (type === 'type' || type === 'sort') {
-									return data;
-								}
-								return data ? data.toLocaleString() : '-';
-							}
-						},
-						{
-							title: 'Death',
-							data: 'death',
-							render: function(data, type, row) {
-								if (type === 'type' || type === 'sort') {
-									return data;
-								}
-								return data ? data.toLocaleString() : '-';
-							}
-						}
-					],
-					order: [ [ 1, 'desc' ] ]
-				});
+			states.forEach(function(state) {
+				let regionSelect = document.getElementById('selectRegion');
+				let regionNewsSelect = document.getElementById('selectNewsRegion');
+				regionNewsSelect.options[regionSelect.options.length] = new Option(
+					acronymToFullName(state.state),
+					'US-' + state.state
+				);
+				regionSelect.options[regionSelect.options.length] = new Option(
+					acronymToFullName(state.state),
+					state.state
+				);
+			});
 		});
+	$('#dataTableCountry').DataTable({
+		ajax: {
+			url: 'https://disease.sh/v2/states',
+			type: 'GET',
+			cache: false,
+			dataSrc: function(json) {
+				console.log('getNewsResults -> json', json);
+				return json;
+			}
+		},
+		pagingType: 'numbers',
+		pageLength: 25,
+		sorting: false,
+		language: {
+			searchPlaceholder: 'e.g. new jersey',
+			loadingRecords: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>'
+		},
+		columns: [
+			{
+				title: 'State',
+				data: 'state',
+				render: function(data, type, row) {
+					return `${data}<p class="text-muted">Tests:
+								${populationFormat(row.tests)}</p>`;
+				}
+			},
+			{
+				title: 'Confirmed',
+				data: 'cases',
+				render: function(data, type, row) {
+					if (type === 'type' || type === 'sort') {
+						return data;
+					}
+					return `${data.toLocaleString()} ${row.todayCases
+						? `<p class="text-muted"><i class="fas fa-arrow-up fa-sm"></i>
+								${row.todayCases.toLocaleString()}</p>`
+						: ''}`;
+				}
+			},
+			{
+				title: 'Active',
+				data: 'active',
+				render: function(data, type, row) {
+					return `${data.toLocaleString()}`;
+				}
+			},
+			{
+				title: 'Deaths',
+				data: 'deaths',
+				render: function(data, type, row) {
+					if (type === 'type' || type === 'sort') {
+						return data;
+					}
+					return `${data.toLocaleString()} ${row.todayCases
+						? `<p class="text-muted"><i class="fas fa-arrow-up fa-sm"></i>
+								${row.todayDeaths.toLocaleString()}</p>`
+						: ''}`;
+				}
+			}
+		]
+	});
+});
+$(document).ready(function() {
 	fillNewsCards();
 	fillTravelNotices();
 	$('#selectNewsRegion').on('change', function() {
