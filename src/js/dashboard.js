@@ -301,6 +301,7 @@ fetch(totalCases)
 
 // World Timeline Table
 $('#dataTableWorldTimeline').DataTable({
+	processing: false,
 	ajax: {
 		url: dasboardTableUri,
 		type: 'GET',

@@ -103,24 +103,24 @@ let fillTravelNotices = () => {
 function getNewsResults(data) {
 	let newsCards = document.getElementById('card-deck');
 	let newsResultsNumber = document.getElementById('news-results-number');
-	newsCards.innerHtml = `<div class="d-flex justify-content-center">
-								<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+	let optionName = $('#selectNewsRegion option:selected').text();
+	newsCards.innerHtml = `<div class="spinner-border" role="status">
 								<span class="sr-only">Loading...</span>
-								</div>
 							</div>`;
 	let output = '';
+
 	if (data.news) {
-		newsResultsNumber.innerText = `${data.news.length} results found`;
+		newsResultsNumber.innerText = `${data.news.length} results found for ${optionName}`;
 		data.news.forEach(function(item) {
 			output += `
-				<div class="col-sm-12 my-2">
+				<div class="col-sm-12 my-3 pl-0 pr-1">
 					<a class="card lift p-3 news-card" href="${item.webUrl}" target="_blank">
 						<h3 class="text-dark">${item.title}</h3>
-						<p class="text-gray-600">${item.excerpt}</p>
-						<p class="text-primary mb-0">View full article
-						<span class="mb-0 text-muted float-right small"><i class="far fa-newspaper"></i> Published by <span class="font-weight-600 text-gray-600">${item
-							.provider.name}</span> ${timeDifference(item.publishedDateTime)}</span>
-						</p>
+						<p class="text-gray-600 mb-1"">${item.excerpt}</p>
+						<p class="text-primary mb-3">View full article</p>
+						<p class="mb-0 text-muted small"><i class="far fa-newspaper"></i> Published by <span class="font-weight-600 text-gray-600">${item
+							.provider.name}</span> ${timeDifference(item.publishedDateTime)}</p>
+						</>
 					</a>
 				</div>
 				`;
@@ -132,8 +132,6 @@ function getNewsResults(data) {
 }
 // function
 $(document).ready(function() {
-	//Building pie chart
-	// https://covidtracking.com/api/v1/states/ny/current.json
 	fetch('https://covidtracking.com/api/v1/us/current.json').then((response) => response.json()).then(function(state) {
 		var ctxTotalCases = document.getElementById('pie-chart-total-cases');
 		var ctxhospitliazed = document.getElementById('pie-chart-hospitliazed');
@@ -325,6 +323,18 @@ $(document).ready(function() {
 					ctx.fillText('No data available.', width / 2, height / 2);
 					ctx.restore();
 				}
+			},
+			beforeDraw: function(chart) {
+				// No data is present
+				var ctx = myPieChartHospitliazed.chart.ctx;
+				var width = myPieChartHospitliazed.chart.width;
+				var height = myPieChartHospitliazed.chart.height;
+				myPieChartHospitliazed.clear();
+				ctx.save();
+				ctx.textAlign = 'center';
+				ctx.textBaseline = 'middle';
+				ctx.fillText('Please wair', width / 2, height / 2);
+				ctx.restore();
 			}
 		});
 	});
@@ -349,59 +359,65 @@ $(document).ready(function() {
 						state.state
 					);
 				});
-			$('#dataTableCountry').DataTable({
-				data: states,
-				pagingType: 'numbers',
-				pageLength: 25,
-				language: {
-					searchPlaceholder: 'e.g. usa'
-				},
-				columns: [
-					{
-						title: 'State',
-						data: 'state',
-						render: function(data, type, row) {
-							if (type === 'type' || type === 'sort') {
-								return data;
-							}
-							return `${acronymToFullName(
-								data
-							)}<p class="text-muted small"> Last updated ${timeDifference(row.dateChecked)}</p>`;
-						}
+			$('#dataTableCountry')
+				.on('init.dt', function() {
+					$('#message-container').hide();
+				})
+				.DataTable({
+					data: states,
+					pagingType: 'numbers',
+					pageLength: 25,
+					processing: true,
+					language: {
+						searchPlaceholder: 'e.g. new jersey',
+						loadingRecords: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>'
 					},
-					{
-						title: 'Positive',
-						data: 'positive',
-						render: function(data, type, row) {
-							if (type === 'type' || type === 'sort') {
-								return data;
+					columns: [
+						{
+							title: 'State',
+							data: 'state',
+							render: function(data, type, row) {
+								if (type === 'type' || type === 'sort') {
+									return data;
+								}
+								return `${acronymToFullName(
+									data
+								)}<p class="text-muted small"> Last updated ${timeDifference(row.dateChecked)}</p>`;
 							}
-							return data ? data.toLocaleString() : '-';
-						}
-					},
-					{
-						title: 'Recovered',
-						data: 'recovered',
-						render: function(data, type, row) {
-							if (type === 'type' || type === 'sort') {
-								return data;
+						},
+						{
+							title: 'Positive',
+							data: 'positive',
+							render: function(data, type, row) {
+								if (type === 'type' || type === 'sort') {
+									return data;
+								}
+								return data ? data.toLocaleString() : '-';
 							}
-							return data ? data.toLocaleString() : '-';
-						}
-					},
-					{
-						title: 'Death',
-						data: 'death',
-						render: function(data, type, row) {
-							if (type === 'type' || type === 'sort') {
-								return data;
+						},
+						{
+							title: 'Recovered',
+							data: 'recovered',
+							render: function(data, type, row) {
+								if (type === 'type' || type === 'sort') {
+									return data;
+								}
+								return data ? data.toLocaleString() : '-';
 							}
-							return data ? data.toLocaleString() : '-';
+						},
+						{
+							title: 'Death',
+							data: 'death',
+							render: function(data, type, row) {
+								if (type === 'type' || type === 'sort') {
+									return data;
+								}
+								return data ? data.toLocaleString() : '-';
+							}
 						}
-					}
-				],
-				order: [ [ 1, 'desc' ] ]
-			});
+					],
+					order: [ [ 1, 'desc' ] ]
+				});
 		});
 	fillNewsCards();
 	fillTravelNotices();

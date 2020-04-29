@@ -3,12 +3,11 @@ extends ../layouts/dashboard.pug
 block config
     - var bodyClass = 'nav-fixed'
     - var pageTitle = 'COVID19 World Dashboard'
-    - var pageIcon = 'filter'
-    - var pageSummary = ''
     - var sidenavStyle = 'sidenav-light'
     - var pageHeaderStyle = 'page-header-dark'
     - var pageHeaderBackground = 'bg-gradient-primary-to-secondary'
     - var footerStyle = 'footer-dark bg-dark'
+    - var topNavRegion = 'world'
 
     style(type='text/css').
 
@@ -52,16 +51,13 @@ append css
     include includes/world-map-js.pug
 
 block content
-    include includes/page-header
-    .container-fluid
+    .container-fluid.mt-4
         .card.pb-2
-            .card-header.bg-light.text-dark
-                h3 World Overview
-            .card-body
-                #covidWorldMap(style="height:520px")    
+            .card-header.bg-dark
+                h3.text-white Overview
+            .card-body.p-2
+                #covidWorldMap(style="height:50vh")    
                 .row.justify-content-md-center.pb-5.pt-5
-                    //- .col-sm-12
-                    //-     h1.card-header Worldwide
                     .col-md-3.col-sm-6.mb-3
                         .card.bg-secondary.border-0
                             .card-body
@@ -97,8 +93,8 @@ block content
                     .col-sm-12.p-0.text-center
                         #last-updated
                         
-            .card-header.bg-light.text-dark
-                h3 Bar Chart
+            .card-header.bg-dark
+                h3.text-white Bar Chart
             .card-body   
                 .row.justify-content-md-center.pb-5(style="position:relative")
                         .chart-line
@@ -132,8 +128,8 @@ block content
                                 p.card-text.float-right.mt-1
                                     small.text-muted#last-updated-legend.font-weight-light
 
-            .card-header.bg-light.text-dark
-                h3 World Datatable 
+            .card-header.bg-dark
+                h3.text-white Datatable 
             .card-body
                 .row.justify-content-between
                     .col-md-8.col-sm-12
