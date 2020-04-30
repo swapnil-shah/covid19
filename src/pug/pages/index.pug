@@ -59,37 +59,37 @@ block content
                 #covidWorldMap(style="height:50vh")
                 .row.justify-content-md-center.pt-2
                     .col-md-3.col-sm-6.mb-3
-                        .card.bg-secondary.border-0
+                        .card.h-100.bg-secondary.border-0
                             .card-body
-                                h3.text-white-75 Confirmed
+                                h3.text-white-75.mb-2 Confirmed
                                     i.text-white-50.float-right.fas.fa-lg.fa-viruses
-                                .mb-4
-                                    #number-confirmed.display-4.text-white
-                                    #per-confirmed.text-white-75.float-right Loading numbers..
+                                #number-confirmed.display-4.text-white.mb-2
+                                .d-flex.justify-content-between
+                                    #today-confirmed.text-white-75 Loading stat...
+                                    #per-confirmed.text-white-75.small 
                     .col-md-3.col-sm-6.mb-3
-                        .card.bg-dark.border-0
+                        .card.h-100.bg-dark.border-0
                             .card-body
-                                h3.text-white-75 Active
+                                h3.text-white-75.mb-2 Active
                                     i.text-white-50.float-right.fas.fa-lg.fa-clinic-medical
-                                .mb-4
-                                    #number-active.display-4.text-white
-                                    #per-active.text-white-75.float-right Loading numbers..
+                                #number-active.display-4.text-white.mb-2
+                                #per-active.text-white-75 Loading stat...
                     .col-md-3.col-sm-6.mb-3
-                        .card.bg-success.border-0
+                        .card.h-100.bg-success.border-0
                             .card-body
-                                h3.text-white-75 Recovered
+                                h3.text-white-75.mb-2 Recovered
                                     i.text-white-50.float-right.fas.fa-lg.fa-house-user
-                                .mb-4
-                                    #number-recovered.display-4.text-white
-                                    #per-recovered.text-white-75.float-right Loading numbers..
+                                #number-recovered.display-4.text-white.mb-2
+                                #per-recovered.text-white-75 Loading stat...
                     .col-md-3.col-sm-6.mb-3
-                        .card.bg-danger.border-0
+                        .card.h-100.bg-danger.border-0
                             .card-body
-                                h3.text-white-75 Deaths
+                                h3.text-white-75.mb-2 Deaths
                                     i.text-white-50.float-right.fas.fa-lg.fa-bed
-                                .mb-4
-                                    #number-deaths.display-4.text-white
-                                    #per-deaths.text-white-75.float-right Loading numbers..
+                                    #number-deaths.display-4.text-white.mb-2 
+                                .d-flex.justify-content-between
+                                    #today-deaths.text-white-75 Loading stat...
+                                    #per-deaths.text-white-75.small 
                     .col-sm-12.p-0.text-center
                         #last-updated
         .row
@@ -138,13 +138,12 @@ block content
                         h3.text-white Datatable 
                     .card-body
                         .row.justify-content-between
-                            .col-md-8.col-sm-12
+                            .col-sm-12
                                 p.pb-4 The cases in the below table gets updated in approximately 24 hours.
-                                        
-                            include includes/datatables/datatable-dashboard.pug
-                            a.small.w-100.text-right.pt-2(href="https://disease.sh/" target="_blank")
-                                        | Data source 
-                                        i.fas.fa-external-link-alt.mr-1
+                        include includes/datatables/datatable-dashboard.pug
+                        a.small.w-100.text-right.pt-2(href="https://disease.sh/" target="_blank")
+                            | Data source 
+                            i.fas.fa-external-link-alt.mr-1
             .col-sm-12
                 .card.mb-4
                     .card-header.bg-dark

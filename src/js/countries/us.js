@@ -323,18 +323,6 @@ $(document).ready(function() {
 					ctx.fillText('No data available.', width / 2, height / 2);
 					ctx.restore();
 				}
-			},
-			beforeDraw: function(chart) {
-				// No data is present
-				var ctx = myPieChartHospitliazed.chart.ctx;
-				var width = myPieChartHospitliazed.chart.width;
-				var height = myPieChartHospitliazed.chart.height;
-				myPieChartHospitliazed.clear();
-				ctx.save();
-				ctx.textAlign = 'center';
-				ctx.textBaseline = 'middle';
-				ctx.fillText('Please wair', width / 2, height / 2);
-				ctx.restore();
 			}
 		});
 	});
@@ -355,9 +343,11 @@ $(document).ready(function() {
 				);
 			});
 		});
+});
+$(document).ready(function() {
 	$('#dataTableCountry').DataTable({
 		ajax: {
-			url: 'https://disease.sh/v2/states',
+			url: 'https://disease.sh/v2/states?yesterday=true',
 			type: 'GET',
 			cache: false,
 			dataSrc: function(json) {
@@ -374,11 +364,10 @@ $(document).ready(function() {
 		},
 		columns: [
 			{
-				title: 'State',
+				title: 'State (Tests)',
 				data: 'state',
 				render: function(data, type, row) {
-					return `${data}<p class="text-muted">Tests:
-								${populationFormat(row.tests)}</p>`;
+					return `${data} <span class="text-gray-600"> (${populationFormat(row.tests)})</span>`;
 				}
 			},
 			{
@@ -388,10 +377,12 @@ $(document).ready(function() {
 					if (type === 'type' || type === 'sort') {
 						return data;
 					}
-					return `${data.toLocaleString()} ${row.todayCases
-						? `<p class="text-muted"><i class="fas fa-arrow-up fa-sm"></i>
-								${row.todayCases.toLocaleString()}</p>`
-						: ''}`;
+					return row.todayCases
+						? `${data.toLocaleString()}<p class="font-weight-600 mb-0"><i class="fas fa-plus fa-sm"></i>${row.todayCases.toLocaleString()}<span class="font-weight-light text-muted small"> (<i class="fas fa-arrow-up fa-sm" style="margin-right:0.1rem;"></i>${percentageChangeTotal(
+								row.cases,
+								row.todayCases
+							)}%)</span></p>`
+						: data.toLocaleString();
 				}
 			},
 			{
@@ -408,16 +399,16 @@ $(document).ready(function() {
 					if (type === 'type' || type === 'sort') {
 						return data;
 					}
-					return `${data.toLocaleString()} ${row.todayCases
-						? `<p class="text-muted"><i class="fas fa-arrow-up fa-sm"></i>
-								${row.todayDeaths.toLocaleString()}</p>`
-						: ''}`;
+					return row.todayDeaths
+						? `${data.toLocaleString()}<p class="font-weight-600 mb-0"><i class="fas fa-plus fa-sm"></i>${row.todayDeaths.toLocaleString()}<span class="font-weight-light text-muted small"> (<i class="fas fa-arrow-up fa-sm" style="margin-right:0.1rem;"></i>${percentageChangeTotal(
+								row.deaths,
+								row.todayDeaths
+							)}%)</span></p>`
+						: data.toLocaleString();
 				}
 			}
 		]
 	});
-});
-$(document).ready(function() {
 	fillNewsCards();
 	fillTravelNotices();
 	$('#selectNewsRegion').on('change', function() {

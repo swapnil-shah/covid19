@@ -1,5 +1,5 @@
 script(type="text/javascript").
-    const getDashboardCountries = 'https://disease.sh/v2/countries';
+    const getDashboardCountries = 'https://disease.sh/v2/countries?yesterday=true';
     fetch(getDashboardCountries, { cache: 'no-cache' })
         .then((response) => response.json())
         .then((countries) => {

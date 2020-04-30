@@ -2,6 +2,7 @@ const totalCases = 'https://corona-api.com/timeline';
 const countriesUri = 'https://corona-api.com/countries';
 const newsUri = 'https://api.smartable.ai/coronavirus/news/global';
 const API_KEY_SMARTTABLE = 'cf8e77731fb345d381334aff5e844f3f';
+const getDashboardAll = 'https://disease.sh/v2/all';
 
 let dashboardChartData = [];
 let dashboardLabelsDate = [];
@@ -74,7 +75,7 @@ let fillNewsCards = () => {
 
 //Dasboard cases
 let fillNumberOfCases = () => {
-	fetch(totalCases, { cache: 'no-cache' })
+	fetch(getDashboardAll, { cache: 'no-cache' })
 		.then((response) => {
 			if (response.ok) {
 				return response.json();
@@ -84,52 +85,29 @@ let fillNumberOfCases = () => {
 		})
 		.then((stats) => {
 			document.getElementById('last-updated').innerHTML =
-				'% difference was calculated approximately between <span class="text-dark">' +
-				formatDateToString(stats.data[1].updated_at) +
-				'</span> and <span class="text-dark">' +
-				formatDateToString(stats.data[0].updated_at) +
-				'</span>';
-			document.getElementById('number-active').innerText = stats.data[0].active.toLocaleString();
-			document.getElementById('number-confirmed').innerText = stats.data[0].confirmed.toLocaleString();
-			document.getElementById('number-recovered').innerText = stats.data[0].recovered.toLocaleString();
-			document.getElementById('number-deaths').innerText = stats.data[0].deaths.toLocaleString();
-
-			document.getElementById('per-active').innerHTML = `(<i class="${Math.sign(
-				percentageChangeTotal(stats.data[0].active, stats.data[1].active)
-			) === -1
-				? 'fas fa-arrow-down fa-sm'
-				: Math.sign(percentageChangeTotal(stats.data[0].active, stats.data[1].active)) === 1
-					? 'fas fa-arrow-up fa-sm'
-					: ''}" style="margin: 0 2px;"></i>
-				${percentageChangeTotal(stats.data[0].active, stats.data[1].active)}
-				%)`;
-			document.getElementById('per-confirmed').innerHTML = `(<i class="${Math.sign(
-				percentageChangeTotal(stats.data[0].confirmed, stats.data[1].confirmed)
-			) === -1
-				? 'fas fa-arrow-down fa-sm'
-				: Math.sign(percentageChangeTotal(stats.data[0].confirmed, stats.data[1].confirmed)) === 1
-					? 'fas fa-arrow-up fa-sm'
-					: ''}" style="margin: 0 2px;"></i>
-				${percentageChangeTotal(stats.data[0].confirmed, stats.data[1].confirmed)}
-				%)`;
-			document.getElementById('per-recovered').innerHTML = `(<i class="${Math.sign(
-				percentageChangeTotal(stats.data[0].recovered, stats.data[1].recovered)
-			) === -1
-				? 'fas fa-arrow-down fa-sm'
-				: Math.sign(percentageChangeTotal(stats.data[0].recovered, stats.data[1].recovered)) === 1
-					? 'fas fa-arrow-up fa-sm'
-					: ''}" style="margin: 0 2px;"></i>
-				${percentageChangeTotal(stats.data[0].recovered, stats.data[1].recovered)}
-				%)`;
-			document.getElementById('per-deaths').innerHTML = `(<i class="${Math.sign(
-				percentageChangeTotal(stats.data[0].deaths, stats.data[1].deaths)
-			) === -1
-				? 'fas fa-arrow-down fa-sm'
-				: Math.sign(percentageChangeTotal(stats.data[0].deaths, stats.data[1].deaths)) === 1
-					? 'fas fa-arrow-up fa-sm'
-					: ''}" style="margin: 0 2px;"></i>
-				${percentageChangeTotal(stats.data[0].deaths, stats.data[1].deaths)}
-				%)`;
+				'Last updated <span class="text-gray-800">' + timeDifference(stats.updated) + '</span>';
+			document.getElementById('number-active').innerText = stats.active.toLocaleString();
+			document.getElementById('number-confirmed').innerText = stats.cases.toLocaleString();
+			document.getElementById('number-recovered').innerText = stats.recovered.toLocaleString();
+			document.getElementById('number-deaths').innerText = stats.deaths.toLocaleString();
+			document.getElementById('today-confirmed').innerText = '+' + stats.todayCases.toLocaleString();
+			document.getElementById('today-deaths').innerText = '+' + stats.todayDeaths.toLocaleString();
+			document.getElementById('per-active').innerHTML = '';
+			document.getElementById('per-recovered').innerHTML = '';
+			document.getElementById('per-confirmed').innerHTML =
+				Math.sign(percentageChangeTotal(stats.cases, stats.todayCases)) === 1
+					? `(<i class="fas fa-arrow-up fa-sm mr-1"></i>${percentageChangeTotal(
+							stats.cases,
+							stats.todayCases
+						)}%)`
+					: '';
+			document.getElementById('per-deaths').innerHTML =
+				Math.sign(percentageChangeTotal(stats.deaths, stats.todayDeaths)) === 1
+					? `(<i class="fas fa-arrow-up fa-sm mr-1"></i>${percentageChangeTotal(
+							stats.deaths,
+							stats.todayDeaths
+						)}%)`
+					: '';
 		})
 		.catch((err) => {
 			console.log('ERROR:', err.message);
@@ -159,10 +137,9 @@ let dataSet = (chartData, chartDataDeaths, chartDataRecovered, chartDataActive, 
 		}
 	);
 };
-
 // add option to dropdown
 let addCountriesToDropdown = () => {
-	fetch(dasboardDataUri, { cache: 'no-cache' })
+	fetch('https://api.covid19api.com/countries', { cache: 'no-cache' })
 		.then((response) => {
 			if (response.ok) {
 				return response.json();
@@ -170,21 +147,18 @@ let addCountriesToDropdown = () => {
 				throw new Error('BAD HTTP');
 			}
 		})
-		.then((jsonData) => {
-			jsonData.data.forEach(function(item) {
-				if (item.timeline.length > 0) {
-					let regionSelect = document.getElementById('selectRegion');
-					let regionNewsSelect = document.getElementById('selectNewsRegion');
-					regionNewsSelect.options[regionSelect.options.length] = new Option(item.name, item.code);
-					regionSelect.options[regionSelect.options.length] = new Option(item.name, item.code);
-				}
+		.then((data) => {
+			data.forEach(function(item) {
+				let regionSelect = document.getElementById('selectRegion');
+				let regionNewsSelect = document.getElementById('selectNewsRegion');
+				regionNewsSelect.options[regionSelect.options.length] = new Option(item.Country, item.ISO2);
+				regionSelect.options[regionSelect.options.length] = new Option(item.Country, item.ISO2);
 			});
 		})
 		.catch((err) => {
 			console.log('ERROR:', err.message);
 		});
 };
-
 let fillSituationReports = () => {
 	fetch('https://covid19-server.chrismichael.now.sh/api/v1/SituationReports', { cache: 'no-cache' })
 		.then((response) => {
@@ -296,6 +270,22 @@ fetch(totalCases)
 		});
 
 		Chart.defaults.global.defaultFontFamily = 'Nunito';
+		Chart.plugins.register({
+			afterDraw: function(chart) {
+				if (myChart.data.datasets.length === 0) {
+					// No data is present
+					var ctx = myChart.chart.ctx;
+					var width = myChart.chart.width;
+					var height = myChart.chart.height;
+					myChart.clear();
+					ctx.save();
+					ctx.textAlign = 'center';
+					ctx.textBaseline = 'middle';
+					ctx.fillText('No data available. Please select another country', width / 2, height / 2);
+					ctx.restore();
+				}
+			}
+		});
 		$('#selectRegion').on('change', function() {
 			let value = $(this).val();
 			dashboardChartCountryData = [];
@@ -320,25 +310,30 @@ fetch(totalCases)
 						}
 					})
 					.then((countryData) => {
-						legendConfirmed.innerText = countryData.data.timeline[0].confirmed.toLocaleString();
-						legendRecovered.innerText = countryData.data.timeline[0].recovered.toLocaleString();
-						legendActive.innerText = countryData.data.timeline[0].active.toLocaleString();
-						legendDeaths.innerText = countryData.data.timeline[0].deaths.toLocaleString();
-						legendUpdated.innerHTML = 'Last Updated ' + timeDifference(countryData.data.updated_at);
-						legendContainer.classList.remove('d-none');
-						legendContainer.classList.add('d-flex');
-						countryData.data.timeline.forEach(function(item) {
-							dashboardChartCountryLabels.push(item.date);
-							dashboardChartCountryDataActive.push(item.active);
-							dashboardChartCountryDataRecovered.push(item.recovered);
-							dashboardChartCountryDataDeaths.push(item.deaths);
-						});
-						dataSet(
-							dashboardChartCountryData,
-							dashboardChartCountryDataDeaths,
-							dashboardChartCountryDataRecovered,
-							dashboardChartCountryDataActive
-						);
+						if (countryData.data.timeline.length) {
+							legendConfirmed.innerText = countryData.data.timeline[0].confirmed.toLocaleString();
+							legendRecovered.innerText = countryData.data.timeline[0].recovered.toLocaleString();
+							legendActive.innerText = countryData.data.timeline[0].active.toLocaleString();
+							legendDeaths.innerText = countryData.data.timeline[0].deaths.toLocaleString();
+							legendUpdated.innerHTML = 'Last Updated ' + timeDifference(countryData.data.updated_at);
+							legendContainer.classList.remove('d-none');
+							legendContainer.classList.add('d-flex');
+							countryData.data.timeline.forEach(function(item) {
+								dashboardChartCountryLabels.push(item.date);
+								dashboardChartCountryDataActive.push(item.active);
+								dashboardChartCountryDataRecovered.push(item.recovered);
+								dashboardChartCountryDataDeaths.push(item.deaths);
+							});
+							dataSet(
+								dashboardChartCountryData,
+								dashboardChartCountryDataDeaths,
+								dashboardChartCountryDataRecovered,
+								dashboardChartCountryDataActive
+							);
+							myChart.data.datasets = dashboardChartCountryData;
+							myChart.data.labels = dashboardChartCountryLabels.reverse();
+							myChart.update();
+						}
 						myChart.data.datasets = dashboardChartCountryData;
 						myChart.data.labels = dashboardChartCountryLabels.reverse();
 						myChart.update();
@@ -359,7 +354,6 @@ $(document).ready(function() {
 			type: 'GET',
 			cache: false,
 			dataSrc: function(json) {
-				console.log('getNewsResults -> json', json);
 				return json;
 			}
 		},
@@ -390,7 +384,13 @@ $(document).ready(function() {
 					if (type === 'type' || type === 'sort') {
 						return data;
 					}
-					return `${data.toLocaleString()}<p class="text-muted mb-0"><i class="fas fa-arrow-up fa-sm mr-1"></i>${row.todayCases.toLocaleString()}</p>`;
+
+					return row.todayCases
+						? `${data.toLocaleString()}<p class="font-weight-600 mb-0"><i class="fas fa-plus fa-sm"></i>${row.todayCases.toLocaleString()}<span class="font-weight-light text-muted small"> (<i class="fas fa-arrow-up fa-sm" style="margin-right:0.1rem;"></i>${percentageChangeTotal(
+								row.cases,
+								row.todayCases
+							)}%)</span></p>`
+						: data.toLocaleString();
 				}
 			},
 			{
@@ -410,7 +410,12 @@ $(document).ready(function() {
 					if (type === 'type' || type === 'sort') {
 						return data;
 					}
-					return `${data.toLocaleString()}<p class="text-muted mb-0"><i class="fas fa-arrow-up fa-sm mr-1"></i>${row.todayDeaths.toLocaleString()}</p>`;
+					return row.todayDeaths
+						? `${data.toLocaleString()}<p class="font-weight-600 mb-0"><i class="fas fa-plus fa-sm"></i>${row.todayDeaths.toLocaleString()}<span class="font-weight-light text-muted small"> (<i class="fas fa-arrow-up fa-sm" style="margin-right:0.1rem;"></i>${percentageChangeTotal(
+								row.deaths,
+								row.todayDeaths
+							)}%)</span></p>`
+						: data.toLocaleString();
 				}
 			},
 			{

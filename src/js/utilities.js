@@ -61,14 +61,9 @@ function timeDifference(date) {
 	}
 }
 
-function percentageChangeTable(cases, newCases) {
-	return newCases !== 0 && cases !== 0 && cases !== newCases ? (newCases * 100 / (cases - newCases)).toFixed(2) : 0;
-}
-
-function percentageChangeTotal(newCases, oldCases) {
-	return newCases !== 0 && oldCases !== 0 && newCases !== oldCases
-		? ((newCases - oldCases) / newCases * 100).toFixed(2)
-		: 0;
+function percentageChangeTotal(cases, todayCases) {
+	let oldCases = cases - todayCases;
+	return cases !== 0 && todayCases !== 0 && cases !== todayCases ? ((cases - oldCases) / cases * 100).toFixed(2) : 0;
 }
 
 function populationFormat(labelValue) {
