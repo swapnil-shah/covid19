@@ -137,28 +137,7 @@ let dataSet = (chartData, chartDataDeaths, chartDataRecovered, chartDataActive, 
 		}
 	);
 };
-// add option to dropdown
-let addCountriesToDropdown = () => {
-	fetch('https://api.covid19api.com/countries', { cache: 'no-cache' })
-		.then((response) => {
-			if (response.ok) {
-				return response.json();
-			} else {
-				throw new Error('BAD HTTP');
-			}
-		})
-		.then((data) => {
-			data.forEach(function(item) {
-				let regionSelect = document.getElementById('selectRegion');
-				let regionNewsSelect = document.getElementById('selectNewsRegion');
-				regionNewsSelect.options[regionSelect.options.length] = new Option(item.Country, item.ISO2);
-				regionSelect.options[regionSelect.options.length] = new Option(item.Country, item.ISO2);
-			});
-		})
-		.catch((err) => {
-			console.log('ERROR:', err.message);
-		});
-};
+
 let fillSituationReports = () => {
 	fetch('https://covid19-server.chrismichael.now.sh/api/v1/SituationReports', { cache: 'no-cache' })
 		.then((response) => {
@@ -180,291 +159,118 @@ let fillSituationReports = () => {
 			console.log('ERROR:', err.message);
 		});
 };
-fetch(totalCases)
-	.then((response) => response.json())
-	.then((countries) => {
-		countries.data.forEach((country) => {
-			dashboardLabelsDate.push(country.date);
-			dashboardChartDataActive.push(country.active);
-			dashboardChartDataRecovered.push(country.recovered);
-			dashboardChartDataDeaths.push(country.deaths);
-		});
-		dataSet(dashboardChartData, dashboardChartDataDeaths, dashboardChartDataRecovered, dashboardChartDataActive);
-		let myChart = new Chart(ctxDashboardLine, {
-			type: 'bar',
-			data: {
-				labels: dashboardLabelsDate.reverse(),
-				datasets: dashboardChartData
+function countriesDatatable(data) {
+	$(document).ready(function() {
+		$('#dataTableWorldTimeline').DataTable({
+			data: data,
+			pagingType: 'numbers',
+			pageLength: 25,
+			language: {
+				searchPlaceholder: 'e.g. usa',
+				loadingRecords: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>'
 			},
-			options: {
-				maintainAspectRatio: false,
-				responsive: true,
-				title: {
-					display: true,
-					text: 'Click on the box to show/hide respective graph'
-				},
-				legend: {
-					reverse: true
-				},
-				tooltips: {
-					mode: 'index',
-					backgroundColor: 'rgb(255,255,255)',
-					titleFontColor: '#858796',
-					bodyFontColor: '#858796',
-					borderColor: '#dddfeb',
-					borderWidth: 1,
-					caretPadding: 10,
-					xPadding: 10,
-					yPadding: 10,
-					footerFontStyle: 'normal',
-					footerFontColor: '#00000',
-					callbacks: {
-						footer: function(tooltipItems, data) {
-							let sum = 0;
-
-							tooltipItems.forEach(function(tooltipItem) {
-								sum += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-							});
-							return 'Confirmed: ' + sum.toLocaleString();
-						},
-						label: function(tooltipItem, data) {
-							return (
-								data.datasets[tooltipItem.datasetIndex].label +
-								': ' +
-								tooltipItem.yLabel.toLocaleString()
-							);
+			columns: [
+				{
+					data: 'country',
+					title: 'Country (Tests)',
+					render: function(data, type, row) {
+						if (type === 'type' || type === 'sort') {
+							return data;
 						}
-					},
-					itemSort: function(a, b) {
-						return b.datasetIndex - a.datasetIndex;
-					}
-					// Use the footer callback to display the sum of the items showing in the tooltip
-				},
-				scales: {
-					xAxes: [
-						{
-							parser: 'YYYY-MM-DD',
-							stacked: true,
-							ticks: {
-								autoSkip: true,
-								maxTicksLimit: 20,
-								min: '2020-02-01',
-								callback: function(value) {
-									return formatDate(value);
-								}
-							}
-						}
-					],
-					yAxes: [
-						{
-							stacked: true,
-							ticks: {
-								callback: function(value) {
-									return populationFormat(value);
-								}
-							}
-						}
-					]
-				}
-			}
-		});
-
-		Chart.defaults.global.defaultFontFamily = 'Nunito';
-		Chart.plugins.register({
-			afterDraw: function(chart) {
-				if (myChart.data.datasets.length === 0) {
-					// No data is present
-					var ctx = myChart.chart.ctx;
-					var width = myChart.chart.width;
-					var height = myChart.chart.height;
-					myChart.clear();
-					ctx.save();
-					ctx.textAlign = 'center';
-					ctx.textBaseline = 'middle';
-					ctx.fillText('No data available. Please select another country', width / 2, height / 2);
-					ctx.restore();
-				}
-			}
-		});
-		$('#selectRegion').on('change', function() {
-			let value = $(this).val();
-			dashboardChartCountryData = [];
-			dashboardChartCountryLabels = [];
-			dashboardChartCountryDataActive = [];
-			dashboardChartCountryDataDeaths = [];
-			dashboardChartCountryDataRecovered = [];
-			if (value === 'worldwide') {
-				legendContainer.classList.remove('d-flex');
-				legendContainer.classList.add('d-none');
-				legendUpdated.innerHTML = 'Worldwide cases is on the cards above';
-				myChart.data.datasets = dashboardChartData;
-				myChart.data.labels = dashboardLabelsDate;
-				myChart.update();
-			} else {
-				fetch(countriesUri + '/' + value, { cache: 'no-cache' })
-					.then((response) => {
-						if (response.ok) {
-							return response.json();
-						} else {
-							throw new Error('BAD HTTP');
-						}
-					})
-					.then((countryData) => {
-						if (countryData.data.timeline.length) {
-							legendConfirmed.innerText = countryData.data.timeline[0].confirmed.toLocaleString();
-							legendRecovered.innerText = countryData.data.timeline[0].recovered.toLocaleString();
-							legendActive.innerText = countryData.data.timeline[0].active.toLocaleString();
-							legendDeaths.innerText = countryData.data.timeline[0].deaths.toLocaleString();
-							legendUpdated.innerHTML = 'Last Updated ' + timeDifference(countryData.data.updated_at);
-							legendContainer.classList.remove('d-none');
-							legendContainer.classList.add('d-flex');
-							countryData.data.timeline.forEach(function(item) {
-								dashboardChartCountryLabels.push(item.date);
-								dashboardChartCountryDataActive.push(item.active);
-								dashboardChartCountryDataRecovered.push(item.recovered);
-								dashboardChartCountryDataDeaths.push(item.deaths);
-							});
-							dataSet(
-								dashboardChartCountryData,
-								dashboardChartCountryDataDeaths,
-								dashboardChartCountryDataRecovered,
-								dashboardChartCountryDataActive
-							);
-							myChart.data.datasets = dashboardChartCountryData;
-							myChart.data.labels = dashboardChartCountryLabels.reverse();
-							myChart.update();
-						}
-						myChart.data.datasets = dashboardChartCountryData;
-						myChart.data.labels = dashboardChartCountryLabels.reverse();
-						myChart.update();
-					})
-					.catch((err) => {
-						console.log('ERROR:', err.message);
-					});
-			}
-		});
-	})
-	.catch((error) => console.log('error', error));
-
-$(document).ready(function() {
-	// World Timeline Table
-	$('#dataTableWorldTimeline').DataTable({
-		ajax: {
-			url: getDashboardCountries,
-			type: 'GET',
-			cache: false,
-			dataSrc: function(json) {
-				return json;
-			}
-		},
-		pagingType: 'numbers',
-		pageLength: 25,
-		language: {
-			searchPlaceholder: 'e.g. usa',
-			loadingRecords: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>'
-		},
-		columns: [
-			{
-				data: 'country',
-				title: 'Country (Tests)',
-				render: function(data, type, row) {
-					if (type === 'type' || type === 'sort') {
-						return data;
-					}
-					return `${data} <span class="text-gray-600">(${populationFormat(
-						row.tests
-					)})</span><p class="text-muted mb-0 small">Updated
+						return `${data} <span class="text-gray-600">(${populationFormat(
+							row.tests
+						)})</span><p class="text-muted mb-0 small">Updated
 					${timeDifference(row.updated)}</p>`;
-				}
-			},
-			{
-				data: 'cases',
-				title: 'Cases',
-				render: function(data, type, row) {
-					if (type === 'type' || type === 'sort') {
-						return data;
 					}
+				},
+				{
+					data: 'cases',
+					title: 'Cases',
+					render: function(data, type, row) {
+						if (type === 'type' || type === 'sort') {
+							return data;
+						}
 
-					return row.todayCases
-						? `${data.toLocaleString()}<p class="font-weight-600 mb-0"><i class="fas fa-plus fa-sm"></i>${row.todayCases.toLocaleString()}<span class="font-weight-light text-muted small"> (<i class="fas fa-arrow-up fa-sm" style="margin-right:0.1rem;"></i>${percentageChangeTotal(
-								row.cases,
-								row.todayCases
-							)}%)</span></p>`
-						: data.toLocaleString();
-				}
-			},
-			{
-				data: 'active',
-				title: 'Active',
-				render: function(data, type, row) {
-					if (type === 'type' || type === 'sort') {
-						return data;
+						return row.todayCases
+							? `${data.toLocaleString()}<p class="font-weight-600 mb-0"><i class="fas fa-plus fa-sm"></i>${row.todayCases.toLocaleString()}<span class="font-weight-light text-muted small"> (<i class="fas fa-arrow-up fa-sm" style="margin-right:0.1rem;"></i>${percentageChangeTotal(
+									row.cases,
+									row.todayCases
+								)}%)</span></p>`
+							: data.toLocaleString();
 					}
-					return `${data.toLocaleString()}`;
-				}
-			},
-			{
-				data: 'deaths',
-				title: 'Deaths',
-				render: function(data, type, row) {
-					if (type === 'type' || type === 'sort') {
-						return data;
+				},
+				{
+					data: 'active',
+					title: 'Active',
+					render: function(data, type, row) {
+						if (type === 'type' || type === 'sort') {
+							return data;
+						}
+						return `${data.toLocaleString()}`;
 					}
-					return row.todayDeaths
-						? `${data.toLocaleString()}<p class="font-weight-600 mb-0"><i class="fas fa-plus fa-sm"></i>${row.todayDeaths.toLocaleString()}<span class="font-weight-light text-muted small"> (<i class="fas fa-arrow-up fa-sm" style="margin-right:0.1rem;"></i>${percentageChangeTotal(
-								row.deaths,
-								row.todayDeaths
-							)}%)</span></p>`
-						: data.toLocaleString();
-				}
-			},
-			{
-				data: 'recovered',
-				title: 'Recovered',
-				render: function(data, type, row) {
-					if (type === 'type' || type === 'sort') {
-						return data;
+				},
+				{
+					data: 'deaths',
+					title: 'Deaths',
+					render: function(data, type, row) {
+						if (type === 'type' || type === 'sort') {
+							return data;
+						}
+						return row.todayDeaths
+							? `${data.toLocaleString()}<p class="font-weight-600 mb-0"><i class="fas fa-plus fa-sm"></i>${row.todayDeaths.toLocaleString()}<span class="font-weight-light text-muted small"> (<i class="fas fa-arrow-up fa-sm" style="margin-right:0.1rem;"></i>${percentageChangeTotal(
+									row.deaths,
+									row.todayDeaths
+								)}%)</span></p>`
+							: data.toLocaleString();
 					}
-					return `${data.toLocaleString()}`;
+				},
+				{
+					data: 'recovered',
+					title: 'Recovered',
+					render: function(data, type, row) {
+						if (type === 'type' || type === 'sort') {
+							return data;
+						}
+						return `${data.toLocaleString()}`;
+					}
 				}
-			}
-		],
-		order: [ [ 1, 'desc' ] ]
-	});
-	fillNumberOfCases();
-	addCountriesToDropdown();
-	fillNewsCards();
-	fillSituationReports();
-	$('#selectNewsRegion').on('change', function() {
-		let value = $(this).val();
-		document.getElementById('card-deck').innerHTML =
-			'<div class="text-center"><i class="fa fa-spinner fa-spin fa-2x fa-fw"></i></div>';
-		const newsUri = 'https://api.smartable.ai/coronavirus/news/' + value;
+			],
+			order: [ [ 1, 'desc' ] ]
+		});
+		fillNumberOfCases();
+		fillNewsCards();
+		fillSituationReports();
+		$('#selectNewsRegion').on('change', function() {
+			let value = $(this).val();
+			document.getElementById('card-deck').innerHTML =
+				'<div class="text-center"><i class="fa fa-spinner fa-spin fa-2x fa-fw"></i></div>';
+			const newsUri = 'https://api.smartable.ai/coronavirus/news/' + value;
 
-		fetch(newsUri, {
-			headers: {
-				'Cache-Control': 'no-cache',
-				'Subscription-Key': API_KEY_SMARTTABLE
-			}
-		})
-			.then((response) => {
-				if (response.ok) {
-					return response.json();
-				} else {
-					document.getElementById(
-						'card-deck'
-					).innerHTML = `<div class="col-sm-12 p-4 mx-auto text-muted">Sorry, something went wrong. Please try again later.</div>`;
-					throw new Error('BAD HTTP');
+			fetch(newsUri, {
+				headers: {
+					'Cache-Control': 'no-cache',
+					'Subscription-Key': API_KEY_SMARTTABLE
 				}
 			})
-			.then((jsonData) => {
-				getNewsResults(jsonData);
-			})
-			.catch((err) => {
-				console.log('ERROR:', err.message);
-			});
+				.then((response) => {
+					if (response.ok) {
+						return response.json();
+					} else {
+						document.getElementById(
+							'card-deck'
+						).innerHTML = `<div class="col-sm-12 p-4 mx-auto text-muted">Sorry, something went wrong. Please try again later.</div>`;
+						throw new Error('BAD HTTP');
+					}
+				})
+				.then((jsonData) => {
+					getNewsResults(jsonData);
+				})
+				.catch((err) => {
+					console.log('ERROR:', err.message);
+				});
+		});
 	});
-});
+}
 $(window).on('load', function() {
 	let $logo = $('#brand-logo');
 	$logo.removeClass('rotating');
