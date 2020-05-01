@@ -75,7 +75,9 @@ let optionsLinear = {
 				ticks: {
 					autoSkip: true,
 					source: 'auto',
-					suggestedMax: 10,
+					suggestedMin: 0,
+					suggestedMax: 1000000,
+					stepSize: 50000,
 					callback: function(value) {
 						return value.toLocaleString();
 					}

@@ -172,14 +172,14 @@ function countriesDatatable(data) {
 			columns: [
 				{
 					data: 'country',
-					title: 'Country (Tests)',
+					title: 'Country <small class="text-dark font-weight-600">(Tests)</small>',
 					render: function(data, type, row) {
 						if (type === 'type' || type === 'sort') {
 							return data;
 						}
-						return `${data} <span class="text-gray-600">(${populationFormat(
+						return `${data} <span class="text-gray-600"><small class="text-dark font-weight-600">(${populationFormat(
 							row.tests
-						)})</span><p class="text-muted mb-0 small">Updated
+						)})</small></span><p class="text-muted mb-0 small">Updated
 					${timeDifference(row.updated)}</p>`;
 					}
 				},

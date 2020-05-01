@@ -351,7 +351,6 @@ $(document).ready(function() {
 			type: 'GET',
 			cache: false,
 			dataSrc: function(json) {
-				console.log('getNewsResults -> json', json);
 				return json;
 			}
 		},
@@ -364,10 +363,12 @@ $(document).ready(function() {
 		},
 		columns: [
 			{
-				title: 'State (Tests)',
+				title: 'State <small class="text-dark font-weight-600">(Tests)</small>',
 				data: 'state',
 				render: function(data, type, row) {
-					return `${data} <span class="text-gray-600"> (${populationFormat(row.tests)})</span>`;
+					return `${data} <span class="text-gray-600"><small class="text-dark font-weight-600">(${populationFormat(
+						row.tests
+					)})</small></span>`;
 				}
 			},
 			{
