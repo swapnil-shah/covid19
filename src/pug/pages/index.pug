@@ -97,23 +97,34 @@ block content
             .col-sm-12
                 .card.pb-2.mb-4
                     .card-header.bg-dark
-                        h3.text-white Bar Chart
-                    .card-body   
-                        .row.justify-content-md-center.pb-5(style="position:relative")
-                                .chart-line
-                                    canvas#myChart.table(width='100%', height='30')
-                        .select
-                            select#ddChartTests
-                                option(value="cases" selected) Cases
-                                option(value="death") Death
-                                option(value="recovered") Recovered
-                        .select
-                            select#ddChartType
-                                option(value='linear') Linear
-                                option(value='logarithmic') Logarithmic
-                        .select
-                            select#ddChartCountries
-                                option(disabled selected) Add a country
+                        h3.text-white Line Chart
+                    .card-body(style="background-color: #191a1a !important;")
+                        .row.justify-content-md-center.pb-5(style="position:relative;")
+                            .col-sm-12.col-md-9
+                                .chart-line(width='100%')
+                                    canvas#myChart.tuatara.table(width='100%', height='30')
+                            .col-sm-12.col-md-3
+                                .d-flex.flex-column 
+                                    p.font-italic.font-weight-300.text-left.mb-1.text-white
+                                        |Select Tests 
+                                        small (Cases, Recovered, Deaths)
+                                    .select.w-100.mb-4
+                                        select#ddChartTests
+                                            option(value="cases" selected) Cases
+                                            option(value="death") Death
+                                            option(value="recovered") Recovered
+                                    p.font-italic.font-weight-300.text-left.mb-1.text-white
+                                        |Select Scale Type 
+                                        small (Linear and Logarithmic)
+                                    .select.w-100.mb-4
+                                        select#ddChartType
+                                            option(value='linear') Linear
+                                            option(value='logarithmic') Logarithmic
+                                    p.font-italic.font-weight-300.text-left.mb-1.text-white
+                                        | Add Country
+                                    .select.w-100
+                                        select#ddChartCountries
+                                            option(disabled selected) Select
                                 //- .card#card-legend
                                 //-     .card-body(style="padding:0.5rem")
                                 //-         .row

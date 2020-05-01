@@ -6,7 +6,25 @@ let lineChartDataCase = [];
 let lineChartDataDeaths = [];
 let lineChartDataRecovered = [];
 let ctxLine = document.getElementById('myLineChart');
-let dateSinceHistory = document.querySelectorAll('.date-since-historical');
+let colors = [
+	'#facd60',
+	'#1ac0c6',
+	'#58b368',
+	'#555577',
+	'#ff70a6',
+	'#fb7756',
+
+	'#c6ceb6',
+	'#f9b4ab',
+	'#efeeb4',
+	'#f27421',
+	'#fff385',
+	'#84d2ff',
+	'#85ffd0',
+	'#f5caab',
+	'#ff85f3',
+	'#446699'
+];
 const daysNum = 45;
 const mostCountryNum = 5;
 function selectCases(caseObj) {
@@ -20,7 +38,10 @@ let optionsLinear = {
 	maintainAspectRatio: false,
 	title: {
 		display: true,
-		text: 'COVID-19 Cases of ' + mostCountryNum + ' most affected countries',
+		text: [
+			'COVID-19 CASES OF ' + mostCountryNum + ' MOST AFFECTED COUNTRY',
+			'Click on the box toshow/hide respective graph'
+		],
 		fontSize: 16,
 		lineHeight: 1.6
 	},
@@ -40,6 +61,10 @@ let optionsLinear = {
 		xAxes: [
 			{
 				ticks: {
+					scaleLabel: {
+						display: true,
+						labelString: 'hello'
+					},
 					autoSkip: true
 				}
 			}
@@ -62,7 +87,10 @@ let optionsLinear = {
 let optionsLog = {
 	title: {
 		display: true,
-		text: 'COVID-19 Cases of ' + mostCountryNum + ' most affected Country',
+		text: [
+			'COVID-19 CASES OF ' + mostCountryNum + ' MOST AFFECTED COUNTRY',
+			'Click on the box toshow/hide respective graph'
+		],
 		fontSize: 16,
 		lineHeight: 1.6
 	},
@@ -135,7 +163,6 @@ function countriesLineData(countries) {
 	countries
 		.slice(0, mostCountryNum)
 		.map((countries) => {
-			sortedArr.push(countries.countryInfo.iso2);
 			return countries;
 		})
 		.forEach(function(country) {
@@ -160,9 +187,6 @@ function countriesLineData(countries) {
 				country.countryInfo.iso2
 			);
 		});
-
-	let query = sortedArr.join();
-	const API_URL_MOST_AFFECTED = 'https://disease.sh/v2/historical/' + query + '?lastdays=' + daysNum;
 	function selectCases(caseObj) {
 		lineChartData[0].data = caseObj[0].data;
 		lineChartData[1].data = caseObj[1].data;
@@ -170,78 +194,77 @@ function countriesLineData(countries) {
 		lineChartData[3].data = caseObj[3].data;
 		return lineChartData[0].data, lineChartData[1].data, lineChartData[2].data, lineChartData[3].data;
 	}
-
-	fetch(API_URL_MOST_AFFECTED).then((response) => response.json()).then((countries) => {
-		console.log('countriesLineData -> countries', countries);
-		lineLabelsCase = Object.keys(countries[0].timeline.cases);
-		lineLabelsDeaths = Object.keys(countries[0].timeline.deaths);
-		lineLabelsRecovered = Object.keys(countries[0].timeline.recovered);
-		dateSinceHistory.forEach(function(ele, i) {
-			dateSinceHistory[i].innerText = Object.keys(countries[0].timeline.cases)[0];
-		});
-		countries.forEach((country) => {
-			lineChartDataCase.push({ data: Object.values(country.timeline.cases) });
-			lineChartDataDeaths.push({ data: Object.values(country.timeline.deaths) });
-			lineChartDataRecovered.push({ data: Object.values(country.timeline.recovered) });
-			lineChartData.push({
-				label: country.country,
-				data: Object.values(country.timeline.cases),
-				fill: false,
-				pointHoverRadius: 0,
-				pointBorderWidth: 0,
-				...(country.country.toLowerCase() === 'spain' && { borderColor: '#FFCD56' }),
-				...(country.country.toLowerCase() === 'usa' && { borderColor: '#3F95CD' }),
-				...(country.country.toLowerCase() === 'italy' && { borderColor: '#956AA8' }),
-				...(country.country.toLowerCase() === 'uk' && { borderColor: '#61C5B1' }),
-				...(country.country.toLowerCase() === 'france' && { borderColor: '#C45851' })
+	let query = sortedArr.join();
+	function getCountries(countryQueries) {
+		lineChartData = [];
+		const API_URL_MOST_AFFECTED = 'https://disease.sh/v2/historical/' + countryQueries + '?lastdays=' + daysNum;
+		fetch(API_URL_MOST_AFFECTED).then((response) => response.json()).then((countries) => {
+			lineLabelsCase = Object.keys(countries[0].timeline.cases);
+			lineLabelsDeaths = Object.keys(countries[0].timeline.deaths);
+			lineLabelsRecovered = Object.keys(countries[0].timeline.recovered);
+			countries.forEach((country) => {
+				lineChartDataCase.push({ data: Object.values(country.timeline.cases) });
+				lineChartDataDeaths.push({ data: Object.values(country.timeline.deaths) });
+				lineChartDataRecovered.push({ data: Object.values(country.timeline.recovered) });
+				lineChartData.push({
+					label: country.country,
+					data: Object.values(country.timeline.cases),
+					fill: false,
+					pointHoverRadius: 0,
+					pointBorderWidth: 0
+				});
 			});
-		});
-		var ctx = document.getElementById('myChart').getContext('2d');
-		var myChart = new Chart(ctx, {
-			type: 'line',
-			data: {
-				labels: lineLabelsCase,
-				datasets: lineChartData
-			},
-			options: optionsLinear
-		});
+			var ctx = document.getElementById('myChart').getContext('2d');
 
-		// Function runs on chart type select update
-		document.getElementById('ddChartType').addEventListener('change', function() {
-			myChart.destroy();
-			myChart = new Chart(ctx, {
+			var myChart = new Chart(ctx, {
 				type: 'line',
 				data: {
 					labels: lineLabelsCase,
 					datasets: lineChartData
 				},
-				options: this.value == 'linear' ? optionsLinear : optionsLog
+				options: optionsLinear
+			});
+
+			// Function runs on chart type select update
+			$('#ddChartType').on('change', function() {
+				myChart.destroy();
+				myChart = new Chart(ctx, {
+					type: 'line',
+					data: {
+						labels: lineLabelsCase,
+						datasets: lineChartData
+					},
+					options: this.value == 'linear' ? optionsLinear : optionsLog
+				});
+			});
+			myChart.update();
+
+			myChart.data.datasets.forEach(function(set, index) {
+				set.borderColor = colors[index];
+			});
+			myChart.update();
+			Chart.defaults.global.defaultFontFamily = 'Nunito';
+			Chart.defaults.global.defaultFontColor = 'white';
+
+			$('#ddChartTests').on('change', function() {
+				if (this.value === 'death') {
+					selectCases(lineChartDataDeaths);
+					myChart.update();
+				} else if (this.value === 'recovered') {
+					selectCases(lineChartDataRecovered);
+					myChart.update();
+				} else {
+					selectCases(lineChartDataCase);
+					myChart.update();
+				}
 			});
 		});
-		document.getElementById('ddChartType').addEventListener('change', function() {
-			myChart.destroy();
-			myChart = new Chart(ctx, {
-				type: 'line',
-				data: {
-					labels: lineLabelsCase,
-					datasets: lineChartData
-				},
-				options: this.value == 'linear' ? optionsLinear : optionsLog
-			});
-		});
-		Chart.defaults.global.defaultFontFamily = 'Nunito';
-		$('#ddChartTests').on('change', function() {
-			if (this.value === 'death') {
-				selectCases(lineChartDataDeaths);
-				myChart.update();
-			} else if (this.value === 'recovered') {
-				selectCases(lineChartDataRecovered);
-				myChart.update();
-			} else {
-				selectCases(lineChartDataCase);
-				myChart.update();
-			}
-		});
+	}
+	getCountries(query);
+	$('#ddChartCountries').on('change', function() {
+		let value = $(this).val();
+		getCountries(query + ',' + value);
+		$('#ddChartType').val('linear');
+		$('#ddChartTests').val('cases'); //v
 	});
 }
-// }

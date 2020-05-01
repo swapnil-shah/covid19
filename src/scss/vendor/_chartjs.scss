@@ -22,11 +22,11 @@
 .chart-line {
 	position: relative;
 	height: 30rem;
-	width: 50rem;
-	@include media-breakpoint-up(md) {
-		height: 30rem;
-		width: 50rem;
-	}
+	width: 100%;
+	// @include media-breakpoint-up(md) {
+	// 	height: 30rem;
+	// 	width: 50rem;
+	// }
 }
 // Pie Chart
 .chart-pie {
