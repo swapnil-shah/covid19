@@ -1,7 +1,7 @@
 extends ../layouts/dashboard.pug
 
 block config
-    - var bodyClass = 'nav-fixed  sidenav-toggled'
+    - var bodyClass = 'nav-fixed'
     - var pageTitle = 'COVID19'
     - var pageIcon = 'activity'
     - var pageSummary = 'Example dashboard overview and content summary'
@@ -17,7 +17,21 @@ append css
 block content
     include includes/page-header
     .container-fluid.mt-n10
-
+        .card
+            .col-md-10
+            h5.label(style='color:white') Chart Type
+            .chart-area.mb-4.mb-lg-0(style="height: 500px;")
+                canvas#myChart(width='100%', height='30')
+            .col-md-10
+                .select
+                    select#chartTests
+                        option(value="cases" selected) Cases
+                        option(value="death") Death
+                        option(value="recovered") Recovered
+                .select       
+                    select#chartType(name='chartType')
+                        option(value='linear') Linear
+                        option(value='logarithmic') Logarithmic
         //- Example Overview Card
         //- Pill navigation card with charts and dataTables included within tab panes
         .card.mb-4
@@ -32,8 +46,11 @@ block content
                     .tab-pane.fade.show.active#overviewPill(role='tabpanel', aria-labelledby='overview-pill')
                         .row
                             .col-lg-8
-                                .chart-area.mb-4.mb-lg-0(style="height: 20rem;")
-                                    canvas#myAreaChart(width='100%', height='30')
+                                .select
+                                    select#chartType
+                                        option(value="cases" selected) Cases
+                                        option(value="death") Death
+                                        option(value="recovered") Recovered
                             .col-lg-4
                                 h6 Projects
                                 hr.mt-1
@@ -110,9 +127,9 @@ append scripts
     //- Load Chart.js via CDN
     script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
     //- Load custom Chart.js styling and demo data
-    script(src='assets/demo/chart-area-demo.js')
+    script(src='assets/demo/chart-line.js')
     //- Load dataTables via CDN
     script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
     //- Load dataTables demo data
-    script(src='assets/demo/datatables-demo.js')
+    script(src='assets/demo/datatables-line.js')
