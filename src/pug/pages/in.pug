@@ -14,144 +14,151 @@ append css
     link(href='https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css', rel='stylesheet', crossorigin='anonymous')
     //- include includes/in-map-js.pug
     script.
-
-        function statesIndiaLatLong(state) {
+        function acronymToLatLong(acronym) {
             let states = {
-                'Andaman and Nicobar Islands': {
+                AN: {
                     lat: 11.66702557,
-                    long: 	92.73598262
+                    long: 92.73598262
                 },
-                'Andhra Pradesh': {
+                AP: {
                     lat: 14.7504291,
                     long: 78.57002559
                 },
-                'Arunachal Pradesh': {
+                AR: {
                     lat: 27.10039878,
                     long: 93.61660071
                 },
-                Assam: {
+                AS: {
                     lat: 26.7499809,
                     long: 94.21666744
                 },
-                Bihar: {
+                BR: {
                     lat: 25.78541445,
                     long: 87.4799727
                 },
-                Chandigarh: {
+                CH: {
                     lat: 30.71999697,
                     long: 76.78000565
                 },
-                Chhattisgarh: {
+                CT: {
                     lat: 22.09042035,
                     long: 82.15998734
                 },
-                Delhi: {
+                DD: {
+                    lat: 20.4283,
+                    long: 72.8397
+                },
+                DN: {
+                    lat: 20.26657819,
+                    long: 73.0166178
+                },
+                DL: {
                     lat: 28.6699929,
                     long: 77.23000403
                 },
-                Goa: {
+                GA: {
                     lat: 15.491997,
                     long: 73.81800065
                 },
-                Gujarat: {
+                GJ: {
                     lat: 22.309425,
                     long: 72.13623
                 },
-                Haryana: {
+                HR: {
                     lat: 29.065773,
                     long: 76.040497
                 },
-                'Himachal Pradesh': {
+                HP: {
                     lat: 31.10002545,
                     long: 77.16659704
                 },
-                'Jammu and Kashmir': {
+                JK: {
                     lat: 34.29995933,
                     long: 74.46665849
                 },
-                Jharkhand: {
+                JH: {
                     lat: 23.80039349,
                     long: 86.41998572
                 },
-                Karnataka: {
+                KA: {
                     lat: 12.57038129,
                     long: 76.91999711
                 },
-                Kerala: {
+                KL: {
                     lat: 8.900372741,
                     long: 76.56999263
                 },
-                Ladakh: {
+                LA: {
                     lat: 34.209515,
                     long: 77.615112
                 },
-                'Madhya Pradesh': {
+                LD: {
+                    lat: 10.56257331,
+                    long: 72.63686717
+                },
+                MP: {
                     lat: 21.30039105,
                     long: 76.13001949
                 },
-                Maharashtra: {
+                MH: {
                     lat: 19.25023195,
                     long: 73.16017493
                 },
 
-                Manipur: {
+                MN: {
                     lat: 24.79997072,
                     long: 93.95001705
                 },
-                Meghalaya: {
+                ML: {
                     lat: 25.57049217,
                     long: 91.8800142
                 },
-                Mizoram: {
+                MZ: {
                     lat: 23.71039899,
                     long: 92.72001461
                 },
-                Nagaland: {
+                NL: {
                     lat: 25.6669979,
                     long: 94.11657019
                 },
-                Odisha: {
+                OR: {
                     lat: 19.82042971,
                     long: 85.90001746
                 },
-                Orissa: {
-                    lat: 19.82042971,
-                    long: 85.90001746
-                },
-                Puducherry: {
+                PY: {
                     lat: 11.93499371,
                     long: 79.83000037
                 },
-                Punjab: {
+                PB: {
                     lat: 31.51997398,
                     long: 75.98000281
                 },
-                Rajasthan: {
+                RJ: {
                     lat: 26.44999921,
                     long: 74.63998124
                 },
-                Sikkim: {
+                SK: {
                     lat: 27.3333303,
                     long: 88.6166475
                 },
-                'Tamil Nadu': {
+                TN: {
                     lat: 12.92038576,
                     long: 79.15004187
                 },
-                Telengana: {
+                TG: {
                     lat: 17.123184,
                     long: 79.208824
                 },
-                Tripura: {
+                TR: {
                     lat: 23.83540428,
                     long: 91.27999914
                 },
 
-                Uttarakhand: {
+                UT: {
                     lat: 29.423,
                     long: 79.4275
                 },
-                'Uttar Pradesh': {
+                UP: {
                     lat: 27.59998069,
                     long: 78.05000565
                 },
@@ -159,25 +166,31 @@ append css
                     lat: 30.32040895,
                     long: 78.05000565
                 },
-                'West Bengal': {
+                WB: {
                     lat: 22.58039044,
                     long: 88.32994665
                 }
             };
-            if (states[state] != null) {
-                return states[state];
+
+            if (states[acronym] != null) {
+                return states[acronym];
             }
-            return state;
+            return acronym;
         }
-        fetch('https://api.rootnet.in/covid19-in/stats/latest', { cache: 'no-cache' })
+        fetch('https://api.covid19india.org/data.json', { cache: 'no-cache' })
             .then((response) => response.json())
             .then((data) => {
-                countiesData(data);
+                countryData(data);
+                window.addEventListener('load', 
+                    function() { 
+                        countryDataTable(data);
+                    }, false);
             });
 
-
-            
-        function countiesData(data) {
+        function countryData(data) {
+            let filteredArr = data.statewise.filter(function(states){
+                return states.statecode !== 'TT'
+            })
             var mymap = L.map('covidCountryMap').setView([ 20.59, 78.96 ], 4);
             let mapboxAccessToken =
                 'pk.eyJ1Ijoic3dhcG5pbDciLCJhIjoiY2s5ZnRtZXh1MGVuYTNkbGNhNWtrcmt0diJ9.fzy5HcciZYupAiuzpVmlWA';
@@ -190,29 +203,30 @@ append css
                 bounds: [ [ -90, -180 ], [ 90, 180 ] ]
             }).addTo(mymap);
             var myRenderer = L.canvas({ padding: 0.5 });
-            function htmlPopup(county, confirmed, recovered, deaths) {
+            function htmlPopup(county, confirmed, active, recovered, deaths) {
                 let output = '';
                 if (county !== null) {
                     output += `<b>${county}</b>, `;
                 }
                 if (confirmed !== null) {
-                    output += `<br/>Confirmed: ${confirmed.toLocaleString()}`;
+                    output += `<br/>Confirmed: ${(parseInt(confirmed)).toLocaleString()}`;
+                }
+                if (active !== null) {
+                    output += `<br/>Confirmed: ${(parseInt(active)).toLocaleString()}`;
                 }
                 if (recovered !== null) {
-                    output += `<br/>Recovered: ${recovered.toLocaleString()}`;
+                    output += `<br/>Recovered: ${(parseInt(recovered)).toLocaleString()}`;
                 }
                 if (deaths !== null) {
-                    output += `<br/>Deaths: ${deaths.toLocaleString()}`;
+                    output += `<br/>Deaths: ${(parseInt(deaths)).toLocaleString()}`;
                 }
                 return output;
             }
-            data.data.regional.forEach(function(state) {
-            console.log("county", state.loc, statesIndiaLatLong(state.loc).lat, statesIndiaLatLong(state.loc).long)
-
-                var latlng = L.latLng({ lat: statesIndiaLatLong(state.loc).lat, lng: statesIndiaLatLong(state.loc).long });
+            filteredArr.forEach(function(state) {
+                var latlng = L.latLng({ lat: acronymToLatLong(state.statecode).lat, lng: acronymToLatLong(state.statecode).long });
                 var circle = L.circleMarker(latlng, {
                     fillOpacity: 0.3,
-                    radius: Math.sqrt(state.totalConfirmed)*0.3,
+                    radius: Math.sqrt(parseInt(state.confirmed))*0.2,
                     stroke: false,
                     fillColor: '#0061F2',
                     renderer: myRenderer
@@ -220,9 +234,10 @@ append css
                     .addTo(mymap)
                     .bindTooltip(
                         htmlPopup(
-                            state.loc,
-                            state.totalConfirmed,
-                            state.discharged,
+                            state.state,
+                            state.confirmed,
+                            state.active,
+                            state.recovered,
                             state.deaths
                         )
                     );
