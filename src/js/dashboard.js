@@ -5,12 +5,7 @@ const API_KEY_SMARTTABLE = 'cf8e77731fb345d381334aff5e844f3f';
 const getDashboardAll = 'https://disease.sh/v2/all';
 
 let dashboardChartData = [];
-let dashboardLabelsDate = [];
-let dashboardChartDataActive = [];
-let dashboardChartDataDeaths = [];
-let dashboardChartDataRecovered = [];
 let dashboardChartCountryData = [];
-let dashboardChartCountryLabels = [];
 let dashboardChartCountryDataActive = [];
 let dashboardChartCountryDataDeaths = [];
 let dashboardChartCountryDataRecovered = [];
@@ -65,7 +60,7 @@ let fillNewsCards = () => {
 			}
 		})
 		.then((jsonData) => {
-			document.getElementById('card-deck').Text = 'Loadimg..';
+			document.getElementById('card-deck').Text = 'Loading..';
 			getNewsResults(jsonData);
 		})
 		.catch((err) => {
@@ -161,6 +156,7 @@ let fillSituationReports = () => {
 };
 function countriesDatatable(data) {
 	$(document).ready(function() {
+		fillNumberOfCases();
 		$('#dataTableWorldTimeline').DataTable({
 			data: data,
 			pagingType: 'numbers',
@@ -192,7 +188,7 @@ function countriesDatatable(data) {
 						}
 
 						return row.todayCases
-							? `${data.toLocaleString()}<p class="font-weight-600 mb-0"><i class="fas fa-plus fa-sm"></i>${row.todayCases.toLocaleString()}<span class="font-weight-light text-muted small"> (<i class="fas fa-arrow-up fa-sm" style="margin-right:0.1rem;"></i>${percentageChangeTotal(
+							? `${data.toLocaleString()}<p class="font-weight-600 mb-0">+ ${row.todayCases.toLocaleString()}<span class="font-weight-light text-muted small"> (&#8593; ${percentageChangeTotal(
 									row.cases,
 									row.todayCases
 								)}%)</span></p>`
@@ -217,7 +213,7 @@ function countriesDatatable(data) {
 							return data;
 						}
 						return row.todayDeaths
-							? `${data.toLocaleString()}<p class="font-weight-600 mb-0"><i class="fas fa-plus fa-sm"></i>${row.todayDeaths.toLocaleString()}<span class="font-weight-light text-muted small"> (<i class="fas fa-arrow-up fa-sm" style="margin-right:0.1rem;"></i>${percentageChangeTotal(
+							? `${data.toLocaleString()}<p class="font-weight-600 mb-0">+ ${row.todayDeaths.toLocaleString()}<span class="font-weight-light text-muted small"> (&#8593; ${percentageChangeTotal(
 									row.deaths,
 									row.todayDeaths
 								)}%)</span></p>`
@@ -237,7 +233,6 @@ function countriesDatatable(data) {
 			],
 			order: [ [ 1, 'desc' ] ]
 		});
-		fillNumberOfCases();
 		fillNewsCards();
 		fillSituationReports();
 		$('#selectNewsRegion').on('change', function() {

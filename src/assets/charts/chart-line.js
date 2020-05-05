@@ -13,7 +13,6 @@ let colors = [
 	'#555577',
 	'#ff70a6',
 	'#fb7756',
-
 	'#c6ceb6',
 	'#f9b4ab',
 	'#efeeb4',
@@ -27,13 +26,6 @@ let colors = [
 ];
 const daysNum = 45;
 const mostCountryNum = 5;
-function selectCases(caseObj) {
-	lineChartData[0].data = caseObj[0].data;
-	lineChartData[1].data = caseObj[1].data;
-	lineChartData[2].data = caseObj[2].data;
-	lineChartData[3].data = caseObj[3].data;
-	return lineChartData[0].data, lineChartData[1].data, lineChartData[2].data, lineChartData[3].data;
-}
 let optionsLinear = {
 	maintainAspectRatio: false,
 	title: {

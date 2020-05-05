@@ -63,7 +63,7 @@ function timeDifference(date) {
 
 function percentageChangeTotal(cases, todayCases) {
 	let oldCases = cases - todayCases;
-	return cases !== 0 && todayCases !== 0 && cases !== todayCases ? ((cases - oldCases) / cases * 100).toFixed(2) : 0;
+	return cases !== 0 && todayCases !== 0 && cases !== todayCases ? (todayCases / oldCases * 100).toFixed(2) : 0;
 }
 
 function populationFormat(labelValue) {

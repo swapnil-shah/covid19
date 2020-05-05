@@ -195,8 +195,13 @@
 			font-size: 0.6rem;
 		}
 	}
+	#myChart {
+		height: 30rem;
+	}
 }
-
+#myChart {
+	height: 30rem;
+}
 .ge-2-lt-5,
 .ge-5-lt-8,
 .ge-8 {
@@ -444,4 +449,7 @@ circle {
 }
 .border-left-dark {
 	border-left: 0.25rem solid #1f2d41 !important;
+}
+.chartFilters .custom-control {
+	display: inline-block;
 }

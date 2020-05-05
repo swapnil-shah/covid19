@@ -350,7 +350,6 @@ function countryDataTable(data) {
 			data: data.statewise,
 			pagingType: 'numbers',
 			pageLength: 25,
-			sorting: false,
 			language: {
 				searchPlaceholder: 'e.g. maharashtra',
 				loadingRecords: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>'
@@ -375,11 +374,9 @@ function countryDataTable(data) {
 							return data;
 						}
 						return parseInt(row.deltaconfirmed)
-							? `${parseInt(
-									data
-								).toLocaleString()}<p class="font-weight-600 mb-0"><i class="fas fa-plus fa-sm"></i>${parseInt(
+							? `${parseInt(data).toLocaleString()}<p class="font-weight-600 mb-0">+ ${parseInt(
 									row.deltaconfirmed
-								).toLocaleString()}<span class="font-weight-light text-muted small"> (<i class="fas fa-arrow-up fa-sm" style="margin-right:0.1rem;"></i>${percentageChangeTotal(
+								).toLocaleString()}<span class="font-weight-light text-muted small"> (&#8593; ${percentageChangeTotal(
 									parseInt(row.confirmed),
 									parseInt(row.deltaconfirmed)
 								)}%)</span></p>`
@@ -390,24 +387,26 @@ function countryDataTable(data) {
 					title: 'Active',
 					data: 'active',
 					render: function(data, type, row) {
+						if (type === 'type' || type === 'sort') {
+							return data;
+						}
 						return `${parseInt(data).toLocaleString()}`;
 					}
 				},
 				{
 					title: 'Recovered',
 					data: 'recovered',
+					data: 'confirmed',
 					render: function(data, type, row) {
 						if (type === 'type' || type === 'sort') {
 							return data;
 						}
 						return parseInt(row.deltarecovered)
-							? `${parseInt(
-									data
-								).toLocaleString()}<p class="font-weight-600 mb-0"><i class="fas fa-plus fa-sm"></i>${parseInt(
-									row
-								).deltarecovered.toLocaleString()}<span class="font-weight-light text-muted small"> (<i class="fas fa-arrow-up fa-sm" style="margin-right:0.1rem;"></i>${percentageChangeTotal(
-									row.recovered,
+							? `${parseInt(data).toLocaleString()}<p class="font-weight-600 mb-0">+ ${parseInt(
 									row.deltarecovered
+								).toLocaleString()}<span class="font-weight-light text-muted small"> (&#8593; ${percentageChangeTotal(
+									parseInt(row.recovered),
+									parseInt(row.deltarecovered)
 								)}%)</span></p>`
 							: parseInt(data).toLocaleString();
 					}
@@ -420,18 +419,17 @@ function countryDataTable(data) {
 							return data;
 						}
 						return parseInt(row.deltadeaths)
-							? `${parseInt(
-									data
-								).toLocaleString()}<p class="font-weight-600 mb-0"><i class="fas fa-plus fa-sm"></i>${parseInt(
-									row
-								).deltadeaths.toLocaleString()}<span class="font-weight-light text-muted small"> (<i class="fas fa-arrow-up fa-sm" style="margin-right:0.1rem;"></i>${percentageChangeTotal(
-									row.deaths,
+							? `${parseInt(data).toLocaleString()}<p class="font-weight-600 mb-0">+ ${parseInt(
 									row.deltadeaths
+								).toLocaleString()}<span class="font-weight-light text-muted small"> (&#8593; ${percentageChangeTotal(
+									parseInt(row.deaths),
+									parseInt(row.deltadeaths)
 								)}%)</span></p>`
 							: parseInt(data).toLocaleString();
 					}
 				}
-			]
+			],
+			order: [ [ 1, 'desc' ] ]
 		});
 		// fillNewsCards();
 		// fillTravelNotices();

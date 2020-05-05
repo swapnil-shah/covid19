@@ -13,246 +13,7 @@ block config
 append css
     link(href='https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css', rel='stylesheet', crossorigin='anonymous')
     //- include includes/in-map-js.pug
-    script.
-        function acronymToLatLong(acronym) {
-            let states = {
-                AN: {
-                    lat: 11.66702557,
-                    long: 92.73598262
-                },
-                AP: {
-                    lat: 14.7504291,
-                    long: 78.57002559
-                },
-                AR: {
-                    lat: 27.10039878,
-                    long: 93.61660071
-                },
-                AS: {
-                    lat: 26.7499809,
-                    long: 94.21666744
-                },
-                BR: {
-                    lat: 25.78541445,
-                    long: 87.4799727
-                },
-                CH: {
-                    lat: 30.71999697,
-                    long: 76.78000565
-                },
-                CT: {
-                    lat: 22.09042035,
-                    long: 82.15998734
-                },
-                DD: {
-                    lat: 20.4283,
-                    long: 72.8397
-                },
-                DN: {
-                    lat: 20.26657819,
-                    long: 73.0166178
-                },
-                DL: {
-                    lat: 28.6699929,
-                    long: 77.23000403
-                },
-                GA: {
-                    lat: 15.491997,
-                    long: 73.81800065
-                },
-                GJ: {
-                    lat: 22.309425,
-                    long: 72.13623
-                },
-                HR: {
-                    lat: 29.065773,
-                    long: 76.040497
-                },
-                HP: {
-                    lat: 31.10002545,
-                    long: 77.16659704
-                },
-                JK: {
-                    lat: 34.29995933,
-                    long: 74.46665849
-                },
-                JH: {
-                    lat: 23.80039349,
-                    long: 86.41998572
-                },
-                KA: {
-                    lat: 12.57038129,
-                    long: 76.91999711
-                },
-                KL: {
-                    lat: 8.900372741,
-                    long: 76.56999263
-                },
-                LA: {
-                    lat: 34.209515,
-                    long: 77.615112
-                },
-                LD: {
-                    lat: 10.56257331,
-                    long: 72.63686717
-                },
-                MP: {
-                    lat: 21.30039105,
-                    long: 76.13001949
-                },
-                MH: {
-                    lat: 19.25023195,
-                    long: 73.16017493
-                },
-
-                MN: {
-                    lat: 24.79997072,
-                    long: 93.95001705
-                },
-                ML: {
-                    lat: 25.57049217,
-                    long: 91.8800142
-                },
-                MZ: {
-                    lat: 23.71039899,
-                    long: 92.72001461
-                },
-                NL: {
-                    lat: 25.6669979,
-                    long: 94.11657019
-                },
-                OR: {
-                    lat: 19.82042971,
-                    long: 85.90001746
-                },
-                PY: {
-                    lat: 11.93499371,
-                    long: 79.83000037
-                },
-                PB: {
-                    lat: 31.51997398,
-                    long: 75.98000281
-                },
-                RJ: {
-                    lat: 26.44999921,
-                    long: 74.63998124
-                },
-                SK: {
-                    lat: 27.3333303,
-                    long: 88.6166475
-                },
-                TN: {
-                    lat: 12.92038576,
-                    long: 79.15004187
-                },
-                TG: {
-                    lat: 17.123184,
-                    long: 79.208824
-                },
-                TR: {
-                    lat: 23.83540428,
-                    long: 91.27999914
-                },
-
-                UT: {
-                    lat: 29.423,
-                    long: 79.4275
-                },
-                UP: {
-                    lat: 27.59998069,
-                    long: 78.05000565
-                },
-                Uttaranchal: {
-                    lat: 30.32040895,
-                    long: 78.05000565
-                },
-                WB: {
-                    lat: 22.58039044,
-                    long: 88.32994665
-                }
-            };
-
-            if (states[acronym] != null) {
-                return states[acronym];
-            }
-            return acronym;
-        }
-        fetch('https://api.covid19india.org/data.json', { cache: 'no-cache' })
-            .then((response) => response.json())
-            .then((data) => {
-                countryData(data);
-                window.addEventListener('load', 
-                    function() { 
-                        countryDataTable(data);
-                    }, false);
-            });
-
-        function countryData(data) {
-            let filteredArr = data.statewise.filter(function(states){
-                return states.statecode !== 'TT'
-            })
-            var mymap = L.map('covidCountryMap').setView([ 20.59, 78.96 ], 4);
-            let mapboxAccessToken =
-                'pk.eyJ1Ijoic3dhcG5pbDciLCJhIjoiY2s5ZnRtZXh1MGVuYTNkbGNhNWtrcmt0diJ9.fzy5HcciZYupAiuzpVmlWA';
-            L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
-                id: 'mapbox/dark-v10',
-                attribution:
-                    'Map data <a href="https://disease.sh/">Novel COVID API</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-                minZoom: 1,
-                noWrap: true,
-                bounds: [ [ -90, -180 ], [ 90, 180 ] ]
-            }).addTo(mymap);
-            var myRenderer = L.canvas({ padding: 0.5 });
-            function htmlPopup(county, confirmed, active, recovered, deaths) {
-                let output = '';
-                if (county !== null) {
-                    output += `<b>${county}</b>, `;
-                }
-                if (confirmed !== null) {
-                    output += `<br/>Confirmed: ${(parseInt(confirmed)).toLocaleString()}`;
-                }
-                if (active !== null) {
-                    output += `<br/>Confirmed: ${(parseInt(active)).toLocaleString()}`;
-                }
-                if (recovered !== null) {
-                    output += `<br/>Recovered: ${(parseInt(recovered)).toLocaleString()}`;
-                }
-                if (deaths !== null) {
-                    output += `<br/>Deaths: ${(parseInt(deaths)).toLocaleString()}`;
-                }
-                return output;
-            }
-            filteredArr.forEach(function(state) {
-                var latlng = L.latLng({ lat: acronymToLatLong(state.statecode).lat, lng: acronymToLatLong(state.statecode).long });
-                var circle = L.circleMarker(latlng, {
-                    fillOpacity: 0.3,
-                    radius: Math.sqrt(parseInt(state.confirmed))*0.2,
-                    stroke: false,
-                    fillColor: '#0061F2',
-                    renderer: myRenderer
-                })
-                    .addTo(mymap)
-                    .bindTooltip(
-                        htmlPopup(
-                            state.state,
-                            state.confirmed,
-                            state.active,
-                            state.recovered,
-                            state.deaths
-                        )
-                    );
-            });
-            var info = L.control({ position: 'bottomright' });
-
-            info.onAdd = function(map) {
-                this._div = L.DomUtil.create('div', 'map-info'); // create a div with a class "info"
-                this._div.innerHTML = '<h4>COVID19 INDIA SPREAD DATA</h4><p class="mb-0">Tap/hover on the marker for more information</p>';
-                return this._div;
-            };
-            info.addTo(mymap);
-        }
-
-
+    
 block content
     .container-fluid.mt-4
         .card.mb-4
@@ -261,6 +22,65 @@ block content
             .card-body.p-3
                 #covidCountryMap(style="height:50vh")
         .row
+            .col-sm-12
+                .card.pb-2.mb-4
+                    .card-header.bg-dark
+                        h3.text-white Line Chart
+                    .card-body(style="background-color: #191a1a !important;")
+                        .row.d-flex.justify-content-md-center
+                            .col-sm-12.col-md-9.p-0
+                                canvas#myChart.p-1.tuatara(style="width:100%; height:30rem")
+                            .col-sm-12.col-md-2.pl-md-4
+                                .row.justify-content-around
+                                    .col
+                                        p.font-italic.font-weight-300.text-left.mb-1 Chart Type
+                                        .custom-control.custom-radio.custom-control-solid.text-white
+                                            input#barRadio.custom-control-input(type='radio', name='chartTypeRadio' checked)
+                                            label.custom-control-label(for='barRadio') Bar 
+                                        .custom-control.custom-radio.custom-control-solid.text-white
+                                            input#lineRadio.custom-control-input(type='radio', name='chartTypeRadio')
+                                            label.custom-control-label(for='lineRadio') Line
+                                .row.justify-content-around
+                                    .col
+                                        p.font-italic.font-weight-300.text-left.mb-1 Case Type
+                                        .custom-control.custom-radio.custom-control-solid.text-white
+                                            input#confirmedRadio.custom-control-input(type='radio', name='caseTypeRadio', value="confirmed" checked)
+                                            label.custom-control-label(for='confirmedRadio') Confirmed 
+                                        .custom-control.custom-radio.custom-control-solid.text-white
+                                            input#recoveredRadio.custom-control-input(type='radio', name='caseTypeRadio', value="recovered")
+                                            label.custom-control-label(for='recoveredRadio') Recovered
+                                        .custom-control.custom-radio.custom-control-solid.text-white
+                                            input#deathsRadio.custom-control-input(type='radio', name='caseTypeRadio', value="deaths")
+                                            label.custom-control-label(for='deathsRadio') Deaths
+                                .row.justify-content-around
+                                    .col
+                                        p.font-italic.font-weight-300.text-left.mb-1 Chart Type
+                                        .custom-control.custom-radio.custom-control-solid.text-white
+                                            input#sinceBeginning.custom-control-input(type='radio', name='timeframe', value="beginning")
+                                            label.custom-control-label(for='sinceBeginning') Beginning
+                                         .custom-control.custom-radio.custom-control-solid.text-white
+                                            input#sinceMonth.custom-control-input(type='radio', name='timeframe' ,value="month", checked)
+                                            label.custom-control-label(for='sinceMonth') 1 Month
+                                         .custom-control.custom-radio.custom-control-solid.text-white
+                                            input#sinceWeeks.custom-control-input(type='radio', name='timeframe', value="weeks")
+                                            label.custom-control-label(for='sinceWeeks') 2 Weeks
+                                .row.d-flex.justify-content-center.pt-4 Total
+                                .row.d-flex.justify-content-around.pb-1.pt-1.text-center
+                                    .col.p-1
+                                        p.mb-1
+                                            small.font-weight-light.mb-1 Confirmed
+                                        p#total-confirmed.card-text.text-dark ...
+                                    .col.p-1
+                                        p.mb-1
+                                            small.font-weight-light.mb-1 Recovered
+                                        p#total-recovered.card-text.text-dark ...
+                                    .col.p-1
+                                        p.mb-1
+                                            small.font-weight-light.mb-1 Deaths
+                                        p#total-deaths.card-text.text-dark ...
+                                p.card-text.mt-1.text-md-right
+                                    small.pr-1.text-muted#total-date.font-weight-light
+
             .col-sm-12
                 .card.pb-2.mb-4
                     .card-header.bg-dark
@@ -332,6 +152,7 @@ block content
 append scripts
     //- Load Chart.js via CDN
     script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
-    script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
-    script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
+    //- script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
+    //- script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
+    script(src='assets/charts/chart-line-in.js')
     script(src='js/countries/in.js')
