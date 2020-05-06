@@ -3,7 +3,7 @@
 	"name": "covid-19-personal",
 	"version": "1.1.2",
 	"scripts": {
-		"build": "npm run clean && npm run build:pug && npm run build:scss && npm run minify-css && npm run build:scripts && npm run build:assets",
+		"build": "npm run clean && npm run build:pug && npm run build:scss && npm run minify-css && npm run build:scripts && npm run build:assets && npm run postcss",
 		"build:assets": "node scripts/build-assets.js",
 		"build:pug": "node scripts/build-pug.js",
 		"build:scripts": "babel src/js -d dist/js",
@@ -11,7 +11,8 @@
 		"clean": "node scripts/clean.js",
 		"start": "npm run build && node scripts/start.js",
 		"start:debug": "npm run build && node scripts/start-debug.js",
-		"minify-css": "postcss dist/css/styles.css > dist/css/styles.min.css"
+		"purgecss": "purgecss -c purgecss.config.js -o src",
+		"postcss": "postcss dist/css/styles.css -o dist/css/styles.min.css"
 	},
 	"author": "Swapnil Shah",
 	"dependencies": {
@@ -33,6 +34,9 @@
 		"upath": "1.2.0"
 	},
 	"devDependencies": {
-		"browser-sync": "2.26.7"
+		"@fullhuman/postcss-purgecss": "^2.2.0",
+		"browser-sync": "2.26.7",
+		"purgecss": "^2.2.1",
+		"tailwindcss": "^1.4.5"
 	}
 }
