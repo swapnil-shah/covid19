@@ -379,7 +379,7 @@ $(document).ready(function() {
 						return data;
 					}
 					return row.todayCases
-						? `${data.toLocaleString()}<p class="font-weight-600 mb-0">+ ${row.todayCases.toLocaleString()}<span class="font-weight-light text-muted small"> (&#8593; ${percentageChangeTotal(
+						? `${data.toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.todayCases.toLocaleString()}<span class="font-weight-light text-muted small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
 								row.cases,
 								row.todayCases
 							)}%)</span></p>`
@@ -401,7 +401,7 @@ $(document).ready(function() {
 						return data;
 					}
 					return row.todayDeaths
-						? `${data.toLocaleString()}<p class="font-weight-600 mb-0">+ ${row.todayDeaths.toLocaleString()}<span class="font-weight-light text-muted small"> (&#8593; ${percentageChangeTotal(
+						? `${data.toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.todayDeaths.toLocaleString()}<span class="font-weight-light text-muted small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
 								row.deaths,
 								row.todayDeaths
 							)}%)</span></p>`

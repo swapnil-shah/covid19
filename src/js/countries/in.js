@@ -374,9 +374,11 @@ function countryDataTable(data) {
 							return data;
 						}
 						return parseInt(row.deltaconfirmed)
-							? `${parseInt(data).toLocaleString()}<p class="font-weight-600 mb-0">+ ${parseInt(
+							? `${parseInt(
+									data
+								).toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
 									row.deltaconfirmed
-								).toLocaleString()}<span class="font-weight-light text-muted small"> (&#8593; ${percentageChangeTotal(
+								).toLocaleString()}<span class="font-weight-light text-muted small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
 									parseInt(row.confirmed),
 									parseInt(row.deltaconfirmed)
 								)}%)</span></p>`
@@ -402,9 +404,11 @@ function countryDataTable(data) {
 							return data;
 						}
 						return parseInt(row.deltarecovered)
-							? `${parseInt(data).toLocaleString()}<p class="font-weight-600 mb-0">+ ${parseInt(
+							? `${parseInt(
+									data
+								).toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
 									row.deltarecovered
-								).toLocaleString()}<span class="font-weight-light text-muted small"> (&#8593; ${percentageChangeTotal(
+								).toLocaleString()}<span class="font-weight-light text-muted small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
 									parseInt(row.recovered),
 									parseInt(row.deltarecovered)
 								)}%)</span></p>`
@@ -419,9 +423,11 @@ function countryDataTable(data) {
 							return data;
 						}
 						return parseInt(row.deltadeaths)
-							? `${parseInt(data).toLocaleString()}<p class="font-weight-600 mb-0">+ ${parseInt(
+							? `${parseInt(
+									data
+								).toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
 									row.deltadeaths
-								).toLocaleString()}<span class="font-weight-light text-muted small"> (&#8593; ${percentageChangeTotal(
+								).toLocaleString()}<span class="font-weight-light text-muted small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
 									parseInt(row.deaths),
 									parseInt(row.deltadeaths)
 								)}%)</span></p>`

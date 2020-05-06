@@ -115,9 +115,9 @@ function countryLineData(data) {
 				],
 				xAxes: [
 					{
-						ticks: {
-							display: false
-						}
+						// ticks: {
+						// 	display: false
+						// }
 					}
 				]
 			},
