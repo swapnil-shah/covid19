@@ -291,6 +291,7 @@ function countriesDatatableChart(data) {
 		});
 	});
 	let optionsLinear = {
+		responsive: true,
 		maintainAspectRatio: false,
 		title: {
 			display: true,
@@ -343,6 +344,8 @@ function countriesDatatableChart(data) {
 		}
 	};
 	let optionsLog = {
+		responsive: true,
+		maintainAspectRatio: false,
 		title: {
 			display: true,
 			text: [
@@ -352,7 +355,6 @@ function countriesDatatableChart(data) {
 			fontSize: 16,
 			lineHeight: 1.6
 		},
-		maintainAspectRatio: false,
 		tooltips: {
 			backgroundColor: 'rgb(255,255,255)',
 			titleFontColor: '#858796',

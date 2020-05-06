@@ -158,6 +158,17 @@ function countryLineData(data) {
 								);
 							}
 						}
+					},
+					scales: {
+						yAxes: [
+							{
+								ticks: {
+									callback: function(value) {
+										return value.toLocaleString();
+									}
+								}
+							}
+						]
 					}
 				}
 			});
@@ -196,7 +207,12 @@ function countryLineData(data) {
 					scales: {
 						yAxes: [
 							{
-								type: $('#linearRadio').is(':checked') ? 'linear' : 'logarithmic'
+								type: $('#linearRadio').is(':checked') ? 'linear' : 'logarithmic',
+								ticks: {
+									callback: function(value) {
+										return value.toLocaleString();
+									}
+								}
 							}
 						]
 					}
@@ -226,7 +242,12 @@ function countryLineData(data) {
 					scales: {
 						yAxes: [
 							{
-								type: 'linear'
+								type: 'linear',
+								ticks: {
+									callback: function(value) {
+										return value.toLocaleString();
+									}
+								}
 							}
 						]
 					}

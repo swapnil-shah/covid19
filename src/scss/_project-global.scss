@@ -195,12 +195,9 @@
 			font-size: 0.6rem;
 		}
 	}
-	#myChart {
-		height: 30rem;
-	}
 }
 #myChart {
-	height: 30rem;
+	height: 30rem !important;
 }
 .ge-2-lt-5,
 .ge-5-lt-8,

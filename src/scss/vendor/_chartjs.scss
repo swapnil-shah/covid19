@@ -1,6 +1,8 @@
 // Create custom containers for ChartJS charts
 
 // Area Chart
+/*! purgecss start ignore */
+
 .chart-area {
 	position: relative;
 	height: 10rem;
@@ -20,10 +22,8 @@
 	}
 }
 .chart-line {
-	@include media-breakpoint-up(md) {
-		height: 30rem;
-		width: 100%;
-	}
+	height: 40rem;
+	width: 100%;
 }
 // Pie Chart
 .chart-pie {
@@ -34,3 +34,4 @@
 		height: 15rem;
 	}
 }
+/*! purgecss start ignore */

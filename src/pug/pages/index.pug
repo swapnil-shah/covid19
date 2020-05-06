@@ -119,13 +119,10 @@ block content
                 .card.pb-2.mb-4
                     .card-header.bg-dark
                         h3.text-white Line Chart
-                    .card-body.pb-0(style="background-color: #191a1a !important;")
-                        .row.justify-content-md-center.pb-5(style="position:relative;")
+                    .card-body(style="background-color: #191a1a !important;")
+                        .row.d-flex.justify-content-md-center
                             .col-sm-12.col-md-9.p-0
-                                .chart-line(width='100%')
-                                    canvas#myChart.tuatara.table.p-1(width='100%', height='30')
-
-                                    //- progress#animationProgress(max='1', value='0', style='width: 100%')
+                                canvas#myChart.tuatara.p-1(width='100%', height='30rem')
                             .col-sm-12.col-md-3
                                 .d-flex.flex-column 
                                     p.font-italic.font-weight-300.text-left.mb-1.text-white
@@ -149,8 +146,8 @@ block content
                                         select#ddChartCountries
                                             option(disabled selected) Select
                     a.small.w-100.text-right.pt-2(href="https://covidtracking.com/" target="_blank")
-                                | Data source 
-                                i.fas.fa-external-link-alt.mr-1
+                    | Data source 
+                    i.fas.fa-external-link-alt.mr-1
             .col-sm-12
                 .card.mb-4
                     .card-header.bg-dark
