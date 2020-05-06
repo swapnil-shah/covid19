@@ -1,3 +1,10 @@
+
+// * * * * * * * * * * * * * * *
+// * * Leaflet  * *
+// * * * * * * * * * * * * * * *
+
+@import './vendor/leaflet.scss';
+
 // * * * * * * * * * * * * *
 // * * Import variables  * *
 // * * * * * * * * * * * * *
@@ -132,6 +139,7 @@
 // * * * * * * * * * * * * * * *
 
 @import './vendor/datatables.scss';
+@import './vendor/bootstrap_datatables.scss';
 @import './vendor/chartjs.scss';
 
 // * * * * * * * * * * * * * *

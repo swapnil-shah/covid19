@@ -3,11 +3,11 @@
 	"name": "covid-19-personal",
 	"version": "1.1.2",
 	"scripts": {
-		"build": "npm run clean && npm run build:pug && npm run build:scss && npm run minify-css && npm run build:scripts && npm run build:assets && npm run postcss",
+		"build": "npm run clean && npm run build:pug && npm run build:scss && npm run build:scripts && npm run build:assets && npm run postcss",
 		"build:assets": "node scripts/build-assets.js",
 		"build:pug": "node scripts/build-pug.js",
 		"build:scripts": "babel src/js -d dist/js",
-		"build:scss": "node scripts/build-scss.js && npm run minify-css",
+		"build:scss": "node scripts/build-scss.js && npm run postcss",
 		"clean": "node scripts/clean.js",
 		"start": "npm run build && node scripts/start.js",
 		"start:debug": "npm run build && node scripts/start-debug.js",
