@@ -356,7 +356,6 @@ $(document).ready(function() {
 		},
 		pagingType: 'numbers',
 		pageLength: 25,
-		sorting: false,
 		language: {
 			searchPlaceholder: 'e.g. new jersey',
 			loadingRecords: '<i class="icon-spinner spinner-animate"></i>'

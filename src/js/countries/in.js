@@ -346,13 +346,13 @@
 // });
 function countryDataTable(data) {
 	$(document).ready(function() {
-		$('#dataTableCountry').DataTable({
-			data: data.statewise,
+		var table = $('#dataTableCountry').DataTable({
+			data: data,
 			pagingType: 'numbers',
 			pageLength: 25,
 			language: {
 				searchPlaceholder: 'e.g. maharashtra',
-				loadingRecords: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>'
+				loadingRecords: '<i class="icon-spinner spinner-animate"></i>'
 			},
 			columns: [
 				{
@@ -362,8 +362,8 @@ function countryDataTable(data) {
 						if (type === 'type' || type === 'sort') {
 							return data;
 						}
-						return `${data}<p class="text-muted mb-0 small">Updated
-					${row.lastupdatedtime}</p>`;
+						return `${data}<span class="text-muted mb-0 small">
+						(${row.lastupdatedtime})</span><p class="mb-0"><span class="small text-primary border-top-0 border-bottom border-right-0 border-left-0 border-blue">See Districts</span></p>`;
 					}
 				},
 				{
@@ -465,5 +465,114 @@ function countryDataTable(data) {
 		// 			console.log('ERROR:', err.message);
 		// 		});
 		// });
+		// let statesData;
+		var statesData = $.parseJSON(
+			$.ajax({
+				type: 'GET',
+				url: 'https://api.covid19india.org/v2/state_district_wise.json',
+				data: data,
+				async: false,
+				beforeSend: function(xhr) {
+					console.log('beforeSend');
+				},
+				dataType: 'json',
+				success: function(data) {
+					statesData = data.responseText;
+				}
+			}).responseText
+		);
+		$('#dataTableCountry tbody').on('click', 'tr', function() {
+			var stateCode = table.row(this).data().statecode;
+			$('#stateName').text(table.row(this).data().state);
+			let filterState = statesData.filter(function(state) {
+				return state.statecode === stateCode;
+			});
+
+			$('#stateModal').modal();
+			$('#dataTableState').DataTable({
+				destroy: true,
+				data: filterState[0].districtData,
+				pagingType: 'numbers',
+				pageLength: 25,
+				language: {
+					searchPlaceholder: 'search district',
+					loadingRecords: '<i class="icon-spinner spinner-animate"></i>'
+				},
+				columns: [
+					{
+						title: 'District',
+						data: 'district'
+					},
+					{
+						title: 'Confirmed',
+						data: 'confirmed',
+						render: function(data, type, row) {
+							if (type === 'type' || type === 'sort') {
+								return data;
+							}
+							return parseInt(row.delta.confirmed)
+								? `${parseInt(
+										data
+									).toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
+										row.delta.confirmed
+									).toLocaleString()}<span class="font-weight-light text-muted small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
+										parseInt(row.confirmed),
+										parseInt(row.delta.confirmed)
+									)}%)</span></p>`
+								: parseInt(data).toLocaleString();
+						}
+					},
+					{
+						title: 'Active',
+						data: 'active',
+						render: function(data, type, row) {
+							if (type === 'type' || type === 'sort') {
+								return data;
+							}
+							return `${parseInt(data).toLocaleString()}`;
+						}
+					},
+					{
+						title: 'Recovered',
+						data: 'recovered',
+						render: function(data, type, row) {
+							if (type === 'type' || type === 'sort') {
+								return data;
+							}
+							return parseInt(row.delta.recovered)
+								? `${parseInt(
+										data
+									).toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
+										row.delta.recovered
+									).toLocaleString()}<span class="font-weight-light text-muted small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
+										parseInt(row.recovered),
+										parseInt(row.delta.recovered)
+									)}%)</span></p>`
+								: parseInt(data).toLocaleString();
+						}
+					},
+					{
+						title: 'Deaths',
+						data: 'deceased',
+						render: function(data, type, row) {
+							if (type === 'type' || type === 'sort') {
+								return data;
+							}
+							return parseInt(row.delta.deceased)
+								? `${parseInt(
+										data
+									).toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
+										row.delta.deceased
+									).toLocaleString()}<span class="font-weight-light text-muted small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
+										parseInt(row.deceased),
+										parseInt(row.delta.deceased)
+									)}%)</span></p>`
+								: parseInt(data).toLocaleString();
+						}
+					}
+				],
+				order: [ [ 1, 'desc' ] ]
+			});
+		});
 	});
 }

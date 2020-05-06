@@ -11,7 +11,7 @@ block config
     - var topNavRegion = 'USA'
     
 append css
-    link(href='https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css', rel='stylesheet', crossorigin='anonymous')
+    //- link(href='https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css', rel='stylesheet', crossorigin='anonymous')
     include includes/in-map-js.pug
     
 block content
@@ -159,11 +159,12 @@ block content
             .modal-dialog.modal-xl(role='document')
                 .modal-content
                     .modal-header
-                        h5.modal-title Extra Large Modal
+                        h5.modal-title#stateName
                         button.close(type='button', data-dismiss='modal', aria-label='Close')
                             span(aria-hidden='true') ×
                     .modal-body
-                        p This is an example of an extra large modal!
+                        .datatable.table-responsive.pb-3
+                            table#dataTableState.table.table-bordered.table-hover(width='100%', cellspacing='0')
 
 append scripts
     //- Load Chart.js via CDN

@@ -233,6 +233,12 @@ body {
 .icon-youtube2:before {
 	content: "\ea9e";
 }
+.sort-amount-asc:before {
+	content: "\ea4c";
+}
+.sort-amount-desc:before {
+	content: "\ea4d";
+}
 @keyframes anim-rotate {
 	0% {
 		transform: rotate(0);
