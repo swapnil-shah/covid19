@@ -31,30 +31,9 @@ block content
                             .col-sm-12.col-md-9.p-0
                                 canvas#myChart.p-1.tuatara(style="width:100%; height:30rem")
                             .col-sm-12.col-md-2.pl-md-4
-                                .row.justify-content-around
-                                    .col
-                                        p.font-italic.font-weight-300.text-left.mb-1 Chart Type
-                                        .custom-control.custom-radio.custom-control-solid.text-white
-                                            input#barRadio.custom-control-input(type='radio', name='chartTypeRadio' checked)
-                                            label.custom-control-label(for='barRadio') Bar 
-                                        .custom-control.custom-radio.custom-control-solid.text-white
-                                            input#lineRadio.custom-control-input(type='radio', name='chartTypeRadio')
-                                            label.custom-control-label(for='lineRadio') Line
-                                .row.justify-content-around
-                                    .col
-                                        p.font-italic.font-weight-300.text-left.mb-1 Case Type
-                                        .custom-control.custom-radio.custom-control-solid.text-white
-                                            input#confirmedRadio.custom-control-input(type='radio', name='caseTypeRadio', value="confirmed" checked)
-                                            label.custom-control-label(for='confirmedRadio') Confirmed 
-                                        .custom-control.custom-radio.custom-control-solid.text-white
-                                            input#recoveredRadio.custom-control-input(type='radio', name='caseTypeRadio', value="recovered")
-                                            label.custom-control-label(for='recoveredRadio') Recovered
-                                        .custom-control.custom-radio.custom-control-solid.text-white
-                                            input#deathsRadio.custom-control-input(type='radio', name='caseTypeRadio', value="deaths")
-                                            label.custom-control-label(for='deathsRadio') Deaths
-                                .row.justify-content-around
-                                    .col
-                                        p.font-italic.font-weight-300.text-left.mb-1 Chart Type
+                                .row.justify-content-between
+                                    .col.mt-2
+                                        p.font-italic.font-weight-300.text-left.mb-1 By Time
                                         .custom-control.custom-radio.custom-control-solid.text-white
                                             input#sinceBeginning.custom-control-input(type='radio', name='timeframe', value="beginning")
                                             label.custom-control-label(for='sinceBeginning') Beginning
@@ -64,7 +43,28 @@ block content
                                         .custom-control.custom-radio.custom-control-solid.text-white
                                             input#sinceWeeks.custom-control-input(type='radio', name='timeframe', value="weeks")
                                             label.custom-control-label(for='sinceWeeks') 2 Weeks
-                                .row.d-flex.justify-content-center.pt-4 Total
+                                    .col.mt-2
+                                        p.font-italic.font-weight-300.text-left.mb-1 By Case
+                                        .custom-control.custom-radio.custom-control-solid.text-white
+                                            input#confirmedRadio.custom-control-input(type='radio', name='caseTypeRadio', value="confirmed" checked)
+                                            label.custom-control-label(for='confirmedRadio') Confirmed 
+                                        .custom-control.custom-radio.custom-control-solid.text-white
+                                            input#recoveredRadio.custom-control-input(type='radio', name='caseTypeRadio', value="recovered")
+                                            label.custom-control-label(for='recoveredRadio') Recovered
+                                        .custom-control.custom-radio.custom-control-solid.text-white
+                                            input#deathsRadio.custom-control-input(type='radio', name='caseTypeRadio', value="deaths")
+                                            label.custom-control-label(for='deathsRadio') Deaths
+                                    .col.mt-2
+                                        p.font-italic.font-weight-300.text-left.mb-1 By Chart
+                                        .custom-control.custom-radio.custom-control-solid.text-white
+                                            input#barRadio.custom-control-input(type='radio', name='chartTypeRadio' checked)
+                                            label.custom-control-label(for='barRadio') Bar 
+                                        .custom-control.custom-radio.custom-control-solid.text-white
+                                            input#lineRadio.custom-control-input(type='radio', name='chartTypeRadio')
+                                            label.custom-control-label(for='lineRadio') Line
+                                .row.d-flex.justify-content-center.pt-4 
+                                | Total
+                                small.pr-1.text-muted#total-date.font-weight-light
                                 .row.d-flex.justify-content-around.pb-1.pt-1.text-center
                                     .col.p-1
                                         p.mb-1
@@ -78,8 +78,6 @@ block content
                                         p.mb-1
                                             small.font-weight-light.mb-1 Deaths
                                         p#total-deaths.card-text.text-dark ...
-                                p.card-text.mt-1.text-md-right
-                                    small.pr-1.text-muted#total-date.font-weight-light
 
             .col-sm-12
                 .card.pb-2.mb-4

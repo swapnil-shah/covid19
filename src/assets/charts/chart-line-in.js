@@ -32,34 +32,46 @@ function countryLineData(data) {
 	let dailyDeceasedMonth = [];
 	let dailyRecoveredMonth = [];
 	let labelsDateMonth = [];
+	let numbersConfirmedMonth = 0;
+	let numbersDeceasedMonth = 0;
+	let numbersRecoveredMonth = 0;
 	let dailyConfirmedWeeks = [];
 	let dailyDeceasedWeeks = [];
 	let dailyRecoveredWeeks = [];
 	let labelsDateWeeks = [];
+	let numbersConfirmedWeeks = 0;
+	let numbersDeceasedWeeks = 0;
+	let numbersRecoveredWeeks = 0;
 	let lastArr = data.cases_time_series[data.cases_time_series.length - 1];
-	document.getElementById('total-confirmed').innerHTML = `<span style="color:${borderBlue}">${parseInt(
-		lastArr.totalconfirmed
-	).toLocaleString()}</span>`;
-	document.getElementById('total-recovered').innerHTML = `<span style="color:${borderGreen}">${parseInt(
-		lastArr.totalrecovered
-	).toLocaleString()}</span>`;
-	document.getElementById('total-deaths').innerHTML = `<span style="color:${borderRed}">${parseInt(
-		lastArr.totaldeceased
-	).toLocaleString()}</span>`;
-	document.getElementById('total-date').innerHTML = `As of ${lastArr.date}`;
+	let numbersConfirmed = parseInt(lastArr.totalconfirmed).toLocaleString();
+	let numbersDeceased = parseInt(lastArr.totaldeceased).toLocaleString();
+	let numbersRecovered = parseInt(lastArr.totalrecovered).toLocaleString();
+	function populateNumbers(confirmed, recovered, deaths, text) {
+		document.getElementById('total-confirmed').innerHTML = `<span style="color:${borderBlue}">${confirmed}</span>`;
+		document.getElementById('total-recovered').innerHTML = `<span style="color:${borderGreen}">${recovered}</span>`;
+		document.getElementById('total-deaths').innerHTML = `<span style="color:${borderRed}">${deaths}</span>`;
+		document.getElementById('total-date').innerHTML = ` (${text})`;
+	}
 
 	//Get months/30 days
 	data.cases_time_series.slice(Math.max(data.cases_time_series.length - 30, 1)).forEach(function(daily) {
 		dailyConfirmedMonth.push(daily.dailyconfirmed);
+		numbersConfirmedMonth += parseInt(daily.dailyconfirmed);
 		dailyDeceasedMonth.push(daily.dailydeceased);
+		numbersDeceasedMonth += parseInt(daily.dailydeceased);
 		dailyRecoveredMonth.push(daily.dailyrecovered);
+		numbersRecoveredMonth += parseInt(daily.dailyrecovered);
 		labelsDateMonth.push(daily.date);
 	});
+
 	//Get 14 days
 	data.cases_time_series.slice(Math.max(data.cases_time_series.length - 14, 1)).forEach(function(daily) {
 		dailyConfirmedWeeks.push(daily.dailyconfirmed);
+		numbersConfirmedWeeks += parseInt(daily.dailyconfirmed);
 		dailyDeceasedWeeks.push(daily.dailydeceased);
+		numbersDeceasedWeeks += parseInt(daily.dailydeceased);
 		dailyRecoveredWeeks.push(daily.dailyrecovered);
+		numbersRecoveredWeeks += parseInt(daily.dailyrecovered);
 		labelsDateWeeks.push(daily.date);
 	});
 	data.cases_time_series.forEach(function(daily) {
@@ -180,6 +192,12 @@ function countryLineData(data) {
 		});
 	}
 	generateChart(labelsDateMonth, dailyConfirmedMonth, null, 'Confirmed', gradientBlue, borderBlue);
+	populateNumbers(
+		numbersConfirmedMonth.toLocaleString(),
+		numbersRecoveredMonth.toLocaleString(),
+		numbersDeceasedMonth.toLocaleString(),
+		'Since Month'
+	);
 
 	$('#confirmedRadio').click(function() {
 		myChart.destroy();
@@ -241,7 +259,7 @@ function countryLineData(data) {
 			generateChart(labelsDate, dailyDeceased, myChart.config.type, 'Deaths', gradientRed, borderRed);
 		}
 		if ($('#sinceMonth').is(':checked')) {
-			generateChart(labelsDateMonth, dailyDeceasedMonth, myChart.config.type, 'Deceased', gradientRed, borderRed);
+			generateChart(labelsDateMonth, dailyDeceasedMonth, myChart.config.type, 'Deaths', gradientRed, borderRed);
 		}
 		if ($('#sinceWeeks').is(':checked')) {
 			generateChart(labelsDateWeeks, dailyDeceasedWeeks, myChart.config.type, 'Deaths', gradientRed, borderRed);
@@ -249,6 +267,12 @@ function countryLineData(data) {
 		myChart.update();
 	});
 	$('#sinceBeginning').click(function() {
+		populateNumbers(
+			numbersConfirmed.toLocaleString(),
+			numbersRecovered.toLocaleString(),
+			numbersDeceased.toLocaleString(),
+			'Since Beginning'
+		);
 		myChart.destroy();
 		if ($('#confirmedRadio').is(':checked')) {
 			generateChart(labelsDate, dailyConfirmed, myChart.config.type, 'Confirmed', gradientBlue, borderBlue);
@@ -262,6 +286,12 @@ function countryLineData(data) {
 		myChart.update();
 	});
 	$('#sinceMonth').click(function() {
+		populateNumbers(
+			numbersConfirmedMonth.toLocaleString(),
+			numbersRecoveredMonth.toLocaleString(),
+			numbersDeceasedMonth.toLocaleString(),
+			'Since Month'
+		);
 		myChart.destroy();
 		if ($('#confirmedRadio').is(':checked')) {
 			generateChart(
@@ -287,10 +317,14 @@ function countryLineData(data) {
 			generateChart(labelsDateMonth, dailyDeceasedMonth, myChart.config.type, 'Deaths', gradientRed, borderRed);
 		}
 		myChart.update();
-		myChart.update();
 	});
 	$('#sinceWeeks').click(function() {
-		myChart.destroy();
+		populateNumbers(
+			numbersConfirmedWeeks.toLocaleString(),
+			numbersRecoveredWeeks.toLocaleString(),
+			numbersDeceasedWeeks.toLocaleString(),
+			'Since 2 Weeks'
+		);
 		myChart.destroy();
 		if ($('#confirmedRadio').is(':checked')) {
 			generateChart(
@@ -315,7 +349,6 @@ function countryLineData(data) {
 		if ($('#deathsRadio').is(':checked')) {
 			generateChart(labelsDateWeeks, dailyDeceasedWeeks, myChart.config.type, 'Deaths', gradientRed, borderRed);
 		}
-		myChart.update();
 		myChart.update();
 	});
 }
