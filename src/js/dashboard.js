@@ -163,7 +163,7 @@ function countriesDatatable(data) {
 			pageLength: 25,
 			language: {
 				searchPlaceholder: 'e.g. usa',
-				loadingRecords: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>'
+				loadingRecords: '<i class="icon-spinner spinner-animate"></i>'
 			},
 			columns: [
 				{
@@ -238,7 +238,7 @@ function countriesDatatable(data) {
 		$('#selectNewsRegion').on('change', function() {
 			let value = $(this).val();
 			document.getElementById('card-deck').innerHTML =
-				'<div class="text-center"><i class="fa fa-spinner fa-spin fa-2x fa-fw"></i></div>';
+				'<div class="text-center"><i class="icon-spinner spinner-animate"></i></div>';
 			const newsUri = 'https://api.smartable.ai/coronavirus/news/' + value;
 
 			fetch(newsUri, {

@@ -1,8 +1,3 @@
-fetch('https://api.covid19india.org/data.json', { cache: 'no-cache' })
-	.then((response) => response.json())
-	.then((data) => {
-		countryLineData(data);
-	});
 function countryLineData(data) {
 	var canvas = document.getElementById('myChart');
 	var ctx = canvas.getContext('2d');
@@ -144,6 +139,7 @@ function countryLineData(data) {
 			data: data,
 			options: options
 		});
+
 		$('#barRadio').click(function() {
 			myChart.destroy();
 			myChart = new Chart(ctx, {
@@ -167,6 +163,17 @@ function countryLineData(data) {
 			});
 			myChart.update();
 		});
+		$(
+			'input:radio[name="chartTypeRadio"], input:radio[name="timeframe"], input:radio[name="caseTypeRadio"]'
+		).change(function() {
+			if ($('#lineRadio').is(':checked')) {
+				$('#linearRadio,  #logarithmicRadio').removeAttr('disabled');
+			} else {
+				$('#linearRadio').attr('checked');
+				$('#logarithmicRadio').removeAttr('checked');
+				$('#linearRadio, #logarithmicRadio').attr('disabled', '');
+			}
+		});
 		$('#lineRadio').click(function() {
 			myChart.destroy();
 			myChart = new Chart(ctx, {
@@ -185,6 +192,103 @@ function countryLineData(data) {
 								);
 							}
 						}
+					},
+					scales: {
+						yAxes: [
+							{
+								type: $('#linearRadio').is(':checked') ? 'linear' : 'logarithmic'
+							}
+						]
+					}
+				}
+			});
+			myChart.update();
+		});
+		$('#linearRadio').click(function() {
+			myChart.destroy();
+			myChart = new Chart(ctx, {
+				type: 'line',
+				data: data,
+				options: {
+					responsive: true,
+					maintainAspectRatio: false,
+					tooltips: {
+						callbacks: {
+							label: function(tooltipItem, data) {
+								return (
+									data.datasets[tooltipItem.datasetIndex].label +
+									': ' +
+									tooltipItem.yLabel.toLocaleString()
+								);
+							}
+						}
+					},
+					scales: {
+						yAxes: [
+							{
+								type: 'linear'
+							}
+						]
+					}
+				}
+			});
+			myChart.update();
+		});
+		$('#logarithmicRadio').click(function() {
+			myChart.destroy();
+			myChart = new Chart(ctx, {
+				type: 'line',
+				data: data,
+				options: {
+					responsive: true,
+					maintainAspectRatio: false,
+					tooltips: {
+						callbacks: {
+							label: function(tooltipItem, data) {
+								return (
+									data.datasets[tooltipItem.datasetIndex].label +
+									': ' +
+									tooltipItem.yLabel.toLocaleString()
+								);
+							}
+						}
+					},
+					scales: {
+						yAxes: [
+							{
+								type: 'logarithmic',
+								ticks: {
+									autoSkip: true,
+									source: 'auto',
+									suggestedMax: 10,
+									callback: function(value) {
+										if (value == 5000) return value.toLocaleString();
+										if (value == 4000) return value.toLocaleString();
+										if (value == 3000) return value.toLocaleString();
+										if (value == 2000) return value.toLocaleString();
+										if (value == 1000) return value.toLocaleString();
+										if (value == 900) return value;
+										if (value == 800) return value;
+										if (value == 700) return value;
+										if (value == 600) return value;
+										if (value == 500) return value;
+										if (value == 400) return value;
+										if (value == 300) return value;
+										if (value == 200) return value;
+										if (value == 100) return value;
+										if (value == 90) return value;
+										if (value == 80) return value;
+										if (value == 70) return value;
+										if (value == 60) return value;
+										if (value == 50) return value;
+										if (value == 40) return value;
+										if (value == 30) return value;
+										if (value == 20) return value;
+										if (value == 10) return value;
+									}
+								}
+							}
+						]
 					}
 				}
 			});
@@ -196,7 +300,7 @@ function countryLineData(data) {
 		numbersConfirmedMonth.toLocaleString(),
 		numbersRecoveredMonth.toLocaleString(),
 		numbersDeceasedMonth.toLocaleString(),
-		'Since Month'
+		'since month'
 	);
 
 	$('#confirmedRadio').click(function() {
@@ -271,7 +375,7 @@ function countryLineData(data) {
 			numbersConfirmed.toLocaleString(),
 			numbersRecovered.toLocaleString(),
 			numbersDeceased.toLocaleString(),
-			'Since Beginning'
+			'since beginning'
 		);
 		myChart.destroy();
 		if ($('#confirmedRadio').is(':checked')) {
@@ -290,7 +394,7 @@ function countryLineData(data) {
 			numbersConfirmedMonth.toLocaleString(),
 			numbersRecoveredMonth.toLocaleString(),
 			numbersDeceasedMonth.toLocaleString(),
-			'Since Month'
+			'since a month'
 		);
 		myChart.destroy();
 		if ($('#confirmedRadio').is(':checked')) {
@@ -323,7 +427,7 @@ function countryLineData(data) {
 			numbersConfirmedWeeks.toLocaleString(),
 			numbersRecoveredWeeks.toLocaleString(),
 			numbersDeceasedWeeks.toLocaleString(),
-			'Since 2 Weeks'
+			'since 2 weeks'
 		);
 		myChart.destroy();
 		if ($('#confirmedRadio').is(':checked')) {

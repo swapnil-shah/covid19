@@ -132,14 +132,14 @@ let optionsLog = {
 						if (value == 5000) return value.toLocaleString();
 						if (value == 2000) return value.toLocaleString();
 						if (value == 1000) return value.toLocaleString();
-						if (value == 500) return value.toLocaleString();
-						if (value == 200) return value.toLocaleString();
-						if (value == 100) return value.toLocaleString();
-						if (value == 50) return value.toLocaleString();
-						if (value == 20) return value.toLocaleString();
-						if (value == 10) return value.toLocaleString();
-						if (value == 5) return value.toLocaleString();
-						if (value == 2) return value.toLocaleString();
+						if (value == 500) return value;
+						if (value == 200) return value;
+						if (value == 100) return value;
+						if (value == 50) return value;
+						if (value == 20) return value;
+						if (value == 10) return value;
+						if (value == 5) return value;
+						if (value == 2) return value;
 					}
 				}
 			}
@@ -230,8 +230,8 @@ function countriesLineData(countries) {
 					},
 					options: this.value == 'linear' ? optionsLinear : optionsLog
 				});
+				myChart.update();
 			});
-			myChart.update();
 
 			myChart.data.datasets.forEach(function(set, index) {
 				set.borderColor = colors[index];

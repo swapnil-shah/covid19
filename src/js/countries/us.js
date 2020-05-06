@@ -359,7 +359,7 @@ $(document).ready(function() {
 		sorting: false,
 		language: {
 			searchPlaceholder: 'e.g. new jersey',
-			loadingRecords: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>'
+			loadingRecords: '<i class="icon-spinner spinner-animate"></i>'
 		},
 		columns: [
 			{

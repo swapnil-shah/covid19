@@ -233,3 +233,21 @@ body {
 .icon-youtube2:before {
 	content: "\ea9e";
 }
+@keyframes anim-rotate {
+	0% {
+		transform: rotate(0);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+.icon-spinner {
+	display: block;
+	animation: anim-rotate 2s infinite linear;
+	font-size: 2em;
+	margin: .5em;
+	text-align: center;
+}
+.spinner-animate {
+	animation: anim-rotate 1s infinite steps(8);
+}
