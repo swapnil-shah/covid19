@@ -186,6 +186,7 @@ function countriesDatatableChart(data) {
 			data: data,
 			pagingType: 'numbers',
 			pageLength: 25,
+			stateSave: true,
 			language: {
 				searchPlaceholder: 'e.g. usa',
 				loadingRecords: '<i class="icon-spinner spinner-animate"></i>'
