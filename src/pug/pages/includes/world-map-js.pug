@@ -3,7 +3,11 @@ script(type="text/javascript").
     .then((response) => response.json())
     .then((data) => {
         countriesData(data);
-        countriesDatatableChart(data);
+
+            window.addEventListener('load', 
+                function() { 
+                    countriesDatatableChart(data);
+            }, false);
     });
     function countriesData(data) {
             var mymap = L.map('covidWorldMap').setView([20, 0], 1);

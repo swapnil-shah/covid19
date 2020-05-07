@@ -11,8 +11,11 @@
 		"clean": "node scripts/clean.js",
 		"start": "npm run build && node scripts/start.js",
 		"start:debug": "npm run build && node scripts/start-debug.js",
-		"purgecss": "purgecss -c purgecss.config.js -o src",
-		"postcss": "postcss dist/css/styles.css -o dist/css/styles.min.css"
+		"postcss": "postcss dist/css/styles.css -o dist/css/styles.min.css",
+		"terser-index": "terser dist/js/utilities.js dist/js/scripts.js dist/js/dashboard.js -o dist/js/dashboard.min.js -c",
+		"terser-us": "terser dist/js/utilities.js dist/js/scripts.js dist/js/in.js -o dist/js/in.min.js -c",
+		"terser-india": "terser dist/js/utilities.js dist/js/scripts.js dist/js/us.js -o dist/js/us.min.js -c",
+		"minify-scripts": "npm run terser-index && npm run terser-us && npm run terser-india"
 	},
 	"author": "Swapnil Shah",
 	"dependencies": {

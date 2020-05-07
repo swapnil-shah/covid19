@@ -164,15 +164,12 @@ script.
     }
     fetch('https://api.covid19india.org/data.json', { cache: 'no-cache' })
         .then((response) => response.json())
-        .then((data) => {
-            let filteredArr = data.statewise.filter(function(states){
-                return states.statecode !== 'TT'
-            })
-            countryData(filteredArr);
+        .then((dataSet) => {
+            countryData(dataSet);
             window.addEventListener('load', 
                 function() { 
-                    countryDataTable(data);
-                }, false);
+                    countryDataTable(dataSet);
+            }, false);
         });
 
     function countryData(data) {
@@ -207,7 +204,11 @@ script.
             }
             return output;
         }
-        data.forEach(function(state) {
+
+            let filteredArr = data.statewise.filter(function(states){
+                return states.statecode !== 'TT'
+            })
+        filteredArr.forEach(function(state) {
             var latlng = L.latLng({ lat: acronymToLatLong(state.statecode).lat, lng: acronymToLatLong(state.statecode).long });
             var circle = L.circleMarker(latlng, {
                 fillOpacity: 0.3,

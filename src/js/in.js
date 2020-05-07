@@ -1,299 +1,297 @@
 // const API_KEY_SMARTTABLE = 'cf8e77731fb345d381334aff5e844f3f';
-function countryDataTable(data) {
-	let canvas = document.getElementById('myChart');
-	let ctx = canvas.getContext('2d');
-	let myChart;
-	let statesData;
-	let gradientBlue = ctx.createLinearGradient(0, 0, 0, 450);
-	let gradientGreen = ctx.createLinearGradient(0, 0, 0, 450);
-	let gradientRed = ctx.createLinearGradient(0, 0, 0, 450);
-	let borderBlue = 'rgba(0, 97, 242, 0.75)';
-	let borderGreen = 'rgba(42, 157, 143, 0.75)';
-	let borderRed = 'rgba(230, 57, 70, 0.75)';
-	gradientBlue.addColorStop(0, 'rgba(0, 97,242, 0.75)');
-	gradientBlue.addColorStop(0.5, 'rgba(0, 97,242, 0.55)');
-	gradientBlue.addColorStop(1, 'rgba(0, 97,242,0.10)');
-	gradientGreen.addColorStop(0, 'rgba(42,157,143, 0.75)');
-	gradientGreen.addColorStop(0.5, 'rgba(42,157,143, 0.55)');
-	gradientGreen.addColorStop(1, 'rgba(42,157,143,0.10)');
-	gradientRed.addColorStop(0, 'rgba(230,57,70,  0.75)');
-	gradientRed.addColorStop(0.5, 'rgba(230,57,70,  0.55)');
-	gradientRed.addColorStop(1, 'rgba(230,57,70, 0.10)');
-	// letchartType = 'Line';
-	let dailyConfirmed = [];
-	let dailyDeceased = [];
-	let dailyRecovered = [];
-	let labelsDate = [];
-	let dailyConfirmedMonth = [];
-	let dailyDeceasedMonth = [];
-	let dailyRecoveredMonth = [];
-	let labelsDateMonth = [];
-	let numbersConfirmedMonth = 0;
-	let numbersDeceasedMonth = 0;
-	let numbersRecoveredMonth = 0;
-	let dailyConfirmedWeeks = [];
-	let dailyDeceasedWeeks = [];
-	let dailyRecoveredWeeks = [];
-	let labelsDateWeeks = [];
-	let numbersConfirmedWeeks = 0;
-	let numbersDeceasedWeeks = 0;
-	let numbersRecoveredWeeks = 0;
-	let lastArrTested = data.tested[data.tested.length - 1];
-	let lastArrTimeSeries = data.cases_time_series[data.cases_time_series.length - 1];
-	let numbersConfirmed = parseInt(lastArrTimeSeries.totalconfirmed).toLocaleString();
-	let numbersDeceased = parseInt(lastArrTimeSeries.totaldeceased).toLocaleString();
-	let numbersRecovered = parseInt(lastArrTimeSeries.totalrecovered).toLocaleString();
-	let filteredArr = data.statewise.filter(function(states) {
-		return states.statecode !== 'TT';
-	});
 
-	//Populate numbers to legend on chart
-	function populateNumbers(confirmed, recovered, deaths, text) {
-		document.getElementById('total-confirmed').innerHTML = `<span style="color:${borderBlue}">${confirmed}</span>`;
-		document.getElementById('total-recovered').innerHTML = `<span style="color:${borderGreen}">${recovered}</span>`;
-		document.getElementById('total-deaths').innerHTML = `<span style="color:${borderRed}">${deaths}</span>`;
-		document.getElementById('total-date').innerHTML = ` (${text})`;
-	}
-	function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradientBorder) {
-		var data = {
-			labels: labelset,
-			datasets: [
+let canvas = document.getElementById('myChart');
+let ctx = canvas.getContext('2d');
+let myChart;
+let statesData;
+let gradientBlue = ctx.createLinearGradient(0, 0, 0, 450);
+let gradientGreen = ctx.createLinearGradient(0, 0, 0, 450);
+let gradientRed = ctx.createLinearGradient(0, 0, 0, 450);
+let borderBlue = 'rgba(0, 97, 242, 0.75)';
+let borderGreen = 'rgba(42, 157, 143, 0.75)';
+let borderRed = 'rgba(230, 57, 70, 0.75)';
+gradientBlue.addColorStop(0, 'rgba(0, 97,242, 0.75)');
+gradientBlue.addColorStop(0.5, 'rgba(0, 97,242, 0.55)');
+gradientBlue.addColorStop(1, 'rgba(0, 97,242,0.10)');
+gradientGreen.addColorStop(0, 'rgba(42,157,143, 0.75)');
+gradientGreen.addColorStop(0.5, 'rgba(42,157,143, 0.55)');
+gradientGreen.addColorStop(1, 'rgba(42,157,143,0.10)');
+gradientRed.addColorStop(0, 'rgba(230,57,70,  0.75)');
+gradientRed.addColorStop(0.5, 'rgba(230,57,70,  0.55)');
+gradientRed.addColorStop(1, 'rgba(230,57,70, 0.10)');
+// letchartType = 'Line';
+let dailyConfirmed = [];
+let dailyDeceased = [];
+let dailyRecovered = [];
+let labelsDate = [];
+let dailyConfirmedMonth = [];
+let dailyDeceasedMonth = [];
+let dailyRecoveredMonth = [];
+let labelsDateMonth = [];
+let numbersConfirmedMonth = 0;
+let numbersDeceasedMonth = 0;
+let numbersRecoveredMonth = 0;
+let dailyConfirmedWeeks = [];
+let dailyDeceasedWeeks = [];
+let dailyRecoveredWeeks = [];
+let labelsDateWeeks = [];
+let numbersConfirmedWeeks = 0;
+let numbersDeceasedWeeks = 0;
+let numbersRecoveredWeeks = 0;
+//Populate numbers to legend on chart
+function populateNumbers(confirmed, recovered, deaths, text) {
+	document.getElementById('total-confirmed').innerHTML = `<span style="color:${borderBlue}">${confirmed}</span>`;
+	document.getElementById('total-recovered').innerHTML = `<span style="color:${borderGreen}">${recovered}</span>`;
+	document.getElementById('total-deaths').innerHTML = `<span style="color:${borderRed}">${deaths}</span>`;
+	document.getElementById('total-date').innerHTML = ` (${text})`;
+}
+function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradientBorder) {
+	var data = {
+		labels: labelset,
+		datasets: [
+			{
+				label: chartLabel,
+				data: dataset,
+				backgroundColor: gradient,
+				borderColor: gradientBorder,
+				borderWidth: 1, // The main line color
+				pointBorderWidth: 0
+			}
+		]
+	};
+	var options = {
+		responsive: true,
+		maintainAspectRatio: false,
+		tooltips: {
+			borderWidth: 1,
+			caretPadding: 10,
+			displayColors: false,
+			xPadding: 10,
+			yPadding: 10,
+			callbacks: {
+				label: function(tooltipItem, data) {
+					return data.datasets[tooltipItem.datasetIndex].label + ': ' + tooltipItem.yLabel.toLocaleString();
+				}
+			}
+		},
+		scales: {
+			yAxes: [
 				{
-					label: chartLabel,
-					data: dataset,
-					backgroundColor: gradient,
-					borderColor: gradientBorder,
-					borderWidth: 1, // The main line color
-					pointBorderWidth: 0
+					ticks: {
+						autoSkip: true,
+						beginAtZero: true,
+						callback: function(value) {
+							return value.toLocaleString();
+						}
+					}
+				}
+			],
+			xAxes: [
+				{
+					// ticks: {
+					// 	display: false
+					// }
 				}
 			]
-		};
-		var options = {
-			responsive: true,
-			maintainAspectRatio: false,
-			tooltips: {
-				borderWidth: 1,
-				caretPadding: 10,
-				displayColors: false,
-				xPadding: 10,
-				yPadding: 10,
-				callbacks: {
-					label: function(tooltipItem, data) {
-						return (
-							data.datasets[tooltipItem.datasetIndex].label + ': ' + tooltipItem.yLabel.toLocaleString()
-						);
-					}
-				}
-			},
-			scales: {
-				yAxes: [
-					{
-						ticks: {
-							autoSkip: true,
-							beginAtZero: true,
-							callback: function(value) {
-								return value.toLocaleString();
-							}
-						}
-					}
-				],
-				xAxes: [
-					{
-						// ticks: {
-						// 	display: false
-						// }
-					}
-				]
-			},
-			title: {
-				display: true,
-				text: 'Overall Country Data',
-				position: 'bottom'
-			}
-		};
-		myChart = new Chart(ctx, {
-			type: chartType ? chartType : 'bar',
-			data: data,
-			options: options
-		});
+		},
+		title: {
+			display: true,
+			text: 'Overall Country Data',
+			position: 'bottom'
+		}
+	};
+	myChart = new Chart(ctx, {
+		type: chartType ? chartType : 'bar',
+		data: data,
+		options: options
+	});
 
-		$('#barRadio').click(function() {
-			myChart.destroy();
-			myChart = new Chart(ctx, {
-				type: 'bar',
-				data: data,
-				options: {
-					responsive: true,
-					maintainAspectRatio: false,
-					tooltips: {
-						callbacks: {
-							label: function(tooltipItem, data) {
-								return (
-									data.datasets[tooltipItem.datasetIndex].label +
-									': ' +
-									tooltipItem.yLabel.toLocaleString()
-								);
-							}
+	$('#barRadio').click(function() {
+		myChart.destroy();
+		myChart = new Chart(ctx, {
+			type: 'bar',
+			data: data,
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				tooltips: {
+					callbacks: {
+						label: function(tooltipItem, data) {
+							return (
+								data.datasets[tooltipItem.datasetIndex].label +
+								': ' +
+								tooltipItem.yLabel.toLocaleString()
+							);
 						}
-					},
-					scales: {
-						yAxes: [
-							{
-								ticks: {
-									callback: function(value) {
-										return value.toLocaleString();
-									}
+					}
+				},
+				scales: {
+					yAxes: [
+						{
+							ticks: {
+								callback: function(value) {
+									return value.toLocaleString();
 								}
 							}
-						]
-					}
+						}
+					]
 				}
-			});
-			myChart.update();
-		});
-		$(
-			'input:radio[name="chartTypeRadio"], input:radio[name="timeframe"], input:radio[name="caseTypeRadio"]'
-		).change(function() {
-			if ($('#lineRadio').is(':checked')) {
-				$('#linearRadio,  #logarithmicRadio').removeAttr('disabled');
-			} else {
-				$('#linearRadio').attr('checked');
-				$('#logarithmicRadio').removeAttr('checked');
-				$('#linearRadio, #logarithmicRadio').attr('disabled', '');
 			}
 		});
-		$('#lineRadio').click(function() {
-			myChart.destroy();
-			myChart = new Chart(ctx, {
-				type: 'line',
-				data: data,
-				options: {
-					responsive: true,
-					maintainAspectRatio: false,
-					tooltips: {
-						callbacks: {
-							label: function(tooltipItem, data) {
-								return (
-									data.datasets[tooltipItem.datasetIndex].label +
-									': ' +
-									tooltipItem.yLabel.toLocaleString()
-								);
-							}
+		myChart.update();
+	});
+	$(
+		'input:radio[name="chartTypeRadio"], input:radio[name="timeframe"], input:radio[name="caseTypeRadio"]'
+	).change(function() {
+		if ($('#lineRadio').is(':checked')) {
+			$('#linearRadio,  #logarithmicRadio').removeAttr('disabled');
+		} else {
+			$('#linearRadio').attr('checked');
+			$('#logarithmicRadio').removeAttr('checked');
+			$('#linearRadio, #logarithmicRadio').attr('disabled', '');
+		}
+	});
+	$('#lineRadio').click(function() {
+		myChart.destroy();
+		myChart = new Chart(ctx, {
+			type: 'line',
+			data: data,
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				tooltips: {
+					callbacks: {
+						label: function(tooltipItem, data) {
+							return (
+								data.datasets[tooltipItem.datasetIndex].label +
+								': ' +
+								tooltipItem.yLabel.toLocaleString()
+							);
 						}
-					},
-					scales: {
-						yAxes: [
-							{
-								type: $('#linearRadio').is(':checked') ? 'linear' : 'logarithmic',
-								ticks: {
-									callback: function(value) {
-										return value.toLocaleString();
-									}
+					}
+				},
+				scales: {
+					yAxes: [
+						{
+							type: $('#linearRadio').is(':checked') ? 'linear' : 'logarithmic',
+							ticks: {
+								callback: function(value) {
+									return value.toLocaleString();
 								}
 							}
-						]
-					}
-				}
-			});
-			myChart.update();
-		});
-		$('#linearRadio').click(function() {
-			myChart.destroy();
-			myChart = new Chart(ctx, {
-				type: 'line',
-				data: data,
-				options: {
-					responsive: true,
-					maintainAspectRatio: false,
-					tooltips: {
-						callbacks: {
-							label: function(tooltipItem, data) {
-								return (
-									data.datasets[tooltipItem.datasetIndex].label +
-									': ' +
-									tooltipItem.yLabel.toLocaleString()
-								);
-							}
 						}
-					},
-					scales: {
-						yAxes: [
-							{
-								type: 'linear',
-								ticks: {
-									callback: function(value) {
-										return value.toLocaleString();
-									}
+					]
+				}
+			}
+		});
+		myChart.update();
+	});
+	$('#linearRadio').click(function() {
+		myChart.destroy();
+		myChart = new Chart(ctx, {
+			type: 'line',
+			data: data,
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				tooltips: {
+					callbacks: {
+						label: function(tooltipItem, data) {
+							return (
+								data.datasets[tooltipItem.datasetIndex].label +
+								': ' +
+								tooltipItem.yLabel.toLocaleString()
+							);
+						}
+					}
+				},
+				scales: {
+					yAxes: [
+						{
+							type: 'linear',
+							ticks: {
+								callback: function(value) {
+									return value.toLocaleString();
 								}
 							}
-						]
-					}
-				}
-			});
-			myChart.update();
-		});
-		$('#logarithmicRadio').click(function() {
-			myChart.destroy();
-			myChart = new Chart(ctx, {
-				type: 'line',
-				data: data,
-				options: {
-					responsive: true,
-					maintainAspectRatio: false,
-					tooltips: {
-						callbacks: {
-							label: function(tooltipItem, data) {
-								return (
-									data.datasets[tooltipItem.datasetIndex].label +
-									': ' +
-									tooltipItem.yLabel.toLocaleString()
-								);
-							}
 						}
-					},
-					scales: {
-						yAxes: [
-							{
-								type: 'logarithmic',
-								ticks: {
-									autoSkip: true,
-									source: 'auto',
-									suggestedMax: 10,
-									callback: function(value) {
-										if (value == 5000) return value.toLocaleString();
-										if (value == 4000) return value.toLocaleString();
-										if (value == 3000) return value.toLocaleString();
-										if (value == 2000) return value.toLocaleString();
-										if (value == 1000) return value.toLocaleString();
-										if (value == 900) return value;
-										if (value == 800) return value;
-										if (value == 700) return value;
-										if (value == 600) return value;
-										if (value == 500) return value;
-										if (value == 400) return value;
-										if (value == 300) return value;
-										if (value == 200) return value;
-										if (value == 100) return value;
-										if (value == 90) return value;
-										if (value == 80) return value;
-										if (value == 70) return value;
-										if (value == 60) return value;
-										if (value == 50) return value;
-										if (value == 40) return value;
-										if (value == 30) return value;
-										if (value == 20) return value;
-										if (value == 10) return value;
-									}
+					]
+				}
+			}
+		});
+		myChart.update();
+	});
+	$('#logarithmicRadio').click(function() {
+		myChart.destroy();
+		myChart = new Chart(ctx, {
+			type: 'line',
+			data: data,
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				tooltips: {
+					callbacks: {
+						label: function(tooltipItem, data) {
+							return (
+								data.datasets[tooltipItem.datasetIndex].label +
+								': ' +
+								tooltipItem.yLabel.toLocaleString()
+							);
+						}
+					}
+				},
+				scales: {
+					yAxes: [
+						{
+							type: 'logarithmic',
+							ticks: {
+								autoSkip: true,
+								source: 'auto',
+								suggestedMax: 10,
+								callback: function(value) {
+									if (value == 5000) return value.toLocaleString();
+									if (value == 4000) return value.toLocaleString();
+									if (value == 3000) return value.toLocaleString();
+									if (value == 2000) return value.toLocaleString();
+									if (value == 1000) return value.toLocaleString();
+									if (value == 900) return value;
+									if (value == 800) return value;
+									if (value == 700) return value;
+									if (value == 600) return value;
+									if (value == 500) return value;
+									if (value == 400) return value;
+									if (value == 300) return value;
+									if (value == 200) return value;
+									if (value == 100) return value;
+									if (value == 90) return value;
+									if (value == 80) return value;
+									if (value == 70) return value;
+									if (value == 60) return value;
+									if (value == 50) return value;
+									if (value == 40) return value;
+									if (value == 30) return value;
+									if (value == 20) return value;
+									if (value == 10) return value;
 								}
 							}
-						]
-					}
+						}
+					]
 				}
-			});
-			myChart.update();
+			}
 		});
-	}
+		myChart.update();
+	});
+}
+function countryDataTable(data) {
 	$(document).ready(function() {
+		let lastArrTested = data.tested[data.tested.length - 1];
+		let lastArrTimeSeries = data.cases_time_series[data.cases_time_series.length - 1];
+		let numbersConfirmed = parseInt(lastArrTimeSeries.totalconfirmed).toLocaleString();
+		let numbersDeceased = parseInt(lastArrTimeSeries.totaldeceased).toLocaleString();
+		let numbersRecovered = parseInt(lastArrTimeSeries.totalrecovered).toLocaleString();
+		let filteredArr = data.statewise.filter(function(states) {
+			return states.statecode !== 'TT';
+		});
 		//Get months/30 days
 		data.cases_time_series.slice(Math.max(data.cases_time_series.length - 30, 1)).forEach(function(daily) {
 			dailyConfirmedMonth.push(daily.dailyconfirmed);
