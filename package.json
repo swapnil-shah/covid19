@@ -3,7 +3,7 @@
 	"name": "covid-19-personal",
 	"version": "1.1.2",
 	"scripts": {
-		"build": "npm run clean && npm run build:pug && npm run build:scss && npm run build:scripts && npm run build:assets && npm run postcss",
+		"build": "npm run clean && npm run build:pug && npm run build:scss && npm run build:scripts && npm run build:assets && npm run postcss && npm run terser-index && npm run terser-india && npm run terser-us",
 		"build:assets": "node scripts/build-assets.js",
 		"build:pug": "node scripts/build-pug.js",
 		"build:scripts": "babel src/js -d dist/js",
