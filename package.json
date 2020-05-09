@@ -34,12 +34,11 @@
 		"pug": "2.0.4",
 		"sass": "1.26.0",
 		"shelljs": "0.8.3",
-		"upath": "1.2.0"
-	},
-	"devDependencies": {
+		"upath": "1.2.0",
 		"@fullhuman/postcss-purgecss": "^2.2.0",
 		"browser-sync": "2.26.7",
 		"purgecss": "^2.2.1",
 		"tailwindcss": "^1.4.5"
-	}
+	},
+	"devDependencies": {}
 }
