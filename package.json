@@ -34,6 +34,7 @@
 		"pug": "2.0.4",
 		"sass": "1.26.0",
 		"shelljs": "0.8.3",
+		"terser": "^4.6.13",
 		"upath": "1.2.0"
 	},
 	"devDependencies": {
