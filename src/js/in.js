@@ -1,5 +1,5 @@
-// const API_KEY_SMARTTABLE = 'cf8e77731fb345d381334aff5e844f3f';
-
+const newsUri = 'https://api.smartable.ai/coronavirus/news/IN';
+const API_KEY_SMARTTABLE = 'cf8e77731fb345d381334aff5e844f3f';
 let canvas = document.getElementById('myChart');
 let ctx = canvas.getContext('2d');
 let myChart;
@@ -44,6 +44,75 @@ function populateNumbers(confirmed, recovered, deaths, text) {
 	document.getElementById('total-recovered').innerHTML = `<span style="color:${borderGreen}">${recovered}</span>`;
 	document.getElementById('total-deaths').innerHTML = `<span style="color:${borderRed}">${deaths}</span>`;
 	document.getElementById('total-date').innerHTML = ` (${text})`;
+}
+function newsResults() {
+	fetch(newsUri, {
+		headers: {
+			'Cache-Control': 'no-cache',
+			'Subscription-Key': API_KEY_SMARTTABLE
+		}
+	})
+		.then((response) => {
+			if (response.ok) {
+				return response.json();
+			} else {
+				throw new Error('BAD HTTP');
+			}
+		})
+		.then((data) => {
+			document.getElementById('card-deck').Text = 'Loading..';
+			let newsCards = document.getElementById('card-deck');
+			let newsResultsNumber = document.getElementById('news-results-number');
+			let output = '';
+			if (data.news.length > 0) {
+				newsResultsNumber.innerText = `${data.news.length} results found`;
+				data.news.forEach(function(item) {
+					output += `
+						<div class="col-sm-12 my-3 pl-0 pr-1">
+							<a class="card lift lift-sm p-3 news-card" href="${item.webUrl}" target="_blank">
+								<h3 class="text-dark">${item.title}</h3>
+								<p class="text-gray-600 mb-1"">${item.excerpt}</p>
+								<p class="text-primary mb-3">View full article</p>
+								<p class="mb-0 text-muted small"><i class="far fa-newspaper"></i> Published by <span class="font-weight-600 text-gray-600">${item
+									.provider.name}</span> ${timeDifference(item.publishedDateTime)}</p>
+								</>
+							</a>
+						</div>
+						`;
+				});
+			} else {
+				newsResultsNumber.innerText = '';
+				output += `<div class="col-sm-12 p-4 mx-auto text-muted">No data available for this region. Please selet another option.</div>`;
+			}
+			newsCards.innerHTML = output;
+		})
+		.catch((err) => {
+			console.log('ERROR:', err.message);
+		});
+}
+function notificationsAdvisories() {
+	fetch('https://api.rootnet.in/covid19-in/notifications', { cache: 'no-cache' })
+		.then((response) => {
+			if (response.ok) {
+				return response.json();
+			} else {
+				throw new Error('BAD HTTP');
+			}
+		})
+		.then((response) => {
+			let output = '';
+			response.data.notifications.forEach(function(report) {
+				output += `<a class="list-group-item list-group-item-action" target="_blank" href="${report.link}">${report.title}</a>
+						`;
+			});
+			document.getElementById('right-panel-reports').innerHTML = output;
+			document.getElementById('notification-last-updated').innerHTML = `Updated ${timeDifference(
+				response.lastRefreshed
+			)}`;
+		})
+		.catch((err) => {
+			console.log('ERROR:', err.message);
+		});
 }
 function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradientBorder) {
 	var data = {
@@ -619,9 +688,7 @@ function countryDataTable(data) {
 				url: 'https://api.covid19india.org/v2/state_district_wise.json',
 				data: filteredArr,
 				async: false,
-				beforeSend: function(xhr) {
-					console.log('beforeSend');
-				},
+				beforeSend: function(xhr) {},
 				dataType: 'json',
 				success: function(data) {
 					statesData = data.responseText;
@@ -725,3 +792,14 @@ function countryDataTable(data) {
 		});
 	});
 }
+$(document).ready(function() {
+	newsResults();
+	notificationsAdvisories();
+});
+$(window).on('load', function() {
+	let $logo = $('#brand-logo');
+	$logo.removeClass('rotating');
+	$logo.hover(function() {
+		$(this).addClass('rotating'), $(this).removeClass('rotating');
+	});
+});

@@ -1,0 +1,45 @@
+
+block content
+    textarea#myTextarea(cols="30" rows="10" style="width:90vw; height:90vh; margin:0 auto;")
+    script.
+        let formatDateToString = (function() {
+            return function(str) {
+                let monthNames = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec' ],
+                    d = new Date(str),
+                    day = d.getDate(),
+                    month = monthNames[d.getMonth()],
+                    year = d.getFullYear().toString().substr(2, 2)
+
+                return month + ' ' + day 
+                    
+            };
+        })();
+        fetch("https://corona-api.com/countries?include=timeline", {
+        cache: "no-cache"
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            var cases = [];
+
+            data.data
+            .sort(function (a, b) {
+                return b.timeline.length - a.timeline.length;
+            })
+            .forEach(function (i) {
+                if (i.timeline.length) {
+                var o1 = { Country: i.name };
+                var o2 = {ImageURL: "https://www.countryflags.io/"+i.code+"/shiny/64.png"};
+                let o3 = {};
+                let arrayRev = i.timeline.reverse();
+                arrayRev.forEach(function (t) {
+                    o3[formatDateToString(t.date)] = t.confirmed;
+                });
+                var obj = Object.assign({}, o1, o2, o3);
+                cases.push(obj);
+                }
+            });
+            console.log(cases);
+            var textedJson = JSON.stringify(cases);
+            document.getElementById("myTextarea").innerText = textedJson;
+            // console.log(JSON.stringify(cases));
+        });

@@ -9,7 +9,7 @@
 		"build:scripts": "babel src/js -d dist/js",
 		"build:scss": "node scripts/build-scss.js && npm run postcss",
 		"clean": "node scripts/clean.js",
-		"start": "npm run build && node scripts/start.js",
+		"start": "npm run build && node scripts/start.js ",
 		"start:debug": "npm run build && node scripts/start-debug.js",
 		"postcss": "postcss dist/css/styles.css -o dist/css/styles.min.css",
 		"terser-index": "terser dist/js/utilities.js dist/js/scripts.js dist/js/dashboard.js -o dist/js/dashboard.min.js -c",

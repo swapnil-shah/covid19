@@ -3,7 +3,6 @@ script(type="text/javascript").
     .then((response) => response.json())
     .then((data) => {
         countriesData(data);
-
             window.addEventListener('load', 
                 function() { 
                     countriesDatatableChart(data);

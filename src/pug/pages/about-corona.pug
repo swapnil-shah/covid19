@@ -1,0 +1,22 @@
+extends ../layouts/dashboard.pug
+
+block config
+    - var bodyClass = 'nav-fixed'
+    - var pageTitle = 'About COVID19'
+    - var sidenavStyle = 'sidenav-light'
+    - var topnavStyle = 'navbar-light bg-white'
+    - var pageHeaderStyle = 'page-header-dark'
+    - var pageHeaderBackground = 'bg-gradient-primary-to-secondary'
+    - var footerStyle = 'footer-dark bg-dark'
+    - var topNavRegion = 'USA'
+    
+append css
+block content
+    .container-fluid
+        .row.align-items-center.justify-content-between
+            .col
+                h2.text-primary Welcome back, your dashboard is ready!
+                p.text-gray-700 Great job, your affiliate dashboard is ready to go! You can view sales, generate links, prepare coupons, and download affiliate reports using this dashboard.
+            .col
+                img.img-fluid(src='assets/img/drawkit/color/drawkit-content-man-alt.svg', style='max-width: 25rem;')
+

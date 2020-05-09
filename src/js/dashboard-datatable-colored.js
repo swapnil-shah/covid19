@@ -221,10 +221,10 @@ let fillSituationReports = () => {
 		.then((response) => {
 			let output = '';
 			response.reports.forEach(function(report) {
-				output += `<a class="list-group-item list-group-item-action" target="_blank" href="${report.pdf}"><i class="far fa-file-pdf fa-fw text-blue mr-2"></i>${report.report}<span class="float-right small text-muted">${report.date}</span></a>
+				output += `<a class="list-group-item list-group-item-action" target="_blank" href="${report.pdf}"><i class="icon-file-pdf mr-2"></i>${report.report}<span class="float-right small text-muted">${report.date}</span></a>
 						`;
 			});
-			document.getElementById('left-panel-reports').innerHTML = output;
+			document.getElementById('right-panel-reports').innerHTML = output;
 		})
 		.catch((err) => {
 			console.log('ERROR:', err.message);
