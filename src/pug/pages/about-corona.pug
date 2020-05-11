@@ -11,12 +11,258 @@ block config
     - var topNavRegion = 'USA'
     
 append css
+
+    style.
+        ::-webkit-scrollbar {
+            width: 13px; // to adjust width
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #ffffff;
+            -webkit-box-shadow: inset 1px 1px 2px #e0e0e0;
+            border: 1px solid #d8d8d8; //color of the track of scroll bar
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #646464;
+            -webkit-box-shadow: inset 1px 1px 2px rgba(155, 155, 155, 0.4);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #aaaaaa;
+        }
+
+        ::-webkit-scrollbar-thumb:active {
+            background: #888;
+            -webkit-box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        html {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        section {
+            position: relative;
+            display: block;
+            width: 100%;
+            height: 500px;
+            height: 100vh;
+            overflow: hidden;
+            color: #bbb;
+        }
+
+        section h2 {
+            color: #fff;
+        }
+
+        section .cover {
+            position: absolute;
+            display: block;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        section .cover img {
+            position: absolute;
+            display: block;
+            min-width: 100%;
+            min-height: 100%;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        section .content {
+            position: absolute;
+            display: block;
+            background: rgba(0, 0, 0, 0.7);
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        section .text {
+            width: 50%;
+        }
+
+        .centralize {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translateZ(0px) translateX(-50%) translateY(-50%);
+            transform: translateX(-50%) translateY(-50%);
+        }
+
+        @media screen and (max-width: 1000px) {
+            section .text {
+                width: 90%;
+            }
+        }
+        a.iprodev {
+            line-height: normal;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 13px;
+            color: #a7aaae;
+            position: fixed;
+            left: 20px;
+            bottom: 20px;
+            border: 1px solid #a7aaae;
+            padding: 12px 20px 10px;
+            border-radius: 50px;
+            transition: all .1s ease-in-out;
+            text-transform: uppercase;
+            z-index: 100;
+        }
+
+        a.iprodev:hover {
+            background: #a7aaae;
+            color: white;
+        }
+        ul{
+            PADDING-INLINE-START: 10px;
+        }
+
+        li, p{
+            letter-spacing: 0.02rem;
+
+        }
+        @media (max-width: 600px) {
+            .display-4{
+                font-size: 1.2rem;
+            }
+            li, p{
+                font-size:0.8rem;
+            }
+        }
+
 block content
-    .container-fluid
-        .row.align-items-center.justify-content-between
-            .col
-                h2.text-primary Welcome back, your dashboard is ready!
-                p.text-gray-700 Great job, your affiliate dashboard is ready to go! You can view sales, generate links, prepare coupons, and download affiliate reports using this dashboard.
-            .col
-                img.img-fluid(src='assets/img/drawkit/color/drawkit-content-man-alt.svg', style='max-width: 25rem;')
+    section.special(data-scrollax-parent='true')
+        .cover(data-scrollax="properties: { translateY: '30%' }").bg-dark
+        .content.text-center.text-md-left
+            .w-100.centralize
+                .row.d-flex.align-items-center.justify-content-between(data-scrollax="properties: { 'translateY': '150%', 'opacity': 1.5 }")
+                    .col-sm-12.col-md-3.text-md-right
+                        img.img-fluid.mb-3(src='assets/img/drawkit/color/drawkit-content-man-alt.svg', style='max-width: 10rem;')
+                    .col-sm-12.col-md-8
+                        h2.mb-3.display-4
+                            span.border-bottom nCoV-2019
+                        ul.text-left
+                            li.mt-1 Coronavirus disease (COVID-19) is an infectious disease caused by a newly discovered coronavirus first detected in Wuhan, China.
+                            li.mt-1 Most people infected with the COVID-19 virus will experience mild to moderate respiratory illness and recover without requiring special treatment.
+                            li.mt-1 Older people, and those with underlying medical problems like cardiovascular disease, diabetes, chronic respiratory disease, and cancer are more likely to develop serious illness
+                            li.mt-1 The COVID-19 virus spreads primarily through droplets of saliva or discharge from the nose when an infected person coughs or sneezes so it’s important that you also practice respiratory etiquette (for example, by coughing into a flexed elbow). Protect yourself and others from infection by washing your hands or using an alcohol based rub frequently and not touching your face.
+                            li.mt-1 The name coronavirus is derived from the Latin corona, meaning "crown" or "halo", which refers to the characteristic appearance reminiscent of a crown.
+    section.special(data-scrollax-parent='true')
+        .cover(data-scrollax="properties: { translateY: '30%' }").bg-dark
+        .content.text-center.text-md-left
+            .w-100.centralize
+                .row.align-items-center.justify-content-between(data-scrollax="properties: { 'translateY': '150%', 'opacity': 1.5 }")
+                    .col-sm-12.col-md-3.text-md-right
+                        img.img-fluid.mb-3(src='assets/img/drawkit/color/drawkit-content-man-alt.svg', style='max-width: 10rem;')
+                    .col-sm-12.col-md-8
+                        h2.mb-3.display-4
+                            span.border-bottom How It Spreads
+                        ul.text-left
+                            li.mt-1 The main route of transmission is respiratory droplets and close contact.
+                            li.mt-1 When you sneeze or cough, you send out droplets of fluid from your nose and mouth.
+                            li.mt-1 Those droplets can carry infections, and when they enter someone else's enter the eyes, nose or mouth, the infection can make them sick. This is the way the flu and many viruses are spread.
+                            li.mt-1 Most often, you need to be close to the person (within 6 feet) for it to spread this way.
+                            li.mt-1 There is the possibility of aerosol transmission when exposed to high concentration aerosol for a long time in a relatively closed environment.
+                            li.mt-1 The WHO has stated that the risk of spread from someone without symptoms is "very low" and that fecal transmission is "low".
+
+    section.special(data-scrollax-parent='true')
+        .cover(data-scrollax="properties: { translateY: '30%' }").bg-dark
+        .content.text-center.text-md-left
+            .w-100.centralize
+                .row.align-items-center.justify-content-between(data-scrollax="properties: { 'translateY': '150%', 'opacity': 1.5 }")
+                    .col-sm-12.col-md-3.text-md-right
+                        img.img-fluid.mb-3(src='assets/img/drawkit/color/drawkit-content-man-alt.svg', style='max-width: 10rem;')
+                    .col-sm-12.col-md-8
+                        h2.mb-3.display-4
+                            span.border-bottom Symptoms
+                        ul.text-left
+                            li.mt-1 People may be sick with the virus for 1 to 14 days before developing symptoms.
+                            li.mt-1 The most common symptoms of coronavirus disease (COVID-19) are fever, tiredness, and dry cough.
+                            li.mt-1 Other Syptoms includes:
+                                ul
+                                    li.mt-1 Shortness of breath
+                                    li.mt-1 Sore throat
+                                    li.mt-1 Very few people will report diarrhoea, nausea or a runny nose.
+    section.special(data-scrollax-parent='true')
+        .cover(data-scrollax="properties: { translateY: '30%' }").bg-dark
+        .content.text-center.text-md-left
+            .w-100.centralize
+                .row.d-flex.align-items-center.justify-content-between(data-scrollax="properties: { 'translateY': '150%', 'opacity': 1.5 }")
+                    .col-sm-12.col-md-3.text-md-right.order-sm-1
+                        img.img-fluid.mb-3(src='assets/img/drawkit/color/drawkit-content-man-alt.svg', style='max-width: 10rem;')
+                    .col-sm-12.col-md-8.order-sm-2
+                        h2.mb-3.display-4
+                            span.border-bottom Preventions
+                        .text-left
+                            p You can protect yourself and help prevent spreading the virus to others if you:
+                            strong DO
+                                ul
+                                    li.mt-1 Wash your hands regularly for 20 seconds, with soap and water or alcohol-based hand rub
+                                    li.mt-1 Cover your nose and mouth with a disposable tissue or flexed elbow when you cough or sneeze
+                                    li.mt-1 Avoid close contact (1 meter or 3 feet) with people who are unwell
+                                    li.mt-1 Stay home and self-isolate from others in the household if you feel unwell
+                            strong DON'T
+                                ul
+                                    li.mt-1 Touch your eyes, nose, or mouth if your hands are not clean
+    section.special(data-scrollax-parent='true')
+        .cover(data-scrollax="properties: { translateY: '30%' }").bg-dark
+        .content.text-center.text-md-left
+            .w-100.centralize
+                .row.align-items-center.justify-content-between(data-scrollax="properties: { 'translateY': '150%', 'opacity': 1.5 }")
+                    .col-sm-12.col-md-3.text-md-right
+                        img.img-fluid.mb-3(src='assets/img/drawkit/color/drawkit-content-man-alt.svg', style='max-width: 10rem;')
+                    .col-sm-12.col-md-8
+                        h2.mb-3.display-4
+                            span.border-bottom Feeling Infected
+                        ul.text-left
+                            li.mt-1 Self-isolation at home has been recommended for those diagnosed with COVID-19 and those who suspect they have been infected.
+                            li.mt-1 Public health agencies have issued self-isolation instructions that include notification of healthcare providers by phone and restricting all activities outside of the home, except for getting medical care.
+                            li.mt-1 Do not go to work, school, or public areas. Avoid using public transportation, ride-sharing, or taxis.
+                            li.mt-1 Those who have recently travelled to a country with widespread transmission or who have been in direct contact with someone diagnosed with COVID-19 have also been asked by some government health agencies to self-quarantine or practise social distancing for 14 days from the time of last possible exposure.
+                            li.mt-1 Attempts to relieve the symptoms may include taking regular (over-the-counter) cold medications, drinking fluids, and resting. Depending on the severity, oxygen therapy, intravenous fluids, and breathing support may be required.
+                            li.mt-1 The use of steroids may worsen outcomes.
+    section.special(data-scrollax-parent='true')
+        .cover(data-scrollax="properties: { translateY: '30%' }").bg-dark
+        .content.text-center.text-md-left
+            .w-100.centralize
+                .row.align-items-center.justify-content-between(data-scrollax="properties: { 'translateY': '150%', 'opacity': 1.5 }")
+                    .col-sm-12.col-md-3.text-md-right
+                        img.img-fluid.mb-3(src='assets/img/drawkit/color/drawkit-content-man-alt.svg', style='max-width: 10rem;')
+                    .col-sm-12.col-md-8
+                        h2.mb-3.display-4
+                            span.border-bottom Treatments
+                        ul.text-left
+                            li.mt-1 There is no specific medicine to prevent or treat coronavirus disease (COVID-19). People may need supportive care to help them breathe.
+                            li.mt-1 Several organisations around the world are developing vaccines, using several different methods.
+                            li.mt-1 By early March 2020, 30 vaccine candidates were in development, with products by Gilead Sciences and Ascletis Pharma in Phase III clinical trials.
+                            li.mt-1 Several compounds, which were previously approved for treatment of other viral diseases, such as favipiravir, ribavirin, remdesivir and galidesivir, are being investigated against the coronavirus.
+                            li.mt-1 Clinical trials are underway in for lopinavir/ritonavir and of remdesivir.
+                            li.mt-1 Bruce Aylward, an assistant director-general of the WHO, has stated "there is only one drug right now that we think may have real efficacy and that's remdesivir."
+
+append scripts
+    script(src='js/scrollax.js', type="text/javascript")
+    script.
+        $(document).ready(function() {
+            $.Scrollax();
+            jQuery.extend(Scrollax.defaults, {
+                offset: 10,
+                horizontal: true
+            });
+        });
+    script(src='js/scripts.js', type="text/javascript")
+
 
