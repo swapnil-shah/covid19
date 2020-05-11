@@ -101,14 +101,14 @@ block content
                             .col-sm-12
                                 p.pb-4 The cases in the below table gets updated in approximately 24 hours.
                         include includes/datatables/datatable-dashboard.pug
-                        a.small.w-100.text-right.pt-2(href="https://disease.sh/" target="_blank")
-                            | Data source 
-                            i.icon-new-tab.ml-1
+                    a.small.w-100.text-right.pt-2(href="https://disease.sh/" target="_blank")
+                        | Data source 
+                        i.icon-new-tab.ml-1
             .col-sm-12 
                 .card.pb-2.mb-4
                     .card-header.bg-dark
                         h3.text-white Rise of confirmed cases
-                    .card-body
+                    .card-body.p-1
                         .flourish-embed.flourish-bar-chart-race(data-src='visualisation/2293729', data-url='https://flo.uri.sh/visualisation/2293729/embed')
             .col-sm-12
                 .card.pb-2.mb-4
@@ -141,8 +141,8 @@ block content
                                         select#ddChartCountries
                                             option(disabled selected) Select
                     a.small.w-100.text-right.pt-2(href="https://covidtracking.com/" target="_blank")
-                    | Data source 
-                    i.icon-new-tab.ml-1
+                        | Data source 
+                        i.icon-new-tab.ml-1
             .col-sm-12
                 .card.mb-4
                     .card-header.bg-dark
@@ -176,3 +176,6 @@ append scripts
     script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
     script(src='js/dashboard.min.js')
 
+    //- script(src='js/utilities.js')
+    //- script(src='js/dashboard.js')
+    //- script(src='js/scripts.js')

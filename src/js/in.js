@@ -39,6 +39,7 @@ let numbersConfirmedWeeks = 0;
 let numbersDeceasedWeeks = 0;
 let numbersRecoveredWeeks = 0;
 //Populate numbers to legend on chart
+//US cases
 function populateNumbers(confirmed, recovered, deaths, text) {
 	document.getElementById('total-confirmed').innerHTML = `<span style="color:${borderBlue}">${confirmed}</span>`;
 	document.getElementById('total-recovered').innerHTML = `<span style="color:${borderGreen}">${recovered}</span>`;
@@ -358,8 +359,47 @@ function countryDataTable(data) {
 		let numbersConfirmed = parseInt(lastArrTimeSeries.totalconfirmed).toLocaleString();
 		let numbersDeceased = parseInt(lastArrTimeSeries.totaldeceased).toLocaleString();
 		let numbersRecovered = parseInt(lastArrTimeSeries.totalrecovered).toLocaleString();
-		let filteredArr = data.statewise.filter(function(states) {
-			return states.statecode !== 'TT';
+
+		let totalArr = [];
+		let filteredArr = [];
+		data.statewise.forEach(function(states) {
+			if (states.statecode === 'TT') {
+				document.getElementById('last-updated').innerHTML =
+					'Last updated <span class="text-gray-800">' + states.lastupdatedtime + '</span>';
+				document.getElementById('number-active').innerText = parseInt(states.active).toLocaleString();
+				document.getElementById('number-confirmed').innerText = parseInt(states.confirmed).toLocaleString();
+				document.getElementById('number-recovered').innerText = parseInt(states.recovered).toLocaleString();
+				document.getElementById('number-deaths').innerText = parseInt(states.deaths).toLocaleString();
+				document.getElementById('today-confirmed').innerText =
+					'+' + parseInt(states.deltaconfirmed).toLocaleString();
+				document.getElementById('today-deaths').innerText = '+' + parseInt(states.deltadeaths).toLocaleString();
+				document.getElementById('today-recovered').innerText =
+					'+' + parseInt(states.deltarecovered).toLocaleString();
+				document.getElementById('per-active').innerHTML = '';
+				document.getElementById('per-confirmed').innerHTML =
+					Math.sign(percentageChangeTotal(parseInt(states.confirmed), parseInt(states.deltaconfirmed))) === 1
+						? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
+								parseInt(states.confirmed),
+								parseInt(states.deltaconfirmed)
+							)}%)`
+						: '';
+				document.getElementById('per-recovered').innerHTML =
+					Math.sign(percentageChangeTotal(parseInt(states.recovered), parseInt(states.deltarecovered))) === 1
+						? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
+								parseInt(states.recovered),
+								parseInt(states.deltarecovered)
+							)}%)`
+						: '';
+				document.getElementById('per-deaths').innerHTML =
+					Math.sign(percentageChangeTotal(parseInt(states.deaths), parseInt(states.deltadeaths))) === 1
+						? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
+								parseInt(states.deaths),
+								parseInt(states.deltadeaths)
+							)}%)`
+						: '';
+			} else {
+				filteredArr.push(states);
+			}
 		});
 		//Get months/30 days
 		data.cases_time_series.slice(Math.max(data.cases_time_series.length - 30, 1)).forEach(function(daily) {
@@ -402,6 +442,7 @@ function countryDataTable(data) {
 			'since month'
 		);
 		Chart.defaults.global.defaultFontColor = 'grey';
+		Chart.defaults.global.animation.duration = 3000;
 		//ICMR report in datatable
 		$('#icmrReport').html(
 			`A total of <span class="text-dark">${parseInt(
@@ -413,7 +454,7 @@ function countryDataTable(data) {
 		let table = $('#dataTableCountry').DataTable({
 			data: filteredArr,
 			pagingType: 'numbers',
-			pageLength: 25,
+			pageLength: 10,
 			language: {
 				searchPlaceholder: 'e.g. maharashtra',
 				loadingRecords: '<i class="icon-spinner spinner-animate"></i>'
@@ -686,7 +727,6 @@ function countryDataTable(data) {
 			$.ajax({
 				type: 'GET',
 				url: 'https://api.covid19india.org/v2/state_district_wise.json',
-				data: filteredArr,
 				async: false,
 				beforeSend: function(xhr) {},
 				dataType: 'json',
@@ -709,7 +749,7 @@ function countryDataTable(data) {
 				destroy: true,
 				data: filterState[0].districtData,
 				pagingType: 'numbers',
-				pageLength: 25,
+				pageLength: 10,
 				language: {
 					searchPlaceholder: 'search district',
 					loadingRecords: '<i class="icon-spinner spinner-animate"></i>'

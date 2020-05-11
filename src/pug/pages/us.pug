@@ -20,6 +20,41 @@ block content
                 h3.text-white Map
             .card-body.p-3
                 #covidCountryMap(style="height:50vh")
+                .row.justify-content-md-center.pt-2
+                    .col-md-3.col-sm-6.mb-3
+                        .card.h-100.bg-secondary.border-0
+                            .card-body
+                                h3.text-white-75.mb-2 Confirmed
+                                    i.text-white-50.float-right.fas.fa-lg.fa-viruses
+                                #number-confirmed.display-4.text-white.mb-2
+                                .d-flex.justify-content-between
+                                    #today-confirmed.text-white-75 Loading stat...
+                                    #per-confirmed.text-white-75.small 
+                    .col-md-3.col-sm-6.mb-3
+                        .card.h-100.bg-dark.border-0
+                            .card-body
+                                h3.text-white-75.mb-2 Active
+                                    i.text-white-50.float-right.fas.fa-lg.fa-clinic-medical
+                                #number-active.display-4.text-white.mb-2
+                                #per-active.text-white-75 Loading stat...
+                    .col-md-3.col-sm-6.mb-3
+                        .card.h-100.bg-success.border-0
+                            .card-body
+                                h3.text-white-75.mb-2 Recovered
+                                    i.text-white-50.float-right.fas.fa-lg.fa-house-user
+                                #number-recovered.display-4.text-white.mb-2
+                                #per-recovered.text-white-75 Loading stat...
+                    .col-md-3.col-sm-6.mb-3
+                        .card.h-100.bg-danger.border-0
+                            .card-body
+                                h3.text-white-75.mb-2 Deaths
+                                    i.text-white-50.float-right.fas.fa-lg.fa-bed
+                                    #number-deaths.display-4.text-white.mb-2 
+                                .d-flex.justify-content-between
+                                    #today-deaths.text-white-75 Loading stat...
+                                    #per-deaths.text-white-75.small 
+                    .col-sm-12.p-0.text-center
+                        #last-updated
         .row
             .col-sm-12
                 .card.pb-2.mb-4
@@ -95,3 +130,6 @@ append scripts
     script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
     script(src='js/us.min.js')
+    //- script(src='js/utilities.js')
+    //- script(src='js/us.js')
+    //- script(src='js/scripts.js')

@@ -145,6 +145,9 @@
 	z-index: 999;
 }
 @media only screen and (max-width: 600px) {
+	#brand-logo {
+		height: 32px;
+	}
 	.topnav.navbar-light #sidebarMenu {
 		margin: 0;
 	}
@@ -434,4 +437,11 @@ circle {
 }
 #dataTableCountry tbody tr {
 	cursor: pointer;
+}
+.modal-content .icon-cross {
+	font-size: 1rem;
+	padding: 1.5rem 1rem;
+}
+h3.modal-title {
+	letter-spacing: 0.05rem;
 }

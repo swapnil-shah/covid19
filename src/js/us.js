@@ -1,3 +1,4 @@
+const newsUri = 'https://api.smartable.ai/coronavirus/news/US';
 const API_KEY_SMARTTABLE = 'cf8e77731fb345d381334aff5e844f3f';
 function pieLegend(tot, pos, neg, hosp, ven, icu, hospCurrent, venCurrent, icuCurrent) {
 	let pieNumbersContainer = '';
@@ -39,7 +40,41 @@ function pieLegend(tot, pos, neg, hosp, ven, icu, hospCurrent, venCurrent, icuCu
 	}
 	return pieNumbersContainer;
 }
-const newsUri = 'https://api.smartable.ai/coronavirus/news/US';
+//US cases
+let fillNumberOfCases = (function() {
+	fetch('https://disease.sh/v2/countries/usa?yesterday=true&strict=true', { cache: 'no-cache' })
+		.then((response) => {
+			if (response.ok) {
+				return response.json();
+			} else {
+				throw new Error('BAD HTTP');
+			}
+		})
+		.then((stats) => {
+			document.getElementById('last-updated').innerHTML =
+				'Last updated <span class="text-gray-800">' + timeDifference(stats.updated) + '</span>';
+			document.getElementById('number-active').innerText = stats.active.toLocaleString();
+			document.getElementById('number-confirmed').innerText = stats.cases.toLocaleString();
+			document.getElementById('number-recovered').innerText = stats.recovered.toLocaleString();
+			document.getElementById('number-deaths').innerText = stats.deaths.toLocaleString();
+			document.getElementById('today-confirmed').innerText = '+' + stats.todayCases.toLocaleString();
+			document.getElementById('today-deaths').innerText = '+' + stats.todayDeaths.toLocaleString();
+			document.getElementById('per-active').innerHTML = '';
+			document.getElementById('per-recovered').innerHTML = '';
+			document.getElementById('per-confirmed').innerHTML =
+				Math.sign(percentageChangeTotal(stats.cases, stats.todayCases)) === 1
+					? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(stats.cases, stats.todayCases)}%)`
+					: '';
+			document.getElementById('per-deaths').innerHTML =
+				Math.sign(percentageChangeTotal(stats.deaths, stats.todayDeaths)) === 1
+					? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(stats.deaths, stats.todayDeaths)}%)`
+					: '';
+		})
+		.catch((err) => {
+			console.log('ERROR:', err.message);
+		});
+})();
+
 let fillNewsCards = () => {
 	fetch(newsUri, {
 		headers: {
@@ -355,7 +390,7 @@ $(document).ready(function() {
 			}
 		},
 		pagingType: 'numbers',
-		pageLength: 25,
+		pageLength: 10,
 		stateSave: true,
 		language: {
 			searchPlaceholder: 'e.g. new jersey',

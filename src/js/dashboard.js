@@ -116,17 +116,11 @@ let fillNumberOfCases = () => {
 			document.getElementById('per-recovered').innerHTML = '';
 			document.getElementById('per-confirmed').innerHTML =
 				Math.sign(percentageChangeTotal(stats.cases, stats.todayCases)) === 1
-					? `(<i class="fas fa-arrow-up fa-sm mr-1"></i>${percentageChangeTotal(
-							stats.cases,
-							stats.todayCases
-						)}%)`
+					? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(stats.cases, stats.todayCases)}%)`
 					: '';
 			document.getElementById('per-deaths').innerHTML =
 				Math.sign(percentageChangeTotal(stats.deaths, stats.todayDeaths)) === 1
-					? `(<i class="fas fa-arrow-up fa-sm mr-1"></i>${percentageChangeTotal(
-							stats.deaths,
-							stats.todayDeaths
-						)}%)`
+					? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(stats.deaths, stats.todayDeaths)}%)`
 					: '';
 		})
 		.catch((err) => {
@@ -185,7 +179,7 @@ function countriesDatatableChart(data) {
 		$('#dataTableWorldTimeline').DataTable({
 			data: data,
 			pagingType: 'numbers',
-			pageLength: 25,
+			pageLength: 10,
 			stateSave: true,
 			language: {
 				searchPlaceholder: 'e.g. usa',
