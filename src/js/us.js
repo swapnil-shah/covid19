@@ -156,11 +156,11 @@ let fillTravelNotices = () => {
 };
 function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradientBorder) {
 	var data = {
-		labels: labelset.reverse(),
+		labels: labelset,
 		datasets: [
 			{
 				label: chartLabel,
-				data: dataset.reverse(),
+				data: dataset,
 				backgroundColor: gradient,
 				borderColor: gradientBorder,
 				borderWidth: 1, // The main line color
@@ -172,6 +172,12 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 		responsive: true,
 		maintainAspectRatio: false,
 		tooltips: {
+			backgroundColor: 'rgb(255,255,255)',
+			bodyFontColor: '#858796',
+			titleMarginBottom: 10,
+			titleFontColor: '#6e707e',
+			titleFontSize: 14,
+			borderColor: '#dddfeb',
 			borderWidth: 1,
 			caretPadding: 10,
 			displayColors: false,
@@ -454,23 +460,17 @@ $(document).ready(function() {
 			//Get months/30 days
 			filteredArr.slice(0, 30).forEach(function(daily) {
 				confirmedMonth.push(daily.new_confirmed);
-				// numbersConfirmedMonth += parseInt(daily.new_confirmed);
 				deathsMonth.push(daily.new_deaths);
-				// numbersDeathsMonth += parseInt(daily.new_deaths);
 				recoveredMonth.push(daily.new_recovered);
-				// numbersRecoveredMonth += parseInt(daily.new_recovered);
-				labelsDateMonth.push(daily.date);
+				labelsDateMonth.push(formatDate(daily.date));
 			});
 
 			//Get 14 days
 			filteredArr.slice(0, 14).forEach(function(daily) {
 				confirmedWeeks.push(daily.new_confirmed);
-				// numbersConfirmedWeeks += parseInt(daily.new_confirmed);
 				deathsWeeks.push(daily.new_deaths);
-				// numbersDeathsWeeks += parseInt(daily.new_deaths);
 				recoveredWeeks.push(daily.new_recovered);
-				// numbersRecoveredWeeks += parseInt(daily.new_recovered);
-				labelsDateWeeks.push(daily.date);
+				labelsDateWeeks.push(formatDate(daily.date));
 			});
 
 			//Get since beginning
@@ -478,18 +478,22 @@ $(document).ready(function() {
 				casesConfirmed.push(daily.new_confirmed);
 				casesDeaths.push(daily.new_deaths);
 				casesRecovered.push(daily.new_recovered);
-				labelsDate.push(daily.date);
+				labelsDate.push(formatDate(daily.date));
 			});
+			confirmedMonth.reverse();
+			deathsMonth.reverse();
+			recoveredMonth.reverse();
+			labelsDateMonth.reverse();
+			confirmedWeeks.reverse();
+			deathsWeeks.reverse();
+			recoveredWeeks.reverse();
+			labelsDateWeeks.reverse();
+			casesConfirmed.reverse();
+			casesDeaths.reverse();
+			casesRecovered.reverse();
+			labelsDate.reverse();
 			//Default Chart
 			generateChart(labelsDateMonth, confirmedMonth, null, 'Confirmed', gradientBlue, borderBlue);
-
-			//Default legend numbers
-			// populateNumbers(
-			// 	numbersConfirmedMonth.toLocaleString(),
-			// 	numbersRecoveredMonth.toLocaleString(),
-			// 	numbersDeathsMonth.toLocaleString(),
-			// 	'since month'
-			// );
 			Chart.defaults.global.defaultFontColor = 'grey';
 			Chart.defaults.global.animation.duration = 2500;
 			$('#confirmedRadio').click(function() {
