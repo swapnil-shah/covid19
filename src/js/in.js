@@ -2,7 +2,7 @@ const newsUri = 'https://api.smartable.ai/coronavirus/news/IN';
 const API_KEY_SMARTTABLE = 'cf8e77731fb345d381334aff5e844f3f';
 let canvas = document.getElementById('myChart');
 let ctx = canvas.getContext('2d');
-let myChart;
+// let myChart;
 let statesData;
 let gradientBlue = ctx.createLinearGradient(0, 0, 0, 450);
 let gradientGreen = ctx.createLinearGradient(0, 0, 0, 450);
@@ -20,23 +20,26 @@ gradientRed.addColorStop(0, 'rgba(230,57,70,  0.75)');
 gradientRed.addColorStop(0.5, 'rgba(230,57,70,  0.55)');
 gradientRed.addColorStop(1, 'rgba(230,57,70, 0.10)');
 // letchartType = 'Line';
-let dailyConfirmed = [];
-let dailyDeceased = [];
-let dailyRecovered = [];
+let casesConfirmed = [];
+let casesDeaths = [];
+let casesRecovered = [];
 let labelsDate = [];
-let dailyConfirmedMonth = [];
-let dailyDeceasedMonth = [];
-let dailyRecoveredMonth = [];
+let numbersConfirmedBeginning = 0;
+let numbersDeathsBeginning = 0;
+let numbersRecoveredBeginning = 0;
+let confirmedMonth = [];
+let deathsMonth = [];
+let recoveredMonth = [];
 let labelsDateMonth = [];
 let numbersConfirmedMonth = 0;
-let numbersDeceasedMonth = 0;
+let numbersDeathsMonth = 0;
 let numbersRecoveredMonth = 0;
-let dailyConfirmedWeeks = [];
-let dailyDeceasedWeeks = [];
-let dailyRecoveredWeeks = [];
+let confirmedWeeks = [];
+let deathsWeeks = [];
+let recoveredWeeks = [];
 let labelsDateWeeks = [];
 let numbersConfirmedWeeks = 0;
-let numbersDeceasedWeeks = 0;
+let numbersDeathsWeeks = 0;
 let numbersRecoveredWeeks = 0;
 //Populate numbers to legend on chart
 //US cases
@@ -166,7 +169,7 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 		},
 		title: {
 			display: true,
-			text: 'Overall Country Data',
+			text: 'Daily Cases',
 			position: 'bottom'
 		}
 	};
@@ -359,8 +362,6 @@ function countryDataTable(data) {
 		let numbersConfirmed = parseInt(lastArrTimeSeries.totalconfirmed).toLocaleString();
 		let numbersDeceased = parseInt(lastArrTimeSeries.totaldeceased).toLocaleString();
 		let numbersRecovered = parseInt(lastArrTimeSeries.totalrecovered).toLocaleString();
-
-		let totalArr = [];
 		let filteredArr = [];
 		data.statewise.forEach(function(states) {
 			if (states.statecode === 'TT') {
@@ -401,48 +402,50 @@ function countryDataTable(data) {
 				filteredArr.push(states);
 			}
 		});
+		console.log('countryDataTable -> data.cases_time_series', data.cases_time_series);
+
 		//Get months/30 days
 		data.cases_time_series.slice(Math.max(data.cases_time_series.length - 30, 1)).forEach(function(daily) {
-			dailyConfirmedMonth.push(daily.dailyconfirmed);
+			confirmedMonth.push(daily.dailyconfirmed);
 			numbersConfirmedMonth += parseInt(daily.dailyconfirmed);
-			dailyDeceasedMonth.push(daily.dailydeceased);
-			numbersDeceasedMonth += parseInt(daily.dailydeceased);
-			dailyRecoveredMonth.push(daily.dailyrecovered);
+			deathsMonth.push(daily.dailydeceased);
+			numbersDeathsMonth += parseInt(daily.dailydeceased);
+			recoveredMonth.push(daily.dailyrecovered);
 			numbersRecoveredMonth += parseInt(daily.dailyrecovered);
 			labelsDateMonth.push(daily.date);
 		});
 
 		//Get 14 days
 		data.cases_time_series.slice(Math.max(data.cases_time_series.length - 14, 1)).forEach(function(daily) {
-			dailyConfirmedWeeks.push(daily.dailyconfirmed);
+			confirmedWeeks.push(daily.dailyconfirmed);
 			numbersConfirmedWeeks += parseInt(daily.dailyconfirmed);
-			dailyDeceasedWeeks.push(daily.dailydeceased);
-			numbersDeceasedWeeks += parseInt(daily.dailydeceased);
-			dailyRecoveredWeeks.push(daily.dailyrecovered);
+			deathsWeeks.push(daily.dailydeceased);
+			numbersDeathsWeeks += parseInt(daily.dailydeceased);
+			recoveredWeeks.push(daily.dailyrecovered);
 			numbersRecoveredWeeks += parseInt(daily.dailyrecovered);
 			labelsDateWeeks.push(daily.date);
 		});
 
 		//Get since beginning
 		data.cases_time_series.forEach(function(daily) {
-			dailyConfirmed.push(daily.dailyconfirmed);
-			dailyDeceased.push(daily.dailydeceased);
-			dailyRecovered.push(daily.dailyrecovered);
+			casesConfirmed.push(daily.dailyconfirmed);
+			casesDeaths.push(daily.dailydeceased);
+			casesRecovered.push(daily.dailyrecovered);
 			labelsDate.push(daily.date);
 		});
 
 		//Default Chart
-		generateChart(labelsDateMonth, dailyConfirmedMonth, null, 'Confirmed', gradientBlue, borderBlue);
+		generateChart(labelsDateMonth, confirmedMonth, null, 'Confirmed', gradientBlue, borderBlue);
 
 		//Default legend numbers
 		populateNumbers(
 			numbersConfirmedMonth.toLocaleString(),
 			numbersRecoveredMonth.toLocaleString(),
-			numbersDeceasedMonth.toLocaleString(),
+			numbersDeathsMonth.toLocaleString(),
 			'since month'
 		);
 		Chart.defaults.global.defaultFontColor = 'grey';
-		Chart.defaults.global.animation.duration = 3000;
+		Chart.defaults.global.animation.duration = 2500;
 		//ICMR report in datatable
 		$('#icmrReport').html(
 			`A total of <span class="text-dark">${parseInt(
@@ -545,12 +548,12 @@ function countryDataTable(data) {
 		$('#confirmedRadio').click(function() {
 			myChart.destroy();
 			if ($('#sinceBeginning').is(':checked')) {
-				generateChart(labelsDate, dailyConfirmed, myChart.config.type, 'Confirmed', gradientBlue, borderBlue);
+				generateChart(labelsDate, casesConfirmed, myChart.config.type, 'Confirmed', gradientBlue, borderBlue);
 			}
 			if ($('#sinceMonth').is(':checked')) {
 				generateChart(
 					labelsDateMonth,
-					dailyConfirmedMonth,
+					confirmedMonth,
 					myChart.config.type,
 					'Confirmed',
 					gradientBlue,
@@ -560,7 +563,7 @@ function countryDataTable(data) {
 			if ($('#sinceWeeks').is(':checked')) {
 				generateChart(
 					labelsDateWeeks,
-					dailyConfirmedWeeks,
+					confirmedWeeks,
 					myChart.config.type,
 					'Confirmed',
 					gradientBlue,
@@ -572,12 +575,12 @@ function countryDataTable(data) {
 		$('#recoveredRadio').click(function() {
 			myChart.destroy();
 			if ($('#sinceBeginning').is(':checked')) {
-				generateChart(labelsDate, dailyRecovered, myChart.config.type, 'Recovered', gradientGreen, borderGreen);
+				generateChart(labelsDate, casesRecovered, myChart.config.type, 'Recovered', gradientGreen, borderGreen);
 			}
 			if ($('#sinceMonth').is(':checked')) {
 				generateChart(
 					labelsDateMonth,
-					dailyRecoveredMonth,
+					recoveredMonth,
 					myChart.config.type,
 					'Recovered',
 					gradientGreen,
@@ -587,7 +590,7 @@ function countryDataTable(data) {
 			if ($('#sinceWeeks').is(':checked')) {
 				generateChart(
 					labelsDateWeeks,
-					dailyRecoveredWeeks,
+					recoveredWeeks,
 					myChart.config.type,
 					'Recovered',
 					gradientGreen,
@@ -599,27 +602,13 @@ function countryDataTable(data) {
 		$('#deathsRadio').click(function() {
 			myChart.destroy();
 			if ($('#sinceBeginning').is(':checked')) {
-				generateChart(labelsDate, dailyDeceased, myChart.config.type, 'Deaths', gradientRed, borderRed);
+				generateChart(labelsDate, casesDeaths, myChart.config.type, 'Deaths', gradientRed, borderRed);
 			}
 			if ($('#sinceMonth').is(':checked')) {
-				generateChart(
-					labelsDateMonth,
-					dailyDeceasedMonth,
-					myChart.config.type,
-					'Deaths',
-					gradientRed,
-					borderRed
-				);
+				generateChart(labelsDateMonth, deathsMonth, myChart.config.type, 'Deaths', gradientRed, borderRed);
 			}
 			if ($('#sinceWeeks').is(':checked')) {
-				generateChart(
-					labelsDateWeeks,
-					dailyDeceasedWeeks,
-					myChart.config.type,
-					'Deaths',
-					gradientRed,
-					borderRed
-				);
+				generateChart(labelsDateWeeks, deathsWeeks, myChart.config.type, 'Deaths', gradientRed, borderRed);
 			}
 			myChart.update();
 		});
@@ -632,13 +621,13 @@ function countryDataTable(data) {
 			);
 			myChart.destroy();
 			if ($('#confirmedRadio').is(':checked')) {
-				generateChart(labelsDate, dailyConfirmed, myChart.config.type, 'Confirmed', gradientBlue, borderBlue);
+				generateChart(labelsDate, casesConfirmed, myChart.config.type, 'Confirmed', gradientBlue, borderBlue);
 			}
 			if ($('#recoveredRadio').is(':checked')) {
-				generateChart(labelsDate, dailyRecovered, myChart.config.type, 'Recovered', gradientGreen, borderGreen);
+				generateChart(labelsDate, casesRecovered, myChart.config.type, 'Recovered', gradientGreen, borderGreen);
 			}
 			if ($('#deathsRadio').is(':checked')) {
-				generateChart(labelsDate, dailyDeceased, myChart.config.type, 'Deaths', gradientRed, borderRed);
+				generateChart(labelsDate, casesDeaths, myChart.config.type, 'Deaths', gradientRed, borderRed);
 			}
 			myChart.update();
 		});
@@ -646,14 +635,14 @@ function countryDataTable(data) {
 			populateNumbers(
 				numbersConfirmedMonth.toLocaleString(),
 				numbersRecoveredMonth.toLocaleString(),
-				numbersDeceasedMonth.toLocaleString(),
+				numbersDeathsMonth.toLocaleString(),
 				'since a month'
 			);
 			myChart.destroy();
 			if ($('#confirmedRadio').is(':checked')) {
 				generateChart(
 					labelsDateMonth,
-					dailyConfirmedMonth,
+					confirmedMonth,
 					myChart.config.type,
 					'Confirmed',
 					gradientBlue,
@@ -663,7 +652,7 @@ function countryDataTable(data) {
 			if ($('#recoveredRadio').is(':checked')) {
 				generateChart(
 					labelsDateMonth,
-					dailyRecoveredMonth,
+					recoveredMonth,
 					myChart.config.type,
 					'Recovered',
 					gradientGreen,
@@ -671,14 +660,7 @@ function countryDataTable(data) {
 				);
 			}
 			if ($('#deathsRadio').is(':checked')) {
-				generateChart(
-					labelsDateMonth,
-					dailyDeceasedMonth,
-					myChart.config.type,
-					'Deaths',
-					gradientRed,
-					borderRed
-				);
+				generateChart(labelsDateMonth, deathsMonth, myChart.config.type, 'Deaths', gradientRed, borderRed);
 			}
 			myChart.update();
 		});
@@ -686,14 +668,14 @@ function countryDataTable(data) {
 			populateNumbers(
 				numbersConfirmedWeeks.toLocaleString(),
 				numbersRecoveredWeeks.toLocaleString(),
-				numbersDeceasedWeeks.toLocaleString(),
+				numbersDeathsWeeks.toLocaleString(),
 				'since 2 weeks'
 			);
 			myChart.destroy();
 			if ($('#confirmedRadio').is(':checked')) {
 				generateChart(
 					labelsDateWeeks,
-					dailyConfirmedWeeks,
+					confirmedWeeks,
 					myChart.config.type,
 					'Confirmed',
 					gradientBlue,
@@ -703,7 +685,7 @@ function countryDataTable(data) {
 			if ($('#recoveredRadio').is(':checked')) {
 				generateChart(
 					labelsDateWeeks,
-					dailyRecoveredWeeks,
+					recoveredWeeks,
 					myChart.config.type,
 					'Recovered',
 					gradientGreen,
@@ -711,14 +693,7 @@ function countryDataTable(data) {
 				);
 			}
 			if ($('#deathsRadio').is(':checked')) {
-				generateChart(
-					labelsDateWeeks,
-					dailyDeceasedWeeks,
-					myChart.config.type,
-					'Deaths',
-					gradientRed,
-					borderRed
-				);
+				generateChart(labelsDateWeeks, deathsWeeks, myChart.config.type, 'Deaths', gradientRed, borderRed);
 			}
 			myChart.update();
 		});

@@ -7,7 +7,7 @@ fetch('https://corona-api.com/countries', { cache: 'no-cache' })
 		L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
 			id: 'mapbox/dark-v10',
 			attribution:
-				'Map data <a href="https://about-corona.net/">about-corona</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+				'Map data <a target="_blank" href="https://about-corona.net/">about-corona</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
 			minZoom: 2,
 			noWrap: true,
 			bounds: [ [ -90, -180 ], [ 90, 180 ] ]

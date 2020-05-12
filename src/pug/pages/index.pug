@@ -89,8 +89,12 @@ block content
                                 .d-flex.justify-content-between
                                     #today-deaths.text-white-75 Loading stat...
                                     #per-deaths.text-white-75.small 
-                    .col-sm-12.p-0.text-center
-                        #last-updated
+                    .col-sm-12.p-0
+                        #last-updated.text-center
+                        a.small.float-right(href="https://disease.sh/" target="_blank")
+                            | Data source 
+                            i.icon-new-tab.ml-1
+        .row
         .row
             .col-sm-12 
                 .card.pb-2.mb-4

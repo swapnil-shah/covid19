@@ -6,7 +6,7 @@ fetch('https://covid19.mathdro.id/api/countries/usa/confirmed', { cache: 'no-cac
 		L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
 			id: 'mapbox/dark-v10',
 			attribution:
-				'Map data <a href="https://github.com/mathdroid/covid-19-api">Mathdroid</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+				'Map data <a target="_blank" href="https://github.com/mathdroid/covid-19-api">Mathdroid</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
 			tileSize: 512,
 			zoomOffset: -1,
 			minZoom: 2,

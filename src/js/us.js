@@ -1,45 +1,46 @@
 const newsUri = 'https://api.smartable.ai/coronavirus/news/US';
 const API_KEY_SMARTTABLE = 'cf8e77731fb345d381334aff5e844f3f';
-function pieLegend(tot, pos, neg, hosp, ven, icu, hospCurrent, venCurrent, icuCurrent) {
-	let pieNumbersContainer = '';
-	if (tot) {
-		pieNumbersContainer += `<h6 class="list-group-item list-group-item text-dark card-text mt-2 mb-0">
-		<span class="text-gray-600 mr-1">Total Test Results </span>${tot.toLocaleString()}</h6>`;
-	}
-	if (pos) {
-		pieNumbersContainer += `<div class="list-group-item list-group-item text-dark card-text"><span class="legend-marker mr-1 ml-2 shakespeare"></span>
-		<span class="text-muted mr-1">Positive </span>${pos.toLocaleString()}</div>`;
-	}
-	if (neg) {
-		pieNumbersContainer += `<div class="list-group-item list-group-item text-dark card-text"><span class="legend-marker mr-1 ml-2 keppel"></span>
-		<span class="text-muted mr-1">Negative </span>${neg.toLocaleString()}</div>`;
-	}
-	if (hosp) {
-		pieNumbersContainer += `<h6 class="list-group-item list-group-item text-dark card-text mt-2 mb-0">
-		<span class="text-gray-600 mr-1">Hospitalized Cumulative </span>${hosp.toLocaleString()}</h6>`;
-	}
-	if (hospCurrent) {
-		pieNumbersContainer += `<div class="list-group-item list-group-item text-dark card-text"><span class="legend-marker mr-1 ml-2 tuatara"></span>
-		<span class="text-muted mr-1">Hospitalized Currently </span>${hospCurrent.toLocaleString()}</div>`;
-	}
-	if (ven) {
-		pieNumbersContainer += `<h6 class="list-group-item list-group-item text-dark card-text mt-2 mb-0">
-		<span class="text-gray-600 mr-1">On Ventilator Cumulative </span>${ven.toLocaleString()}</h6>`;
-	}
-	if (venCurrent) {
-		pieNumbersContainer += `<div class="list-group-item list-group-item text-dark card-text"><span class="legend-marker mr-1 ml-2 yellow-orange"></span>
-		<span class="text-muted mr-1">On Ventilator Currently </span>${venCurrent.toLocaleString()}</div>`;
-	}
-	if (icu) {
-		pieNumbersContainer += `<h6 class="list-group-item list-group-item text-dark card-text mt-2 mb-0">
-		<span class="text-gray-600 mr-1">In ICU Cumulative </span>${icu.toLocaleString()}</h6>`;
-	}
-	if (icuCurrent) {
-		pieNumbersContainer += `<div class="list-group-item list-group-item text-dark card-text"><span class="legend-marker mr-1 ml-2 wild-watermelon"></span>
-		<span class="text-muted mr-1">In ICU Currently </span>${icuCurrent.toLocaleString()}</div>`;
-	}
-	return pieNumbersContainer;
-}
+let canvas = document.getElementById('myChart');
+let ctx = canvas.getContext('2d');
+let myChart;
+let statesData;
+let gradientBlue = ctx.createLinearGradient(0, 0, 0, 450);
+let gradientGreen = ctx.createLinearGradient(0, 0, 0, 450);
+let gradientRed = ctx.createLinearGradient(0, 0, 0, 450);
+let borderBlue = 'rgba(0, 97, 242, 0.75)';
+let borderGreen = 'rgba(42, 157, 143, 0.75)';
+let borderRed = 'rgba(230, 57, 70, 0.75)';
+gradientBlue.addColorStop(0, 'rgba(0, 97,242, 0.75)');
+gradientBlue.addColorStop(0.5, 'rgba(0, 97,242, 0.55)');
+gradientBlue.addColorStop(1, 'rgba(0, 97,242,0.10)');
+gradientGreen.addColorStop(0, 'rgba(42,157,143, 0.75)');
+gradientGreen.addColorStop(0.5, 'rgba(42,157,143, 0.55)');
+gradientGreen.addColorStop(1, 'rgba(42,157,143,0.10)');
+gradientRed.addColorStop(0, 'rgba(230,57,70,  0.75)');
+gradientRed.addColorStop(0.5, 'rgba(230,57,70,  0.55)');
+gradientRed.addColorStop(1, 'rgba(230,57,70, 0.10)');
+// letchartType = 'Line';
+let casesConfirmed = [];
+let casesDeaths = [];
+let casesRecovered = [];
+let labelsDate = [];
+let numbersConfirmedBeginning = 0;
+let numbersDeathsBeginning = 0;
+let numbersRecoveredBeginning = 0;
+let confirmedMonth = [];
+let deathsMonth = [];
+let recoveredMonth = [];
+let labelsDateMonth = [];
+let numbersConfirmedMonth = 0;
+let numbersDeathsMonth = 0;
+let numbersRecoveredMonth = 0;
+let confirmedWeeks = [];
+let deathsWeeks = [];
+let recoveredWeeks = [];
+let labelsDateWeeks = [];
+let numbersConfirmedWeeks = 0;
+let numbersDeathsWeeks = 0;
+let numbersRecoveredWeeks = 0;
 //US cases
 let fillNumberOfCases = (function() {
 	fetch('https://disease.sh/v2/countries/usa?yesterday=true&strict=true', { cache: 'no-cache' })
@@ -96,6 +97,25 @@ let fillNewsCards = () => {
 			console.log('ERROR:', err.message);
 		});
 };
+let addStates = () => {
+	fetch('https://covidtracking.com/api/v1/states/current.json')
+		.then((response) => response.json())
+		.then(function(states) {
+			states.forEach(function(state) {
+				let regionNewsSelect = document.getElementById('selectNewsRegion');
+				regionNewsSelect.options[regionNewsSelect.options.length] = new Option(
+					acronymToFullName(state.state),
+					'US-' + state.state
+				);
+			});
+		});
+};
+function populateNumbers(confirmed, recovered, deaths, text) {
+	document.getElementById('total-confirmed').innerHTML = `<span style="color:${borderBlue}">${confirmed}</span>`;
+	document.getElementById('total-recovered').innerHTML = `<span style="color:${borderGreen}">${recovered}</span>`;
+	document.getElementById('total-deaths').innerHTML = `<span style="color:${borderRed}">${deaths}</span>`;
+	document.getElementById('total-date').innerHTML = ` (${text})`;
+}
 let fillTravelNotices = () => {
 	fetch('https://covid19-server.chrismichael.now.sh/api/v1/TravelHealthNotices', { cache: 'no-cache' })
 		.then((response) => {
@@ -134,7 +154,260 @@ let fillTravelNotices = () => {
 			console.log('ERROR:', err.message);
 		});
 };
+function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradientBorder) {
+	var data = {
+		labels: labelset.reverse(),
+		datasets: [
+			{
+				label: chartLabel,
+				data: dataset.reverse(),
+				backgroundColor: gradient,
+				borderColor: gradientBorder,
+				borderWidth: 1, // The main line color
+				pointBorderWidth: 0
+			}
+		]
+	};
+	var options = {
+		responsive: true,
+		maintainAspectRatio: false,
+		tooltips: {
+			borderWidth: 1,
+			caretPadding: 10,
+			displayColors: false,
+			xPadding: 10,
+			yPadding: 10,
+			callbacks: {
+				label: function(tooltipItem, data) {
+					return data.datasets[tooltipItem.datasetIndex].label + ': ' + tooltipItem.yLabel.toLocaleString();
+				}
+			}
+		},
+		scales: {
+			yAxes: [
+				{
+					ticks: {
+						autoSkip: true,
+						beginAtZero: true,
+						callback: function(value) {
+							return value.toLocaleString();
+						}
+					}
+				}
+			]
+		},
+		title: {
+			display: true,
+			text: 'Daily Cases',
+			position: 'bottom'
+		}
+	};
+	myChart = new Chart(ctx, {
+		type: chartType ? chartType : 'bar',
+		data: data,
+		options: options
+	});
 
+	$('#barRadio').click(function() {
+		myChart.destroy();
+		myChart = new Chart(ctx, {
+			type: 'bar',
+			data: data,
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				tooltips: {
+					callbacks: {
+						label: function(tooltipItem, data) {
+							return (
+								data.datasets[tooltipItem.datasetIndex].label +
+								': ' +
+								tooltipItem.yLabel.toLocaleString()
+							);
+						}
+					}
+				},
+				scales: {
+					yAxes: [
+						{
+							ticks: {
+								callback: function(value) {
+									return value.toLocaleString();
+								}
+							}
+						}
+					]
+				}
+			}
+		});
+		myChart.update();
+	});
+	$(
+		'input:radio[name="chartTypeRadio"], input:radio[name="timeframe"], input:radio[name="caseTypeRadio"]'
+	).change(function() {
+		if ($('#lineRadio').is(':checked')) {
+			$('#linearRadio,  #logarithmicRadio').removeAttr('disabled');
+		} else {
+			$('#linearRadio').attr('checked');
+			$('#logarithmicRadio').removeAttr('checked');
+			$('#linearRadio, #logarithmicRadio').attr('disabled', '');
+		}
+	});
+	$('#lineRadio').click(function() {
+		myChart.destroy();
+		myChart = new Chart(ctx, {
+			type: 'line',
+			data: data,
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				tooltips: {
+					callbacks: {
+						label: function(tooltipItem, data) {
+							return (
+								data.datasets[tooltipItem.datasetIndex].label +
+								': ' +
+								tooltipItem.yLabel.toLocaleString()
+							);
+						}
+					}
+				},
+				scales: {
+					yAxes: [
+						{
+							type: $('#linearRadio').is(':checked') ? 'linear' : 'logarithmic',
+							ticks: {
+								callback: function(value) {
+									return value.toLocaleString();
+								}
+							}
+						}
+					]
+				}
+			}
+		});
+		myChart.update();
+	});
+	$('#linearRadio').click(function() {
+		myChart.destroy();
+		myChart = new Chart(ctx, {
+			type: 'line',
+			data: data,
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				tooltips: {
+					callbacks: {
+						label: function(tooltipItem, data) {
+							return (
+								data.datasets[tooltipItem.datasetIndex].label +
+								': ' +
+								tooltipItem.yLabel.toLocaleString()
+							);
+						}
+					}
+				},
+				scales: {
+					yAxes: [
+						{
+							type: 'linear',
+							ticks: {
+								callback: function(value) {
+									return value.toLocaleString();
+								}
+							}
+						}
+					]
+				}
+			}
+		});
+		myChart.update();
+	});
+	$('#logarithmicRadio').click(function() {
+		myChart.destroy();
+		myChart = new Chart(ctx, {
+			type: 'line',
+			data: data,
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				tooltips: {
+					callbacks: {
+						label: function(tooltipItem, data) {
+							return (
+								data.datasets[tooltipItem.datasetIndex].label +
+								': ' +
+								tooltipItem.yLabel.toLocaleString()
+							);
+						}
+					}
+				},
+				scales: {
+					yAxes: [
+						{
+							type: 'logarithmic',
+							ticks: {
+								autoSkip: true,
+								source: 'auto',
+								suggestedMax: 10,
+								callback: function(value) {
+									if (value == 2000000) return value.toLocaleString();
+									if (value == 1000000) return value.toLocaleString();
+									if (value == 900000) return value.toLocaleString();
+									if (value == 800000) return value.toLocaleString();
+									if (value == 700000) return value.toLocaleString();
+									if (value == 600000) return value.toLocaleString();
+									if (value == 500000) return value.toLocaleString();
+									if (value == 400000) return value.toLocaleString();
+									if (value == 300000) return value.toLocaleString();
+									if (value == 200000) return value.toLocaleString();
+									if (value == 100000) return value.toLocaleString();
+									if (value == 90000) return value.toLocaleString();
+									if (value == 80000) return value.toLocaleString();
+									if (value == 70000) return value.toLocaleString();
+									if (value == 60000) return value.toLocaleString();
+									if (value == 50000) return value.toLocaleString();
+									if (value == 40000) return value.toLocaleString();
+									if (value == 30000) return value.toLocaleString();
+									if (value == 20000) return value.toLocaleString();
+									if (value == 10000) return value.toLocaleString();
+									if (value == 9000) return value.toLocaleString();
+									if (value == 8000) return value.toLocaleString();
+									if (value == 7000) return value.toLocaleString();
+									if (value == 6000) return value.toLocaleString();
+									if (value == 5000) return value.toLocaleString();
+									if (value == 4000) return value.toLocaleString();
+									if (value == 3000) return value.toLocaleString();
+									if (value == 2000) return value.toLocaleString();
+									if (value == 1000) return value.toLocaleString();
+									if (value == 900) return value;
+									if (value == 800) return value;
+									if (value == 700) return value;
+									if (value == 600) return value;
+									if (value == 500) return value;
+									if (value == 400) return value;
+									if (value == 300) return value;
+									if (value == 200) return value;
+									if (value == 100) return value;
+									if (value == 90) return value;
+									if (value == 80) return value;
+									if (value == 70) return value;
+									if (value == 60) return value;
+									if (value == 50) return value;
+									if (value == 40) return value;
+									if (value == 30) return value;
+									if (value == 20) return value;
+									if (value == 10) return value;
+								}
+							}
+						}
+					]
+				}
+			}
+		});
+		myChart.update();
+	});
+}
 function getNewsResults(data) {
 	let newsCards = document.getElementById('card-deck');
 	let newsResultsNumber = document.getElementById('news-results-number');
@@ -165,220 +438,246 @@ function getNewsResults(data) {
 	}
 	newsCards.innerHTML = output;
 }
-// function
 $(document).ready(function() {
-	fetch('https://covidtracking.com/api/v1/us/current.json').then((response) => response.json()).then(function(state) {
-		var ctxTotalCases = document.getElementById('pie-chart-total-cases');
-		var ctxhospitliazed = document.getElementById('pie-chart-hospitliazed');
-		let lastUpdatedPie = document.getElementById('last-updated-pie');
-		let pieNumberContainer = document.getElementById('pie-numbers');
-		let lastUpdatedHtmlUs = `Last updated ${timeDifference(state[0].lastModified)}`;
-		let usPieNumbers = pieLegend(
-			state[0].totalTestResults,
-			state[0].positive,
-			state[0].negative,
-			state[0].hospitalizedCumulative,
-			state[0].hospitalizedCurrently,
-			state[0].inIcuCumulative,
-			state[0].inIcuCurrently,
-			state[0].onVentilatorCumulative,
-			state[0].onVentilatorCurrently
-		);
-		pieNumberContainer.innerHTML = usPieNumbers;
-		lastUpdatedPie.innerHTML = lastUpdatedHtmlUs;
-		var usaDataTotal = [
-			{
-				data: [ state[0].positive, state[0].negative ],
-				backgroundColor: [ '#3e95cd', '#3cba9f' ]
-			}
-		];
-		var usaDataHospitalize = [
-			{
-				data: [ state[0].inIcuCurrently, state[0].onVentilatorCurrently ],
-				backgroundColor: [ '#FF6385', '#FF9F40' ]
-			}
-		];
-		var myPieChartTotalCases = new Chart(ctxTotalCases, {
-			type: 'pie',
-			data: {
-				labels: [ 'Positive', 'Negative' ],
-				datasets: usaDataTotal
-			},
-			options: {
-				maintainAspectRatio: false,
-				responsive: true,
-				title: {
-					display: true,
-					text: 'Total Cases'
-				},
-				tooltips: {
-					backgroundColor: 'rgb(255,255,255)',
-					bodyFontColor: '#858796',
-					borderColor: '#dddfeb',
-					borderWidth: 1,
-					xPadding: 15,
-					yPadding: 15,
-					displayColors: false,
-					caretPadding: 10,
-					mode: 'label',
-					callbacks: {
-						label: function(tooltipItem, data) {
-							var dataLabel = data.labels[tooltipItem.index];
-							var value =
-								': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString();
-							if (Chart.helpers.isArray(dataLabel)) {
-								dataLabel = dataLabel.slice();
-								dataLabel[0] += value;
-							} else {
-								dataLabel += value;
-							}
-							return dataLabel;
-						}
-					}
-				},
-				animation: {
-					duration: 1000
-				}
-			}
-		});
-		var myPieChartHospitliazed = new Chart(ctxhospitliazed, {
-			type: 'pie',
-			data: {
-				labels: [ 'In ICU Currently', 'On Ventilator Currently' ],
-				datasets: usaDataHospitalize
-			},
-			options: {
-				maintainAspectRatio: false,
-				responsive: true,
-				title: {
-					display: true,
-					text: 'Hospitalized cases'
-				},
-				tooltips: {
-					backgroundColor: 'rgb(255,255,255)',
-					bodyFontColor: '#858796',
-					borderColor: '#dddfeb',
-					borderWidth: 1,
-					xPadding: 15,
-					yPadding: 15,
-					displayColors: false,
-					caretPadding: 10,
-					callbacks: {
-						label: function(tooltipItem, data) {
-							var dataLabel = data.labels[tooltipItem.index];
-							var value =
-								': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString();
-							if (Chart.helpers.isArray(dataLabel)) {
-								dataLabel = dataLabel.slice();
-								dataLabel[0] += value;
-							} else {
-								dataLabel += value;
-							}
-							return dataLabel;
-						}
-					},
-					animation: {
-						duration: 1000
-					}
-				}
-			}
-		});
-		$('#selectRegion').on('change', function() {
-			let value = $(this).val();
-			if (value === 'usa') {
-				lastUpdatedPie.innerHTML = lastUpdatedHtmlUs;
-				pieNumberContainer.innerHTML = usPieNumbers;
-				myPieChartTotalCases.data.datasets = usaDataTotal;
-				myPieChartTotalCases.update();
-				myPieChartTotalCases.options.animation.duration = 1000;
-				myPieChartHospitliazed.data.datasets = usaDataHospitalize;
-				myPieChartHospitliazed.update();
-				myPieChartHospitliazed.options.animation.duration = 1000;
+	fetch('https://corona-api.com/countries/us?include=timeline', { cache: 'no-cache' })
+		.then((response) => {
+			if (response.ok) {
+				return response.json();
 			} else {
-				fetch('https://covidtracking.com/api/v1/states/' + value + '/current.json', { cache: 'no-cache' })
-					.then((response) => {
-						if (response.ok) {
-							return response.json();
-						} else {
-							throw new Error('BAD HTTP');
-						}
-					})
-					.then((state) => {
-						pieNumberContainer.innerHTML = pieLegend(
-							state.totalTestResults,
-							state.positive,
-							state.negative,
-							state.hospitalizedCurrently,
-							state.inIcuCurrently,
-							state.onVentilatorCurrently
-						);
-						lastUpdatedPie.innerHTML = `Last updated ${timeDifference(state.dateChecked)}`;
-						myPieChartTotalCases.data.datasets = [
-							{
-								data: [ state.positive, state.negative ],
-								backgroundColor: [ '#3e95cd', '#3cba9f' ]
-							}
-						];
-						myPieChartTotalCases.update();
-						myPieChartTotalCases.options.animation.duration = 1000;
-						if (state.inIcuCurrently && state.onVentilatorCurrently) {
-							myPieChartHospitliazed.data.datasets = [
-								{
-									data: [ state.inIcuCurrently, state.onVentilatorCurrently ],
-									backgroundColor: [ '#FF6385', '#FF9F40', '#8e5ea2' ]
-								}
-							];
-						} else {
-							myPieChartHospitliazed.data.datasets = [];
-						}
-						myPieChartHospitliazed.update();
-						myPieChartHospitliazed.options.animation.duration = 1000;
-					})
-					.catch((err) => {
-						console.log('ERROR:', err.message);
-					});
+				throw new Error('BAD HTTP');
 			}
-		});
-
-		// Set new default font family and font color to mimic Bootstrap's default styling
-		(Chart.defaults.global.defaultFontFamily = 'Nunito'),
-			'-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-		Chart.defaults.global.defaultFontColor = '#858796';
-		Chart.plugins.register({
-			afterDraw: function(chart) {
-				if (myPieChartHospitliazed.data.datasets.length === 0) {
-					// No data is present
-					var ctx = myPieChartHospitliazed.chart.ctx;
-					var width = myPieChartHospitliazed.chart.width;
-					var height = myPieChartHospitliazed.chart.height;
-					myPieChartHospitliazed.clear();
-					ctx.save();
-					ctx.textAlign = 'center';
-					ctx.textBaseline = 'middle';
-					ctx.fillText('No data available.', width / 2, height / 2);
-					ctx.restore();
-				}
-			}
-		});
-	});
-	//Building Datatable
-	fetch('https://covidtracking.com/api/v1/states/current.json')
-		.then((response) => response.json())
-		.then(function(states) {
-			states.forEach(function(state) {
-				let regionSelect = document.getElementById('selectRegion');
-				let regionNewsSelect = document.getElementById('selectNewsRegion');
-				regionNewsSelect.options[regionSelect.options.length] = new Option(
-					acronymToFullName(state.state),
-					'US-' + state.state
-				);
-				regionSelect.options[regionSelect.options.length] = new Option(
-					acronymToFullName(state.state),
-					state.state
-				);
+		})
+		.then((data) => {
+			let filteredArr = data.data.timeline.filter(function(daily) {
+				return !daily.is_in_progress;
 			});
+			//Get months/30 days
+			filteredArr.slice(0, 30).forEach(function(daily) {
+				confirmedMonth.push(daily.new_confirmed);
+				// numbersConfirmedMonth += parseInt(daily.new_confirmed);
+				deathsMonth.push(daily.new_deaths);
+				// numbersDeathsMonth += parseInt(daily.new_deaths);
+				recoveredMonth.push(daily.new_recovered);
+				// numbersRecoveredMonth += parseInt(daily.new_recovered);
+				labelsDateMonth.push(daily.date);
+			});
+
+			//Get 14 days
+			filteredArr.slice(0, 14).forEach(function(daily) {
+				confirmedWeeks.push(daily.new_confirmed);
+				// numbersConfirmedWeeks += parseInt(daily.new_confirmed);
+				deathsWeeks.push(daily.new_deaths);
+				// numbersDeathsWeeks += parseInt(daily.new_deaths);
+				recoveredWeeks.push(daily.new_recovered);
+				// numbersRecoveredWeeks += parseInt(daily.new_recovered);
+				labelsDateWeeks.push(daily.date);
+			});
+
+			//Get since beginning
+			filteredArr.forEach(function(daily) {
+				casesConfirmed.push(daily.new_confirmed);
+				casesDeaths.push(daily.new_deaths);
+				casesRecovered.push(daily.new_recovered);
+				labelsDate.push(daily.date);
+			});
+			//Default Chart
+			generateChart(labelsDateMonth, confirmedMonth, null, 'Confirmed', gradientBlue, borderBlue);
+
+			//Default legend numbers
+			// populateNumbers(
+			// 	numbersConfirmedMonth.toLocaleString(),
+			// 	numbersRecoveredMonth.toLocaleString(),
+			// 	numbersDeathsMonth.toLocaleString(),
+			// 	'since month'
+			// );
+			Chart.defaults.global.defaultFontColor = 'grey';
+			Chart.defaults.global.animation.duration = 2500;
+			$('#confirmedRadio').click(function() {
+				myChart.destroy();
+				if ($('#sinceBeginning').is(':checked')) {
+					generateChart(
+						labelsDate,
+						casesConfirmed,
+						myChart.config.type,
+						'Confirmed',
+						gradientBlue,
+						borderBlue
+					);
+				}
+				if ($('#sinceMonth').is(':checked')) {
+					generateChart(
+						labelsDateMonth,
+						confirmedMonth,
+						myChart.config.type,
+						'Confirmed',
+						gradientBlue,
+						borderBlue
+					);
+				}
+				if ($('#sinceWeeks').is(':checked')) {
+					generateChart(
+						labelsDateWeeks,
+						confirmedWeeks,
+						myChart.config.type,
+						'Confirmed',
+						gradientBlue,
+						borderBlue
+					);
+				}
+				myChart.update();
+			});
+			$('#recoveredRadio').click(function() {
+				myChart.destroy();
+				if ($('#sinceBeginning').is(':checked')) {
+					generateChart(
+						labelsDate,
+						casesRecovered,
+						myChart.config.type,
+						'Recovered',
+						gradientGreen,
+						borderGreen
+					);
+				}
+				if ($('#sinceMonth').is(':checked')) {
+					generateChart(
+						labelsDateMonth,
+						recoveredMonth,
+						myChart.config.type,
+						'Recovered',
+						gradientGreen,
+						borderGreen
+					);
+				}
+				if ($('#sinceWeeks').is(':checked')) {
+					generateChart(
+						labelsDateWeeks,
+						recoveredWeeks,
+						myChart.config.type,
+						'Recovered',
+						gradientGreen,
+						borderGreen
+					);
+				}
+				myChart.update();
+			});
+			$('#deathsRadio').click(function() {
+				myChart.destroy();
+				if ($('#sinceBeginning').is(':checked')) {
+					generateChart(labelsDate, casesDeaths, myChart.config.type, 'Deaths', gradientRed, borderRed);
+				}
+				if ($('#sinceMonth').is(':checked')) {
+					generateChart(labelsDateMonth, deathsMonth, myChart.config.type, 'Deaths', gradientRed, borderRed);
+				}
+				if ($('#sinceWeeks').is(':checked')) {
+					generateChart(labelsDateWeeks, deathsWeeks, myChart.config.type, 'Deaths', gradientRed, borderRed);
+				}
+				myChart.update();
+			});
+			$('#sinceBeginning').click(function() {
+				// populateNumbers(
+				// 	numbersConfirmed.toLocaleString(),
+				// 	numbersRecovered.toLocaleString(),
+				// 	numbersDeceased.toLocaleString(),
+				// 	'since beginning'
+				// );
+				myChart.destroy();
+				if ($('#confirmedRadio').is(':checked')) {
+					generateChart(
+						labelsDate,
+						casesConfirmed,
+						myChart.config.type,
+						'Confirmed',
+						gradientBlue,
+						borderBlue
+					);
+				}
+				if ($('#recoveredRadio').is(':checked')) {
+					generateChart(
+						labelsDate,
+						casesRecovered,
+						myChart.config.type,
+						'Recovered',
+						gradientGreen,
+						borderGreen
+					);
+				}
+				if ($('#deathsRadio').is(':checked')) {
+					generateChart(labelsDate, casesDeaths, myChart.config.type, 'Deaths', gradientRed, borderRed);
+				}
+				myChart.update();
+			});
+			$('#sinceMonth').click(function() {
+				// populateNumbers(
+				// 	numbersConfirmedMonth.toLocaleString(),
+				// 	numbersRecoveredMonth.toLocaleString(),
+				// 	numbersDeathsMonth.toLocaleString(),
+				// 	'since a month'
+				// );
+				myChart.destroy();
+				if ($('#confirmedRadio').is(':checked')) {
+					generateChart(
+						labelsDateMonth,
+						confirmedMonth,
+						myChart.config.type,
+						'Confirmed',
+						gradientBlue,
+						borderBlue
+					);
+				}
+				if ($('#recoveredRadio').is(':checked')) {
+					generateChart(
+						labelsDateMonth,
+						recoveredMonth,
+						myChart.config.type,
+						'Recovered',
+						gradientGreen,
+						borderGreen
+					);
+				}
+				if ($('#deathsRadio').is(':checked')) {
+					generateChart(labelsDateMonth, deathsMonth, myChart.config.type, 'Deaths', gradientRed, borderRed);
+				}
+				myChart.update();
+			});
+			$('#sinceWeeks').click(function() {
+				// populateNumbers(
+				// 	numbersConfirmedWeeks.toLocaleString(),
+				// 	numbersRecoveredWeeks.toLocaleString(),
+				// 	numbersDeathsWeeks.toLocaleString(),
+				// 	'since 2 weeks'
+				// );
+				myChart.destroy();
+				if ($('#confirmedRadio').is(':checked')) {
+					generateChart(
+						labelsDateWeeks,
+						confirmedWeeks,
+						myChart.config.type,
+						'Confirmed',
+						gradientBlue,
+						borderBlue
+					);
+				}
+				if ($('#recoveredRadio').is(':checked')) {
+					generateChart(
+						labelsDateWeeks,
+						recoveredWeeks,
+						myChart.config.type,
+						'Recovered',
+						gradientGreen,
+						borderGreen
+					);
+				}
+				if ($('#deathsRadio').is(':checked')) {
+					generateChart(labelsDateWeeks, deathsWeeks, myChart.config.type, 'Deaths', gradientRed, borderRed);
+				}
+				myChart.update();
+			});
+		})
+		.catch((err) => {
+			console.log('ERROR:', err.message);
 		});
 });
+// function
 $(document).ready(function() {
 	$('#dataTableCountry').DataTable({
 		ajax: {
@@ -449,6 +748,8 @@ $(document).ready(function() {
 	fillTravelNotices();
 	$('#selectNewsRegion').on('change', function() {
 		let value = $(this).val();
+		document.getElementById('card-deck').innerHTML =
+			'<div class="text-center"><i class="icon-spinner spinner-animate"></i></div>';
 		const newsUri = 'https://api.smartable.ai/coronavirus/news/' + value;
 		fetch(newsUri, {
 			headers: {
@@ -473,4 +774,5 @@ $(document).ready(function() {
 				console.log('ERROR:', err.message);
 			});
 	});
+	addStates();
 });

@@ -130,7 +130,7 @@ function countryLineData(data) {
 			},
 			title: {
 				display: true,
-				text: 'Overall Country Data',
+				text: 'Daily Cases',
 				position: 'bottom'
 			}
 		};
