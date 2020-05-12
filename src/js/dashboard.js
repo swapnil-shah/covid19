@@ -291,13 +291,19 @@ function countriesDatatableChart(data) {
 		title: {
 			display: true,
 			text: [
-				'COVID-19 CASES OF ' + mostCountryNum + ' MOST AFFECTED COUNTRY',
-				'Click on the box toshow/hide respective graph'
+				'COVID-19 CUMMULATIVE CASES OF ' + mostCountryNum + ' MOST AFFECTED COUNTRIES',
+				'Click on the box to show/hide respective graph'
 			],
 			fontSize: 16,
 			lineHeight: 1.6
 		},
 		tooltips: {
+			backgroundColor: 'rgb(255,255,255)',
+			bodyFontColor: '#858796',
+			titleMarginBottom: 10,
+			titleFontColor: '#6e707e',
+			titleFontSize: 14,
+			borderColor: '#dddfeb',
 			borderWidth: 1,
 			caretPadding: 10,
 			displayColors: false,

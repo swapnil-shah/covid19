@@ -136,6 +136,12 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 		responsive: true,
 		maintainAspectRatio: false,
 		tooltips: {
+			backgroundColor: 'rgb(255,255,255)',
+			bodyFontColor: '#858796',
+			titleMarginBottom: 10,
+			titleFontColor: '#6e707e',
+			titleFontSize: 14,
+			borderColor: '#dddfeb',
 			borderWidth: 1,
 			caretPadding: 10,
 			displayColors: false,

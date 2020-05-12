@@ -112,7 +112,7 @@ block content
                 .card.pb-2.mb-4
                     .card-header.bg-dark
                         h3.text-white Rise of confirmed cases
-                    .card-body.p-1
+                    .card-body.p-sm-1.p-md-3
                         .flourish-embed.flourish-bar-chart-race(data-src='visualisation/2293729', data-url='https://flo.uri.sh/visualisation/2293729/embed')
             .col-sm-12
                 .card.pb-2.mb-4
@@ -178,8 +178,8 @@ append scripts
     script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
-    script(src='js/dashboard.min.js')
+    //- script(src='js/dashboard.min.js')
 
-    //- script(src='js/utilities.js')
-    //- script(src='js/dashboard.js')
-    //- script(src='js/scripts.js')
+    script(src='js/utilities.js')
+    script(src='js/dashboard.js')
+    script(src='js/scripts.js')
