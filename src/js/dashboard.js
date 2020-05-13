@@ -193,10 +193,10 @@ function countriesDatatableChart(data) {
 						if (type === 'type' || type === 'sort') {
 							return data;
 						}
-						return `${data} <span class="text-gray-600"><small class="text-dark font-weight-600">(${populationFormat(
+						return `<div class="d-inline-block">${data} <span class="text-gray-600"><small class="text-dark font-weight-600">(${populationFormat(
 							row.tests
 						)})</small></span><p class="text-muted mb-0 small">Updated
-					${timeDifference(row.updated)}</p>`;
+					${timeDifference(row.updated)}</p></div>`;
 					}
 				},
 				{
@@ -251,7 +251,15 @@ function countriesDatatableChart(data) {
 					}
 				}
 			],
-			order: [ [ 1, 'desc' ] ]
+			order: [ [ 1, 'desc' ] ],
+			fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+				//Lazy load images
+				if (aData.countryInfo.iso2) {
+					$('td:eq(0)', nRow).prepend(
+						`<img src="https://www.countryflags.io/${aData.countryInfo.iso2.toLocaleLowerCase()}/shiny/24.png" style="width:24px; height:24px;vertical-align:top; margin-right:10px"/>`
+					);
+				}
+			}
 		});
 		fillNewsCards();
 		fillSituationReports();
