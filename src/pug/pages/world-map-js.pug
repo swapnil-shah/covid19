@@ -1,3 +1,4 @@
+
 script(type="text/javascript").
     fetch('https://disease.sh/v2/countries?yesterday=true&sort=cases', { cache: 'no-cache' })
     .then((response) => response.json())
@@ -20,13 +21,16 @@ script(type="text/javascript").
                 bounds: [[-90, -180],[90, 180]]
             }).addTo(mymap);
             var myRenderer = L.canvas({ padding: 0.5 });
-            function htmlPopup(region, regionAlt, confirmed, recovered, deaths){
+            function htmlPopup(region, regionCode, confirmed, recovered, deaths){
                 let output = '';
+                if(regionCode !== null){
+                    output+=`<img src="https://www.countryflags.io/${regionCode.toLocaleLowerCase()}/shiny/16.png" style="vertical-align:middle!important; margin-right:2px;"/>`
+                }
                 if(region !== null){
                     output+=`<b>${region}</b>`
                 }
                 else{
-                    output+=`<b>${regionAlt}</b>`
+                    output+=`<b>${regionCode}</b>`
                 }
                 if(confirmed !== null){
                     output +=`<br/>Confirmed: ${confirmed.toLocaleString()}`;
@@ -49,7 +53,7 @@ script(type="text/javascript").
                     renderer: myRenderer
                 })
                 .addTo(mymap)
-                .bindTooltip(htmlPopup(country.country, country.iso2, country.cases, country.recovered, country.deaths));
+                .bindTooltip(htmlPopup(country.country, country.countryInfo.iso2, country.cases, country.recovered, country.deaths));
             });
 
             var info = L.control({position: 'bottomright'});

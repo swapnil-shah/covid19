@@ -11,7 +11,7 @@ block config
     - var topNavRegion = 'USA'
     
 append css
-    include includes/us-map-js.pug
+    include us-map-js.pug
 
 block content
     .container-fluid.mt-4
@@ -175,7 +175,7 @@ block content
                                     .select
                                         select#selectNewsRegion
                                             option(value="US" selected) USA
-                                    .text-gray-600.small#news-results-number.pl-3
+                                    .text-gray-600.small#news-results-number.pt-1.pl-3
                                     #card-deck.my-2.pr-md-2
                                     a.small.w-100.text-right.pt-2(href="https://smartable.ai/" target="_blank") 
                                         | Data Source

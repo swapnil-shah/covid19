@@ -27,10 +27,10 @@
 	});
 
 	// Activate Bootstrap scrollspy for the sticky nav component
-	$('body').scrollspy({
-		target: '#stickyNav',
-		offset: 82
-	});
+	// $('body').scrollspy({
+	// 	target: '#stickyNav',
+	// 	offset: 82
+	// });
 
 	// Scrolls to an offset anchor when a sticky nav link is clicked
 	$('.nav-sticky a.nav-link[href*="#"]:not([href="#"])').click(function() {
@@ -77,5 +77,4 @@
 		$(this).addClass('show');
 		$('[data-target="#' + this.id + '"]').removeClass('collapsed');
 	});
-	//API
 })(jQuery);

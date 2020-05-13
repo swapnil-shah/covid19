@@ -41,6 +41,21 @@ let colors = [
 	'#ff85f3',
 	'#446699'
 ];
+let colorsOpacity = [
+	'rgba(250,205,96,0.1)',
+	'rgba(26,192,198,0.1)',
+	'rgba(88,179,104,0.1)',
+	'rgba(85,85,119,0.1)',
+	'rgba(255,112,166,0.1)',
+	'rgba(251,119,86,0.1)',
+	'rgba(198,206,182,0.1)',
+	'rgba(249,180,171,0.1)',
+	'rgba(239,238,180,0.1)',
+	'rgba(242,116,33,0.1)',
+	'rgba(255,243,133,0.1)',
+	'rgba(132,210,255,0.1)',
+	'rgba(133,255,208,0.1)'
+];
 const daysNum = 45;
 const mostCountryNum = 5;
 let getNewsResults = (data) => {
@@ -256,7 +271,7 @@ function countriesDatatableChart(data) {
 				//Lazy load images
 				if (aData.countryInfo.iso2) {
 					$('td:eq(0)', nRow).prepend(
-						`<img src="https://www.countryflags.io/${aData.countryInfo.iso2.toLocaleLowerCase()}/shiny/24.png" style="width:24px; height:24px;vertical-align:top; margin-right:10px"/>`
+						`<img src="https://www.countryflags.io/${aData.countryInfo.iso2.toLocaleLowerCase()}/shiny/24.png" style="vertical-align:top; margin-right:10px;" onerror="this.src='../assets/img/flag_placeholder_20x20.png'"/>`
 					);
 				}
 			}
@@ -366,8 +381,10 @@ function countriesDatatableChart(data) {
 		},
 		tooltips: {
 			backgroundColor: 'rgb(255,255,255)',
-			titleFontColor: '#858796',
 			bodyFontColor: '#858796',
+			titleMarginBottom: 10,
+			titleFontColor: '#6e707e',
+			titleFontSize: 14,
 			borderColor: '#dddfeb',
 			borderWidth: 1,
 			caretPadding: 10,
@@ -423,7 +440,6 @@ function countriesDatatableChart(data) {
 	};
 
 	let sortedArr = [];
-	let ddChartCountriesData = [];
 	let ddChartCountriesSelect = document.getElementById('ddChartCountries');
 	let regionNewsSelect = document.getElementById('selectNewsRegion');
 	data
@@ -475,7 +491,7 @@ function countriesDatatableChart(data) {
 				lineChartData.push({
 					label: country.country,
 					data: Object.values(country.timeline.cases),
-					fill: false,
+					// fill: false,
 					pointHoverRadius: 0,
 					pointBorderWidth: 0
 				});
@@ -507,6 +523,7 @@ function countriesDatatableChart(data) {
 
 			myChart.data.datasets.forEach(function(set, index) {
 				set.borderColor = colors[index];
+				set.backgroundColor = colorsOpacity[index];
 			});
 			myChart.update();
 			Chart.defaults.global.defaultFontFamily = 'Nunito';

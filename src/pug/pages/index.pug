@@ -47,8 +47,7 @@ append css
             -o-animation: rotating 3s linear infinite;
             animation: rotating 3s linear infinite;
         }
-    include includes/world-map-js.pug
-
+    include world-map-js.pug
 block content
     .container-fluid.mt-4
         .card.mb-4
@@ -95,7 +94,12 @@ block content
                             | Data source 
                             i.icon-new-tab.ml-1
         .row
-        .row
+            .col-sm-12 
+                .card.pb-2.mb-4
+                    .card-header.bg-dark
+                        h3.text-white Rise of confirmed cases
+                    .card-body.p-sm-1.p-md-3
+                        .flourish-embed.flourish-bar-chart-race(data-src='visualisation/2293729', data-url='https://flo.uri.sh/visualisation/2293729/embed')
             .col-sm-12 
                 .card.pb-2.mb-4
                     .card-header.bg-dark
@@ -108,12 +112,6 @@ block content
                     a.small.w-100.text-right.pt-2(href="https://disease.sh/" target="_blank")
                         | Data source 
                         i.icon-new-tab.ml-1
-            .col-sm-12 
-                .card.pb-2.mb-4
-                    .card-header.bg-dark
-                        h3.text-white Rise of confirmed cases
-                    .card-body.p-sm-1.p-md-3
-                        .flourish-embed.flourish-bar-chart-race(data-src='visualisation/2293729', data-url='https://flo.uri.sh/visualisation/2293729/embed')
             .col-sm-12
                 .card.pb-2.mb-4
                     .card-header.bg-dark
@@ -161,7 +159,7 @@ block content
                                     .select
                                         select#selectNewsRegion
                                             option(value="global" selected) Worldwide
-                                    .text-gray-600.small#news-results-number.pl-3
+                                    .text-gray-600.small#news-results-number.pt-1.pl-3
                                     #card-deck.my-2.pr-md-2
                                     a.small.w-100.text-right.pt-2(href="https://smartable.ai/" target="_blank") 
                                         | Data Source
