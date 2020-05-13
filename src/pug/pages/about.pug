@@ -1,0 +1,841 @@
+extends ../layouts/dashboard.pug
+
+block config
+    - var bodyClass = 'nav-fixed bg-dark'
+    - var pageTitle = 'About covid'
+    - var sidenavStyle = 'sidenav-light'
+    - var topnavStyle = 'navbar-light bg-white'
+    - var pageHeaderStyle = 'page-header-dark'
+    - var pageHeaderBackground = 'bg-gradient-primary-to-secondary'
+    - var footerStyle = 'footer-dark bg-dark'
+    - var topNavRegion = ''
+    
+append css
+    style.
+
+        .myaccordion .card-header {
+            border-bottom-color: #edeff0;
+            background: transparent;
+        }
+
+        .myaccordion .fa-stack {
+            font-size: 18px;
+        }
+
+        .myaccordion .btn {
+            width: 100%;
+            font-weight: bold;
+            color: #004987;
+            padding: 0;
+        }
+
+        .myaccordion .btn-link:hover,
+        .myaccordion .btn-link:focus {
+            text-decoration: none;
+        }
+
+        .myaccordion li + li {
+            margin-top: 10px;
+        }
+       .myaccordion button,.myaccordion .card{
+            border-radius:0
+        }
+        .card-header button[aria-expanded="true"] {
+            background-color: #eff3f9 !important;
+        }
+
+        .card-header button[aria-expanded="true"]:after {
+            content: "\ea41";
+            font-family: 'icomoon';
+            float:right;
+            margin-left:5px;
+        }
+
+        .card-header button[aria-expanded="false"]:after {
+            content: "\ea43";
+            font-family: 'icomoon';
+            float:right;
+            margin-left:5px;
+        }
+        .card-body.text-body {
+            font-size:1rem;
+            letter-spacing:0.03rem;
+        }
+        a{
+            color:#004987;
+        }
+        a.source-link:hover{
+            color: #fff;
+            text-decoration:underline;
+        }
+        .nav-pills .nav-link{
+            border:1px solid #ffffff;
+        }
+        .nav-pills .nav-link.active, .nav-pills .show>.nav-link{
+            background-color: #1f2d41!important;
+            color:#fff !important;
+        }
+        #faq-covid{
+            border-radius:.35rem 0 0 .35rem;
+            border-right:none;
+            transition:all 0.3s ease;
+        }
+        #faq-us{
+            border-radius:0 .35rem .35rem 0;
+            border-left:none;
+            transition:all 0.3s ease;
+        }
+        a#faq-covid:hover, a#faq-us:hover{
+            background-color: #fff!important;
+            opacity:0.95
+        }
+        a#faq-covid.active:hover, a#faq-us.active:hover{
+            background-color: #1f2d41!important;
+            color:#fff !important;
+        }
+block content
+    ul.nav.nav-pills.card-header-pills.d-flex.justify-content-center.pt-5.m-0(role='tablist')
+        li.nav-item
+            a.nav-link.bg-white.text-dark.shadow.active#faq-covid(href='#faqCovid', data-toggle='tab', role='tab', aria-controls='overview', aria-selected='true') COVID19
+        li.nav-item
+            a.nav-link.bg-white.text-dark.shadow#faq-us(href='#faqUs', data-toggle='tab', role='tab', aria-controls='activities', aria-selected='false') THIS PROJECT
+    .tab-content#cardPillContent
+        .tab-pane.fade#faqUs(role='tabpanel', aria-labelledby='faq-us')
+            .container-fluid
+                #accordion-us.myaccordion.mx-3.mb-5
+                    .row.d-flex.justify-content-center.mt-5
+                        .col-sm-12.col-md-8.justify-content-center
+                            h1.text-white.mt-4
+                                .card
+                                    #headingUs1.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.p-3.text-left(data-toggle='collapse', data-target='#collapseUs1', aria-expanded='true', aria-controls='collapseUs1') Are you official?
+                                    #collapseUs1.collapse.show(aria-labelledby='headingUs1', data-parent='#accordion-us')
+                                        .card-body.text-body
+                                            p No
+                                .card
+                                    #headingUs2.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.collapsed.justify-content-between.btn.btn-link.p-3.text-left(data-toggle='collapse', data-target='#collapseUs2', aria-expanded='false', aria-controls='collapseUs2') What are your sources? How is the data gathered for this project?
+                                    #collapseUs2.collapse(aria-labelledby='headingUs2', data-parent='#accordion-us')
+                                        .card-body.text-body
+                                            p We use a variety of sources to gather the data. Each section on this website has a "Data Source" link at the the right bottom. Few of them is listed below.
+                                            ul
+                                                li
+                                                    a(href="https://disease.sh/" target="_blank") Novel COVID API
+                                                li
+                                                    a(href="https://github.com/mathdroid/covid-19-api" target="_blank") covid-19-api by Mathdroid
+                                                li
+                                                    a(href="https://api.covid19india.org/" target="_blank") COVID19-India API
+                                                li
+                                                    a(href="https://covid19-docs.chrismichael.now.sh/" target="_blank") covid19 by ChrisMichaelPerezSantiago
+                                                li
+                                                    a(href="https://smartable.ai/" target="_blank") Smartable AI
+                                                li
+                                                    a(href="https://about-corona.net/" target="_blank") about-corona
+                                                li
+                                                    a(href="https://covidtracking.com/api" target="_blank") COVID Tracking Project
+                                                li
+                                                    a(href="hthttps://github.com/amodm/api-covid19-in" target="_blank") api-covid19-in
+        .tab-pane.fade.show.active#faqCovid(role='tabpanel', aria-labelledby='faq-covid')
+            .container-fluid
+                .row.align-items-center.text-align-center.mt-5.justify-content-center
+                    .col-sm-12.col-md-10.text-center
+                        h1.display-4.text-white-75 Frequently Asked Questions
+                        h1.text-white-75 Coronavirus Disease 2019 (COVID-19)
+                        p 
+                            a.text-white-75.source-link(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/faq.html') Source CDC
+                                span.icon-new-tab.mx-1
+                #accordion-covid.myaccordion.mx-3.mb-5
+                    .row.d-flex.justify-content-center.mt-5
+                        .col-sm-12.col-md-8.justify-content-center
+                            h1.text-white.mt-4
+                                span.d-block.mb-3.text-center.text-md-left Basics
+                                .card
+                                    #headingBasics1.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.p-3.text-left(data-toggle='collapse', data-target='#collapseBasics1', aria-expanded='true', aria-controls='collapseBasics1') What is a novel coronavirus?
+                                    #collapseBasics1.collapse.show(aria-labelledby='headingBasics1', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p
+                                                | A novel coronavirus is a new coronavirus that has not been previously identified. The virus causing
+                                                | coronavirus disease 2019 (COVID-19), is not the same as the&nbsp;
+                                                a(target="_blank", href='https://www.cdc.gov/coronavirus/types.html')
+                                                | coronaviruses that commonly circulate among
+                                                | humans
+                                                | &nbsp;and cause mild illness, like the common cold.
+                                            p
+                                                | A diagnosis with coronavirus 229E, NL63, OC43, or HKU1 is not the same as a COVID-19 diagnosis. Patients
+                                                | with COVID-19 will be evaluated and cared for differently than patients with common coronavirus diagnosis.
+                                .card
+                                    #headingBasics2.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseBasics2', aria-expanded='false', aria-controls='collapseBasics2') Postgraduate Studies
+                                    #collapseBasics2.collapse(aria-labelledby='headingBasics2', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p
+                                                | On February 11, 2020 the World Health Organization&nbsp;
+                                                a(target="_blank", href='https://twitter.com/DrTedros/status/1227297754499764230') announced
+                                                | &nbsp;an official name for the
+                                                |             disease that is causing the 2019 novel coronavirus outbreak, first identified in Wuhan China. The new name
+                                                |             of this disease is coronavirus disease 2019, abbreviated as COVID-19. In COVID-19, &lsquo;CO&rsquo; stands
+                                                |             for &lsquo;corona,&rsquo; &lsquo;VI&rsquo; for &lsquo;virus,&rsquo; and &lsquo;D&rsquo; for disease.
+                                                |             Formerly, this disease was referred to as &ldquo;2019 novel coronavirus&rdquo; or &ldquo;2019-nCoV&rdquo;.
+                                            p
+                                                | There are many types&nbsp;of human coronaviruses including some that commonly cause mild upper-respiratory
+                                                | tract illnesses. COVID-19 is a new disease, caused be a novel (or new) coronavirus that has not previously
+                                                | been seen in humans. The name of this disease was selected following the World Health Organization
+                                                | (WHO)&nbsp;
+                                                a.tp-link-policy(href='https://www.who.int/topics/infectious_diseases/naming-new-diseases/en/', data-domain-ext='int')
+                                                | best
+                                                | practice
+                                                span.sr-only external icon
+                                                span.sr-only external icon
+                                                span.icon-new-tab.mx-1(aria-hidden='true')
+                                                | &nbsp;for naming of new
+                                                |             human infectious diseases.
+                                .card
+                                    #headingBasics3.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseBasics3', aria-expanded='false', aria-controls='collapseBasics3') Why might someone blame or avoid individuals and groups (create stigma) because of COVID-19?
+                                    #collapseBasics3.collapse(aria-labelledby='headingBasics3', data-parent='#accordion-covid')
+                                        .card-body.text-body
+
+                                            p
+                                                | People in the U.S. may be worried or anxious about friends and relatives who are living in or visiting
+                                                | areas where COVID-19 is spreading. Some people are worried about getting the disease from these people. Fear
+                                                | and anxiety can lead to social stigma, for example, toward people who live in certain parts of the world,
+                                                | people who have traveled internationally, people who were in quarantine, or healthcare professionals.
+                                            p
+                                                | Stigma is discrimination against an identifiable group of people, a place, or a nation. Stigma is
+                                                | associated with a lack of knowledge about how COVID-19 spreads, a need to blame someone, fears about disease
+                                                | and death, and gossip that spreads rumors and myths.
+                                            p
+                                                | Stigma hurts everyone by creating more fear or anger toward ordinary people instead of focusing on the
+                                                | disease that is causing the problem.
+                                .card
+                                    #headingBasics4.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseBasics4', aria-expanded='false', aria-controls='collapseBasics4') How can people help stop stigma related to COVID-19?
+                                    #collapseBasics4.collapse(aria-labelledby='headingBasics4', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p
+                                                | People can fight stigma by providing social support in situations where you notice this is occurring.
+                                                | Stigma affects the emotional or&nbsp;
+                                                a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/daily-life-coping/reducing-stigma.html')
+                                                | mental
+                                                | health
+                                                | &nbsp;of stigmatized groups and the communities they live in. Stopping stigma is important to
+                                                |             making communities and community members resilient. See&nbsp;
+                                                a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/about/coping.html')
+                                                | resources on mental health and coping
+                                                | during COVID-19
+                                                | . Everyone can help stop stigma related to COVID-19 by&nbsp;
+                                                a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/about/share-facts.html') knowing the facts
+                                                | &nbsp;and sharing them with others in your community.
+
+                    .row.d-flex.justify-content-center.mt-5
+                        .col-sm-12.col-md-8.justify-content-center
+                            h1.text-white.mt-4
+                                span.d-block.mb-3.text-center.text-md-left How COVID-19 Spreads
+                                .card
+                                    #headingSpread1.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseSpread1', aria-expanded='false', aria-controls='collapseSpread1') What is the source of the virus?
+                                    #collapseSpread1.collapse(aria-labelledby='headingSpread1', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p
+                                            | COVID-19 is caused by a coronavirus called SARS-CoV-2. Coronaviruses are a large family of viruses that are common in people and may different species of animals, including camels, cattle, cats, and bats. &nbsp;Rarely, animal coronaviruses can infect people and then spread between people. This occurred with 
+                                            a(target="_blank", href='/coronavirus/mers/index.html') MERS-CoV
+                                            |  and 
+                                            a(target="_blank", href='/sars/index.html') SARS-CoV
+                                            | , and now with the virus that causes COVID-19. The SARS-CoV-2 virus is a betacoronavirus, like MERS-CoV and SARS-CoV. All three of these viruses have their origins in bats. The sequences from U.S. patients are similar to the one that China initially posted, suggesting a likely single, recent emergence of this virus from an animal reservoir. However, the exact source of this virus is unknown.
+                                            p
+                                            | More information about the source and spread of COVID-19 is available on the 
+                                            a(target="_blank", href='/coronavirus/2019-ncov/cases-updates/summary.html#emergence') Situation Summary: Source and Spread of the Virus
+                                            | .
+
+                                .card
+                                    #headingSpread2.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseSpread2', aria-expanded='false', aria-controls='collapseSpread2') How does the virus spread?
+                                    #collapseSpread2.collapse(aria-labelledby='headingSpread2', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p
+                                                | The virus that causes COVID-19 is thought to spread mainly from person to person, mainly through respiratory droplets produced when an infected person coughs or sneezes. These droplets can land in the mouths or noses of people who are nearby or possibly be inhaled into the lungs. Spread is more likely when people are in close contact with one another (within about 6 feet).
+                                            p
+                                                | COVID-19 seems to be spreading easily and sustainably in the community (&ldquo;community spread&rdquo;) in&nbsp;
+                                                a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/prevent-getting-sick/how-covid-spreads.html') many affected geographic areas
+                                                | . Community spread means people have been infected with the virus in an area, including some who are not sure how or where they became infected.
+                                            p
+                                                | Learn what is known about the&nbsp;
+                                                a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/about/transmission.html') spread of newly emerged coronaviruses
+                                                | .
+
+                                .card
+                                    #headingSpread3.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseSpread3', aria-expanded='false', aria-controls='collapseSpread3') Why are we seeing a rise in cases?
+                                    #collapseSpread3.collapse(aria-labelledby='headingSpread3', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p
+                                            | The&nbsp;
+                                            a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/cases-updates/cases-in-us.html') number of cases of COVID-19
+                                            | &nbsp;being reported in the United States is rising due to&nbsp;
+                                            a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/cases-updates/testing-in-us.html') increased laboratory testing
+                                            | &nbsp;and reporting across the country. The growing number of cases in part reflects the rapid spread of COVID-19 as many U.S. states and territories experience community spread. More detailed and accurate data will allow us to better understand and track the size and scope of the outbreak and strengthen prevention and response efforts.
+
+                                .card
+                                    #headingSpread4.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseSpread4', aria-expanded='false', aria-controls='collapseSpread4') Can someone who has had COVID-19 spread the illness to others?
+                                    #collapseSpread4.collapse(aria-labelledby='headingSpread4', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p
+                                                | The virus that causes COVID-19 is&nbsp;
+                                                a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/prevent-getting-sick/how-covid-spreads.html') spreading from person-to-person
+                                                | . People are thought to be most contagious when they are symptomatic (the sickest). That is why CDC recommends that these patients be isolated either in the hospital or at home (depending on how sick they are) until they are better and no longer pose a risk of infecting others. More recently the virus has also been detected in asymptomatic persons.
+                                            p
+                                                | How long someone is actively sick can vary so the decision on when to release someone from isolation is made using a test-based or non-test-based strategy (i.e. time since illness started and time since recovery) in consultation with state and local public health officials. The decision involves considering the specifics of each situation, including disease severity, illness signs and symptoms, and the results of laboratory testing for that patient.
+                                            p
+                                                | Learn more about&nbsp;
+                                                a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/hcp/disposition-hospitalized-patients.html') CDC&rsquo;s guidance on when to release someone from isolation
+                                                | &nbsp;and discharge hospitalized patients with COVID-19. For information on when someone who has been sick with COVID-19 is able to stop home isolation see&nbsp;
+                                                a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/hcp/disposition-in-home-patients.html')
+                                                | Interim Guidance for Discontinuation of In-Home Isolation for Patients with COVID-19
+                                                | .
+                                            p
+                                                | Someone who has been released from isolation is not considered to pose a risk of infection to others.
+
+                                .card
+                                    #headingSpread5.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseSpread5', aria-expanded='false', aria-controls='collapseSpread5') Can someone who has been quarantined for COVID-19 spread the illness to others?
+                                    #collapseSpread5.collapse(aria-labelledby='headingSpread5', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p
+                                            | Quarantine means separating a person or group of people who have been exposed to a contagious disease but have not developed illness (symptoms) from others who have not been exposed, in order to prevent the possible spread of that disease. Quarantine is usually established for the incubation period of the communicable disease, which is the span of time during which people have developed illness after exposure. For COVID-19, the period of quarantine is 14 days from the last date of exposure because the incubation period for this virus is 2 to 14 days. Someone who has been released from COVID-19 quarantine is not considered a risk for spreading the virus to others because they have not developed illness during the incubation period.
+
+                                .card
+                                    #headingSpread6.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseSpread6', aria-expanded='false', aria-controls='collapseSpread6') Can the virus that causes COVID-19 be spread through food, including restaurant take out, refrigerated or frozen packaged food?
+                                    #collapseSpread6.collapse(aria-labelledby='headingSpread6', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p
+                                                | Coronaviruses are generally thought to be spread from person to person through respiratory droplets. Currently, there is no evidence to support transmission of COVID-19 associated with food. Before preparing or eating food it is important to always wash your hands with soap and water for at least 20 seconds for general food safety. Throughout the day use a tissue to cover your coughing or sneezing, and wash your hands after blowing your nose, coughing or sneezing, or going to the bathroom.
+                                            p
+                                                | It may be possible that a person can get COVID-19 by touching a surface or object, like a packaging container, that has the virus on it and then touching their own mouth, nose, or possibly their eyes, but this is not thought to be the main way the virus spreads.
+                                            p
+                                                | In general, because of poor survivability of these coronaviruses on surfaces, there is likely very low risk of spread from food products or packaging.
+                                            p
+                                                | Learn what is known about the&nbsp;
+                                                a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/prepare/transmission.html') spread of COVID-19
+                                                | .
+
+                                .card
+                                    #headingSpread8.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseSpread8', aria-expanded='false', aria-controls='collapseSpread8') Can I get sick with COVID-19 if it is on food?
+                                    #collapseSpread8.collapse(aria-labelledby='headingSpread8', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p Based on information about this novel coronavirus thus far, it seems unlikely that COVID-19 can be transmitted through food – additional investigation is needed.
+                                .card
+                                    #headingSpread9.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseSpread9', aria-expanded='false', aria-controls='collapseSpread9') Will warm weather stop the outbreak of COVID-19?
+                                    #collapseSpread9.collapse(aria-labelledby='headingSpread9', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p It is not yet known whether weather and temperature affect the spread of COVID-19. Some other viruses, like those that cause the common cold and flu, spread more during cold weather months but that does not mean it is impossible to become sick with these viruses during other months.&nbsp; There is much more to learn about the transmissibility, severity, and other features associated with COVID-19 and investigations are ongoing.
+                                .card
+                                    #headingSpread10.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseSpread10', aria-expanded='false', aria-controls='collapseSpread10') What is community spread?
+                                    #collapseSpread10.collapse(aria-labelledby='headingSpread10', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p Community spread means people have been infected with the virus in an area, including some who are not sure how or where they became infected.
+                                .card
+                                    #headingSpread11.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseSpread11', aria-expanded='false', aria-controls='collapseSpread11') What temperature kills the virus that causes COVID-19?
+                                    #collapseSpread11.collapse(aria-labelledby='headingSpread11', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p
+                                            | Generally coronaviruses survive for shorter periods at higher temperatures and higher humidity than in cooler or dryer environments. However, we don&rsquo;t have direct data for this virus, nor do we have direct data for a temperature-based cutoff for inactivation at this point. The necessary temperature would also be based on the materials of the surface, the environment, etc. Regardless of temperature please follow&nbsp;
+                                            a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/prepare/disinfecting-your-home.html') CDC&rsquo;s guidance for cleaning and disinfection
+                                            | 
+                                .card
+                                    #headingSpread12.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseSpread12', aria-expanded='false', aria-controls='collapseSpread12') Can mosquitoes or ticks spread the virus that causes COVID-19?
+                                    #collapseSpread12.collapse(aria-labelledby='headingSpread12', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p
+                                            | At this time, CDC has no data to suggest that this new coronavirus or other similar coronaviruses are spread by mosquitoes or ticks. The main way that COVID-19 spreads is from person to person. See&nbsp;
+                                            a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/prevent-getting-sick/how-covid-spreads.html') How Coronavirus Spreads
+                                            | &nbsp;for more information.
+                    .row.d-flex.justify-content-center.mt-5
+                        .col-sm-12.col-md-8.justify-content-center
+                            h1.text-white.mt-4
+                                span.d-block.mb-3.text-center.text-md-left How to Protect Yourself
+                                .card
+                                    #headingProtect1.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseProtect1', aria-expanded='false', aria-controls='collapseProtect1') How can I help protect myself?
+                                    #collapseProtect1.collapse(aria-labelledby='headingProtect1', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p
+                                            | Visit the&nbsp;
+                                            a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/prevent-getting-sick/prevention.html') COVID-19 Prevention and Treatment
+                                            | &nbsp;page to learn about how to protect yourself from respiratory illnesses, like COVID-19.
+
+                                .card
+                                    #headingProtect2.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseProtect2', aria-expanded='false', aria-controls='collapseProtect2') What should I do if I have had close contact with someone who has COVID-19?
+                                    #collapseProtect2.collapse(aria-labelledby='headingProtect2', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p
+                                            | There is information for&nbsp;
+                                            a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/hcp/guidance-prevent-spread.html') people who have had close contact
+                                            | &nbsp;with a person confirmed to have, or being evaluated for, COVID-19 available online.
+                                .card
+                                    #headingProtect4.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseProtect4', aria-expanded='false', aria-controls='collapseProtect4') Am I at risk for COVID-19 from mail, packages, or products?
+                                    #collapseProtect4.collapse(aria-labelledby='headingProtect4', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p
+                                            | There is still a lot that is unknown about COVID-19 and how it spreads. Coronaviruses are thought to be spread most often by respiratory droplets. Although the virus can survive for a short period on some surfaces, it is unlikely to be spread from domestic or international mail, products or packaging. However, it may be possible that people can get COVID-19 by touching a surface or object that has the virus on it and then touching their own mouth, nose, or possibly their eyes, but this is not thought to be the main way the virus spreads.
+                                            p
+                                            | Learn more about 
+                                            a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/daily-life-coping/essential-goods-services.html') safe handling of deliveries and mail
+                                            | .
+                                .card
+                                    #headingProtect5.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseProtect5', aria-expanded='false', aria-controls='collapseProtect5') Is it okay for me to donate blood?
+                                    #collapseProtect5.collapse(aria-labelledby='headingProtect5', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p In healthcare settings across the United States, donated blood is a lifesaving, essential part of caring for patients. The need for donated blood is constant, and blood centers are open and in urgent need of donations. CDC encourages people who are well to continue to donate blood if they are able, even if they are practicing social distancing because of COVID-19. CDC is supporting blood centers by providing recommendations that will keep donors and staff safe. Examples of these recommendations include spacing donor chairs 6 feet apart, thoroughly adhering to environmental cleaning practices, and encouraging donors to make donation appointments ahead of time.
+                                .card
+                                    #headingProtect6.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseProtect6', aria-expanded='false', aria-controls='collapseProtect6') Should contact lens wearers take special precautions to prevent COVID-19?
+                                    #collapseProtect6.collapse(aria-labelledby='headingProtect6', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            ul
+                                                li
+                                                | Currently there is no evidence to suggest contact lens wearers are more at risk for acquiring COVID-19 than eyeglass wearers.
+                                                li
+                                                | Contact lens wearers should continue to&nbsp;
+                                                a(target="_blank", href='https://www.cdc.gov/contactlenses/protect-your-eyes.html') practice safe contact lens wear and care hygiene habits
+                                                | &nbsp;to help prevent against transmission of any contact lens-related infections, such as always washing hands with soap and water before handling lenses.
+                                                li
+                                                | People who are healthy can continue to wear and care for their contact lenses as prescribed by their eye care professional.
+                                            p
+                                                | Find more information about&nbsp;
+                                                a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/prepare/transmission.html') how coronavirus spreads
+                                                | &nbsp;and&nbsp;
+                                                a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/prepare/prevention.html') how to protect yourself
+                                                | .
+                                            p
+                                                | Visit&nbsp;
+                                                a(target="_blank", href='https://www.cdc.gov/contactlenses/index.html') CDC&rsquo;s contact lens website
+                                                | &nbsp;for more information on healthy contact lens wear and care.
+
+                                .card
+                                    #headingProtect7.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseProtect7', aria-expanded='false', aria-controls='collapseProtect7') Is contact lens disinfecting solution effective against COVID-19?
+                                    #collapseProtect7.collapse(aria-labelledby='headingProtect7', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            ul
+                                                li
+                                                a(target="_blank", href='https://www.cdc.gov/contactlenses/care-systems.html') Hydrogen peroxide-based systems
+                                                | &nbsp;for cleaning, disinfecting, and storing contact lenses should be effective against the virus that causes COVID-19.
+                                                ul
+                                                    li For other disinfection methods, such as multipurpose solution and ultrasonic cleaners, there is currently not enough scientific evidence to determine efficacy against the virus.
+                                                li
+                                                a(target="_blank", href='https://www.cdc.gov/contactlenses/care-systems.html') Always use solution
+                                                | &nbsp;to disinfect your contact lenses and case to kill germs that may be present.
+                                                li Handle your lenses over a surface that has been cleaned and disinfected.
+                                            p
+                                                | Find more information about&nbsp;
+                                                a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/prepare/transmission.html') how coronavirus spreads
+                                                | &nbsp;and&nbsp;
+                                                a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/prepare/prevention.html') how to protect yourself
+                                                | .
+                                            p
+                                                | Visit&nbsp;
+                                                a(target="_blank", href='https://www.cdc.gov/contactlenses/index.html') CDC&rsquo;s contact lens website
+                                                | &nbsp;for more information on healthy contact lens wear and care..row.d-flex.justify-content-center.mt-5
+                    .row.d-flex.justify-content-center.mt-5
+                        .col-sm-12.col-md-8.justify-content-center
+                            h1.text-white.mt-4
+                                span.d-block.mb-3.text-center.text-md-left Symptoms & Testing
+                                .card
+                                    #headingSymptoms1.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseSymptoms1', aria-expanded='false', aria-controls='collapseSymptoms1') What are the symptoms and complications that COVID-19 can cause?
+                                    #collapseSymptoms1.collapse(aria-labelledby='headingSymptoms1', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p
+                                                | People with COVID-19 have had a wide range of symptoms reported &ndash; ranging from mild symptoms to severe illness. People with these symptoms or combinations of symptoms may have COVID-19:
+                                            ul
+                                                li Cough
+                                                li Shortness of breath or difficulty breathing
+                                            p Or at least two of these symptoms:
+                                            ul
+                                                li Fever
+                                                li Chills
+                                                li Repeated shaking with chills
+                                                li Muscle pain
+                                                li Headache
+                                                li Sore throat
+                                                li New loss of taste or smell
+                                            p
+                                                | This list is not all inclusive. Please consult your medical provider for any other symptoms that are severe or concerning to you.
+                                            p
+                                                | Read about 
+                                                a(target="_blank", href='/coronavirus/2019-ncov/symptoms-testing/symptoms.html') COVID-19 Symptoms
+
+                                .card
+                                    #headingSymptoms2.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseSymptoms2', aria-expanded='false', aria-controls='collapseSymptoms2') Is it possible to have the flu and COVID-19 at the same time?
+                                    #collapseSymptoms2.collapse(aria-labelledby='headingSymptoms2', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p It is possible to test positive for flu (as well as other respiratory pathogens) and the virus that causes COVID-19 at the same time.
+                                .card
+                                    #headingSymptoms3.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseSymptoms3', aria-expanded='false', aria-controls='collapseSymptoms3') Should I be tested for COVID-19?
+                                    #collapseSymptoms3.collapse(aria-labelledby='headingSymptoms3', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p
+                                            | Not everyone needs to be tested for COVID-19. For information about testing, see&nbsp;
+                                            a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/testing.html') Testing for COVID-19
+                                            | .
+                                .card
+                                    #headingSymptoms4.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseSymptoms4', aria-expanded='false', aria-controls='collapseSymptoms4') Can a person test negative and later test positive for COVID-19?
+                                    #collapseSymptoms4.collapse(aria-labelledby='headingSymptoms4', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p Using the CDC-developed viral test, a negative result means that the virus that causes COVID-19 was not found in the person’s sample. In the early stages of infection, it is possible the virus will not be detected.
+
+                                            p For COVID-19, a negative test result for a sample collected while a person has symptoms likely means that the COVID-19 virus is not causing their current illness.
+                                .card
+                                    #headingSymptoms5.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseSymptoms5', aria-expanded='false', aria-controls='collapseSymptoms5') What is antibody testing? And can I be tested using this method?
+                                    #collapseSymptoms5.collapse(aria-labelledby='headingSymptoms5', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p Antibody testing checks a sample of a person’s blood to look for antibodies to SARS-CoV-2, the virus that causes COVID-19. These antibodies are produced when someone has been infected, so a positive result from this test indicates that person was previously infected with the virus.
+
+                                            p CDC is working with other federal agencies to evaluate the performance of commercially manufactured antibody tests that are becoming increasingly available from healthcare providers. This evaluation is expected to be completed in early May.
+
+                                            p We do not know yet if the antibodies that result from infection with SARS-CoV-2 can protect someone from reinfection with this virus (immunity) or how long antibodies to the virus will protect someone. Scientists are conducting research to answer those questions.
+
+                                            p Antibody tests may not be able to tell you if you are currently infected because it typically takes 1 to 3 weeks to develop antibodies to SARS-CoV-2. To tell if you are currently infected, you would need a test that identifies the virus in samples from your upper respiratory system, such as a nasopharyngeal swab.
+                    .row.d-flex.justify-content-center.mt-5
+                        .col-sm-12.col-md-8.justify-content-center
+                            h1.text-white.mt-4
+                                span.d-block.mb-3.text-center.text-md-left Preparing Your Home and Family for COVID-19
+                                .card
+                                    #headingPrepare1.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapsePrepare1', aria-expanded='false', aria-controls='collapsePrepare1') How can my family and I prepare for COVID-19?
+                                    #collapsePrepare1.collapse(aria-labelledby='headingPrepare1', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p
+                                                | Create a household plan of action to help protect your health and the health of those you care about in the event of an outbreak of COVID-19 in your community:
+                                            ul
+                                                li Talk with the people who need to be included in your plan, and discuss&nbsp;
+                                                a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/cases-updates/summary.html') what to do if a COVID-19 outbreak occurs in your community
+                                                | .
+                                                li Plan ways to care for those who might be at greater risk for serious complications, particularly&nbsp;
+                                                a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/need-extra-precautions/people-at-higher-risk.html') older adults and those with severe chronic medical
+                                                | &nbsp;conditions like heart, lung or kidney disease.
+                                                ul
+                                                    l  Make sure they have access to several weeks of medications and supplies in case you need to stay home for prolonged periods of time.
+                                                l  Get to know your neighbors and find out if your neighborhood has a website or social media page to stay connected.
+                                                li Create a list of local organizations that you and your household can contact in the event you need access to information, healthcare services, support, and resources.
+                                                li Create an emergency contact list of family, friends, neighbors, carpool drivers, health care providers, teachers, employers, the local public health department, and other community resources.
+                                            p
+
+                                .card
+                                    #headingPrepare2.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapsePrepare2', aria-expanded='false', aria-controls='collapsePrepare2') What steps can my family take to reduce our risk of getting COVID-19?
+                                    #collapsePrepare2.collapse(aria-labelledby='headingPrepare2', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p
+                                                | Practice everyday preventive actions to help reduce your risk of getting sick and remind everyone in your home to do the same. These actions are especially important for older adults and people who have severe chronic medical conditions:
+                                            ul
+                                                li Avoid close contact with people who are sick.
+                                                li Stay home when you are sick, except to get medical care.
+                                                li Cover your coughs and sneezes with a tissue and throw the tissue in the trash.
+                                                li Wash your hands often with soap and water for at least 20 seconds, especially after blowing your nose, coughing, or sneezing; going to the bathroom; and before eating or preparing food.
+                                                li If soap and water are not readily available, use an alcohol-based hand sanitizer with at least 60% alcohol. Always wash hands with soap and water if hands are visibly dirty.
+                                                li Clean and disinfect frequently touched surfaces and objects (e.g., tables, countertops, light switches, doorknobs, and cabinet handles).
+                                                li Launder items, including washable plush toys, as appropriate and in accordance with the manufacturer&rsquo;s instructions. If possible, launder items using the warmest appropriate water setting for the items and dry items completely. Dirty laundry from an ill person can be washed with other people&rsquo;s items.
+                                .card
+                                    #headingPrepare3.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapsePrepare3', aria-expanded='false', aria-controls='collapsePrepare3') What should I do if someone in my house gets sick with COVID-19?
+                                    #collapsePrepare3.collapse(aria-labelledby='headingPrepare3', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                        p
+                                        | Most people who get COVID-19 will be able to recover at home.&nbsp;
+                                        a(target="_blank", href='/coronavirus/2019-ncov/hcp/guidance-prevent-spread.html') CDC has directions
+                                        | &nbsp;for people who are recovering at home and their caregivers, including:
+                                        ul
+                                            li Stay home when you are sick, except to get medical care.
+                                        div
+                                            .card.mb-3
+                                            .card-body.text-body.bg-blue-q
+                                                .card-title.h4.text-left When to Seek Emergency Medical Attention
+                                                p
+                                                | Look for 
+                                                a#anchor_1588970424185.onThisPageAnchor(title='Warning Signs')
+                                                strong emergency warning signs*
+                                                | &nbsp;for COVID-19. If someone is showing any of these signs, 
+                                                strong seek emergency medical care
+                                                strong immediately
+                                                ul
+                                                li Trouble breathing
+                                                li Persistent pain or pressure in the chest
+                                                li New confusion
+                                                li Inability to wake or stay awake
+                                                li Bluish lips or face
+                                                p
+                                                | *This list is not all possible symptoms. Please call your medical provider for any other symptoms that are severe or concerning to you.
+                                                p
+                                                strong Call 911 or call ahead to your local emergency facility: 
+                                                | Notify the operator that you are seeking care for someone who has or may have COVID-19.
+                                        ul
+                                            li Use a separate room and bathroom for sick household members (if possible).
+                                            li Wash your hands often with soap and water for at least 20 seconds, especially after blowing your nose, coughing, or sneezing; going to the bathroom; and before eating or preparing food.
+                                            li If soap and water are not readily available, use an alcohol-based hand sanitizer with at least 60% alcohol. Always wash hands with soap and water if hands are visibly dirty.
+                                            li Provide your sick household member with clean disposable facemasks to wear at home, if available, to help prevent spreading COVID-19 to others.
+                                            li
+                                            a(target="_blank", href='/coronavirus/2019-ncov/community/home/cleaning-disinfection.html') Clean the sick room and bathroom
+                                            | , as needed, to avoid unnecessary contact with the sick person.
+                                            li Avoid sharing personal items like utensils, food, and drinks.
+                                        p
+
+                                .card
+                                    #headingPrepare4.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapsePrepare4', aria-expanded='false', aria-controls='collapsePrepare4') How can I prepare for COVID-19 at work?
+                                    #collapsePrepare4.collapse(aria-labelledby='headingPrepare4', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p
+                                            | Plan for potential changes at your workplace. Talk to your employer about their emergency operations plan, including sick-leave policies and telework options.&nbsp;
+                                            a(target="_blank", href='https://www.cdc.govhttps://www.cdc.gov/coronavirus/2019-ncov/community/guidance-business-response.html') Learn how businesses and employers can plan for and respond to COVID-19.
+
+                                .card
+                                    #headingPrepare5.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapsePrepare5', aria-expanded='false', aria-controls='collapsePrepare5') Should I use soap and water or a hand sanitizer to protect against COVID-19?
+                                    #collapsePrepare5.collapse(aria-labelledby='headingPrepare5', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p Handwashing is one of the best ways to protect yourself and your family from getting sick. Wash your hands often with soap and water for at least 20 seconds, especially after blowing your nose, coughing, or sneezing; going to the bathroom; and before eating or preparing food. If soap and water are not readily available, use an alcohol-based hand sanitizer with at least 60% alcohol.
+
+
+                                .card
+                                    #headingPrepare6.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapsePrepare6', aria-expanded='false', aria-controls='collapsePrepare6') What cleaning products should I use to protect against COVID-19?
+                                    #collapsePrepare6.collapse(aria-labelledby='headingPrepare6', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p
+                                                | Clean and disinfect frequently touched surfaces such as tables, doorknobs, light switches, countertops, handles, desks, phones, keyboards, toilets, faucets, and sinks.&nbsp; If surfaces are dirty, clean them using detergent or soap and water prior to disinfection. To disinfect, most common EPA-registered household disinfectants will work. See CDC&rsquo;s recommendations&nbsp;
+                                                a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/prevent-getting-sick/cleaning-disinfection.html') for household cleaning and disinfection
+                                                | .
+
+                                .card
+                                    #headingPrepare7.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapsePrepare7', aria-expanded='false', aria-controls='collapsePrepare7') Should I make my own hand sanitizer if I can’t find it in the stores?
+                                    #collapsePrepare7.collapse(aria-labelledby='headingPrepare7', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p
+                                            | CDC recommends handwashing with soap and water for at least 20 seconds or, using alcohol-based hand sanitizer with at least 60% alcohol when soap and water are not available. These actions are part of&nbsp;
+                                            a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/prevent-getting-sick/prevention.html') everyday preventive actions
+                                            | &nbsp;individuals
+                                            |         can take to slow the spread of respiratory diseases like COVID-19.
+                                            ul
+                                            li When washing hands, you can use plain soap or antibacterial soap. Plain soap is as effective as antibacterial soap at removing germs.
+                                            li
+                                                | If soap and water are not readily available, you can use an FDA-approved alcohol-based&nbsp;
+                                                a(target="_blank", href='https://www.cdc.gov/handwashing/show-me-the-science-hand-sanitizer.html') hand sanitizer
+                                                | &nbsp;that contains at least 60% alcohol. You can tell
+                                                |             if the sanitizer contains at least 60% alcohol by looking at the product label.
+                                            p
+                                            | CDC does not encourage the production and use of homemade hand sanitizer&nbsp;
+                                            a.tp-link-policy(href='https://www.fda.gov/media/136118/download', data-domain-ext='gov')
+                                                | products because of concerns over the correct use of the ingredients
+                                                span.sr-only external icon
+                                                span.sr-only external icon
+                                                span.icon-new-tab.mx-1(aria-hidden='true')
+                                            | &nbsp;and the need to work under sterile conditions to make the product. Local industries that are looking into producing hand sanitizer to fill in for commercial shortages can refer to the&nbsp;
+                                            a.tp-link-policy(href='https://www.who.int/gpsc/5may/Guide_to_Local_Production.pdf', target='new', rel='noopener noreferrer', data-domain-ext='int')
+                                                | World Health Organization guidance
+                                                span.sr-only pdf icon
+                                                span.sr-only external icon
+                                                span.sr-only pdf icon
+                                                span.icon-file-pdf(aria-hidden='true')
+                                                span.file-details
+                                                span.sr-only external icon
+                                                span.icon-new-tab.mx-1(aria-hidden='true')
+                                            | .&nbsp;Organizations
+                                            |         should revert to the use of commercially produced, FDA-approved product once such supplies again become available.
+                                            ul
+                                            li
+                                                | To be effective against killing some types of germs,&nbsp;
+                                                a(target="_blank", href='https://www.cdc.gov/handwashing/show-me-the-science-hand-sanitizer.html') hand sanitizers&nbsp;
+                                                | need to have a strength of at least 60% alcohol and be used when hands are not
+                                                |             visibly dirty or greasy.
+                                            li Do not rely on &ldquo;Do It Yourself&rdquo; or &ldquo;DIY&rdquo; recipes based solely on essential oils or formulated without correct compounding practices.
+                                            li
+                                                | Do not use hand sanitizer to disinfect frequently touched surfaces and objects.&nbsp;
+                                                a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/prevent-getting-sick/disinfecting-your-home.html') See CDC&rsquo;s information for cleaning and sanitizing your home
+                                                | .
+                                            p
+                                            a(target="_blank", href='https://www.cdc.gov/coronavirus/2019-ncov/infection-control/hcp-hand-hygiene-faq.html') See FAQs about hand hygiene for healthcare personnel responding to COVID-2019.
+                    
+                    .row.d-flex.justify-content-center.mt-5
+                        .col-sm-12.col-md-8.justify-content-center
+                            h1.text-white.mt-4
+                                span.d-block.mb-3.text-center.text-md-left Cleaning and Disinfection
+                                .card
+                                    #headingCleaning1.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseCleaning1', aria-expanded='false', aria-controls='collapseCleaning1') What is the difference between cleaning and disinfecting?
+                                    #collapseCleaning1.collapse(aria-labelledby='headingCleaning1', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p
+                                                em Cleaning 
+                                                | with soap and water removes germs, dirt, and impurities from surfaces. It lowers the risk of spreading infection. 
+                                                em Disinfecting
+                                                |  kills germs on surfaces. By killing germs on a surface after cleaning, it can further lower the risk of spreading infection.
+
+                                    #headingCleaning2.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseCleaning2', aria-expanded='false', aria-controls='collapseCleaning2') Is it safe to vacuum in a school, business, or community facility after someone with suspected or confirmed COVID-19 has been present?
+                                    #collapseCleaning2.collapse(aria-labelledby='headingCleaning2', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p
+                                                | The risk of transmitting or spreading SARS-CoV-2, the virus that causes COVID-19, during vacuuming is unknown. At this time, there are no reported cases of COVID-19 associated with vacuuming. If vacuuming is necessary or required in a school, business, or community facility that was used by a person with suspected or confirmed COVID-19, first follow the CDC recommendations for&nbsp;
+                                                a(target="_blank", href='/coronavirus/2019-ncov/community/organizations/cleaning-disinfection.html#Cleaning') Cleaning and Disinfection for Community Facilities
+                                                |  that apply, which includes a wait time of 24 hours, or as long as practical.
+                                            p
+                                                | After cleaning and disinfection, the following recommendations may help reduce the risk to workers and other individuals when vacuuming:
+                                            ul
+                                                li Consider removing smaller rugs or carpets from the area completely, so there is less that needs to be vacuumed.
+                                                li Use a vacuum equipped with a high-efficiency particulate air (HEPA) filter, if available.
+                                                li Do not vacuum a room or space that has people in it. Wait until the room or space is empty to vacuum, such as at night, for common spaces, or during the day for private rooms.
+                                                li Consider temporarily turning off room fans and the central HVAC system that services the room or space, so that particles that escape from vacuuming will not circulate throughout the facility.
+                                    .card
+                                        #headingCleaning3.card-header.p-0
+                                            h2.mb-0.w-100
+                                                button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseCleaning3', aria-expanded='false', aria-controls='collapseCleaning3') What is routine cleaning? How frequently should facilities be cleaned to reduce the potential spread of COVID-19?
+                                        #collapseCleaning3.collapse(aria-labelledby='headingCleaning3', data-parent='#accordion-covid')
+                                            .card-body.text-body
+                                                p Routine cleaning is the everyday cleaning practices that businesses and communities normally use to maintain a healthy environment. Surfaces frequently touched by multiple people, such as door handles, bathroom surfaces, and handrails, should be cleaned with soap and water or another detergent at least daily when facilities are in use. More frequent cleaning and disinfection may be required based on level of use. For example, certain surfaces and objects in public spaces, such as shopping carts and point of sale keypads, should be cleaned and disinfected before each use. Cleaning removes dirt and impurities, including germs, from surfaces. Cleaning alone does not kill germs, but it reduces the number of germs on a surface.
+                                .card
+                                    #headingCleaning4.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseCleaning4', aria-expanded='false', aria-controls='collapseCleaning4') Is cleaning alone effective against the virus that causes COVID-19?
+                                    #collapseCleaning4.collapse(aria-labelledby='headingCleaning4', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p Cleaning does not kill germs, but by removing them, it lowers their numbers and the risk of spreading infection. If a surface may have gotten the virus on it from a person with or suspected to have COVID-19, the surface should be cleaned and disinfected. Disinfecting kills germs on surfaces.
+                    .row.d-flex.justify-content-center.mt-5
+                        .col-sm-12.col-md-8.justify-content-center
+                            h1.text-white.mt-4
+                                span.d-block.mb-3.text-center.text-md-left COVID-19 and Animals
+                                .card
+                                    #headingAnimals1.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseAnimals1', aria-expanded='false', aria-controls='collapseAnimals1') Can I get COVID-19 from my pets or other animals?
+                                    #collapseAnimals1.collapse(aria-labelledby='headingAnimals1', data-parent='#accordion-covid')
+                                        .card-body.text-body.card-body
+                                            p
+                                                | At this time, there is no evidence that animals play a significant role in spreading the virus that causes COVID-19. Based on the limited information available to date, the risk of animals spreading COVID-19 to people is considered to be low. &nbsp;A small number of pets have been reported to be infected with the virus that causes COVID-19, mostly after contact with people with COVID-19.
+                                            p
+                                                | Pets have other types of coronaviruses that can make them sick, like canine and feline coronaviruses. These other coronaviruses cannot infect people and are not related to the current COVID-19 outbreak.
+                                            p
+                                                | However, since animals can spread other diseases to people, it&rsquo;s always a good idea to practice&nbsp;
+                                                a(target="_blank", href='https://www.cdc.gov/healthypets/publications/stay-healthy-pets.html') healthy habits
+                                                | &nbsp;around pets and other animals, such as washing your hands and maintaining good hygiene. For more information on the many benefits of pet ownership, as well as staying safe and healthy around animals including pets, livestock, and wildlife, visit CDC&rsquo;s&nbsp;
+                                                a(target="_blank", href='https://www.cdc.gov/healthypets/index.html') Healthy Pets, Healthy People website
+                                                | .
+
+
+                                    #headingAnimals2.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseAnimals2', aria-expanded='false', aria-controls='collapseAnimals2') Do I need to get my pet tested for COVID-19?
+                                    #collapseAnimals2.collapse(aria-labelledby='headingAnimals2', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p No. At this time, routine testing of animals for COVID-19 is not recommended.
+
+
+                                    .card
+                                        #headingAnimals3.card-header.p-0
+                                            h2.mb-0.w-100
+                                                button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseAnimals3', aria-expanded='false', aria-controls='collapseAnimals3') Can animals carry the virus that causes COVID-19 on their skin or fur?
+                                        #collapseAnimals3.collapse(aria-labelledby='headingAnimals3', data-parent='#accordion-covid')
+                                            .card-body.text-body
+                                                p
+                                                    | Although we know certain bacteria and fungi can be carried on fur and hair, there is no evidence that viruses, including the virus that causes COVID-19, can spread to people from the skin, fur, or hair of pets.
+                                                p
+                                                    | However, because animals can sometimes carry other germs that can make people sick, it&rsquo;s always a good idea to practice 
+                                                    a(target="_blank", href='https://www.cdc.gov/healthypets/publications/stay-healthy-pets.html') healthy habits
+                                                    |  around pets and other animals, including washing hands before and after interacting with them.
+
+                                .card
+                                    #headingAnimals4.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseAnimals4', aria-expanded='false', aria-controls='collapseAnimals4') What animals can get COVID-19?
+                                    #collapseAnimals4.collapse(aria-labelledby='headingAnimals4', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                                p We don’t know for sure which animals can be infected with the virus that causes COVID-19. CDC is aware of a small number of pets, including dogs and cats, reported to be infected with the virus that causes COVID-19, mostly after close contact with people with COVID-19. A tiger at a zoo in New York has also tested positive for the virus.
+
+                                                p Recent research shows that ferrets, cats, and golden Syrian hamsters can be experimentally infected with the virus and can spread the infection to other animals of the same species in laboratory settings. Pigs, chickens, and ducks did not become infected or spread the infection based on results from these studies. Data from one study suggested dogs are not as likely to become infected with the virus as cats and ferrets. These findings were based on a small number of animals, and do not show whether animals can spread infection to people.
+
+                                                p At this time, there is no evidence that animals play a significant role in spreading the virus that causes COVID-19. Based on the limited information available to date, the risk of animals spreading COVID-19 to people is considered to be low. Further studies are needed to understand if and how different animals could be affected by the virus that causes COVID-19 and the role animals may play in the spread of COVID-19.
+
+                                .card
+                                    #headingAnimals5.card-header.p-0
+                                        h2.mb-0.w-100
+                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.collapsed.p-3.text-left(data-toggle='collapse', data-target='#collapseAnimals5', aria-expanded='false', aria-controls='collapseAnimals5') Can wild animals spread the virus that causes COVID-19 to people or pets?
+                                    #collapseAnimals5.collapse(aria-labelledby='headingAnimals5', data-parent='#accordion-covid')
+                                        .card-body.text-body
+                                            p
+                                                | Currently, there is no evidence to suggest the virus that causes COVID-19 is circulating in free-living wildlife in the United States, or that wildlife might be a source of infection for people in the United States. The first case of a wild animal testing positive for the virus in the United States was a tiger with a respiratory illness at a zoo in New York City. However, this tiger was in a captive zoo environment ,and public health officials believe the tiger became sick after being exposed to a zoo employee who was infected and spreading the virus.
+                                            p
+                                                | If a wild animal were to become infected with the virus, we don&rsquo;t know whether the infection could then spread among wildlife or if it could spread to other animals, including pets. Further studies are needed to understand if and how different animals, including wildlife, could be affected by COVID-19. Because wildlife can carry other diseases, even without looking sick, it is always important to enjoy wildlife from a distance.
+                                            p Take steps to prevent getting sick from wildlife in the United States:
+                                            ul
+                                                li Keep your family, including pets, a safe distance away from wildlife.
+                                                li Do not feed wildlife or touch wildlife droppings.
+                                                li Always wash your hands and supervise children washing their hands after working or playing outside.
+                                                li Leave orphaned animals alone. Often, the parents are close by and will return for their young.
+                                                li Consult your state wildlife agency&rsquo;s guidance if you are preparing or consuming legally harvested game meat.
+                                                li Do not approach or touch a sick or dead animal &ndash; contact your state wildlife agency instead.
+append scripts
+    script.
+        $(document).ready(function() {
+            $("#accordion-covid, #accordion-us").on("hide.bs.collapse show.bs.collapse", e => {
+                $(e.target)
+                    .prev()
+                    .find("i:last-child")
+                    .toggleClass("icon-circle-up");
+            });
+        });
+    script(src='js/scripts.js', type="text/javascript")
+
+
