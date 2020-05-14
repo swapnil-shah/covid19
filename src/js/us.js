@@ -43,71 +43,116 @@ let numbersDeathsWeeks = 0;
 let numbersRecoveredWeeks = 0;
 //US cases
 let fillNumberOfCases = (function() {
-	fetch('https://disease.sh/v2/countries/usa?yesterday=true&strict=true', { cache: 'no-cache' })
+	axios
+		.get('https://disease.sh/v2/countries/usa?yesterday=true&strict=true', { cache: 'no-cache' })
 		.then((response) => {
-			if (response.ok) {
-				return response.json();
-			} else {
-				throw new Error('BAD HTTP');
-			}
-		})
-		.then((stats) => {
 			document.getElementById('last-updated').innerHTML =
-				'Last updated <span class="text-gray-800">' + timeDifference(stats.updated) + '</span>';
-			document.getElementById('number-active').innerText = stats.active.toLocaleString();
-			document.getElementById('number-confirmed').innerText = stats.cases.toLocaleString();
-			document.getElementById('number-recovered').innerText = stats.recovered.toLocaleString();
-			document.getElementById('number-deaths').innerText = stats.deaths.toLocaleString();
-			document.getElementById('today-confirmed').innerText = '+' + stats.todayCases.toLocaleString();
-			document.getElementById('today-deaths').innerText = '+' + stats.todayDeaths.toLocaleString();
+				'Last updated <span class="text-gray-800">' + timeDifference(response.data.updated) + '</span>';
+			document.getElementById('number-active').innerText = response.data.active.toLocaleString();
+			document.getElementById('number-confirmed').innerText = response.data.cases.toLocaleString();
+			document.getElementById('number-recovered').innerText = response.data.recovered.toLocaleString();
+			document.getElementById('number-deaths').innerText = response.data.deaths.toLocaleString();
+			document.getElementById('today-confirmed').innerText = '+' + response.data.todayCases.toLocaleString();
+			document.getElementById('today-deaths').innerText = '+' + response.data.todayDeaths.toLocaleString();
 			document.getElementById('per-active').innerHTML = '';
 			document.getElementById('per-recovered').innerHTML = '';
 			document.getElementById('per-confirmed').innerHTML =
-				Math.sign(percentageChangeTotal(stats.cases, stats.todayCases)) === 1
-					? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(stats.cases, stats.todayCases)}%)`
+				Math.sign(percentageChangeTotal(response.data.cases, response.data.todayCases)) === 1
+					? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
+							response.data.cases,
+							response.data.todayCases
+						)}%)`
 					: '';
 			document.getElementById('per-deaths').innerHTML =
-				Math.sign(percentageChangeTotal(stats.deaths, stats.todayDeaths)) === 1
-					? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(stats.deaths, stats.todayDeaths)}%)`
+				Math.sign(percentageChangeTotal(response.data.deaths, response.data.todayDeaths)) === 1
+					? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
+							response.data.deaths,
+							response.data.todayDeaths
+						)}%)`
 					: '';
 		})
-		.catch((err) => {
-			console.log('ERROR:', err.message);
+		.catch((error) => {
+			if (error.response) {
+				console.log(
+					'The request was made and the server responded with a status code that falls out of the range of 2xx'
+				);
+				console.log('Error Data: ', error.response.data);
+				console.log('Error Status: ', error.response.status);
+				console.log('Error Headers: ', error.response.headers);
+			} else if (error.request) {
+				console.log(
+					'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+				);
+				console.log('Error Request: ', error.request);
+			} else {
+				console.log('Something happened in setting up the request that triggered an Error');
+				console.log('Error Message: ', error.message);
+			}
+			console.log('Error config: ', error.config);
 		});
 })();
 
 let fillNewsCards = () => {
-	fetch(newsUri, {
-		headers: {
-			'Cache-Control': 'no-cache',
-			'Subscription-Key': API_KEY_SMARTTABLE
-		}
-	})
-		.then((response) => {
-			if (response.ok) {
-				return response.json();
-			} else {
-				throw new Error('BAD HTTP');
+	axios
+		.get(newsUri, {
+			headers: {
+				'Cache-Control': 'no-cache',
+				'Subscription-Key': API_KEY_SMARTTABLE
 			}
 		})
-		.then((jsonData) => {
-			getNewsResults(jsonData);
+		.then((response) => {
+			getNewsResults(response.data);
 		})
-		.catch((err) => {
-			console.log('ERROR:', err.message);
+		.catch((error) => {
+			if (error.response) {
+				console.log(
+					'The request was made and the server responded with a status code that falls out of the range of 2xx'
+				);
+				console.log('Error Data: ', error.response.data);
+				console.log('Error Status: ', error.response.status);
+				console.log('Error Headers: ', error.response.headers);
+			} else if (error.request) {
+				console.log(
+					'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+				);
+				console.log('Error Request: ', error.request);
+			} else {
+				console.log('Something happened in setting up the request that triggered an Error');
+				console.log('Error Message: ', error.message);
+			}
+			console.log('Error config: ', error.config);
 		});
 };
 let addStates = () => {
-	fetch('https://covidtracking.com/api/v1/states/current.json')
-		.then((response) => response.json())
-		.then(function(states) {
-			states.forEach(function(state) {
+	axios
+		.get('https://covidtracking.com/api/v1/states/current.json')
+		.then(function(response) {
+			response.data.forEach(function(state) {
 				let regionNewsSelect = document.getElementById('selectNewsRegion');
 				regionNewsSelect.options[regionNewsSelect.options.length] = new Option(
 					acronymToFullName(state.state),
 					'US-' + state.state
 				);
 			});
+		})
+		.catch((error) => {
+			if (error.response) {
+				console.log(
+					'The request was made and the server responded with a status code that falls out of the range of 2xx'
+				);
+				console.log('Error Data: ', error.response.data);
+				console.log('Error Status: ', error.response.status);
+				console.log('Error Headers: ', error.response.headers);
+			} else if (error.request) {
+				console.log(
+					'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+				);
+				console.log('Error Request: ', error.request);
+			} else {
+				console.log('Something happened in setting up the request that triggered an Error');
+				console.log('Error Message: ', error.message);
+			}
+			console.log('Error config: ', error.config);
 		});
 };
 function populateNumbers(confirmed, recovered, deaths, text) {
@@ -117,31 +162,25 @@ function populateNumbers(confirmed, recovered, deaths, text) {
 	document.getElementById('total-date').innerHTML = ` (${text})`;
 }
 let fillTravelNotices = () => {
-	fetch('https://covid19-server.chrismichael.now.sh/api/v1/TravelHealthNotices', { cache: 'no-cache' })
+	axios
+		.get('https://covid19-server.chrismichael.now.sh/api/v1/TravelHealthNotices', { cache: 'no-cache' })
 		.then((response) => {
-			if (response.ok) {
-				return response.json();
-			} else {
-				throw new Error('BAD HTTP');
-			}
-		})
-		.then((notices) => {
 			let output = '';
-			notices.data.travelHealthNotices.alert.forEach(function(notice) {
+			response.data.data.travelHealthNotices.alert.forEach(function(notice) {
 				output += `<div class="list-group-item list-group-item-action border-top-0 border-bottom-0 border-right-0 border-left-lg border-red my-1">
 							<h6>${notice.title}</h6>
 							<p class="mb-0">${notice.summary}</p>
 							<p class="small text-muted float-right">${notice.date}</p>
 						</div>`;
 			});
-			notices.data.travelHealthNotices.warning.forEach(function(notice) {
+			response.data.data.travelHealthNotices.warning.forEach(function(notice) {
 				output += `<div class="list-group-item list-group-item-action border-top-0 border-bottom-0 border-right-0 border-left-lg border-yellow my-1">
 							<h6>${notice.title}</h6>
 							<p class="mb-0">${notice.summary}</p>
 							<p class="small text-muted float-right">${notice.date}</p>
 						</div>`;
 			});
-			notices.data.travelHealthNotices.watch.forEach(function(notice) {
+			response.data.data.travelHealthNotices.watch.forEach(function(notice) {
 				output += `<div class="list-group-item list-group-item-action border-top-0 border-bottom-0 border-right-0 border-left-lg border-dark my-1">
 							<h6>${notice.title}</h6>
 							<p class="mb-0">${notice.summary}</p>
@@ -150,8 +189,24 @@ let fillTravelNotices = () => {
 			});
 			document.getElementById('right-panel-reports').innerHTML = output;
 		})
-		.catch((err) => {
-			console.log('ERROR:', err.message);
+		.catch((error) => {
+			if (error.response) {
+				console.log(
+					'The request was made and the server responded with a status code that falls out of the range of 2xx'
+				);
+				console.log('Error Data: ', error.response.data);
+				console.log('Error Status: ', error.response.status);
+				console.log('Error Headers: ', error.response.headers);
+			} else if (error.request) {
+				console.log(
+					'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+				);
+				console.log('Error Request: ', error.request);
+			} else {
+				console.log('Something happened in setting up the request that triggered an Error');
+				console.log('Error Message: ', error.message);
+			}
+			console.log('Error config: ', error.config);
 		});
 };
 function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradientBorder) {
@@ -445,16 +500,10 @@ function getNewsResults(data) {
 	newsCards.innerHTML = output;
 }
 $(document).ready(function() {
-	fetch('https://corona-api.com/countries/us?include=timeline', { cache: 'no-cache' })
-		.then((response) => {
-			if (response.ok) {
-				return response.json();
-			} else {
-				throw new Error('BAD HTTP');
-			}
-		})
-		.then((data) => {
-			let filteredArr = data.data.timeline.filter(function(daily) {
+	axios
+		.get('https://corona-api.com/countries/us?include=timeline', { cache: 'no-cache' })
+		.then((reponse) => {
+			let filteredArr = reponse.data.data.timeline.filter(function(daily) {
 				return !daily.is_in_progress;
 			});
 			//Get months/30 days
@@ -677,8 +726,24 @@ $(document).ready(function() {
 				myChart.update();
 			});
 		})
-		.catch((err) => {
-			console.log('ERROR:', err.message);
+		.catch((error) => {
+			if (error.response) {
+				console.log(
+					'The request was made and the server responded with a status code that falls out of the range of 2xx'
+				);
+				console.log('Error Data: ', error.response.data);
+				console.log('Error Status: ', error.response.status);
+				console.log('Error Headers: ', error.response.headers);
+			} else if (error.request) {
+				console.log(
+					'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+				);
+				console.log('Error Request: ', error.request);
+			} else {
+				console.log('Something happened in setting up the request that triggered an Error');
+				console.log('Error Message: ', error.message);
+			}
+			console.log('Error config: ', error.config);
 		});
 });
 // function
@@ -755,27 +820,34 @@ $(document).ready(function() {
 		document.getElementById('card-deck').innerHTML =
 			'<div class="text-center"><i class="icon-spinner spinner-animate"></i></div>';
 		const newsUri = 'https://api.smartable.ai/coronavirus/news/' + value;
-		fetch(newsUri, {
-			headers: {
-				'Cache-Control': 'no-cache',
-				'Subscription-Key': API_KEY_SMARTTABLE
-			}
-		})
-			.then((response) => {
-				if (response.ok) {
-					return response.json();
-				} else {
-					document.getElementById(
-						'card-deck'
-					).innerHTML = `<div class="col-sm-12 p-4 mx-auto text-muted">Sorry, something went wrong. Please try again later.</div>`;
-					throw new Error('BAD HTTP');
+		axios
+			.get(newsUri, {
+				headers: {
+					'Cache-Control': 'no-cache',
+					'Subscription-Key': API_KEY_SMARTTABLE
 				}
 			})
-			.then((jsonData) => {
-				getNewsResults(jsonData);
+			.then((reponse) => {
+				getNewsResults(reponse.data);
 			})
-			.catch((err) => {
-				console.log('ERROR:', err.message);
+			.catch((error) => {
+				if (error.response) {
+					console.log(
+						'The request was made and the server responded with a status code that falls out of the range of 2xx'
+					);
+					console.log('Error Data: ', error.response.data);
+					console.log('Error Status: ', error.response.status);
+					console.log('Error Headers: ', error.response.headers);
+				} else if (error.request) {
+					console.log(
+						'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+					);
+					console.log('Error Request: ', error.request);
+				} else {
+					console.log('Something happened in setting up the request that triggered an Error');
+					console.log('Error Message: ', error.message);
+				}
+				console.log('Error config: ', error.config);
 			});
 	});
 	addStates();

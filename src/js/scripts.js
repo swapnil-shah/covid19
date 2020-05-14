@@ -25,14 +25,6 @@
 		e.preventDefault();
 		$('body').toggleClass('sidenav-toggled');
 	});
-
-	// Activate Bootstrap scrollspy for the sticky nav component
-	// $('body').scrollspy({
-	// 	target: '#stickyNav',
-	// 	offset: 82
-	// });
-
-	// Scrolls to an offset anchor when a sticky nav link is clicked
 	$('.nav-sticky a.nav-link[href*="#"]:not([href="#"])').click(function() {
 		if (
 			location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') &&

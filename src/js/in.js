@@ -50,15 +50,9 @@ function populateNumbers(confirmed, recovered, deaths, text) {
 	document.getElementById('total-date').innerHTML = ` (${text})`;
 }
 function newsResults() {
-	fetch(newsUri)
+	axios
+		.get(newsUri)
 		.then((response) => {
-			if (response.ok) {
-				return response.json();
-			} else {
-				throw new Error('BAD HTTP');
-			}
-		})
-		.then((data) => {
 			document.getElementById('card-deck').Text = 'Loading..';
 			let newsCards = document.getElementById('card-deck');
 			let newsResultsNumber = document.getElementById('news-results-number');
@@ -66,8 +60,8 @@ function newsResults() {
 			<span class="sr-only">Loading...</span>
 		</div>`;
 			let output = '';
-			newsResultsNumber.innerText = `${data.totalResults} results found`;
-			data.articles.forEach(function(item) {
+			newsResultsNumber.innerText = `${response.data.totalResults} results found`;
+			response.data.articles.forEach(function(item) {
 				output += `
 						<div class="col-sm-12 my-3 pl-0 pr-1">
 							<a class="card lift lift-sm p-3 news-card" href="${item.url}" target="_blank">
@@ -83,32 +77,58 @@ function newsResults() {
 			});
 			newsCards.innerHTML = output;
 		})
-		.catch((err) => {
-			console.log('ERROR:', err.message);
+		.catch((error) => {
+			if (error.response) {
+				console.log(
+					'The request was made and the server responded with a status code that falls out of the range of 2xx'
+				);
+				console.log('Error Data: ', error.response.data);
+				console.log('Error Status: ', error.response.status);
+				console.log('Error Headers: ', error.response.headers);
+			} else if (error.request) {
+				console.log(
+					'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+				);
+				console.log('Error Request: ', error.request);
+			} else {
+				console.log('Something happened in setting up the request that triggered an Error');
+				console.log('Error Message: ', error.message);
+			}
+			console.log('Error config: ', error.config);
 		});
 }
 function notificationsAdvisories() {
-	fetch('https://api.rootnet.in/covid19-in/notifications', { cache: 'no-cache' })
-		.then((response) => {
-			if (response.ok) {
-				return response.json();
-			} else {
-				throw new Error('BAD HTTP');
-			}
-		})
+	axios
+		.get('https://api.rootnet.in/covid19-in/notifications', { cache: 'no-cache' })
 		.then((response) => {
 			let output = '';
-			response.data.notifications.forEach(function(report) {
+			response.data.data.notifications.forEach(function(report) {
 				output += `<a class="list-group-item list-group-item-action" target="_blank" href="${report.link}">${report.title}</a>
 						`;
 			});
 			document.getElementById('right-panel-reports').innerHTML = output;
 			document.getElementById('notification-last-updated').innerHTML = `Updated ${timeDifference(
-				response.lastRefreshed
+				response.data.lastRefreshed
 			)}`;
 		})
-		.catch((err) => {
-			console.log('ERROR:', err.message);
+		.catch((error) => {
+			if (error.response) {
+				console.log(
+					'The request was made and the server responded with a status code that falls out of the range of 2xx'
+				);
+				console.log('Error Data: ', error.response.data);
+				console.log('Error Status: ', error.response.status);
+				console.log('Error Headers: ', error.response.headers);
+			} else if (error.request) {
+				console.log(
+					'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+				);
+				console.log('Error Request: ', error.request);
+			} else {
+				console.log('Something happened in setting up the request that triggered an Error');
+				console.log('Error Message: ', error.message);
+			}
+			console.log('Error config: ', error.config);
 		});
 }
 function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradientBorder) {
@@ -408,7 +428,6 @@ function countryDataTable(data) {
 				filteredArr.push(states);
 			}
 		});
-		console.log('countryDataTable -> data.cases_time_series', data.cases_time_series);
 
 		//Get months/30 days
 		data.cases_time_series.slice(Math.max(data.cases_time_series.length - 30, 1)).forEach(function(daily) {

@@ -1,6 +1,7 @@
 
 block content
     textarea#myTextarea(cols="30" rows="10" style="width:90vw; height:90vh; margin:0 auto;")
+    script(src='https://unpkg.com/axios/dist/axios.min.js')
     script.
         let formatDateToString = (function() {
             return function(str) {
@@ -14,14 +15,13 @@ block content
                     
             };
         })();
-        fetch("https://corona-api.com/countries?include=timeline", {
+        axios.get("https://corona-api.com/countries?include=timeline", {
         cache: "no-cache"
         })
-        .then((response) => response.json())
-        .then((data) => {
+        .then((response) => {
             var cases = [];
 
-            data.data
+            response.data.data
             .sort(function (a, b) {
                 return b.timeline.length - a.timeline.length;
             })
