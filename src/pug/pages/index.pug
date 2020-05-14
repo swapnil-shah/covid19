@@ -94,12 +94,13 @@ block content
                             | Data source 
                             i.icon-new-tab.ml-1
         .row
-            .col-sm-12 
+            .col-sm-12
                 .card.pb-2.mb-4
                     .card-header.bg-dark
-                        h3.text-white Rise of confirmed cases
-                    .card-body.p-sm-1.p-md-3
-                        .flourish-embed.flourish-bar-chart-race(data-src='visualisation/2293729', data-url='https://flo.uri.sh/visualisation/2293729/embed')
+                        h3.text-white Timeline of Confirmed Cases
+                    .card-body#flourish-bar-chart-race.mx-auto
+                        .flourish-embed.flourish-bar-chart-race( data-src='visualisation/2293729', data-url='https://flo.uri.sh/visualisation/2293729/embed')
+                        
             .col-sm-12 
                 .card.pb-2.mb-4
                     .card-header.bg-dark
