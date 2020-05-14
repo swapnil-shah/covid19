@@ -1,4 +1,4 @@
-const newsUri = 'https://api.smartable.ai/coronavirus/news/IN';
+const newsUri = 'https://newsapi.org/v2/top-headlines?q=COVID&country=in&apiKey=7e2e5ed46901476baa79347a66cc2b2c';
 const API_KEY_SMARTTABLE = 'cf8e77731fb345d381334aff5e844f3f';
 let canvas = document.getElementById('myChart');
 let ctx = canvas.getContext('2d');
@@ -50,12 +50,7 @@ function populateNumbers(confirmed, recovered, deaths, text) {
 	document.getElementById('total-date').innerHTML = ` (${text})`;
 }
 function newsResults() {
-	fetch(newsUri, {
-		headers: {
-			'Cache-Control': 'no-cache',
-			'Subscription-Key': API_KEY_SMARTTABLE
-		}
-	})
+	fetch(newsUri)
 		.then((response) => {
 			if (response.ok) {
 				return response.json();
@@ -67,27 +62,25 @@ function newsResults() {
 			document.getElementById('card-deck').Text = 'Loading..';
 			let newsCards = document.getElementById('card-deck');
 			let newsResultsNumber = document.getElementById('news-results-number');
+			newsCards.innerHtml = `<div class="spinner-border" role="status">
+			<span class="sr-only">Loading...</span>
+		</div>`;
 			let output = '';
-			if (data.news.length > 0) {
-				newsResultsNumber.innerText = `${data.news.length} results found`;
-				data.news.forEach(function(item) {
-					output += `
+			newsResultsNumber.innerText = `${data.totalResults} results found`;
+			data.articles.forEach(function(item) {
+				output += `
 						<div class="col-sm-12 my-3 pl-0 pr-1">
-							<a class="card lift lift-sm p-3 news-card" href="${item.webUrl}" target="_blank">
+							<a class="card lift lift-sm p-3 news-card" href="${item.url}" target="_blank">
 								<h3 class="text-dark">${item.title}</h3>
-								<p class="text-gray-600 mb-1"">${item.excerpt}</p>
+								<p class="text-gray-600 mb-1"">${item.description}</p>
 								<p class="text-primary mb-3">View full article</p>
 								<p class="mb-0 text-muted small"><i class="far fa-newspaper"></i> Published by <span class="font-weight-600 text-gray-600">${item
-									.provider.name}</span> ${timeDifference(item.publishedDateTime)}</p>
+									.source.name}</span> ${timeDifference(item.publishedAt)}</p>
 								</>
 							</a>
 						</div>
 						`;
-				});
-			} else {
-				newsResultsNumber.innerText = '';
-				output += `<div class="col-sm-12 p-4 mx-auto text-muted">No data available for this region. Please selet another option.</div>`;
-			}
+			});
 			newsCards.innerHTML = output;
 		})
 		.catch((err) => {
