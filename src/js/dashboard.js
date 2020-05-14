@@ -259,7 +259,7 @@ function countriesDatatableChart(data) {
 						}
 
 						return row.todayCases
-							? `${data.toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.todayCases.toLocaleString()}<span class="font-weight-light text-muted small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
+							? `${data.toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.todayCases.toLocaleString()}<span class="font-weight-light text-danger small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
 									row.cases,
 									row.todayCases
 								)}%)</span></p>`
@@ -269,6 +269,16 @@ function countriesDatatableChart(data) {
 				{
 					data: 'active',
 					title: 'Active',
+					render: function(data, type, row) {
+						if (type === 'type' || type === 'sort') {
+							return data;
+						}
+						return `${data.toLocaleString()}`;
+					}
+				},
+				{
+					data: 'recovered',
+					title: 'Recovered',
 					render: function(data, type, row) {
 						if (type === 'type' || type === 'sort') {
 							return data;
@@ -289,16 +299,6 @@ function countriesDatatableChart(data) {
 									row.todayDeaths
 								)}%)</span></p>`
 							: data.toLocaleString();
-					}
-				},
-				{
-					data: 'recovered',
-					title: 'Recovered',
-					render: function(data, type, row) {
-						if (type === 'type' || type === 'sort') {
-							return data;
-						}
-						return `${data.toLocaleString()}`;
 					}
 				}
 			],
