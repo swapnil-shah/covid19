@@ -370,11 +370,18 @@ function countryDataTable(data) {
 				document.getElementById('number-confirmed').innerText = parseInt(states.confirmed).toLocaleString();
 				document.getElementById('number-recovered').innerText = parseInt(states.recovered).toLocaleString();
 				document.getElementById('number-deaths').innerText = parseInt(states.deaths).toLocaleString();
-				document.getElementById('today-confirmed').innerText =
-					'+' + parseInt(states.deltaconfirmed).toLocaleString();
-				document.getElementById('today-deaths').innerText = '+' + parseInt(states.deltadeaths).toLocaleString();
-				document.getElementById('today-recovered').innerText =
-					'+' + parseInt(states.deltarecovered).toLocaleString();
+				parseInt(states.deltaconfirmed)
+					? (document.getElementById('today-confirmed').innerText =
+							'+' + parseInt(states.deltaconfirmed).toLocaleString())
+					: (document.getElementById('today-confirmed').innerText = '');
+				parseInt(states.deltadeaths)
+					? (document.getElementById('today-deaths').innerText =
+							'+' + parseInt(states.deltadeaths).toLocaleString())
+					: (document.getElementById('today-deaths').innerText = '');
+				parseInt(states.deltarecovered)
+					? (document.getElementById('today-recovered').innerText =
+							'+' + parseInt(states.deltarecovered).toLocaleString())
+					: (document.getElementById('today-recovered').innerText = '');
 				document.getElementById('per-active').innerHTML = '';
 				document.getElementById('per-confirmed').innerHTML =
 					Math.sign(percentageChangeTotal(parseInt(states.confirmed), parseInt(states.deltaconfirmed))) === 1
@@ -382,7 +389,7 @@ function countryDataTable(data) {
 								parseInt(states.confirmed),
 								parseInt(states.deltaconfirmed)
 							)}%)`
-						: '';
+						: (document.getElementById('today-deaths').innerText = '');
 				document.getElementById('per-recovered').innerHTML =
 					Math.sign(percentageChangeTotal(parseInt(states.recovered), parseInt(states.deltarecovered))) === 1
 						? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
