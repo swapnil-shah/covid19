@@ -53,7 +53,7 @@ function newsResults() {
 	axios
 		.get(newsUri)
 		.then((response) => {
-			document.getElementById('card-deck').Text = 'Loading..';
+			document.getElementById('card-deck').text = 'Loading..';
 			let newsCards = document.getElementById('card-deck');
 			let newsResultsNumber = document.getElementById('news-results-number');
 			newsCards.innerHtml = `<div class="spinner-border" role="status">
@@ -732,6 +732,17 @@ function countryDataTable(data) {
 				dataType: 'json',
 				success: function(data) {
 					statesData = data.responseText;
+				},
+				error: function(xhr, status, error) {
+					if (xhr.status == 404) {
+						$('#dataTableState').html(
+							'<div class="text-center text-dark py-4">Sorry, no state data is available for this state.</div>'
+						);
+					} else {
+						$('#dataTableState').html(
+							'<div class="text-center text-dark py-4">Sorry, something went wrong. Please try again later.</div>'
+						);
+					}
 				}
 			}).responseText
 		);

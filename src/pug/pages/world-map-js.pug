@@ -1,6 +1,5 @@
 
 script(type="text/javascript").
-    
     axios
         .get('https://disease.sh/v2/countries?yesterday=true&sort=cases', { cache: 'no-cache' })
         .then((response) => {

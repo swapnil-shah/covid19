@@ -94,7 +94,7 @@ let fillNewsCards = () => {
 			}
 		})
 		.then((response) => {
-			document.getElementById('card-deck').Text = 'Loading..';
+			document.getElementById('card-deck').innerText = 'Loading..';
 			getNewsResults(response.data);
 		})
 		.catch((error) => {
@@ -521,6 +521,7 @@ function countriesDatatableChart(data) {
 	}
 	let query = sortedArr.join();
 	function getCountries(countryQueries) {
+		console.log('https://disease.sh/v2/historical/' + countryQueries + '?lastdays=' + daysNum);
 		lineChartData = [];
 		const API_URL_MOST_AFFECTED = 'https://disease.sh/v2/historical/' + countryQueries + '?lastdays=' + daysNum;
 		axios
