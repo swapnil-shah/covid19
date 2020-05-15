@@ -60,7 +60,7 @@ block content
                         .card.h-100.bg-secondary.border-0
                             .card-body
                                 h3.text-white-75.mb-2 Confirmed
-                                    i.text-white-50.float-right.fas.fa-lg.fa-viruses
+                                    img.text-white-50.float-right(src="../../assets/img/icons/icon_confirmed.svg", style="width:48px;height:48px;", onerror="this.onerror=null;")
                                 #number-confirmed.display-4.text-white.mb-2
                                 .d-flex.justify-content-between
                                     #today-confirmed.text-white-75 Loading stat...
@@ -69,21 +69,21 @@ block content
                         .card.h-100.bg-dark.border-0
                             .card-body
                                 h3.text-white-75.mb-2 Active
-                                    i.text-white-50.float-right.fas.fa-lg.fa-clinic-medical
+                                    img.text-white-50.float-right(src="../../assets/img/icons/icon_active.svg", style="width:48px;height:48px;", onerror="this.onerror=null;")
                                 #number-active.display-4.text-white.mb-2
                                 #per-active.text-white-75 Loading stat...
                     .col-md-3.col-sm-6.mb-3
                         .card.h-100.bg-success.border-0
                             .card-body
                                 h3.text-white-75.mb-2 Recovered
-                                    i.text-white-50.float-right.fas.fa-lg.fa-house-user
+                                    img.text-white-50.float-right(src="../../assets/img/icons/icon_recovered.svg", style="width:48px;height:48px;", onerror="this.onerror=null;")
                                 #number-recovered.display-4.text-white.mb-2
                                 #per-recovered.text-white-75 Loading stat...
                     .col-md-3.col-sm-6.mb-3
                         .card.h-100.bg-danger.border-0
                             .card-body
                                 h3.text-white-75.mb-2 Deaths
-                                    i.text-white-50.float-right.fas.fa-lg.fa-bed
+                                    img.text-white-50.float-right(src="../../assets/img/icons/icon_death.svg", style="width:48px;height:48px;", onerror="this.onerror=null;")
                                     #number-deaths.display-4.text-white.mb-2 
                                 .d-flex.justify-content-between
                                     #today-deaths.text-white-75 Loading stat...

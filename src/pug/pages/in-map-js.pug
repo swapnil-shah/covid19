@@ -164,35 +164,34 @@ script.
         return acronym;
     }
     axios.get('https://api.covid19india.org/data.json', { cache: 'no-cache' })
-        .then((response) => {
-            countryData(response.data);
-            window.addEventListener('load', 
-                function() { 
-                    countryDataTable(response.data);
-            }, false);
-        })
-		.catch((error) => {
-			if (error.response) {
-				console.log(
-					'The request was made and the server responded with a status code that falls out of the range of 2xx'
-				);
-				console.log('Error Data: ', error.response.data);
-				console.log('Error Status: ', error.response.status);
-				console.log('Error Headers: ', error.response.headers);
-			} else if (error.request) {
-				console.log(
-					'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
-				);
-				console.log('Error Request: ', error.request);
-			} else {
-				console.log('Something happened in setting up the request that triggered an Error');
-				console.log('Error Message: ', error.message);
-			}
-			console.log('Error config: ', error.config);
-		});
+    .then((response) => {
+        countryData(response.data);
+        window.addEventListener(
+            'load',
+            function() {
+                countryDataTable(response.data);
+            },
+            false
+        );
+    })
+    .catch((error) => {
+            if (error.response) {
+                console.log( 'The request was made and the server responded with a status code that falls out of the range of 2xx');
+                console.log('Error Data: ', error.response.data);
+                console.log('Error Status: ', error.response.status);
+                console.log('Error Headers: ', error.response.headers);
+            } else if (error.request) {
+                console.log( 'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js');
+                console.log('Error Request: ', error.request);
+            } else {
+                console.log('Something happened in setting up the request that triggered an Error');
+                console.log('Error Message: ', error.message);
+            }
+            console.log('Error config: ', error.config);
+        });
 
     function countryData(data) {
-        var mymap = L.map('covidCountryMap').setView([ 20.59, 78.96 ],4);
+        var mymap = L.map('covidCountryMap').setView([ 20.59, 78.96 ], 4);
         let mapboxAccessToken =
             'pk.eyJ1Ijoic3dhcG5pbDciLCJhIjoiY2s5ZnRtZXh1MGVuYTNkbGNhNWtrcmt0diJ9.fzy5HcciZYupAiuzpVmlWA';
         L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/256/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
@@ -211,50 +210,45 @@ script.
                 output += `<b>${county}</b>, `;
             }
             if (confirmed !== null) {
-                output += `<br/>Confirmed: ${(parseInt(confirmed)).toLocaleString()}`;
+                output += `<br/>Confirmed: ${parseInt(confirmed).toLocaleString()}`;
             }
             if (active !== null) {
-                output += `<br/>Confirmed: ${(parseInt(active)).toLocaleString()}`;
+                output += `<br/>Confirmed: ${parseInt(active).toLocaleString()}`;
             }
             if (recovered !== null) {
-                output += `<br/>Recovered: ${(parseInt(recovered)).toLocaleString()}`;
+                output += `<br/>Recovered: ${parseInt(recovered).toLocaleString()}`;
             }
             if (deaths !== null) {
-                output += `<br/>Deaths: ${(parseInt(deaths)).toLocaleString()}`;
+                output += `<br/>Deaths: ${parseInt(deaths).toLocaleString()}`;
             }
             return output;
         }
 
-            let filteredArr = data.statewise.filter(function(states){
-                return states.statecode !== 'TT'
-            })
+        let filteredArr = data.statewise.filter(function(states) {
+            return states.statecode !== 'TT';
+        });
         filteredArr.forEach(function(state) {
-            var latlng = L.latLng({ lat: acronymToLatLong(state.statecode).lat, lng: acronymToLatLong(state.statecode).long });
+            var latlng = L.latLng({
+                lat: acronymToLatLong(state.statecode).lat,
+                lng: acronymToLatLong(state.statecode).long
+            });
             var circle = L.circleMarker(latlng, {
                 fillOpacity: 0.3,
-                radius: Math.sqrt(parseInt(state.confirmed))*0.2,
+                radius: Math.sqrt(parseInt(state.confirmed)) * 0.2,
                 stroke: false,
                 fillColor: '#0061F2',
                 renderer: myRenderer
             })
                 .addTo(mymap)
-                .bindTooltip(
-                    htmlPopup(
-                        state.state,
-                        state.confirmed,
-                        state.active,
-                        state.recovered,
-                        state.deaths
-                    )
-                );
+                .bindTooltip(htmlPopup(state.state, state.confirmed, state.active, state.recovered, state.deaths));
         });
         var info = L.control({ position: 'bottomright' });
 
         info.onAdd = function(map) {
             this._div = L.DomUtil.create('div', 'map-info'); // create a div with a class "info"
-            this._div.innerHTML = '<h4>COVID19 INDIA SPREAD DATA</h4><p class="mb-0">Tap/hover on the marker for more information</p>';
+            this._div.innerHTML =
+                '<h4>COVID19 INDIA SPREAD DATA</h4><p class="mb-0">Tap/hover on the marker for more information</p>';
             return this._div;
         };
         info.addTo(mymap);
     }
-
