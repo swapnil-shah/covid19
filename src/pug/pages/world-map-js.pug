@@ -1,4 +1,5 @@
 
+
 script(type="text/javascript").
     axios
         .get('https://disease.sh/v2/countries?yesterday=true&sort=cases', { cache: 'no-cache' })
@@ -78,6 +79,17 @@ script(type="text/javascript").
                 .bindTooltip(
                     htmlPopup(country.country, country.countryInfo.iso2, country.cases, country.recovered, country.deaths)
                 );
+
+            let ddChartCountriesSelect = document.getElementById('ddChartCountries');
+            let regionNewsSelect = document.getElementById('selectNewsRegion');
+            ddChartCountriesSelect.options[ddChartCountriesSelect.options.length] = new Option(
+                country.country,
+                country.countryInfo.iso2
+            );
+            regionNewsSelect.options[regionNewsSelect.options.length] = new Option(
+                country.country,
+                country.countryInfo.iso2
+            );
         });
 
         var info = L.control({ position: 'bottomright' });

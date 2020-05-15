@@ -499,6 +499,7 @@ function getNewsResults(data) {
 	}
 	newsCards.innerHTML = output;
 }
+// function
 $(document).ready(function() {
 	axios
 		.get('https://corona-api.com/countries/us?include=timeline', { cache: 'no-cache' })
@@ -745,9 +746,6 @@ $(document).ready(function() {
 			}
 			console.log('Error config: ', error.config);
 		});
-});
-// function
-$(document).ready(function() {
 	let table = $('#dataTableCountry').DataTable({
 		ajax: {
 			url: 'https://disease.sh/v2/states?sort=cases&yesterday=true',

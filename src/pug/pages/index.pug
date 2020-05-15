@@ -47,6 +47,7 @@ append css
             -o-animation: rotating 3s linear infinite;
             animation: rotating 3s linear infinite;
         }
+
     include world-map-js.pug
 block content
     .container-fluid.mt-4
@@ -121,28 +122,53 @@ block content
                         .row.d-flex.justify-content-md-center
                             .col-sm-12.col-md-9.p-0
                                 canvas#myChart.tuatara.p-1(width='100%', height='30rem')
-                            .col-sm-12.col-md-3
-                                .d-flex.flex-column 
-                                    p.font-italic.font-weight-300.text-left.mb-1.text-white
-                                        |Select Tests 
-                                        small (Cases, Recovered, Deaths)
-                                    .select.w-100.mb-4
-                                        select#ddChartTests
-                                            option(value="cases" selected) Cases
-                                            option(value="death") Death
-                                            option(value="recovered") Recovered
-                                    p.font-italic.font-weight-300.text-left.mb-1.text-white
-                                        |Select Scale Type 
-                                        small (Linear and Logarithmic)
-                                    .select.w-100.mb-4
-                                        select#ddChartType
-                                            option(value='linear') Linear
-                                            option(value='logarithmic') Logarithmic
-                                    p.font-italic.font-weight-300.text-left.mb-1.text-white
-                                        | Add Country
-                                    .select.w-100
-                                        select#ddChartCountries
-                                            option(disabled selected) Select
+                            .col-sm-12.col-md-2.pl-md-4
+                                .row.justify-content-between
+                                    .col.mt-2
+                                        p.font-italic.font-weight-300.text-left.mt-4.mb-2 By Time
+                                        .custom-control.custom-radio.custom-control-solid.text-white
+                                            input#sinceBeginning.custom-control-input(type='radio', name='timeframe', value="beginning")
+                                            label.custom-control-label(for='sinceBeginning') Beginning
+                                        .custom-control.custom-radio.custom-control-solid.text-white
+                                            input#sinceMonth.custom-control-input(type='radio', name='timeframe' ,value="month", checked)
+                                            label.custom-control-label(for='sinceMonth') 1 Month
+                                        .custom-control.custom-radio.custom-control-solid.text-white
+                                            input#sinceWeeks.custom-control-input(type='radio', name='timeframe', value="weeks")
+                                            label.custom-control-label(for='sinceWeeks') 2 Weeks
+                                    .col.mt-2
+                                        p.font-italic.font-weight-300.text-left.mt-4.mb-2 By Case
+                                        .custom-control.custom-radio.custom-control-solid.text-white
+                                            input#confirmedRadio.custom-control-input(type='radio', name='caseTypeRadio', value="confirmed" checked)
+                                            label.custom-control-label(for='confirmedRadio') Confirmed 
+                                        .custom-control.custom-radio.custom-control-solid.text-white
+                                            input#recoveredRadio.custom-control-input(type='radio', name='caseTypeRadio', value="recovered")
+                                            label.custom-control-label(for='recoveredRadio') Recovered
+                                        .custom-control.custom-radio.custom-control-solid.text-white
+                                            input#deathsRadio.custom-control-input(type='radio', name='caseTypeRadio', value="deaths")
+                                            label.custom-control-label(for='deathsRadio') Deaths
+                                    .col.mt-2
+                                        p.font-italic.font-weight-300.text-left.mt-4.mb-2 By Chart
+                                        .custom-control.custom-radio.custom-control-solid.text-white
+                                            input#barRadio.custom-control-input(type='radio', name='chartTypeRadio' value="bar", checked)
+                                            label.custom-control-label(for='barRadio') Bar 
+                                        .custom-control.custom-radio.custom-control-solid.text-white
+                                            input#lineRadio.custom-control-input(type='radio', name='chartTypeRadio', value="line")
+                                            label.custom-control-label(for='lineRadio') Line
+                                    .col.mt-2
+                                        p.font-italic.font-weight-300.text-left.mt-4.mb-2 By Chart Scale
+                                        .custom-control.custom-radio.custom-control-solid.text-white
+                                            input#linearRadio.custom-control-input(type='radio', name='scaleTypeRadio', value="linear" checked, disabled)
+                                            label.custom-control-label(for='linearRadio') Linear 
+                                        .custom-control.custom-radio.custom-control-solid.text-white
+                                            input#logarithmicRadio.custom-control-input(type='radio', name='scaleTypeRadio',value="logarithmic", disabled )
+                                            label.custom-control-label(for='logarithmicRadio') Logarithmic
+                                .row
+                                    .col.mt-2
+                                        p.font-italic.font-weight-300.text-left.mb-1.text-white
+                                            | See country specific data
+                                        .select.w-100
+                                            select#ddChartCountries
+                                                option(value="global" selected) Global
                     a.small.w-100.text-right.pt-2.mr-2(href="https://covidtracking.com/" target="_blank")
                         | Data source 
                         i.icon-new-tab.ml-1
@@ -159,7 +185,7 @@ block content
                                         small Select a region
                                     .select
                                         select#selectNewsRegion
-                                            option(value="global" selected) Worldwide
+                                            option(value="global" selected) Global
                                     .text-gray-600.small#news-results-number.pt-1.pl-3
                                     #card-deck.my-2.pr-md-2
                                     a.small.w-100.text-right.pt-2.mr-2(href="https://smartable.ai/" target="_blank") 
