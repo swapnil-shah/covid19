@@ -194,6 +194,20 @@ block content
                                     a.small.w-100.text-right.pt-2.mr-2(href="https://covid19-docs.chrismichael.now.sh/" target="_blank") 
                                         | Data Source
                                         i.icon-new-tab.ml-1
+        
+                //- Extra large modal
+        .modal.fade#stateModal(tabindex='-1', role='dialog', aria-labelledby='stateModal', aria-hidden='true')
+            .modal-dialog.modal-xl(role='document')
+                .modal-content
+                    .modal-header.bg-dark
+                        h3.display-5.modal-title.text-white-75#stateName
+                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span.text-white-75.icon-cross(aria-hidden='true')
+                    .modal-body
+                        .datatable.table-responsive.pb-3
+                            table#dataTableState.table.table-bordered.table-hover(width='100%', cellspacing='0')
+                    .modal-footer
+                        button.btn.btn-primary(type='button', data-dismiss='modal') Close
 
 append scripts
     //- Load Chart.js via CDN

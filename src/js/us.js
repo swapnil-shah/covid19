@@ -748,9 +748,9 @@ $(document).ready(function() {
 });
 // function
 $(document).ready(function() {
-	$('#dataTableCountry').DataTable({
+	let table = $('#dataTableCountry').DataTable({
 		ajax: {
-			url: 'https://disease.sh/v2/states?yesterday=true',
+			url: 'https://disease.sh/v2/states?sort=cases&yesterday=true',
 			type: 'GET',
 			cache: false,
 			dataSrc: function(json) {
@@ -760,6 +760,7 @@ $(document).ready(function() {
 		pagingType: 'numbers',
 		pageLength: 10,
 		stateSave: true,
+		sorting: false,
 		language: {
 			searchPlaceholder: 'e.g. new jersey',
 			loadingRecords: '<i class="icon-spinner spinner-animate"></i>'
@@ -771,7 +772,7 @@ $(document).ready(function() {
 				render: function(data, type, row) {
 					return `${data} <span class="text-gray-600"><small class="text-dark font-weight-600">(${populationFormat(
 						row.tests
-					)})</small></span>`;
+					)})</small></span><p class="mb-0"><span class="small text-primary border-top-0 border-bottom border-right-0 border-left-0 border-blue">See Counties</span></p>`;
 				}
 			},
 			{
@@ -812,6 +813,69 @@ $(document).ready(function() {
 				}
 			}
 		]
+	});
+	// AJAX to get district data and save in variable
+
+	// District datatable on click
+	$('#dataTableCountry tbody').on('click', 'tr', function() {
+		let stateName = table.row(this).data().state;
+		$('#dataTableState').html('');
+		$('#stateModal').modal();
+		$('#stateName').text(stateName);
+		$('#dataTableState').DataTable({
+			destroy: true,
+			ajax: {
+				url: 'https://disease.sh/v2/historical/usacounties/' + stateName.toLowerCase() + '?lastdays=1',
+				type: 'GET',
+				dataSrc: function(data) {
+					return data;
+				},
+				error: function(xhr) {
+					if (xhr.status == 404) {
+						$('#dataTableState').html(
+							'<div class="text-center text-dark py-4">Sorry, no county data is available for this state.</div>'
+						);
+					} else {
+						$('#dataTableState').html(
+							'<div class="text-center text-dark py-4">Sorry, something went wrong. Please try again later.</div>'
+						);
+					}
+				}
+			},
+			pagingType: 'numbers',
+			pageLength: 10,
+			language: {
+				searchPlaceholder: 'search district',
+				loadingRecords: '<i class="icon-spinner spinner-animate"></i>'
+			},
+			columns: [
+				{
+					title: 'District',
+					data: 'county'
+				},
+				{
+					title: 'Confirmed',
+					data: 'timeline.cases',
+					render: function(data, type, row) {
+						if (type === 'type' || type === 'sort') {
+							return Object.values(row.timeline.cases);
+						}
+						return Object.values(row.timeline.cases).toLocaleString();
+					}
+				},
+				{
+					title: 'Deaths',
+					data: 'timeline.deaths',
+					render: function(data, type, row) {
+						if (type === 'type' || type === 'sort') {
+							return Object.values(row.timeline.deaths);
+						}
+						return Object.values(row.timeline.deaths).toLocaleString();
+					}
+				}
+			],
+			order: [ [ 1, 'desc' ] ]
+		});
 	});
 	fillNewsCards();
 	fillTravelNotices();
