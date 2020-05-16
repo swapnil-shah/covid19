@@ -16,9 +16,9 @@ append css
 block content
     .container-fluid.mt-4
         .card.mb-4
-            .card-header.bg-dark
+            .card-header.bg-dark(data-sal="fade")
                 h3.text-white Map
-            .card-body.p-3(data-sal="fade", data-sal-delay="300", data-sal-duration="500")
+            .card-body.p-3(data-sal="fade")
                 #covidCountryMap(style="height:50vh")
                 .row.justify-content-md-center.pt-2
                     .col-md-3.col-sm-6.mb-3
@@ -85,10 +85,10 @@ block content
             //-                         i.icon-new-tab.ml-1
             .col-sm-12
                 .card.pb-2.mb-4
-                    .card-header.bg-dark.d-block
+                    .card-header.bg-dark.d-block(data-sal="fade")
                         h3.text-white Daily Graph
                         p.text-white.text-muted Can be filtered by Time, Case and Scale(Line)
-                    .card-body(style="background-color: #191a1a !important;")
+                    .card-body(style="background-color: #191a1a !important;", data-sal="fade")
                         .row.d-flex.justify-content-md-around
                             .col-sm-12.col-md-9.p-0
                                 canvas#myChart.p-1.tuatara(style="width:100%; height:30rem")
@@ -153,18 +153,18 @@ block content
                         i.icon-new-tab.ml-1
             .col-sm-12
                 .card.pb-2.mb-4
-                    .card-header.bg-dark
+                    .card-header.bg-dark(data-sal="fade")
                         h3.text-white Datatable
-                    .card-body.pb-2(data-sal="fade", data-sal-delay="300", data-sal-duration="500")
+                    .card-body.pb-2(data-sal="fade")
                         include includes/datatables/datatable-country.pug 
                     a.small.w-100.text-right.pt-2.mr-2(href="https://disease.sh/" target="_blank")
                         | Data source 
                         i.icon-new-tab.ml-1
             .col-sm-12
                 .card.mb-4
-                    .card-header.bg-dark
+                    .card-header.bg-dark(data-sal="fade")
                         h5.text-white In The Press
-                    .card-body(data-sal="fade", data-sal-delay="300", data-sal-duration="500")
+                    .card-body
                         .row.d-flex.justify-content-between
                             .col-sm-12.col-md-8.pr-md-5
                                 .card.mt-4.mb-2.right-panel-reports-container.border-top-0.border-right-0.border-bottom-0.border-left-0.px-0(data-sal="fade")

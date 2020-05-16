@@ -532,8 +532,6 @@ $(document).ready(function() {
 				casesDeaths.reverse();
 				casesRecovered.reverse();
 				labelsDate.reverse();
-				console.log(labelsDateWeeks);
-				console.log(confirmedWeeks);
 				//Default Chart
 				generateChart(labelsDateMonth, confirmedMonth, null, 'Confirmed', gradientBlue, borderBlue);
 				Chart.defaults.global.defaultFontColor = 'grey';
@@ -806,7 +804,7 @@ function countriesDatatableChart(data) {
 									row.cases,
 									row.todayCases
 								)}%)</span></p>`
-							: data.toLocaleString();
+							: '';
 					}
 				},
 				{
@@ -826,7 +824,7 @@ function countriesDatatableChart(data) {
 						if (type === 'type' || type === 'sort') {
 							return data;
 						}
-						return `${data.toLocaleString()}`;
+						return `${data ? data.toLocaleString() : ''}`;
 					}
 				},
 				{
@@ -841,7 +839,7 @@ function countriesDatatableChart(data) {
 									row.deaths,
 									row.todayDeaths
 								)}%)</span></p>`
-							: data.toLocaleString();
+							: '';
 					}
 				}
 			],

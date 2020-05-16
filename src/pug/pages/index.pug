@@ -52,9 +52,9 @@ append css
 block content
     .container-fluid.mt-4
         .card.mb-4
-            .card-header.bg-dark
+            .card-header.bg-dark(data-sal="fade")
                 h3.text-white Overview
-            .card-body.p-2.mb-4(data-sal="fade", data-sal-delay="300", data-sal-duration="500")
+            .card-body.p-2.mb-4(data-sal="fade")
                 #covidWorldMap(style="height:50vh")
                 .row.justify-content-md-center.pt-2
                     .col-md-3.col-sm-6.mb-3
@@ -96,16 +96,16 @@ block content
                             i.icon-new-tab.ml-1
         .row
             .col-sm-12
-                .card.pb-2.mb-4(style="background-color: #191a1a !important;")
+                .card.pb-2.mb-4(style="background-color: #191a1a !important;", data-sal="fade")
                     .card-header.bg-dark
                         h3.text-white Timeline of Confirmed Cases
-                    .card-body#flourish-bar-chart-race.mx-auto.p-2(data-sal="fade", data-sal-delay="300", data-sal-duration="500")
+                    .card-body#flourish-bar-chart-race.mx-auto.p-2
                         .flourish-embed.flourish-bar-chart-race( data-src='visualisation/2293729', data-url='https://flo.uri.sh/visualisation/2293729/embed')
             .col-sm-12
                 .card.pb-2.mb-4
-                    .card-header.bg-dark
+                    .card-header.bg-dark(data-sal="fade")
                         h3.text-white Line Chart
-                    .card-body(style="background-color: #191a1a !important;", data-sal="fade", data-sal-delay="100", data-sal-duration="500")
+                    .card-body(style="background-color: #191a1a !important;", data-sal="fade")
                         .row.d-flex.justify-content-md-center
                             .col-sm-12.col-md-9.p-0
                                 canvas#myChart.tuatara.p-1(width='100%', height='30rem')
@@ -161,9 +161,9 @@ block content
                         i.icon-new-tab.ml-1
             .col-sm-12
                 .card.pb-2.mb-4
-                    .card-header.bg-dark
+                    .card-header.bg-dark(data-sal="fade")
                         h3.text-white Datatable 
-                    .card-body(data-sal="fade", data-sal-delay="300", data-sal-duration="500")
+                    .card-body(data-sal="fade")
                         .row.justify-content-between
                             .col-sm-12
                                 p.pb-4 The cases in the below table gets updated in approximately 24 hours.
@@ -173,7 +173,7 @@ block content
                         i.icon-new-tab.ml-1
             .col-sm-12
                 .card.mb-4
-                    .card-header.bg-dark
+                    .card-header.bg-dark(data-sal="fade")
                         h5.text-white In The Press
                     .card-body
                         .row.d-flex.justify-content-between
@@ -202,8 +202,8 @@ append scripts
     script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
-    script(src='js/dashboard.min.js')
+    //- script(src='js/dashboard.min.js')
 
-    //- script(src='js/utilities.js')
-    //- script(src='js/dashboard.js')
-    //- script(src='js/scripts.js')
+    script(src='js/utilities.js')
+    script(src='js/dashboard.js')
+    script(src='js/scripts.js')

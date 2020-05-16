@@ -149,68 +149,6 @@
 	width: 900px;
 }
 
-@media only screen and (max-width: 600px) {
-	#brand-logo {
-		height: 32px;
-	}
-	.topnav.navbar-light #sidebarMenu {
-		margin: 0;
-	}
-	.topnav .navbar-brand {
-		padding: 0;
-	}
-	.topnav .text-dark {
-		font-size: 1rem;
-		text-align: center;
-	}
-	.select {
-		width: 100%;
-		float: none;
-		margin: 0 auto;
-		padding-bottom: 0.75rem;
-	}
-	.container-fluid {
-		padding-left: 0rem;
-		padding-right: 0rem;
-		overflow: hidden;
-	}
-
-	#card-legend {
-		position: relative;
-		top: 0;
-		left: 0;
-		box-shadow: none;
-		border: none;
-	}
-	.footer .row.justify-content-around {
-		text-align: center;
-
-		a {
-			padding: 10px 0;
-		}
-	}
-	.map-info {
-		margin-right: 10px !important;
-	}
-	#card-deck {
-		h3 {
-			font-size: 1rem;
-		}
-		p {
-			font-size: 0.8rem;
-		}
-		.small {
-			font-size: 0.6rem;
-		}
-	}
-	#flourish-bar-chart-race {
-		width: 100%;
-		padding: 0.25rem;
-	}
-	.footer {
-		height: 10rem;
-	}
-}
 #myChart {
 	height: 30rem !important;
 }
@@ -379,4 +317,71 @@ h3.modal-title {
 }
 #dataTableState {
 	text-transform: capitalize;
+}
+
+@media only screen and (max-width: 600px) {
+	#brand-logo {
+		height: 32px;
+	}
+	.topnav.navbar-light #sidebarMenu {
+		margin: 0;
+	}
+	.topnav .navbar-brand {
+		padding: 0;
+	}
+	.topnav .text-dark {
+		font-size: 1rem;
+		text-align: center;
+	}
+	.select {
+		width: 100%;
+		float: none;
+		margin: 0 auto;
+		padding-bottom: 0.75rem;
+	}
+	.container-fluid {
+		padding-left: 0rem;
+		padding-right: 0rem;
+		overflow: hidden;
+	}
+
+	#card-legend {
+		position: relative;
+		top: 0;
+		left: 0;
+		box-shadow: none;
+		border: none;
+	}
+	.footer .row.justify-content-around {
+		text-align: center;
+
+		a {
+			padding: 10px 0;
+		}
+	}
+	.map-info {
+		margin-right: 10px !important;
+	}
+	#card-deck {
+		h3 {
+			font-size: 1rem;
+		}
+		p {
+			font-size: 0.8rem;
+		}
+		.small {
+			font-size: 0.6rem;
+		}
+	}
+	#flourish-bar-chart-race {
+		width: 100%;
+		padding: 0.25rem;
+	}
+	.footer {
+		height: 10rem;
+	}
+
+	#myChart {
+		height: 20rem !important;
+	}
 }
