@@ -54,11 +54,11 @@ block content
         .card.mb-4
             .card-header.bg-dark
                 h3.text-white Overview
-            .card-body.p-2.mb-4
+            .card-body.p-2.mb-4(data-sal="fade", data-sal-delay="300", data-sal-duration="500")
                 #covidWorldMap(style="height:50vh")
                 .row.justify-content-md-center.pt-2
                     .col-md-3.col-sm-6.mb-3
-                        .card.h-100.bg-secondary.border-0
+                        .card.h-100.bg-secondary.border-0(data-sal="fade")
                             .card-body
                                 h3.text-white-75.mb-2 Confirmed
                                     img.text-white-50.float-right(src="../../assets/img/icons/icon_confirmed.svg", style="width:48px;height:48px;", onerror="this.onerror=null;")
@@ -67,21 +67,21 @@ block content
                                     #today-confirmed.text-white-75 Loading stat...
                                     #per-confirmed.text-white-75.small 
                     .col-md-3.col-sm-6.mb-3
-                        .card.h-100.bg-dark.border-0
+                        .card.h-100.bg-dark.border-0(data-sal="fade")
                             .card-body
                                 h3.text-white-75.mb-2 Active
                                     img.text-white-50.float-right(src="../../assets/img/icons/icon_active.svg", style="width:48px;height:48px;", onerror="this.onerror=null;")
                                 #number-active.display-4.text-white.mb-2
                                 #per-active.text-white-75 Loading stat...
                     .col-md-3.col-sm-6.mb-3
-                        .card.h-100.bg-success.border-0
+                        .card.h-100.bg-success.border-0(data-sal="fade")
                             .card-body
                                 h3.text-white-75.mb-2 Recovered
                                     img.text-white-50.float-right(src="../../assets/img/icons/icon_recovered.svg", style="width:48px;height:48px;", onerror="this.onerror=null;")
                                 #number-recovered.display-4.text-white.mb-2
                                 #per-recovered.text-white-75 Loading stat...
                     .col-md-3.col-sm-6.mb-3
-                        .card.h-100.bg-danger.border-0
+                        .card.h-100.bg-danger.border-0(data-sal="fade")
                             .card-body
                                 h3.text-white-75.mb-2 Deaths
                                     img.text-white-50.float-right(src="../../assets/img/icons/icon_death.svg", style="width:48px;height:48px;", onerror="this.onerror=null;")
@@ -99,26 +99,13 @@ block content
                 .card.pb-2.mb-4(style="background-color: #191a1a !important;")
                     .card-header.bg-dark
                         h3.text-white Timeline of Confirmed Cases
-                    .card-body#flourish-bar-chart-race.mx-auto.p-2
+                    .card-body#flourish-bar-chart-race.mx-auto.p-2(data-sal="fade", data-sal-delay="300", data-sal-duration="500")
                         .flourish-embed.flourish-bar-chart-race( data-src='visualisation/2293729', data-url='https://flo.uri.sh/visualisation/2293729/embed')
-                        
-            .col-sm-12 
-                .card.pb-2.mb-4
-                    .card-header.bg-dark
-                        h3.text-white Datatable 
-                    .card-body
-                        .row.justify-content-between
-                            .col-sm-12
-                                p.pb-4 The cases in the below table gets updated in approximately 24 hours.
-                        include includes/datatables/datatable-dashboard.pug
-                    a.small.w-100.text-right.pt-2.mr-2(href="https://disease.sh/" target="_blank")
-                        | Data source 
-                        i.icon-new-tab.ml-1
             .col-sm-12
                 .card.pb-2.mb-4
                     .card-header.bg-dark
                         h3.text-white Line Chart
-                    .card-body(style="background-color: #191a1a !important;")
+                    .card-body(style="background-color: #191a1a !important;", data-sal="fade", data-sal-delay="100", data-sal-duration="500")
                         .row.d-flex.justify-content-md-center
                             .col-sm-12.col-md-9.p-0
                                 canvas#myChart.tuatara.p-1(width='100%', height='30rem')
@@ -173,13 +160,25 @@ block content
                         | Data source 
                         i.icon-new-tab.ml-1
             .col-sm-12
+                .card.pb-2.mb-4
+                    .card-header.bg-dark
+                        h3.text-white Datatable 
+                    .card-body(data-sal="fade", data-sal-delay="300", data-sal-duration="500")
+                        .row.justify-content-between
+                            .col-sm-12
+                                p.pb-4 The cases in the below table gets updated in approximately 24 hours.
+                        include includes/datatables/datatable-dashboard.pug
+                    a.small.w-100.text-right.pt-2.mr-2(href="https://disease.sh/" target="_blank")
+                        | Data source 
+                        i.icon-new-tab.ml-1
+            .col-sm-12
                 .card.mb-4
                     .card-header.bg-dark
                         h5.text-white In The Press
                     .card-body
                         .row.d-flex.justify-content-between
                             .col-sm-12.col-md-8.pr-md-5
-                                .card.mt-4.mb-2.right-panel-reports-container.border-top-0.border-right-0.border-bottom-0.border-left-0.px-0
+                                .card.mt-4.mb-2.right-panel-reports-container.border-top-0.border-right-0.border-bottom-0.border-left-0.px-0(data-sal="fade")
                                     h4.card-title.p-3.text-dark.bg-light News
                                     p.font-italic.font-weight-300.text-left.mb-1
                                         small Select a region
@@ -192,7 +191,7 @@ block content
                                         | Data Source
                                         i.icon-new-tab.ml-1
                             .col-sm-12.col-md-4.px-0
-                                .card.mt-4.mb-2.right-panel-reports-container.border-top-0.border-right-0.border-bottom-0.border-left-0.px-0
+                                .card.mt-4.mb-2.right-panel-reports-container.border-top-0.border-right-0.border-bottom-0.border-left-0.px-0(data-sal="fade")
                                     h4.card-title.p-3.text-dark.bg-light WHO Situation Reports
                                     .list-group.list-group-flush#right-panel-reports.mr-md-2
                                     a.small.w-100.text-right.pt-2.mr-2(href="https://covid19-docs.chrismichael.now.sh/" target="_blank") 
@@ -203,8 +202,8 @@ append scripts
     script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
-    //- script(src='js/dashboard.min.js')
+    script(src='js/dashboard.min.js')
 
-    script(src='js/utilities.js')
-    script(src='js/dashboard.js')
-    script(src='js/scripts.js')
+    //- script(src='js/utilities.js')
+    //- script(src='js/dashboard.js')
+    //- script(src='js/scripts.js')

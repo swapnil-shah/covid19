@@ -2,7 +2,7 @@ const newsUri = 'https://newsapi.org/v2/top-headlines?q=COVID&country=in&apiKey=
 const API_KEY_SMARTTABLE = 'cf8e77731fb345d381334aff5e844f3f';
 let canvas = document.getElementById('myChart');
 let ctx = canvas.getContext('2d');
-// let myChart;
+let myChart;
 let statesData;
 let gradientBlue = ctx.createLinearGradient(0, 0, 0, 450);
 let gradientGreen = ctx.createLinearGradient(0, 0, 0, 450);

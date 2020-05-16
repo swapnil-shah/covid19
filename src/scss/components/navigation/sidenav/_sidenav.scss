@@ -12,7 +12,7 @@
 			flex-direction: column;
 			flex-wrap: nowrap;
 			.sidenav-menu-heading {
-				padding: 1.75rem 1rem 0.75rem;
+				padding: 0.75rem 1rem 0.75rem;
 				font-size: 0.7rem;
 				font-weight: bold;
 				text-transform: uppercase;
@@ -25,6 +25,8 @@
 				padding-top: 0.75rem;
 				padding-bottom: 0.75rem;
 				position: relative;
+				border-top-right-radius: 2rem;
+				border-bottom-right-radius: 2rem;
 				.nav-link-icon {
 					font-size: 0.9rem;
 					padding-right: 0.5rem;
@@ -36,6 +38,8 @@
 				}
 				&.active {
 					font-weight: 600;
+					color: #0061f2;
+					background-color: rgba(0, 97, 242,0.1);
 					.nav-icon {
 						color: $primary;
 					}

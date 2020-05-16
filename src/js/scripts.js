@@ -1,4 +1,5 @@
 (function($) {
+	
 	'use strict';
 	// Enable Bootstrap popovers via data-attributes globally
 	$('[data-toggle="popover"]').popover();

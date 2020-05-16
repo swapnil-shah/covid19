@@ -32,8 +32,10 @@
 		.nav-link {
 			padding: calc(1rem - 0.0625rem) 0;
 			color: $gray-500;
+			border-top-right-radius: 2rem;
+			border-bottom-right-radius: 2rem;
 			&.active {
-				color: $primary;
+				color: #0061f2;
 				border-bottom: 0.125rem solid $primary;
 			}
 		}

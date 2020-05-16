@@ -6,23 +6,23 @@ nav.sidenav.shadow-right(class=sidenavStyle)
             a.text-right
                 button#sidebarClose.btn.btn-icon.btn-transparent-dark.mr-lg-2.py-4(href='#')
                     i.icon-cross(style="position:absolute")
-            a.nav-link.mb-2(href='/index.html')
+            .sidenav-menu-heading.pb-0
+                | Dashboard
+            a.nav-link.mr-1.ml-2(href='/')
                 .nav-link-icon
                     i.icon-earth
-                | Global Dashboard
-            .sidenav-menu-heading.pb-0
-                | Countries
-            a.nav-link.mb-2.mt-1(href='/us.html')
+                | Global
+            a.nav-link.mr-1.ml-2(href='/us')
                 .nav-link-icon
                     img(src="https://www.countryflags.io/us/flat/16.png")
                 | USA
-            a.nav-link.mb-2.mt-2(href='/in.html')
+            a.nav-link.mr-1.ml-2(href='/in')
                 .nav-link-icon
                     img(src="https://www.countryflags.io/in/flat/16.png")
                 | INDIA
             .sidenav-menu-heading.pb-0
                 | ABOUT
-            a.nav-link.mb-2.mt-1(href='/about.html')
+            a.nav-link.mr-1.ml-2(href='/about')
                 .nav-link-icon
                     i.icon-info
                 | COVID19 and Project
