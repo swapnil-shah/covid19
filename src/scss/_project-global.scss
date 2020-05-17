@@ -210,18 +210,11 @@
 .leaflet-control-attribution {
 	background-color: #191a1a !important;
 }
-.map-info {
-	padding: 6px 8px;
-	font: '14px/16px Nunito, Arial, Helvetica, sans-serif';
-	background: white !important;
-	background: #191a1a !important;
-	border-radius: 5px;
-	margin-bottom: 0 !important;
-	margin-right: 0 !important;
+.leaflet-right .leaflet-control {
+	float: none;
 }
-.map-info h4,
 .leaflet-control-attribution {
-	margin: 0 0 5px;
+	margin: 0;
 	color: #fff !important;
 }
 #pie-numbers {
@@ -358,9 +351,6 @@ h3.modal-title {
 		a {
 			padding: 10px 0;
 		}
-	}
-	.map-info {
-		margin-right: 10px !important;
 	}
 	#card-deck {
 		h3 {

@@ -24,7 +24,7 @@ script.
             console.log('Error config: ', error.config);
         });
     function countiesData(response) {
-        var mymap = L.map('covidCountryMap').setView([ 37.8, -96 ], 3);
+        var mymap = L.map('covidCountryMap').setView([ 37.8, -96 ], 4);
         let mapboxAccessToken =
             'pk.eyJ1Ijoic3dhcG5pbDciLCJhIjoiY2s5ZnRtZXh1MGVuYTNkbGNhNWtrcmt0diJ9.fzy5HcciZYupAiuzpVmlWA';
         L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
@@ -36,6 +36,12 @@ script.
             bounds: [ [ -90, -180 ], [ 90, 180 ] ]
         }).addTo(mymap);
         var myRenderer = L.canvas({ padding: 0.5 });
+        var width = document.documentElement.clientWidth;
+        if (width < 768) {
+            mymap.setZoom(3);
+        }
+        mymap.touchZoom.disable();
+        mymap.scrollWheelZoom.disable();
         function htmlPopup(county, province, confirmed, recovered, deaths) {
             let output = '';
             if (county !== null) {
@@ -76,11 +82,4 @@ script.
                 );
         });
         var info = L.control({ position: 'bottomright' });
-
-        info.onAdd = function(map) {
-            this._div = L.DomUtil.create('div', 'map-info'); // create a div with a class "info"
-            this._div.innerHTML = '<h4>COVID19 USA SPREAD DATA</h4><p class="mb-0">Tap/hover on the marker for more information</p>';
-            return this._div;
-        };
-        info.addTo(mymap);
     }
