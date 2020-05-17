@@ -238,8 +238,7 @@
 	}
 }
 
-#card-deck,
-#right-panel-reports {
+.card-deck-container {
 	max-height: 40rem;
 	overflow: auto;
 	&::-webkit-scrollbar {
@@ -312,7 +311,32 @@ h3.modal-title {
 	text-transform: capitalize;
 }
 
+.card-stats {
+	.card {
+		.card-body {
+			padding: 1.5rem;
+			img {
+				height: 48px;
+				width: 48px;
+			}
+			div.text-white {
+				font-size: 1.5rem;
+			}
+			.d-flex {
+				div.text-white-75 {
+					font-size: 1rem;
+				}
+				div.text-white-75.small {
+					font-size: 1rem;
+				}
+			}
+		}
+	}
+}
 @media only screen and (max-width: 600px) {
+	h3 {
+		font-size: 1.2rem;
+	}
 	#brand-logo {
 		height: 32px;
 	}
@@ -337,7 +361,36 @@ h3.modal-title {
 		padding-right: 0rem;
 		overflow: hidden;
 	}
-
+	.card-stats {
+		width: 50% !important;
+		padding: 5px;
+		.card {
+			display: inline-block;
+			width: 100%;
+			.card-body {
+				padding: 10px;
+				h3 {
+					display: inline-block;
+					font-size: 1rem;
+				}
+				img {
+					height: 32px;
+					width: 32px;
+				}
+				div.text-white {
+					font-size: 1.2rem;
+				}
+				.d-flex {
+					div.text-white-75 {
+						font-size: 0.8rem;
+					}
+					div.text-white-75.small {
+						font-size: 0.5rem;
+					}
+				}
+			}
+		}
+	}
 	#card-legend {
 		position: relative;
 		top: 0;

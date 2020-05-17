@@ -293,6 +293,30 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 								source: 'auto',
 								suggestedMax: 10,
 								callback: function(value) {
+									if (value == 2000000) return value.toLocaleString();
+									if (value == 1000000) return value.toLocaleString();
+									if (value == 900000) return value.toLocaleString();
+									if (value == 800000) return value.toLocaleString();
+									if (value == 700000) return value.toLocaleString();
+									if (value == 600000) return value.toLocaleString();
+									if (value == 500000) return value.toLocaleString();
+									if (value == 400000) return value.toLocaleString();
+									if (value == 300000) return value.toLocaleString();
+									if (value == 200000) return value.toLocaleString();
+									if (value == 100000) return value.toLocaleString();
+									if (value == 90000) return value.toLocaleString();
+									if (value == 80000) return value.toLocaleString();
+									if (value == 70000) return value.toLocaleString();
+									if (value == 60000) return value.toLocaleString();
+									if (value == 50000) return value.toLocaleString();
+									if (value == 40000) return value.toLocaleString();
+									if (value == 30000) return value.toLocaleString();
+									if (value == 20000) return value.toLocaleString();
+									if (value == 10000) return value.toLocaleString();
+									if (value == 9000) return value.toLocaleString();
+									if (value == 8000) return value.toLocaleString();
+									if (value == 7000) return value.toLocaleString();
+									if (value == 6000) return value.toLocaleString();
 									if (value == 5000) return value.toLocaleString();
 									if (value == 4000) return value.toLocaleString();
 									if (value == 3000) return value.toLocaleString();
@@ -780,7 +804,7 @@ function countriesDatatableChart(data) {
 			columns: [
 				{
 					data: 'country',
-					title: 'Country <small class="text-dark font-weight-600">(Tests)</small>',
+					title: 'Country <small class="text-dark font-weight-600">(# Tested)</small>',
 					render: function(data, type, row) {
 						if (type === 'type' || type === 'sort') {
 							return data;
@@ -793,8 +817,10 @@ function countriesDatatableChart(data) {
 				},
 				{
 					data: 'cases',
-					title: 'Cases',
+					title: 'Confirmed',
 					render: function(data, type, row) {
+						console.log('countriesDatatableChart -> row', row);
+
 						if (type === 'type' || type === 'sort') {
 							return data;
 						}
@@ -804,7 +830,7 @@ function countriesDatatableChart(data) {
 									row.cases,
 									row.todayCases
 								)}%)</span></p>`
-							: '';
+							: `${data.toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.todayCases.toLocaleString()}</p>`;
 					}
 				},
 				{
@@ -839,7 +865,7 @@ function countriesDatatableChart(data) {
 									row.deaths,
 									row.todayDeaths
 								)}%)</span></p>`
-							: '';
+							: `${data.toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.todayDeaths.toLocaleString()}</p>`;
 					}
 				}
 			],

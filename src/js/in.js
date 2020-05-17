@@ -185,11 +185,6 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 					// }
 				}
 			]
-		},
-		title: {
-			display: true,
-			text: 'Daily Cases',
-			position: 'bottom'
 		}
 	};
 	myChart = new Chart(ctx, {

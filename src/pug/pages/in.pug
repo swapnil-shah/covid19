@@ -53,100 +53,105 @@ append css
 block content
     .container-fluid.mt-4
         .card.mb-4
-            .card-header.bg-dark(data-sal="fade")
-                h3.text-white Map
-            .card-body.p-3(data-sal="fade")
+            .card-header.bg-dark.d-block
+                h3.text-white.mb-0 Cases in India
+                p.text-white.text-muted.mb-0 Tap/hover on the marker for more information
+            .card-body.p-3
                 #covidCountryMap(style="height:50vh")
-                .row.justify-content-md-center.pt-2
-                    .col-md-3.col-sm-6.mb-3
-                        .card.h-100.bg-secondary.border-0(data-sal="fade")
+                .row.justify-content-center.p-2.pt-2
+                    .card-stats.col-md-3
+                        .card.h-100.bg-secondary.border-0
                             .card-body
-                                h3.text-white-75.mb-2 Confirmed
-                                    img.text-white-50.float-right(src="../../assets/img/icons/icon_confirmed.svg", style="width:48px;height:48px;", onerror="this.onerror=null;")
-                                #number-confirmed.display-4.text-white.mb-2
-                                .d-flex.justify-content-between
+                                h3.text-white-75.mb-3.d-inline-block Confirmed
+                                img.text-white-50.float-right(src="../../assets/img/icons/icon_confirmed.svg", onerror="this.onerror=null;")
+                                #number-confirmed.text-white.mb-0
+                                .d-flex.justify-content-start.align-items-center
                                     #today-confirmed.text-white-75 Loading stat...
-                                    #per-confirmed.text-white-75.small 
-                    .col-md-3.col-sm-6.mb-3
-                        .card.h-100.bg-dark.border-0(data-sal="fade")
+                                    span &nbsp;
+                                    #per-confirmed.text-white-75.small
+                    .card-stats.col-md-3
+                        .card.h-100.bg-dark.border-0
                             .card-body
-                                h3.text-white-75.mb-2 Active
-                                    img.text-white-50.float-right(src="../../assets/img/icons/icon_active.svg", style="width:48px;height:48px;", onerror="this.onerror=null;")
-                                #number-active.display-4.text-white.mb-2
+                                h3.text-white-75.mb-3.d-inline-block Active
+                                img.text-white-50.float-right(src="../../assets/img/icons/icon_active.svg", onerror="this.onerror=null;")
+                                #number-active.text-white.mb-0
                                 #per-active.text-white-75 Loading stat...
-                    .col-md-3.col-sm-6.mb-3
-                        .card.h-100.bg-success.border-0(data-sal="fade")
+                    .card-stats.col-md-3
+                        .card.h-100.bg-success.border-0
                             .card-body
-                                h3.text-white-75.mb-2 Recovered
-                                    img.text-white-50.float-right(src="../../assets/img/icons/icon_recovered.svg", style="width:48px;height:48px;", onerror="this.onerror=null;")
-                                #number-recovered.display-4.text-white.mb-2
+                                h3.text-white-75.mb-3.d-inline-block Recovered
+                                img.text-white-50.float-right(src="../../assets/img/icons/icon_recovered.svg", onerror="this.onerror=null;")
+                                #number-recovered.text-white.mb-0
                                 .d-flex.justify-content-between
                                     #today-recovered.text-white-75 Loading stat...
                                     #per-recovered.text-white-75.small 
-                    .col-md-3.col-sm-6.mb-3
-                        .card.h-100.bg-danger.border-0(data-sal="fade")
+                    .card-stats.col-md-3
+                        .card.h-100.bg-danger.border-0
                             .card-body
-                                h3.text-white-75.mb-2 Deaths
-                                   img.text-white-50.float-right(src="../../assets/img/icons/icon_death.svg", style="width:48px;height:48px;", onerror="this.onerror=null;")
-                                #number-deaths.display-4.text-white.mb-2 
-                                .d-flex.justify-content-between
+                                h3.text-white-75.mb-3.d-inline-block Deaths
+                                img.text-white-50.float-right(src="../../assets/img/icons/icon_death.svg", onerror="this.onerror=null;")
+                                #number-deaths.text-white.mb-0 
+                                .d-flex.justify-content-start.align-items-center
                                     #today-deaths.text-white-75 Loading stat...
-                                    #per-deaths.text-white-75.small 
+                                    span &nbsp;
+                                    #per-deaths.text-white-75.small
                     .col-sm-12.p-0
                         #last-updated.text-center
-                        a.small.float-right.mr-2(href="https://api.covid19india.org" target="_blank")
-                            | Data source 
-                            i.icon-new-tab.ml-1
+                        p.small.pt-2.pr-2.mb-0.text-right
+                            em Data derived from&nbsp;
+                                a.w-100.pt-2(href="https://api.covid19india.org" target="_blank") COVID19-India API
+                                    i.icon-new-tab.ml-1
         .row
             .col-sm-12
                 .card.pb-2.mb-4
-                    .card-header.bg-dark.d-block(data-sal="fade")
-                        h3.text-white Daily Graph
-                        p.text-white.text-muted Can be filtered by Time, Case and Scale(Line)
-                    .card-body(style="background-color: #191a1a !important;", data-sal="fade", data-sal-delay="300", data-sal-duration="500")
-                        .row.d-flex.justify-content-md-around
+                    .card-header.bg-dark.d-block
+                        h3.text-white.mb-0  Daily Trend of Cases
+                        p.text-white.text-muted.mb-0 Filter by Region, Type & Scale
+                    .card-body(style="background-color: #191a1a !important;")
+                        .row
                             .col-sm-12.col-md-9.p-0
                                 canvas#myChart.p-1.tuatara(style="width:100%; height:30rem")
-                            .col-sm-12.col-md-2.pl-md-4
+                            .col-sm-12.col-md-3.pl-md-4
                                 .row.justify-content-between
                                     .col.mt-2
-                                        p.font-italic.font-weight-300.text-left.mt-4.mb-2 By Time
+                                        p.font-italic.font-weight-300.text-left.mt-4.mb-2 Period
                                         .custom-control.custom-radio.custom-control-solid.text-white
                                             input#sinceBeginning.custom-control-input(type='radio', name='timeframe', value="beginning")
-                                            label.custom-control-label(for='sinceBeginning') Beginning
+                                            label.custom-control-label.font-weight-300(for='sinceBeginning') From the Beginning
                                         .custom-control.custom-radio.custom-control-solid.text-white
                                             input#sinceMonth.custom-control-input(type='radio', name='timeframe' ,value="month", checked)
-                                            label.custom-control-label(for='sinceMonth') 1 Month
+                                            label.custom-control-label.font-weight-300(for='sinceMonth') Recent Month
                                         .custom-control.custom-radio.custom-control-solid.text-white
                                             input#sinceWeeks.custom-control-input(type='radio', name='timeframe', value="weeks")
-                                            label.custom-control-label(for='sinceWeeks') 2 Weeks
+                                            label.custom-control-label.font-weight-300(for='sinceWeeks') Recent 2 Weeks
                                     .col.mt-2
-                                        p.font-italic.font-weight-300.text-left.mt-4.mb-2 By Case
+                                        p.font-italic.font-weight-300.text-left.mt-4.mb-2 Case Type
                                         .custom-control.custom-radio.custom-control-solid.text-white
                                             input#confirmedRadio.custom-control-input(type='radio', name='caseTypeRadio', value="confirmed" checked)
-                                            label.custom-control-label(for='confirmedRadio') Confirmed 
+                                            label.custom-control-label.font-weight-300(for='confirmedRadio') Confirmed 
                                         .custom-control.custom-radio.custom-control-solid.text-white
                                             input#recoveredRadio.custom-control-input(type='radio', name='caseTypeRadio', value="recovered")
-                                            label.custom-control-label(for='recoveredRadio') Recovered
+                                            label.custom-control-label.font-weight-300(for='recoveredRadio') Recovered
                                         .custom-control.custom-radio.custom-control-solid.text-white
                                             input#deathsRadio.custom-control-input(type='radio', name='caseTypeRadio', value="deaths")
-                                            label.custom-control-label(for='deathsRadio') Deaths
+                                            label.custom-control-label.font-weight-300(for='deathsRadio') Deaths
+                                .row.justify-content-between
                                     .col.mt-2
-                                        p.font-italic.font-weight-300.text-left.mt-4.mb-2 By Chart
+                                        p.font-italic.font-weight-300.text-left.mt-4.mb-2 Chart Type
                                         .custom-control.custom-radio.custom-control-solid.text-white
                                             input#barRadio.custom-control-input(type='radio', name='chartTypeRadio' value="bar", checked)
-                                            label.custom-control-label(for='barRadio') Bar 
+                                            label.custom-control-label.font-weight-300(for='barRadio') Bar 
                                         .custom-control.custom-radio.custom-control-solid.text-white
                                             input#lineRadio.custom-control-input(type='radio', name='chartTypeRadio', value="line")
-                                            label.custom-control-label(for='lineRadio') Line
+                                            label.custom-control-label.font-weight-300(for='lineRadio') Line
                                     .col.mt-2
-                                        p.font-italic.font-weight-300.text-left.mt-4.mb-2 By Chart Scale
+                                        p.font-italic.font-weight-300.text-left.mt-4.mb-2 Scale (Chart Type = Line)
                                         .custom-control.custom-radio.custom-control-solid.text-white
                                             input#linearRadio.custom-control-input(type='radio', name='scaleTypeRadio', value="linear" checked, disabled)
-                                            label.custom-control-label(for='linearRadio') Linear 
+                                            label.custom-control-label.font-weight-300(for='linearRadio') Linear 
                                         .custom-control.custom-radio.custom-control-solid.text-white
                                             input#logarithmicRadio.custom-control-input(type='radio', name='scaleTypeRadio',value="logarithmic", disabled )
-                                            label.custom-control-label(for='logarithmicRadio') Logarithmic
+                                            label.custom-control-label.font-weight-300(for='logarithmicRadio') Logarithmic
                                 .row.d-flex.justify-content-center.pt-4 
                                 | Total
                                 small.pr-1.text-muted#total-date.font-weight-light
@@ -163,42 +168,48 @@ block content
                                         p.mb-1
                                             small.font-weight-light.mb-1 Deaths
                                         p#total-deaths.card-text.text-dark ... 
-                    a.small.w-100.text-right.pt-2.mr-2(href="https://api.covid19india.org" target="_blank")
-                        | Data source 
-                        i.icon-new-tab.ml-1
+                    p.small.pt-2.pr-2.mb-0.text-right
+                        em Data derived from&nbsp;
+                            a.w-100.pt-2(href="https://api.covid19india.org" target="_blank") COVID19-India API
+                                i.icon-new-tab.ml-1
 
             .col-sm-12
                 .card.pb-2.mb-4
-                    .card-header.bg-dark(data-sal="fade")
-                        h3.text-white Datatable
-                    .card-body.pb-2(data-sal="fade")
+                    .card-header.bg-dark
+                        h3.text-white.mb-0 Cases by States and Districts
+                    .card-body.pb-2
                         p#icmrReport
                         include includes/datatables/datatable-country.pug 
-                    a.small.w-100.text-right.pt-2.mr-2(href="https://api.covid19india.org" target="_blank")
-                        | Data source 
-                        i.icon-new-tab.ml-1
+                    p.small.pt-2.pr-2.mb-0.text-right
+                        em Data derived from&nbsp;
+                            a.w-100.pt-2(href="https://api.covid19india.org" target="_blank") COVID19-India API
+                                i.icon-new-tab.ml-1
             .col-sm-12
                 .card.mb-4
-                    .card-header.bg-dark(data-sal="fade")
+                    .card-header.bg-dark
                         h5.text-white In The Press
                     .card-body
                         .row.d-flex.justify-content-between
                             .col-sm-12.col-md-8.pr-md-5
-                                .card.mt-4.mb-2.right-panel-reports-container.border-top-0.border-right-0.border-bottom-0.border-left-0.px-0(data-sal="fade")
-                                    h4.card-title.p-3.text-dark.bg-light News
-                                    .text-gray-600.small#news-results-number.pt-1.pl-3
-                                    #card-deck.my-2.pr-md-2
-                                    a.small.w-100.text-right.pt-2.mr-2(href="https://smartable.ai/" target="_blank") 
-                                        | Data Source
-                                        i.icon-new-tab.ml-1
+                                .card.mt-4.mb-2.right-panel-reports-container.border-top-0.border-right-0.border-bottom-0.border-left-0.px-0
+                                    h4.card-title.p-3.text-dark.bg-light Top COVID19 News
+                                    .card-deck-container
+                                        .text-gray-600.small#news-results-number.pt-1.pl-3
+                                        #card-deck.my-2.pr-md-2
+                                    p.small.pt-2.pr-2.mb-0.text-right
+                                        em Data derived from&nbsp;
+                                            a.w-100.pt-2(href="https://newsapi.org/" target="_blank") News API
+                                                i.icon-new-tab.ml-1
                             .col-sm-12.col-md-4.px-0
-                                .card.mt-4.mb-2.right-panel-reports-container.border-top-0.border-right-0.border-bottom-0.border-left-0.px-0(data-sal="fade")
+                                .card.mt-4.mb-2.right-panel-reports-container.border-top-0.border-right-0.border-bottom-0.border-left-0.px-0
                                     h4.card-title.p-3.text-dark.bg-light Notifications & advisories
-                                    .d-flex.align-items-start.pb-1.small#notification-last-updated
-                                    .list-group.list-group-flush#right-panel-reports.mr-md-2
-                                    a.small.w-100.text-right.pt-2.mr-2(href="https://api.covid19india.org" target="_blank") 
-                                        | Data Source 
-                                        i.icon-new-tab.ml-1 
+                                    .card-deck-container
+                                        .d-flex.align-items-start.pb-1.small#notification-last-updated
+                                        .list-group.list-group-flush#right-panel-reports.mr-md-2
+                                    p.small.pt-2.pr-2.mb-0.text-right
+                                        em Data derived from&nbsp;
+                                            a.w-100.pt-2(href="https://api.covid19india.org" target="_blank") COVID19-India API
+                                                i.icon-new-tab.ml-1
                 //- Extra large modal
         .modal.fade#stateModal(tabindex='-1', role='dialog', aria-labelledby='stateModal', aria-hidden='true')
             .modal-dialog.modal-xl(role='document')
