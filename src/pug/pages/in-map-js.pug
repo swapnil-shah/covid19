@@ -163,7 +163,7 @@ script.
         }
         return acronym;
     }
-    axios.get('https://api.covid19india.org/data.json', { cache: 'no-cache' })
+    axios.get('https://api.covid19india.org/data.json')
     .then((response) => {
         countryData(response.data);
         window.addEventListener(

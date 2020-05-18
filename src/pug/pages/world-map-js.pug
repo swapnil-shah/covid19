@@ -1,7 +1,7 @@
 
 script(type="text/javascript").
     axios
-        .get('https://disease.sh/v2/countries?yesterday=true&sort=cases', { cache: 'no-cache' })
+        .get('https://disease.sh/v2/countries?yesterday=true&sort=cases')
         .then((response) => {
             countriesData(response.data);
             window.addEventListener(

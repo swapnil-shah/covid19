@@ -133,11 +133,6 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 					}
 				}
 			]
-		},
-		title: {
-			display: true,
-			text: 'Global Daily Cases',
-			position: 'bottom'
 		}
 	};
 	if (myChart) {
@@ -381,7 +376,6 @@ let fillNewsCards = () => {
 	axios
 		.get(newsUri, {
 			headers: {
-				'Cache-Control': 'no-cache',
 				'Subscription-Key': API_KEY_SMARTTABLE
 			}
 		})
@@ -413,7 +407,7 @@ let fillNewsCards = () => {
 //Dasboard cases
 let fillNumberOfCases = () => {
 	axios
-		.get(getDashboardAll, { cache: 'no-cache' })
+		.get(getDashboardAll)
 		.then((response) => {
 			document.getElementById('last-updated').innerHTML =
 				'Last updated <span class="text-gray-800">' + timeDifference(response.data.updated) + '</span>';
@@ -463,7 +457,7 @@ let fillNumberOfCases = () => {
 
 let fillSituationReports = () => {
 	axios
-		.get('https://covid19-server.chrismichael.now.sh/api/v1/SituationReports', { cache: 'no-cache' })
+		.get('https://covid19-server.chrismichael.now.sh/api/v1/SituationReports')
 		.then((response) => {
 			let output = '';
 			response.data.reports.forEach(function(report) {
@@ -495,7 +489,7 @@ let fillSituationReports = () => {
 $(document).ready(function() {
 	function getCountries(url) {
 		axios
-			.get(url, { cache: 'no-cache' })
+			.get(url)
 			.then((reponse) => {
 				let filteredArr = [];
 				confirmedMonth = [];
@@ -890,7 +884,6 @@ function countriesDatatableChart(data) {
 			axios
 				.get(newsUri, {
 					headers: {
-						'Cache-Control': 'no-cache',
 						'Subscription-Key': API_KEY_SMARTTABLE
 					}
 				})

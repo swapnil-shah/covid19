@@ -1,6 +1,6 @@
 script.
 
-    axios.get('https://disease.sh/v2/jhucsse/counties?yesterday=true', { cache: 'no-cache' })
+    axios.get('https://disease.sh/v2/jhucsse/counties?yesterday=true')
         .then((response) => {
             countiesData(response);
         })

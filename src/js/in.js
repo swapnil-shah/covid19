@@ -99,7 +99,7 @@ function newsResults() {
 }
 function notificationsAdvisories() {
 	axios
-		.get('https://api.rootnet.in/covid19-in/notifications', { cache: 'no-cache' })
+		.get('https://api.rootnet.in/covid19-in/notifications')
 		.then((response) => {
 			let output = '';
 			response.data.data.notifications.forEach(function(report) {

@@ -44,7 +44,7 @@ let numbersRecoveredWeeks = 0;
 //US cases
 let fillNumberOfCases = (function() {
 	axios
-		.get('https://disease.sh/v2/countries/usa?yesterday=true&strict=true', { cache: 'no-cache' })
+		.get('https://disease.sh/v2/countries/usa?yesterday=true&strict=true')
 		.then((response) => {
 			document.getElementById('last-updated').innerHTML =
 				'Last updated <span class="text-gray-800">' + timeDifference(response.data.updated) + '</span>';
@@ -96,7 +96,6 @@ let fillNewsCards = () => {
 	axios
 		.get(newsUri, {
 			headers: {
-				'Cache-Control': 'no-cache',
 				'Subscription-Key': API_KEY_SMARTTABLE
 			}
 		})
@@ -163,7 +162,7 @@ function populateNumbers(confirmed, recovered, deaths, text) {
 }
 let fillTravelNotices = () => {
 	axios
-		.get('https://covid19-server.chrismichael.now.sh/api/v1/TravelHealthNotices', { cache: 'no-cache' })
+		.get('https://covid19-server.chrismichael.now.sh/api/v1/TravelHealthNotices')
 		.then((response) => {
 			let output = '';
 			response.data.data.travelHealthNotices.alert.forEach(function(notice) {
@@ -497,7 +496,7 @@ function getNewsResults(data) {
 // function
 $(document).ready(function() {
 	axios
-		.get('https://corona-api.com/countries/us?include=timeline', { cache: 'no-cache' })
+		.get('https://corona-api.com/countries/us?include=timeline')
 		.then((reponse) => {
 			let filteredArr = reponse.data.data.timeline.filter(function(daily) {
 				return !daily.is_in_progress;
@@ -760,7 +759,7 @@ $(document).ready(function() {
 		},
 		columns: [
 			{
-				title: 'State <small class="text-dark font-weight-600">(Tests)</small>',
+				title: 'State <small class="text-dark font-weight-600">(# Tested)</small>',
 				data: 'state',
 				render: function(data, type, row) {
 					return `${data} <span class="text-gray-600"><small class="text-dark font-weight-600">(${populationFormat(
@@ -880,7 +879,6 @@ $(document).ready(function() {
 		axios
 			.get(newsUri, {
 				headers: {
-					'Cache-Control': 'no-cache',
 					'Subscription-Key': API_KEY_SMARTTABLE
 				}
 			})

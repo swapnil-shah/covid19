@@ -8,7 +8,7 @@ block config
     - var pageHeaderStyle = 'page-header-dark'
     - var pageHeaderBackground = 'bg-gradient-primary-to-secondary'
     - var footerStyle = 'footer-dark bg-dark'
-    - var topNavRegion = 'USA'
+    - var topNavRegion = 'COVID19 USA'
     
 append css
     include us-map-js.pug
@@ -21,7 +21,7 @@ block content
                 p.text-white.text-muted.mb-0 Tap/hover on the marker for more information
             .card-body.p-3
                 #covidCountryMap(style="height:50vh")
-                .row.justify-content-center.p-2.pt-2
+                .row.justify-content-center.p-0.pt-2
                     .card-stats.col-md-3
                         .card.h-100.bg-secondary.border-0
                             .card-body
@@ -56,8 +56,8 @@ block content
                                     #today-deaths.text-white-75 Loading stat...
                                     span &nbsp;
                                     #per-deaths.text-white-75.small
-                    .col-sm-12.p-0
-                        #last-updated.text-center
+                    .col-sm-12.p-0.d-flex.justify-content-between.pt-1
+                        #last-updated.text-center.pl-2
                         p.small.pt-2.pr-2.mb-0.text-right
                             em Data derived from&nbsp;
                                 a.w-100.pt-2(href="https://disease.sh/" target="_blank") Novel COVID API
@@ -175,7 +175,7 @@ block content
                         .row.d-flex.justify-content-between
                             .col-sm-12.col-md-8.pr-md-5
                                 .card.mt-4.mb-2.right-panel-reports-container.border-top-0.border-right-0.border-bottom-0.border-left-0.px-0
-                                    h4.card-title.p-3.text-dark.bg-light Top COVID19 News
+                                    h4.card-title.p-3.text-dark.bg-light Top COVID19 related News
                                     .card-deck-container
                                         p.font-italic.font-weight-300.text-left.mb-1
                                             small Select a state
@@ -224,7 +224,7 @@ append scripts
     script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
-    script(src='js/us.min.js')
-    //- script(src='js/utilities.js')
-    //- script(src='js/us.js')
-    //- script(src='js/scripts.js')
+    //- script(src='js/us.min.js')
+    script(src='js/utilities.js')
+    script(src='js/us.js')
+    script(src='js/scripts.js')

@@ -75,7 +75,6 @@ function getNewsResults(data) {
 let fillNewsCards = () => {
 	fetch(newsUri, {
 		headers: {
-			'Cache-Control': 'no-cache',
 			'Subscription-Key': API_KEY_SMARTTABLE
 		}
 	})
@@ -97,7 +96,7 @@ let fillNewsCards = () => {
 
 //Dasboard cases
 let fillNumberOfCases = () => {
-	fetch(totalCases, { cache: 'no-cache' })
+	fetch(totalCases)
 		.then((response) => {
 			if (response.ok) {
 				return response.json();
@@ -185,7 +184,7 @@ let dataSet = (chartData, chartDataDeaths, chartDataRecovered, chartDataActive, 
 
 // add option to dropdown
 let addCountriesToDropdown = () => {
-	fetch(dasboardDataUri, { cache: 'no-cache' })
+	fetch(dasboardDataUri)
 		.then((response) => {
 			if (response.ok) {
 				return response.json();
@@ -210,7 +209,7 @@ let addCountriesToDropdown = () => {
 };
 
 let fillSituationReports = () => {
-	fetch('https://covid19-server.chrismichael.now.sh/api/v1/SituationReports', { cache: 'no-cache' })
+	fetch('https://covid19-server.chrismichael.now.sh/api/v1/SituationReports')
 		.then((response) => {
 			if (response.ok) {
 				return response.json();
@@ -335,7 +334,7 @@ fetch(totalCases)
 				myChart.data.labels = dashboardLabelsDate;
 				myChart.update();
 			} else {
-				fetch(countriesUri + '/' + value, { cache: 'no-cache' })
+				fetch(countriesUri + '/' + value)
 					.then((response) => {
 						if (response.ok) {
 							return response.json();
@@ -543,7 +542,6 @@ $(document).ready(function() {
 
 		fetch(newsUri, {
 			headers: {
-				'Cache-Control': 'no-cache',
 				'Subscription-Key': API_KEY_SMARTTABLE
 			}
 		})

@@ -12,7 +12,6 @@ let newsReq = new Request(newsUri, {
 let fillNewsCards = () => {
 	fetch(newsReq, {
 		headers: {
-			'Cache-Control': 'no-cache',
 			'Subscription-Key': API_KEY_SMARTTABLE
 		}
 	})

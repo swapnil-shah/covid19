@@ -1,5 +1,5 @@
 let chartData = [];
-fetch('https://covid19-server.chrismichael.now.sh/api/v1/IndiaCasesByStates', { cache: 'no-cache' })
+fetch('https://covid19-server.chrismichael.now.sh/api/v1/IndiaCasesByStates')
 	.then((response) => response.json())
 	.then((states) => {
 		states.data[0].table

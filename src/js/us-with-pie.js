@@ -42,7 +42,7 @@ function pieLegend(tot, pos, neg, hosp, ven, icu, hospCurrent, venCurrent, icuCu
 }
 //US cases
 let fillNumberOfCases = (function() {
-	fetch('https://disease.sh/v2/countries/usa?yesterday=true&strict=true', { cache: 'no-cache' })
+	fetch('https://disease.sh/v2/countries/usa?yesterday=true&strict=true')
 		.then((response) => {
 			if (response.ok) {
 				return response.json();
@@ -78,7 +78,6 @@ let fillNumberOfCases = (function() {
 let fillNewsCards = () => {
 	fetch(newsUri, {
 		headers: {
-			'Cache-Control': 'no-cache',
 			'Subscription-Key': API_KEY_SMARTTABLE
 		}
 	})
@@ -97,7 +96,7 @@ let fillNewsCards = () => {
 		});
 };
 let fillTravelNotices = () => {
-	fetch('https://covid19-server.chrismichael.now.sh/api/v1/TravelHealthNotices', { cache: 'no-cache' })
+	fetch('https://covid19-server.chrismichael.now.sh/api/v1/TravelHealthNotices')
 		.then((response) => {
 			if (response.ok) {
 				return response.json();
@@ -295,7 +294,7 @@ $(document).ready(function() {
 				myPieChartHospitliazed.update();
 				myPieChartHospitliazed.options.animation.duration = 1000;
 			} else {
-				fetch('https://covidtracking.com/api/v1/states/' + value + '/current.json', { cache: 'no-cache' })
+				fetch('https://covidtracking.com/api/v1/states/' + value + '/current.json')
 					.then((response) => {
 						if (response.ok) {
 							return response.json();
@@ -452,7 +451,6 @@ $(document).ready(function() {
 		const newsUri = 'https://api.smartable.ai/coronavirus/news/' + value;
 		fetch(newsUri, {
 			headers: {
-				'Cache-Control': 'no-cache',
 				'Subscription-Key': API_KEY_SMARTTABLE
 			}
 		})

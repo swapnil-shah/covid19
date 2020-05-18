@@ -89,7 +89,6 @@ let fillNewsCards = () => {
 	axios
 		.get(newsUri, {
 			headers: {
-				'Cache-Control': 'no-cache',
 				'Subscription-Key': API_KEY_SMARTTABLE
 			}
 		})
@@ -121,7 +120,7 @@ let fillNewsCards = () => {
 //Dasboard cases
 let fillNumberOfCases = () => {
 	axios
-		.get(getDashboardAll, { cache: 'no-cache' })
+		.get(getDashboardAll)
 		.then((response) => {
 			document.getElementById('last-updated').innerHTML =
 				'Last updated <span class="text-gray-800">' + timeDifference(response.data.updated) + '</span>';
@@ -195,7 +194,7 @@ let dataSet = (chartData, chartDataDeaths, chartDataRecovered, chartDataActive, 
 
 let fillSituationReports = () => {
 	axios
-		.get('https://covid19-server.chrismichael.now.sh/api/v1/SituationReports', { cache: 'no-cache' })
+		.get('https://covid19-server.chrismichael.now.sh/api/v1/SituationReports')
 		.then((response) => {
 			let output = '';
 			response.data.reports.forEach(function(report) {
@@ -323,7 +322,6 @@ function countriesDatatableChart(data) {
 			axios
 				.get(newsUri, {
 					headers: {
-						'Cache-Control': 'no-cache',
 						'Subscription-Key': API_KEY_SMARTTABLE
 					}
 				})
