@@ -29,10 +29,4 @@ module.exports = function renderSCSS() {
 	});
 };
 
-const entryPoint = `/*!
-* Start Bootstrap - ${packageJSON.title} v${packageJSON.version} (${packageJSON.homepage})
-* Copyright 2013-${new Date().getFullYear()} ${packageJSON.author}
-* Licensed under ${packageJSON.license} (https://github.com/BlackrockDigital/${packageJSON.name}/blob/master/LICENSE)
-*/
-@import "${stylesPath}"
-`;
+const entryPoint = `@import "${stylesPath}"`;

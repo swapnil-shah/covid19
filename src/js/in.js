@@ -369,61 +369,62 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 		myChart.update();
 	});
 }
-function countryDataTable(data) {
-	$(document).ready(function() {
+let filteredArr = [];
+axiosResponse().then((data) => {
+	data.statewise.forEach(function(states) {
+		if (states.statecode === 'TT') {
+			document.getElementById('last-updated').innerHTML =
+				'Last updated <span class="text-gray-800">' + states.lastupdatedtime + '</span>';
+			document.getElementById('number-active').innerText = parseInt(states.active).toLocaleString();
+			document.getElementById('number-confirmed').innerText = parseInt(states.confirmed).toLocaleString();
+			document.getElementById('number-recovered').innerText = parseInt(states.recovered).toLocaleString();
+			document.getElementById('number-deaths').innerText = parseInt(states.deaths).toLocaleString();
+			parseInt(states.deltaconfirmed)
+				? (document.getElementById('today-confirmed').innerText =
+						'+' + parseInt(states.deltaconfirmed).toLocaleString())
+				: (document.getElementById('today-confirmed').innerText = '');
+			parseInt(states.deltadeaths)
+				? (document.getElementById('today-deaths').innerText =
+						'+' + parseInt(states.deltadeaths).toLocaleString())
+				: (document.getElementById('today-deaths').innerText = '');
+			parseInt(states.deltarecovered)
+				? (document.getElementById('today-recovered').innerText =
+						'+' + parseInt(states.deltarecovered).toLocaleString())
+				: (document.getElementById('today-recovered').innerText = '');
+			document.getElementById('per-active').innerHTML = '';
+			document.getElementById('per-confirmed').innerHTML =
+				Math.sign(percentageChangeTotal(parseInt(states.confirmed), parseInt(states.deltaconfirmed))) === 1
+					? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
+							parseInt(states.confirmed),
+							parseInt(states.deltaconfirmed)
+						)}%)`
+					: (document.getElementById('today-deaths').innerText = '');
+			document.getElementById('per-recovered').innerHTML =
+				Math.sign(percentageChangeTotal(parseInt(states.recovered), parseInt(states.deltarecovered))) === 1
+					? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
+							parseInt(states.recovered),
+							parseInt(states.deltarecovered)
+						)}%)`
+					: '';
+			document.getElementById('per-deaths').innerHTML =
+				Math.sign(percentageChangeTotal(parseInt(states.deaths), parseInt(states.deltadeaths))) === 1
+					? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
+							parseInt(states.deaths),
+							parseInt(states.deltadeaths)
+						)}%)`
+					: '';
+		} else {
+			filteredArr.push(states);
+		}
+	});
+});
+$(document).ready(function() {
+	axiosResponse().then((data) => {
 		let lastArrTested = data.tested[data.tested.length - 1];
 		let lastArrTimeSeries = data.cases_time_series[data.cases_time_series.length - 1];
 		let numbersConfirmed = parseInt(lastArrTimeSeries.totalconfirmed).toLocaleString();
 		let numbersDeceased = parseInt(lastArrTimeSeries.totaldeceased).toLocaleString();
 		let numbersRecovered = parseInt(lastArrTimeSeries.totalrecovered).toLocaleString();
-		let filteredArr = [];
-		data.statewise.forEach(function(states) {
-			if (states.statecode === 'TT') {
-				document.getElementById('last-updated').innerHTML =
-					'Last updated <span class="text-gray-800">' + states.lastupdatedtime + '</span>';
-				document.getElementById('number-active').innerText = parseInt(states.active).toLocaleString();
-				document.getElementById('number-confirmed').innerText = parseInt(states.confirmed).toLocaleString();
-				document.getElementById('number-recovered').innerText = parseInt(states.recovered).toLocaleString();
-				document.getElementById('number-deaths').innerText = parseInt(states.deaths).toLocaleString();
-				parseInt(states.deltaconfirmed)
-					? (document.getElementById('today-confirmed').innerText =
-							'+' + parseInt(states.deltaconfirmed).toLocaleString())
-					: (document.getElementById('today-confirmed').innerText = '');
-				parseInt(states.deltadeaths)
-					? (document.getElementById('today-deaths').innerText =
-							'+' + parseInt(states.deltadeaths).toLocaleString())
-					: (document.getElementById('today-deaths').innerText = '');
-				parseInt(states.deltarecovered)
-					? (document.getElementById('today-recovered').innerText =
-							'+' + parseInt(states.deltarecovered).toLocaleString())
-					: (document.getElementById('today-recovered').innerText = '');
-				document.getElementById('per-active').innerHTML = '';
-				document.getElementById('per-confirmed').innerHTML =
-					Math.sign(percentageChangeTotal(parseInt(states.confirmed), parseInt(states.deltaconfirmed))) === 1
-						? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
-								parseInt(states.confirmed),
-								parseInt(states.deltaconfirmed)
-							)}%)`
-						: (document.getElementById('today-deaths').innerText = '');
-				document.getElementById('per-recovered').innerHTML =
-					Math.sign(percentageChangeTotal(parseInt(states.recovered), parseInt(states.deltarecovered))) === 1
-						? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
-								parseInt(states.recovered),
-								parseInt(states.deltarecovered)
-							)}%)`
-						: '';
-				document.getElementById('per-deaths').innerHTML =
-					Math.sign(percentageChangeTotal(parseInt(states.deaths), parseInt(states.deltadeaths))) === 1
-						? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
-								parseInt(states.deaths),
-								parseInt(states.deltadeaths)
-							)}%)`
-						: '';
-			} else {
-				filteredArr.push(states);
-			}
-		});
-
 		//Get months/30 days
 		data.cases_time_series.slice(Math.max(data.cases_time_series.length - 30, 1)).forEach(function(daily) {
 			confirmedMonth.push(daily.dailyconfirmed);
@@ -837,8 +838,6 @@ function countryDataTable(data) {
 			});
 		});
 	});
-}
-$(document).ready(function() {
 	newsResults();
 	notificationsAdvisories();
 });

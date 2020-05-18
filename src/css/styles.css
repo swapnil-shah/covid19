@@ -1,15 +1,5 @@
 @charset "UTF-8";
-/*!
-* Start Bootstrap - COVID19 v1.1.2 (undefined)
-* Copyright 2013-2020 Swapnil Shah
-* Licensed under undefined (https://github.com/BlackrockDigital/covid-19-personal/blob/master/LICENSE)
-*/
-/*!
- * Bootstrap v4.4.1 (https://getbootstrap.com/)
- * Copyright 2011-2019 The Bootstrap Authors
- * Copyright 2011-2019 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- */
+
 :root {
 	--blue: #0061f2;
 	--indigo: #5800e8;

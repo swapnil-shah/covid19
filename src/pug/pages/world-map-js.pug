@@ -1,16 +1,8 @@
 
 script(type="text/javascript").
-    axios
-        .get('https://disease.sh/v2/countries?yesterday=true&sort=cases')
-        .then((response) => {
-            countriesData(response.data);
-            window.addEventListener(
-                'load',
-                function() {
-                    countriesDatatableChart(response.data);
-                },
-                false
-            );
+    function axiosResponse() {
+        return axios.get('https://disease.sh/v2/countries?yesterday=true&sort=cases').then(response => {
+            return response.data
         })
         .catch((error) => {
             if (error.response) {
@@ -31,7 +23,9 @@ script(type="text/javascript").
             }
             console.log('Error config: ', error.config);
         });
-    function countriesData(data) {
+    }
+
+    axiosResponse().then(data => {
         var mymap = L.map('covidWorldMap').setView([ 20, 0 ], 2);
         let mapboxAccessToken =
             'pk.eyJ1Ijoic3dhcG5pbDciLCJhIjoiY2s5ZnRtZXh1MGVuYTNkbGNhNWtrcmt0diJ9.fzy5HcciZYupAiuzpVmlWA';
@@ -97,4 +91,4 @@ script(type="text/javascript").
             );
         });
         var info = L.control({ position: 'bottomright' });
-    }
+    })

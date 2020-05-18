@@ -405,7 +405,7 @@ let fillNewsCards = () => {
 };
 
 //Dasboard cases
-let fillNumberOfCases = () => {
+let fillNumberOfCases = (function() {
 	axios
 		.get(getDashboardAll)
 		.then((response) => {
@@ -453,7 +453,7 @@ let fillNumberOfCases = () => {
 			}
 			console.log(error.config);
 		});
-};
+})();
 
 let fillSituationReports = () => {
 	axios
@@ -486,7 +486,132 @@ let fillSituationReports = () => {
 			console.log(error.config);
 		});
 };
+//Line Chart
 $(document).ready(function() {
+	axiosResponse().then((data) => {
+		$('#dataTableWorldTimeline').DataTable({
+			data: data,
+			pagingType: 'numbers',
+			pageLength: 10,
+			stateSave: true,
+			language: {
+				searchPlaceholder: 'e.g. usa',
+				loadingRecords: '<i class="icon-spinner spinner-animate"></i>'
+			},
+			columns: [
+				{
+					data: 'country',
+					title: 'Country <small class="text-dark font-weight-600">(# Tested)</small>',
+					render: function(data, type, row) {
+						if (type === 'type' || type === 'sort') {
+							return data;
+						}
+						return `<div class="d-inline-block">${data} <span class="text-gray-600"><small class="text-dark font-weight-600">(${populationFormat(
+							row.tests
+						)})</small></span><p class="text-muted mb-0 small">Updated
+					${timeDifference(row.updated)}</p></div>`;
+					}
+				},
+				{
+					data: 'cases',
+					title: 'Confirmed',
+					render: function(data, type, row) {
+						if (type === 'type' || type === 'sort') {
+							return data;
+						}
+
+						return row.todayCases
+							? `${data.toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.todayCases.toLocaleString()}<span class="font-weight-light text-danger small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
+									row.cases,
+									row.todayCases
+								)}%)</span></p>`
+							: `${data.toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.todayCases.toLocaleString()}</p>`;
+					}
+				},
+				{
+					data: 'active',
+					title: 'Active',
+					render: function(data, type, row) {
+						if (type === 'type' || type === 'sort') {
+							return data;
+						}
+						return `${data.toLocaleString()}`;
+					}
+				},
+				{
+					data: 'recovered',
+					title: 'Recovered',
+					render: function(data, type, row) {
+						if (type === 'type' || type === 'sort') {
+							return data;
+						}
+						return `${data ? data.toLocaleString() : ''}`;
+					}
+				},
+				{
+					data: 'deaths',
+					title: 'Deaths',
+					render: function(data, type, row) {
+						if (type === 'type' || type === 'sort') {
+							return data;
+						}
+						return row.todayDeaths
+							? `${data.toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.todayDeaths.toLocaleString()}<span class="font-weight-light text-muted small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
+									row.deaths,
+									row.todayDeaths
+								)}%)</span></p>`
+							: `${data.toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.todayDeaths.toLocaleString()}</p>`;
+					}
+				}
+			],
+			order: [ [ 1, 'desc' ] ],
+			fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+				//Lazy load images
+				if (aData.countryInfo.iso2) {
+					$('td:eq(0)', nRow).prepend(
+						`<img src="https://www.countryflags.io/${aData.countryInfo.iso2.toLocaleLowerCase()}/shiny/24.png" style="vertical-align:top; margin-right:10px;" onerror="this.src='../assets/img/flag_placeholder_20x20.png'"/>`
+					);
+				}
+			}
+		});
+		fillNewsCards();
+		fillSituationReports();
+		$('#selectNewsRegion').on('change', function() {
+			let value = $(this).val();
+			document.getElementById('card-deck').innerHTML =
+				'<div class="text-center"><i class="icon-spinner spinner-animate"></i></div>';
+			const newsUri = 'https://api.smartable.ai/coronavirus/news/' + value;
+
+			axios
+				.get(newsUri, {
+					headers: {
+						'Subscription-Key': API_KEY_SMARTTABLE
+					}
+				})
+				.then((response) => {
+					getNewsResults(response.data);
+				})
+				.catch((error) => {
+					if (error.response) {
+						console.log(
+							'The request was made and the server responded with a status code that falls out of the range of 2xx'
+						);
+						console.log(error.response.data);
+						console.log(error.response.status);
+						console.log(error.response.headers);
+					} else if (error.request) {
+						console.log(
+							'The request was made but no response was received `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+						);
+						console.log(error.request);
+					} else {
+						console.log('Something happened in setting up the request that triggered an Error');
+						console.log('Error', error.message);
+					}
+					console.log(error.config);
+				});
+		});
+	});
 	function getCountries(url) {
 		axios
 			.get(url)
@@ -771,7 +896,6 @@ $(document).ready(function() {
 				console.log('Error config: ', error.config);
 			});
 	}
-
 	getCountries('https://corona-api.com/timeline');
 	$('#ddChartCountries').on('change', function() {
 		let value = $(this).val();
@@ -782,136 +906,6 @@ $(document).ready(function() {
 		}
 	});
 });
-//Line Chart
-function countriesDatatableChart(data) {
-	$(document).ready(function() {
-		fillNumberOfCases();
-		$('#dataTableWorldTimeline').DataTable({
-			data: data,
-			pagingType: 'numbers',
-			pageLength: 10,
-			stateSave: true,
-			language: {
-				searchPlaceholder: 'e.g. usa',
-				loadingRecords: '<i class="icon-spinner spinner-animate"></i>'
-			},
-			columns: [
-				{
-					data: 'country',
-					title: 'Country <small class="text-dark font-weight-600">(# Tested)</small>',
-					render: function(data, type, row) {
-						if (type === 'type' || type === 'sort') {
-							return data;
-						}
-						return `<div class="d-inline-block">${data} <span class="text-gray-600"><small class="text-dark font-weight-600">(${populationFormat(
-							row.tests
-						)})</small></span><p class="text-muted mb-0 small">Updated
-					${timeDifference(row.updated)}</p></div>`;
-					}
-				},
-				{
-					data: 'cases',
-					title: 'Confirmed',
-					render: function(data, type, row) {
-						console.log('countriesDatatableChart -> row', row);
-
-						if (type === 'type' || type === 'sort') {
-							return data;
-						}
-
-						return row.todayCases
-							? `${data.toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.todayCases.toLocaleString()}<span class="font-weight-light text-danger small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
-									row.cases,
-									row.todayCases
-								)}%)</span></p>`
-							: `${data.toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.todayCases.toLocaleString()}</p>`;
-					}
-				},
-				{
-					data: 'active',
-					title: 'Active',
-					render: function(data, type, row) {
-						if (type === 'type' || type === 'sort') {
-							return data;
-						}
-						return `${data.toLocaleString()}`;
-					}
-				},
-				{
-					data: 'recovered',
-					title: 'Recovered',
-					render: function(data, type, row) {
-						if (type === 'type' || type === 'sort') {
-							return data;
-						}
-						return `${data ? data.toLocaleString() : ''}`;
-					}
-				},
-				{
-					data: 'deaths',
-					title: 'Deaths',
-					render: function(data, type, row) {
-						if (type === 'type' || type === 'sort') {
-							return data;
-						}
-						return row.todayDeaths
-							? `${data.toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.todayDeaths.toLocaleString()}<span class="font-weight-light text-muted small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
-									row.deaths,
-									row.todayDeaths
-								)}%)</span></p>`
-							: `${data.toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.todayDeaths.toLocaleString()}</p>`;
-					}
-				}
-			],
-			order: [ [ 1, 'desc' ] ],
-			fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-				//Lazy load images
-				if (aData.countryInfo.iso2) {
-					$('td:eq(0)', nRow).prepend(
-						`<img src="https://www.countryflags.io/${aData.countryInfo.iso2.toLocaleLowerCase()}/shiny/24.png" style="vertical-align:top; margin-right:10px;" onerror="this.src='../assets/img/flag_placeholder_20x20.png'"/>`
-					);
-				}
-			}
-		});
-		fillNewsCards();
-		fillSituationReports();
-		$('#selectNewsRegion').on('change', function() {
-			let value = $(this).val();
-			document.getElementById('card-deck').innerHTML =
-				'<div class="text-center"><i class="icon-spinner spinner-animate"></i></div>';
-			const newsUri = 'https://api.smartable.ai/coronavirus/news/' + value;
-
-			axios
-				.get(newsUri, {
-					headers: {
-						'Subscription-Key': API_KEY_SMARTTABLE
-					}
-				})
-				.then((response) => {
-					getNewsResults(response.data);
-				})
-				.catch((error) => {
-					if (error.response) {
-						console.log(
-							'The request was made and the server responded with a status code that falls out of the range of 2xx'
-						);
-						console.log(error.response.data);
-						console.log(error.response.status);
-						console.log(error.response.headers);
-					} else if (error.request) {
-						console.log(
-							'The request was made but no response was received `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
-						);
-						console.log(error.request);
-					} else {
-						console.log('Something happened in setting up the request that triggered an Error');
-						console.log('Error', error.message);
-					}
-					console.log(error.config);
-				});
-		});
-	});
-}
 
 $(window).on('load', function() {
 	let $logo = $('#brand-logo');
