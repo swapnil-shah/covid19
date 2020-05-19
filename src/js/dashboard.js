@@ -404,33 +404,32 @@ let fillNewsCards = () => {
 };
 
 //Dasboard cases
-function axiosGetGlobalData() {
-	return axios
-		.get('https://corona-api.com/timeline')
-		.then((response) => {
-			return response.data.data;
-		})
-		.catch((error) => {
-			if (error.response) {
-				console.log(
-					'The request was made and the server responded with a status code that falls out of the range of 2xx'
-				);
-				console.log('Error Data: ', error.response.data);
-				console.log('Error Status: ', error.response.status);
-				console.log('Error Headers: ', error.response.headers);
-			} else if (error.request) {
-				console.log(
-					'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
-				);
-				console.log('Error Request: ', error.request);
-			} else {
-				console.log('Something happened in setting up the request that triggered an Error');
-				console.log('Error Message: ', error.message);
-			}
-			console.log('Error config: ', error.config);
-		});
-}
-axiosGetGlobalData().then((data) => {
+axios
+	.get('https://corona-api.com/timeline')
+	.then((response) => {
+		cardStats(response.data.data);
+		chartDataSet(response.data.data);
+	})
+	.catch((error) => {
+		if (error.response) {
+			console.log(
+				'The request was made and the server responded with a status code that falls out of the range of 2xx'
+			);
+			console.log('Error Data: ', error.response.data);
+			console.log('Error Status: ', error.response.status);
+			console.log('Error Headers: ', error.response.headers);
+		} else if (error.request) {
+			console.log(
+				'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+			);
+			console.log('Error Request: ', error.request);
+		} else {
+			console.log('Something happened in setting up the request that triggered an Error');
+			console.log('Error Message: ', error.message);
+		}
+		console.log('Error config: ', error.config);
+	});
+function cardStats(data) {
 	document.getElementById('last-updated').innerHTML =
 		'Last updated <span class="text-gray-800">' + timeDifference(data[0].updated_at) + '</span>';
 	document.getElementById('number-active').innerText = data[0].active.toLocaleString();
@@ -459,9 +458,9 @@ axiosGetGlobalData().then((data) => {
 				: '';
 	}
 	document.getElementById('per-active').innerHTML = '';
-});
+}
 
-let fillSituationReports = () => {
+function fillSituationReports() {
 	axios
 		.get('https://covid19api.io/api/v1/SituationReports')
 		.then((response) => {
@@ -491,7 +490,7 @@ let fillSituationReports = () => {
 			}
 			console.log(error.config);
 		});
-};
+}
 //Line Chart
 function getCountries(data) {
 	let filteredArr = [];
@@ -719,10 +718,17 @@ function getCountries(data) {
 		myChart.update();
 	});
 }
-$(document).ready(function() {
-	axiosResponse().then((data) => {
+
+function chartDataSet(data) {
+	$(document).ready(function() {
+		getCountries(data);
+	});
+}
+function worldDatatable(data) {
+	$(document).ready(function() {
 		$('#dataTableWorldTimeline').DataTable({
 			data: data.data,
+			responsive: true,
 			pagingType: 'numbers',
 			pageLength: 10,
 			stateSave: true,
@@ -739,14 +745,12 @@ $(document).ready(function() {
 							return data;
 						}
 						return row.code
-							? `<img src="https://www.countryflags.io/${row.code.toLocaleLowerCase()}/shiny/24.png" style="vertical-align:top; margin-right:10px;" onerror="this.src='../assets/img/flag_placeholder_20x20.png'"/><div class="d-inline-block">${data} <span class="text-gray-600"><small class="text-dark font-weight-600">(${populationFormat(
+							? `<div class="d-inline-block"><img src="https://www.countryflags.io/${row.code.toLocaleLowerCase()}/shiny/24.png" style="vertical-align:bottom; margin-right:5px;" onerror="this.src='../assets/img/flag_placeholder_20x20.png'"/>${data} <span class="text-gray-600"><small class="text-dark font-weight-600">(${populationFormat(
 									row.population
-								)})</small></span><p class="text-muted mb-0 small">Updated
-							${timeDifference(row.updated_at)}</p></div>`
-							: `<img src="../assets/img/flag_placeholder_20x20.png" style="vertical-align:top; margin-right:10px;" onerror="this.src='../assets/img/flag_placeholder_20x20.png'"/><div class="d-inline-block">${data} <span class="text-gray-600"><small class="text-dark font-weight-600">(${populationFormat(
+								)})</small></span></div>`
+							: `<span class="d-inline-block"><img src="../assets/img/flag_placeholder_20x20.png" style="vertical-align:bottom; margin-right:5px;" onerror="this.src='../assets/img/flag_placeholder_20x20.png'"/>${data} <span class="text-gray-600"><small class="text-dark font-weight-600">(${populationFormat(
 									row.tests
-								)})</small></span><p class="text-muted mb-0 small">Updated
-						${timeDifference(row.updated_at)}</p></div>`;
+								)})</small></span></span>`;
 					}
 				},
 				{
@@ -799,87 +803,106 @@ $(document).ready(function() {
 							: `${data ? data.toLocaleString() : ''}`;
 					}
 				}
-			]
+			],
+			order: [ [ 1, 'desc' ] ]
 		});
-		axiosGetGlobalData().then((data) => {
-			getCountries(data);
-		});
-		// getCountries('https://corona-api.com/timeline');
-		fillNewsCards();
-		fillSituationReports();
-		$('#selectNewsRegion').on('change', function() {
-			let value = $(this).val();
-			document.getElementById('card-deck').innerHTML =
-				'<div class="text-center"><i class="icon-spinner spinner-animate"></i></div>';
-			const newsUri = 'https://api.smartable.ai/coronavirus/news/' + value;
+	});
+}
+$(document).ready(function() {
+	fillNewsCards();
+	fillSituationReports();
+	$('#selectNewsRegion').on('change', function() {
+		let value = $(this).val();
+		document.getElementById('card-deck').innerHTML =
+			'<div class="text-center"><i class="icon-spinner spinner-animate"></i></div>';
+		const newsUri = 'https://api.smartable.ai/coronavirus/news/' + value;
 
+		axios
+			.get(newsUri, {
+				headers: {
+					'Subscription-Key': API_KEY_SMARTTABLE
+				}
+			})
+			.then((response) => {
+				getNewsResults(response.data);
+			})
+			.catch((error) => {
+				if (error.response) {
+					console.log(
+						'The request was made and the server responded with a status code that falls out of the range of 2xx'
+					);
+					console.log(error.response.data);
+					console.log(error.response.status);
+					console.log(error.response.headers);
+				} else if (error.request) {
+					console.log(
+						'The request was made but no response was received `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+					);
+					console.log(error.request);
+				} else {
+					console.log('Something happened in setting up the request that triggered an Error');
+					console.log('Error', error.message);
+				}
+				console.log(error.config);
+			});
+	});
+	$('#ddChartCountries').on('change', function() {
+		let value = $(this).val();
+		if (value == 'global') {
 			axios
-				.get(newsUri, {
-					headers: {
-						'Subscription-Key': API_KEY_SMARTTABLE
-					}
-				})
+				.get('https://corona-api.com/timeline')
 				.then((response) => {
-					getNewsResults(response.data);
+					chartDataSet(response.data.data);
 				})
 				.catch((error) => {
 					if (error.response) {
 						console.log(
 							'The request was made and the server responded with a status code that falls out of the range of 2xx'
 						);
-						console.log(error.response.data);
-						console.log(error.response.status);
-						console.log(error.response.headers);
+						console.log('Error Data: ', error.response.data);
+						console.log('Error Status: ', error.response.status);
+						console.log('Error Headers: ', error.response.headers);
 					} else if (error.request) {
 						console.log(
-							'The request was made but no response was received `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+							'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
 						);
-						console.log(error.request);
+						console.log('Error Request: ', error.request);
 					} else {
 						console.log('Something happened in setting up the request that triggered an Error');
-						console.log('Error', error.message);
+						console.log('Error Message: ', error.message);
 					}
-					console.log(error.config);
+					console.log('Error config: ', error.config);
 				});
-		});
-		$('#ddChartCountries').on('change', function() {
-			let value = $(this).val();
-
-			if (value == 'global') {
-				axiosGetGlobalData().then((response) => {
-					getCountries(response);
+		} else {
+			axios
+				.get('https://corona-api.com/countries/' + value.toLowerCase() + '?include=timeline')
+				.then((response) => {
+					getCountries(response.data);
+				})
+				.catch((error) => {
+					if (error.response) {
+						console.log(
+							'The request was made and the server responded with a status code that falls out of the range of 2xx'
+						);
+						console.log('Error Data: ', error.response.data);
+						console.log('Error Status: ', error.response.status);
+						console.log('Error Headers: ', error.response.headers);
+					} else if (error.request) {
+						console.log(
+							'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+						);
+						console.log('Error Request: ', error.request);
+					} else {
+						console.log('Something happened in setting up the request that triggered an Error');
+						console.log('Error Message: ', error.message);
+					}
+					console.log('Error config: ', error.config);
 				});
-			} else {
-				axios
-					.get('https://corona-api.com/countries/' + value.toLowerCase() + '?include=timeline')
-					.then((response) => {
-						getCountries(response.data);
-					})
-					.catch((error) => {
-						if (error.response) {
-							console.log(
-								'The request was made and the server responded with a status code that falls out of the range of 2xx'
-							);
-							console.log('Error Data: ', error.response.data);
-							console.log('Error Status: ', error.response.status);
-							console.log('Error Headers: ', error.response.headers);
-						} else if (error.request) {
-							console.log(
-								'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
-							);
-							console.log('Error Request: ', error.request);
-						} else {
-							console.log('Something happened in setting up the request that triggered an Error');
-							console.log('Error Message: ', error.message);
-						}
-						console.log('Error config: ', error.config);
-					});
-			}
-			$('input:radio[name=timeframe]').filter('[value=month]').prop('checked', true);
-			$('input:radio[name=caseTypeRadio]').filter('[value=confirmed]').prop('checked', true);
-			$('input:radio[name=chartTypeRadio]').filter('[value=bar]').prop('checked', true);
-			$('#linearRadio, #logarithmicRadio').attr('disabled', '');
-		});
+		}
+		$('input:radio[name=timeframe]').filter('[value=month]').prop('checked', true);
+		$('input:radio[name=caseTypeRadio]').filter('[value=confirmed]').prop('checked', true);
+		$('input:radio[name=chartTypeRadio]').filter('[value=bar]').prop('checked', true);
+		$('#linearRadio, #logarithmicRadio').attr('disabled', '');
 	});
 });
 

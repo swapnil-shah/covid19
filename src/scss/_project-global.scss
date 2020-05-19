@@ -300,6 +300,7 @@
 #dataTableCountry tbody tr {
 	cursor: pointer;
 }
+
 .modal-content .icon-cross {
 	font-size: 1rem;
 	padding: 1.5rem 1rem;
@@ -426,5 +427,9 @@ h3.modal-title {
 
 	#myChart {
 		height: 20rem !important;
+	}
+	#dataTableWorldTimeline,
+	#dataTableCountry {
+		width: 800px !important;
 	}
 }

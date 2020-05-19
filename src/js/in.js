@@ -369,7 +369,8 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 		myChart.update();
 	});
 }
-axiosResponse().then((data) => {
+
+function cardStats(data) {
 	data.statewise.forEach(function(states) {
 		if (states.statecode === 'TT') {
 			document.getElementById('last-updated').innerHTML =
@@ -414,9 +415,9 @@ axiosResponse().then((data) => {
 					: '';
 		}
 	});
-});
-$(document).ready(function() {
-	axiosResponse().then((data) => {
+}
+function countryDataSet(data) {
+	$(document).ready(function() {
 		let filteredArr = [];
 		data.statewise.forEach(function(states) {
 			if (states.statecode !== 'TT') {
@@ -488,14 +489,14 @@ $(document).ready(function() {
 			},
 			columns: [
 				{
-					title: 'State <p class="small">Last updated DD/MM/YYYY</p>',
+					title: 'State <span class="text-muted small">(Last updated)</span>',
 					data: 'state',
 					render: function(data, type, row) {
 						if (type === 'type' || type === 'sort') {
 							return data;
 						}
-						return `${data}<span class="text-muted mb-0 small">
-						(${row.lastupdatedtime})</span><p class="mb-0"><span class="small text-primary border-top-0 border-bottom border-right-0 border-left-0 border-blue">See Districts</span></p>`;
+						return `${data}<div class="text-muted mb-0 small">
+						(${row.lastupdatedtime})</div><p class="mb-0"><span class="small text-primary border-top-0 border-bottom border-right-0 border-left-0 border-blue">See Districts</span></p>`;
 					}
 				},
 				{
@@ -840,10 +841,11 @@ $(document).ready(function() {
 				order: [ [ 1, 'desc' ] ]
 			});
 		});
+		newsResults();
+		notificationsAdvisories();
 	});
-	newsResults();
-	notificationsAdvisories();
-});
+}
+
 $(window).on('load', function() {
 	let $logo = $('#brand-logo');
 	$logo.removeClass('rotating');

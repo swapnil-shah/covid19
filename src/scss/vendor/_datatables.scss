@@ -5,6 +5,8 @@
 	td {
 		vertical-align: middle;
 		color: #485260 !important;
+		padding-top: 0.50rem !important;
+		padding-bottom: 0.50rem !important;
 	}
 	@extend .table-responsive;
 	@include media-breakpoint-up(md) {
@@ -56,68 +58,54 @@
 	table.dataTable thead .sorting_asc_disabled:after,
 	table.dataTable thead .sorting_desc_disabled:after {
 		display: none;
-		font-family: 'Font Awesome 5 Free';
+		font-family: 'icomoon' !important;
+		// speak: none;
+		font-style: normal;
+		font-weight: normal;
+		font-variant: normal;
+		text-transform: none;
+		line-height: 1;
+		/* Better Font Rendering =========== */
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
 		font-weight: 900;
 	}
 	// Set the icon for .sorting when a column is not sorted
-	table.dataTable thead .sorting:after {
-		content: '\f0dc';
-	}
-	// Set the icon for .sorting_asc when a column is sorted (ascending)
+	// table.dataTable thead .sorting:after {
+	// 	display: inline-block;
+	// 	content: '\ea4d';
+	// }
+	// // Set the icon for .sorting_asc when a column is sorted (ascending)
 	table.dataTable thead .sorting_asc:after,
 	table.dataTable thead .sorting_asc_disabled:after {
-		content: '\f0de';
+		display: inline-block;
+		content: '\ea4c';
+		opacity: 0.7;
 	}
 	// Set the icon for .sorting_desc when a column is sorted (descending)
 	table.dataTable thead .sorting_desc:after,
 	table.dataTable thead .sorting_desc_disabled:after {
-		content: '\f0dd';
-	}
-	// Style the SVG that is injected in place of the CSS pseudo-element via Font Awesome
-	// For more information on how this works, visit the Font Awesome Docs:
-	// https://fontawesome.com/how-to-use/on-the-web/advanced/css-pseudo-elements#with-svg-js
-	table.dataTable thead .sorting,
-	table.dataTable thead .sorting_asc,
-	table.dataTable thead .sorting_desc,
-	table.dataTable thead .sorting_asc_disabled,
-	table.dataTable thead .sorting_desc_disabled {
-		[data-fa-pseudo-element=':after'] {
-			position: absolute;
-			right: 10px;
-			top: 50%;
-			transform: translatey(-50%);
-			color: $gray-400;
-		}
-	}
-	// Style the icons when a column is sorted to make the icon darker
-	table.dataTable thead .sorting_asc,
-	table.dataTable thead .sorting_desc,
-	table.dataTable thead .sorting_asc_disabled,
-	table.dataTable thead .sorting_desc_disabled {
-		[data-fa-pseudo-element=':after'] {
-			color: $primary;
-		}
-	}
-	// Styling for the dark table option
-	table.dataTable.table-dark thead .sorting {
-		[data-fa-pseudo-element=':after'] {
-			color: fade-out($white, 0.75);
-		}
-	}
-	table.dataTable.table-dark thead .sorting_asc,
-	table.dataTable.table-dark thead .sorting_desc,
-	table.dataTable.table-dark thead .sorting_asc_disabled,
-	table.dataTable.table-dark thead .sorting_desc_disabled {
-		[data-fa-pseudo-element=':after'] {
-			color: fade-out($white, 0.25);
-		}
+		display: inline-block;
+		content: '\ea4d';
+		opacity: 0.7;
 	}
 	.small {
 		margin-bottom: 5px;
+	}
+	img {
+		vertical-align: middle !important;
 	}
 }
 
 div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 	justify-content: left;
 	padding-top: 10px;
+}
+table.dataTable thead > tr > th.sorting_asc,
+table.dataTable thead > tr > th.sorting_desc,
+table.dataTable thead > tr > th.sorting,
+table.dataTable thead > tr > td.sorting_asc,
+table.dataTable thead > tr > td.sorting_desc,
+table.dataTable thead > tr > td.sorting {
+	padding-right: 15px;
 }
