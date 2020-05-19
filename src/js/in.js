@@ -47,7 +47,7 @@ function populateNumbers(confirmed, recovered, deaths, text) {
 	document.getElementById('total-confirmed').innerHTML = `<span style="color:${borderBlue}">${confirmed}</span>`;
 	document.getElementById('total-recovered').innerHTML = `<span style="color:${borderGreen}">${recovered}</span>`;
 	document.getElementById('total-deaths').innerHTML = `<span style="color:${borderRed}">${deaths}</span>`;
-	document.getElementById('total-date').innerHTML = ` (${text})`;
+	document.getElementById('total-date').innerHTML = `${text}`;
 }
 function newsResults() {
 	axios
@@ -369,7 +369,6 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 		myChart.update();
 	});
 }
-let filteredArr = [];
 axiosResponse().then((data) => {
 	data.statewise.forEach(function(states) {
 		if (states.statecode === 'TT') {
@@ -413,13 +412,17 @@ axiosResponse().then((data) => {
 							parseInt(states.deltadeaths)
 						)}%)`
 					: '';
-		} else {
-			filteredArr.push(states);
 		}
 	});
 });
 $(document).ready(function() {
 	axiosResponse().then((data) => {
+		let filteredArr = [];
+		data.statewise.forEach(function(states) {
+			if (states.statecode !== 'TT') {
+				filteredArr.push(states);
+			}
+		});
 		let lastArrTested = data.tested[data.tested.length - 1];
 		let lastArrTimeSeries = data.cases_time_series[data.cases_time_series.length - 1];
 		let numbersConfirmed = parseInt(lastArrTimeSeries.totalconfirmed).toLocaleString();
@@ -463,7 +466,7 @@ $(document).ready(function() {
 			numbersConfirmedMonth.toLocaleString(),
 			numbersRecoveredMonth.toLocaleString(),
 			numbersDeathsMonth.toLocaleString(),
-			'since month'
+			'Recent Month'
 		);
 		Chart.defaults.global.defaultFontColor = 'grey';
 		Chart.defaults.global.animation.duration = 2500;
@@ -505,9 +508,9 @@ $(document).ready(function() {
 						return parseInt(row.deltaconfirmed)
 							? `${parseInt(
 									data
-								).toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
+								).toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
 									row.deltaconfirmed
-								).toLocaleString()}<span class="font-weight-light text-danger small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
+								).toLocaleString()}<span class="font-weight-light small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
 									parseInt(row.confirmed),
 									parseInt(row.deltaconfirmed)
 								)}%)</span></p>`
@@ -554,9 +557,9 @@ $(document).ready(function() {
 						return parseInt(row.deltadeaths)
 							? `${parseInt(
 									data
-								).toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
+								).toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
 									row.deltadeaths
-								).toLocaleString()}<span class="font-weight-light text-muted small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
+								).toLocaleString()}<span class="font-weight-light text-danger small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
 									parseInt(row.deaths),
 									parseInt(row.deltadeaths)
 								)}%)</span></p>`
@@ -638,7 +641,7 @@ $(document).ready(function() {
 				numbersConfirmed.toLocaleString(),
 				numbersRecovered.toLocaleString(),
 				numbersDeceased.toLocaleString(),
-				'since beginning'
+				'From the Beginning'
 			);
 			myChart.destroy();
 			if ($('#confirmedRadio').is(':checked')) {
@@ -657,7 +660,7 @@ $(document).ready(function() {
 				numbersConfirmedMonth.toLocaleString(),
 				numbersRecoveredMonth.toLocaleString(),
 				numbersDeathsMonth.toLocaleString(),
-				'since a month'
+				'Recent Month'
 			);
 			myChart.destroy();
 			if ($('#confirmedRadio').is(':checked')) {
@@ -690,7 +693,7 @@ $(document).ready(function() {
 				numbersConfirmedWeeks.toLocaleString(),
 				numbersRecoveredWeeks.toLocaleString(),
 				numbersDeathsWeeks.toLocaleString(),
-				'since 2 weeks'
+				'Recent 2 Weeks'
 			);
 			myChart.destroy();
 			if ($('#confirmedRadio').is(':checked')) {

@@ -1,7 +1,6 @@
-
 script(type="text/javascript").
     function axiosResponse() {
-        return axios.get('https://disease.sh/v2/countries?yesterday=true&sort=cases').then(response => {
+        return axios.get('https://corona-api.com/countries').then(response => {
             return response.data
         })
         .catch((error) => {
@@ -32,7 +31,7 @@ script(type="text/javascript").
         L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
             id: 'mapbox/dark-v10',
             attribution:
-                'Map data <a target="_blank" href="https://disease.sh/">Novel COVID API</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                'Map data <a target="_blank" href="https://about-corona.net/">about-corona</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             minZoom: 0,
             noWrap: true,
             bounds: [ [ -90, -180 ], [ 90, 180 ] ]
@@ -65,30 +64,31 @@ script(type="text/javascript").
             }
             return output;
         }
-        data.forEach(function(country) {
-            var latlng = L.latLng({ lat: country.countryInfo.lat, lng: country.countryInfo.long });
+        data.data.forEach(function(country) {
+            var latlng = L.latLng({ lat: country.coordinates.latitude, lng: country.coordinates.longitude });
             var circle = L.circleMarker(latlng, {
                 fillOpacity: 0.5,
-                radius: Math.sqrt(country.cases) * 0.02,
+                radius: Math.sqrt(country.latest_data.confirmed) * 0.02,
                 stroke: false,
                 fillColor: '#d11a1a',
                 renderer: myRenderer
             })
                 .addTo(mymap)
                 .bindTooltip(
-                    htmlPopup(country.country, country.countryInfo.iso2, country.cases, country.recovered, country.deaths)
+                    htmlPopup(country.name, country.code, country.latest_data.confirmed, country.latest_data.recovered, country.latest_data.deaths)
                 );
 
             let ddChartCountriesSelect = document.getElementById('ddChartCountries');
             let regionNewsSelect = document.getElementById('selectNewsRegion');
             ddChartCountriesSelect.options[ddChartCountriesSelect.options.length] = new Option(
-                country.country,
-                country.countryInfo.iso2
+                country.name,
+                country.code
             );
             regionNewsSelect.options[regionNewsSelect.options.length] = new Option(
-                country.country,
-                country.countryInfo.iso2
+                country.name,
+                country.code
             );
         });
         var info = L.control({ position: 'bottomright' });
     })
+

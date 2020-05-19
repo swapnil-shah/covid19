@@ -60,7 +60,7 @@ block content
                 #covidWorldMap(style="height:50vh")
                 .row.justify-content-center.p-0.pt-2
                     .card-stats.col-md-3
-                        .card.h-100.bg-secondary.border-0
+                        .card.h-100.bg-dark.border-0
                             .card-body
                                 h3.text-white-75.mb-3.d-inline-block Confirmed
                                 img.text-white-50.float-right(src="../../assets/img/icons/icon_confirmed.svg", onerror="this.onerror=null;")
@@ -70,7 +70,7 @@ block content
                                     span &nbsp;
                                     #per-confirmed.text-white-75.small
                     .card-stats.col-md-3
-                        .card.h-100.bg-dark.border-0
+                        .card.h-100.bg-secondary.border-0
                             .card-body
                                 h3.text-white-75.mb-3.d-inline-block Active
                                 img.text-white-50.float-right(src="../../assets/img/icons/icon_active.svg", onerror="this.onerror=null;")
@@ -82,7 +82,10 @@ block content
                                 h3.text-white-75.mb-3.d-inline-block Recovered
                                 img.text-white-50.float-right(src="../../assets/img/icons/icon_recovered.svg", onerror="this.onerror=null;")
                                 #number-recovered.text-white.mb-0
-                                #per-recovered.text-white-75 Loading stat...
+                                .d-flex.justify-content-start.align-items-center
+                                    #today-recovered.text-white-75 Loading stat...
+                                    span &nbsp;
+                                    #per-recovered.text-white-75 
                     .card-stats.col-md-3
                         .card.h-100.bg-danger.border-0
                             .card-body
@@ -97,7 +100,7 @@ block content
                         #last-updated.text-center.pl-2
                         p.small.pt-2.pr-2.mb-0.text-right
                             em Data derived from&nbsp;
-                                a.w-100.pt-2(href="https://disease.sh/" target="_blank") Novel COVID API
+                                a.w-100.pt-2(href="https://about-corona.net/" target="_blank") about-corona
                                     i.icon-new-tab.ml-1
         .row
             .col-sm-12
@@ -116,15 +119,30 @@ block content
                         .row
                             .col-sm-12.col-md-9.p-0
                                 canvas#myChart.tuatara.p-1(width='100%', height='30rem')
-                            .col-sm-12.col-md-3.pl-md-4
-                                .row
+                                .row.text-center
                                     .col.mt-2
-                                        p.font-italic.font-weight-300.text-left.mb-1.text-white
-                                            | See country specific data
-                                        .select.w-100
+                                        p.font-italic.font-weight-300.mb-1.text-white
+                                            | Select Country
+                                        .select
                                             select#ddChartCountries
                                                 option(value="global" selected) Global
-                                .row.justify-content-between
+                            .col-sm-12.col-md-3.pl-md-4
+                                .row.d-flex.justify-content-center.pt-2.text-white
+                                    #total-date
+                                .row.d-flex.justify-content-around.pb-4.pt-1.text-center.text-white.border-bottom
+                                    .col.p-1
+                                        p.mb-1
+                                            small.font-weight-light.mb-1 Confirmed
+                                        p#total-confirmed.card-text.text-dark loading...
+                                    .col.p-1
+                                        p.mb-1
+                                            small.font-weight-light.mb-1 Recovered
+                                        p#total-recovered.card-text.text-dark loading...
+                                    .col.p-1
+                                        p.mb-1
+                                            small.font-weight-light.mb-1 Deaths
+                                        p#total-deaths.card-text.text-dark loading... 
+                                .d-flex.justify-content-between
                                     .col.mt-2
                                         p.font-italic.font-weight-300.text-left.mt-4.mb-2 Period
                                         .custom-control.custom-radio.custom-control-solid.text-white
@@ -147,7 +165,7 @@ block content
                                         .custom-control.custom-radio.custom-control-solid.text-white
                                             input#deathsRadio.custom-control-input(type='radio', name='caseTypeRadio', value="deaths")
                                             label.custom-control-label.font-weight-300(for='deathsRadio') Deaths
-                                .row.justify-content-between
+                                .d-flex.justify-content-between
                                     .col.mt-2
                                         p.font-italic.font-weight-300.text-left.mt-4.mb-2 Chart Type
                                         .custom-control.custom-radio.custom-control-solid.text-white
@@ -157,16 +175,17 @@ block content
                                             input#lineRadio.custom-control-input(type='radio', name='chartTypeRadio', value="line")
                                             label.custom-control-label.font-weight-300(for='lineRadio') Line
                                     .col.mt-2
-                                        p.font-italic.font-weight-300.text-left.mt-4.mb-2 Scale (Chart Type = Line)
+                                        p.font-italic.font-weight-300.text-left.mt-4.mb-2 Scale (Line)
                                         .custom-control.custom-radio.custom-control-solid.text-white
                                             input#linearRadio.custom-control-input(type='radio', name='scaleTypeRadio', value="linear" checked, disabled)
                                             label.custom-control-label.font-weight-300(for='linearRadio') Linear 
                                         .custom-control.custom-radio.custom-control-solid.text-white
                                             input#logarithmicRadio.custom-control-input(type='radio', name='scaleTypeRadio',value="logarithmic", disabled )
                                             label.custom-control-label.font-weight-300(for='logarithmicRadio') Logarithmic
+
                     p.small.pt-2.pr-2.mb-0.text-right
                         em Data derived from&nbsp;
-                            a.w-100.pt-2(href="https://covidtracking.com/" target="_blank") The COVID Tracking Project
+                            a.w-100.pt-2(href="https://about-corona.net/" target="_blank") about-corona
                                 i.icon-new-tab.ml-1
             .col-sm-12
                 .card.pb-2.mb-4
@@ -176,7 +195,7 @@ block content
                         include includes/datatables/datatable-dashboard.pug
                     p.small.pt-2.pr-2.mb-0.text-right
                         em Data derived from&nbsp;
-                            a.w-100.pt-2(href="https://disease.sh/" target="_blank") Novel COVID API
+                            a.w-100.pt-2(href="https://about-corona.net/" target="_blank") about-corona
                                 i.icon-new-tab.ml-1
             .col-sm-12
                 .card.mb-4

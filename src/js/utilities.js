@@ -1,6 +1,6 @@
 //Reformat a date from YYYY-MM-DD to MM/DD/YYYY
 function formatDate(date) {
-	const dateObj = new Date(date + 'T00:00:00');
+	const dateObj = new Date(date);
 	return new Intl.DateTimeFormat('en-US').format(dateObj);
 }
 

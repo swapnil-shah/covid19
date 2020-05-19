@@ -42,34 +42,11 @@ let numbersConfirmedWeeks = 0;
 let numbersDeathsWeeks = 0;
 let numbersRecoveredWeeks = 0;
 //US cases
-let fillNumberOfCases = (function() {
-	axios
-		.get('https://disease.sh/v2/countries/usa?yesterday=true&strict=true')
+function axiosGetUsaData() {
+	return axios
+		.get('https://corona-api.com/countries/us?include=timeline')
 		.then((response) => {
-			document.getElementById('last-updated').innerHTML =
-				'Last updated <span class="text-gray-800">' + timeDifference(response.data.updated) + '</span>';
-			document.getElementById('number-active').innerText = response.data.active.toLocaleString();
-			document.getElementById('number-confirmed').innerText = response.data.cases.toLocaleString();
-			document.getElementById('number-recovered').innerText = response.data.recovered.toLocaleString();
-			document.getElementById('number-deaths').innerText = response.data.deaths.toLocaleString();
-			document.getElementById('today-confirmed').innerText = '+' + response.data.todayCases.toLocaleString();
-			document.getElementById('today-deaths').innerText = '+' + response.data.todayDeaths.toLocaleString();
-			document.getElementById('per-active').innerHTML = '';
-			document.getElementById('per-recovered').innerHTML = '';
-			document.getElementById('per-confirmed').innerHTML =
-				Math.sign(percentageChangeTotal(response.data.cases, response.data.todayCases)) === 1
-					? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
-							response.data.cases,
-							response.data.todayCases
-						)}%)`
-					: '';
-			document.getElementById('per-deaths').innerHTML =
-				Math.sign(percentageChangeTotal(response.data.deaths, response.data.todayDeaths)) === 1
-					? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
-							response.data.deaths,
-							response.data.todayDeaths
-						)}%)`
-					: '';
+			return response.data.data;
 		})
 		.catch((error) => {
 			if (error.response) {
@@ -90,7 +67,46 @@ let fillNumberOfCases = (function() {
 			}
 			console.log('Error config: ', error.config);
 		});
-})();
+}
+axiosGetUsaData().then((data) => {
+	document.getElementById('last-updated').innerHTML =
+		'Last updated <span class="text-gray-800">' + timeDifference(data.timeline[0].updated_at) + '</span>';
+	document.getElementById('number-active').innerText = data.timeline[0].active.toLocaleString();
+	document.getElementById('number-confirmed').innerText = data.timeline[0].confirmed.toLocaleString();
+	document.getElementById('number-recovered').innerText = data.timeline[0].recovered.toLocaleString();
+	document.getElementById('number-deaths').innerText = data.timeline[0].deaths.toLocaleString();
+	if (data.timeline[0].new_confirmed) {
+		document.getElementById('today-confirmed').innerText = '+' + data.timeline[0].new_confirmed.toLocaleString();
+		document.getElementById('per-confirmed').innerHTML =
+			Math.sign(percentageChangeTotal(data.timeline[0].confirmed, data.timeline[0].new_confirmed)) === 1
+				? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
+						data.timeline[0].confirmed,
+						data.timeline[0].new_confirmed
+					)}%)`
+				: '';
+	}
+	if (data.timeline[0].new_recovered) {
+		document.getElementById('today-recovered').innerText = '+' + data.timeline[0].new_recovered.toLocaleString();
+		document.getElementById('per-recovered').innerHTML =
+			Math.sign(percentageChangeTotal(data.timeline[0].confirmed, data.timeline[0].new_recovered)) === 1
+				? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
+						data.timeline[0].confirmed,
+						data.timeline[0].new_recovered
+					)}%)`
+				: '';
+	}
+	if (data.timeline[0].new_deaths) {
+		document.getElementById('today-deaths').innerText = '+' + data.timeline[0].new_deaths.toLocaleString();
+		document.getElementById('per-deaths').innerHTML =
+			Math.sign(percentageChangeTotal(data.timeline[0].deaths, data.timeline[0].new_deaths)) === 1
+				? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
+						data.timeline[0].deaths,
+						data.timeline[0].new_deaths
+					)}%)`
+				: '';
+	}
+	document.getElementById('per-active').innerHTML = '';
+});
 
 let fillNewsCards = () => {
 	axios
@@ -154,15 +170,9 @@ let addStates = () => {
 			console.log('Error config: ', error.config);
 		});
 };
-function populateNumbers(confirmed, recovered, deaths, text) {
-	document.getElementById('total-confirmed').innerHTML = `<span style="color:${borderBlue}">${confirmed}</span>`;
-	document.getElementById('total-recovered').innerHTML = `<span style="color:${borderGreen}">${recovered}</span>`;
-	document.getElementById('total-deaths').innerHTML = `<span style="color:${borderRed}">${deaths}</span>`;
-	document.getElementById('total-date').innerHTML = ` (${text})`;
-}
 let fillTravelNotices = () => {
 	axios
-		.get('https://covid19-server.chrismichael.now.sh/api/v1/TravelHealthNotices')
+		.get('https://covid19api.io/api/v1/TravelHealthNotices')
 		.then((response) => {
 			let output = '';
 			response.data.data.travelHealthNotices.alert.forEach(function(notice) {
@@ -208,6 +218,12 @@ let fillTravelNotices = () => {
 			console.log('Error config: ', error.config);
 		});
 };
+function populateNumbers(confirmed, recovered, deaths, text) {
+	document.getElementById('total-confirmed').innerHTML = `<span style="color:${borderBlue}">${confirmed}</span>`;
+	document.getElementById('total-recovered').innerHTML = `<span style="color:${borderGreen}">${recovered}</span>`;
+	document.getElementById('total-deaths').innerHTML = `<span style="color:${borderRed}">${deaths}</span>`;
+	document.getElementById('total-date').innerHTML = ` ${text}`;
+}
 function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradientBorder) {
 	var data = {
 		labels: labelset,
@@ -495,30 +511,35 @@ function getNewsResults(data) {
 }
 // function
 $(document).ready(function() {
-	axios
-		.get('https://corona-api.com/countries/us?include=timeline')
-		.then((reponse) => {
-			let filteredArr = reponse.data.data.timeline.filter(function(daily) {
-				return !daily.is_in_progress;
-			});
+	axiosGetUsaData()
+		.then((data) => {
+			let numbersConfirmed = data.latest_data.confirmed;
+			let numbersDeceased = data.latest_data.deaths;
+			let numbersRecovered = data.latest_data.recovered;
 			//Get months/30 days
-			filteredArr.slice(0, 30).forEach(function(daily) {
+			data.timeline.slice(0, 30).forEach(function(daily) {
 				confirmedMonth.push(daily.new_confirmed);
 				deathsMonth.push(daily.new_deaths);
 				recoveredMonth.push(daily.new_recovered);
+				numbersConfirmedMonth += daily.new_confirmed;
+				numbersDeathsMonth += daily.new_deaths;
+				numbersRecoveredMonth += daily.new_recovered;
 				labelsDateMonth.push(formatDate(daily.date));
 			});
 
 			//Get 14 days
-			filteredArr.slice(0, 14).forEach(function(daily) {
+			data.timeline.slice(0, 14).forEach(function(daily) {
 				confirmedWeeks.push(daily.new_confirmed);
 				deathsWeeks.push(daily.new_deaths);
 				recoveredWeeks.push(daily.new_recovered);
+				numbersConfirmedWeeks += daily.new_confirmed;
+				numbersDeathsWeeks += daily.new_deaths;
+				numbersRecoveredWeeks += daily.new_recovered;
 				labelsDateWeeks.push(formatDate(daily.date));
 			});
 
 			//Get since beginning
-			filteredArr.forEach(function(daily) {
+			data.timeline.forEach(function(daily) {
 				casesConfirmed.push(daily.new_confirmed);
 				casesDeaths.push(daily.new_deaths);
 				casesRecovered.push(daily.new_recovered);
@@ -538,6 +559,13 @@ $(document).ready(function() {
 			labelsDate.reverse();
 			//Default Chart
 			generateChart(labelsDateMonth, confirmedMonth, null, 'Confirmed', gradientBlue, borderBlue);
+			//Default legend numbers
+			populateNumbers(
+				numbersConfirmedMonth.toLocaleString(),
+				numbersRecoveredMonth.toLocaleString(),
+				numbersDeathsMonth.toLocaleString(),
+				'Recent Month'
+			);
 			Chart.defaults.global.defaultFontColor = 'grey';
 			Chart.defaults.global.animation.duration = 2500;
 			$('#confirmedRadio').click(function() {
@@ -622,12 +650,12 @@ $(document).ready(function() {
 				myChart.update();
 			});
 			$('#sinceBeginning').click(function() {
-				// populateNumbers(
-				// 	numbersConfirmed.toLocaleString(),
-				// 	numbersRecovered.toLocaleString(),
-				// 	numbersDeceased.toLocaleString(),
-				// 	'since beginning'
-				// );
+				populateNumbers(
+					numbersConfirmed.toLocaleString(),
+					numbersRecovered.toLocaleString(),
+					numbersDeceased.toLocaleString(),
+					'From the Beginning'
+				);
 				myChart.destroy();
 				if ($('#confirmedRadio').is(':checked')) {
 					generateChart(
@@ -655,12 +683,12 @@ $(document).ready(function() {
 				myChart.update();
 			});
 			$('#sinceMonth').click(function() {
-				// populateNumbers(
-				// 	numbersConfirmedMonth.toLocaleString(),
-				// 	numbersRecoveredMonth.toLocaleString(),
-				// 	numbersDeathsMonth.toLocaleString(),
-				// 	'since a month'
-				// );
+				populateNumbers(
+					numbersConfirmedMonth.toLocaleString(),
+					numbersRecoveredMonth.toLocaleString(),
+					numbersDeathsMonth.toLocaleString(),
+					'Recent Month'
+				);
 				myChart.destroy();
 				if ($('#confirmedRadio').is(':checked')) {
 					generateChart(
@@ -688,12 +716,12 @@ $(document).ready(function() {
 				myChart.update();
 			});
 			$('#sinceWeeks').click(function() {
-				// populateNumbers(
-				// 	numbersConfirmedWeeks.toLocaleString(),
-				// 	numbersRecoveredWeeks.toLocaleString(),
-				// 	numbersDeathsWeeks.toLocaleString(),
-				// 	'since 2 weeks'
-				// );
+				populateNumbers(
+					numbersConfirmedWeeks.toLocaleString(),
+					numbersRecoveredWeeks.toLocaleString(),
+					numbersDeathsWeeks.toLocaleString(),
+					'Recent 2 Weeks'
+				);
 				myChart.destroy();
 				if ($('#confirmedRadio').is(':checked')) {
 					generateChart(
@@ -775,11 +803,11 @@ $(document).ready(function() {
 						return data;
 					}
 					return row.todayCases
-						? `${data.toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.todayCases.toLocaleString()}<span class="font-weight-light text-danger small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
+						? `${data.toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.todayCases.toLocaleString()}<span class="font-weight-light small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
 								row.cases,
 								row.todayCases
 							)}%)</span></p>`
-						: data.toLocaleString();
+						: `${data ? data.toLocaleString() : ''}`;
 				}
 			},
 			{
@@ -797,11 +825,11 @@ $(document).ready(function() {
 						return data;
 					}
 					return row.todayDeaths
-						? `${data.toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.todayDeaths.toLocaleString()}<span class="font-weight-light text-muted small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
+						? `${data.toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.todayDeaths.toLocaleString()}<span class="font-weight-light text-danger small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
 								row.deaths,
 								row.todayDeaths
 							)}%)</span></p>`
-						: data.toLocaleString();
+						: `${data ? data.toLocaleString() : ''}`;
 				}
 			}
 		]
@@ -882,8 +910,8 @@ $(document).ready(function() {
 					'Subscription-Key': API_KEY_SMARTTABLE
 				}
 			})
-			.then((reponse) => {
-				getNewsResults(reponse.data);
+			.then((response) => {
+				getNewsResults(response.data);
 			})
 			.catch((error) => {
 				if (error.response) {

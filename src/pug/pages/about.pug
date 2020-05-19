@@ -96,7 +96,7 @@ append css
             li.nav-item{
                 display:block;
                 width:100%;
-                margin: 0.5rem;
+                margin: 0.3rem;
             }
             li.nav-item a{
                 width:50%;
@@ -109,14 +109,14 @@ block content
     .container-fluid
         .row.text-center.p-3
             .col-sm-12.text-center
-                h1.text-white.display-4 Frequently Asked Questions (COVID-19)
+                h1.text-white Frequently Asked Questions (COVID-19)
     ul.nav.nav-pills.card-header-pills.d-flex.justify-content-center.pt-2.m-0(role='tablist')
         li.nav-item
-            a.nav-link.bg-dark.text-white.active#faq-covid(href='#faqCovid', data-toggle='tab', role='tab', aria-controls='overview', aria-selected='true') GENERAL
+            a.nav-link.bg-dark.text-white.active#faq-covid(href='#faqCovid', data-toggle='tab', role='tab', aria-controls='overview', aria-selected='true') GET TO KNOW
         li.nav-item
             a.nav-link.bg-dark.text-white#be-safe(href='#beSafe', data-toggle='tab', role='tab', aria-controls='activities', aria-selected='false') BE SAFE
         li.nav-item
-            a.nav-link.bg-dark.text-white#know-more(href='#knowMore', data-toggle='tab', role='tab', aria-controls='activities', aria-selected='false') KNOW MORE
+            a.nav-link.bg-dark.text-white#know-more(href='#knowMore', data-toggle='tab', role='tab', aria-controls='activities', aria-selected='false') LEARN MORE
         li.nav-item
             a.nav-link.bg-dark.text-white#faq-us(href='#faqUs', data-toggle='tab', role='tab', aria-controls='activities', aria-selected='false') THIS PROJECT
     .tab-content#cardPillContent
@@ -434,10 +434,6 @@ block content
                                             p Cleaning does not kill germs, but by removing them, it lowers their numbers and the risk of spreading infection. If a surface may have gotten the virus on it from a person with or suspected to have COVID-19, the surface should be cleaned and disinfected. Disinfecting kills germs on surfaces.
         .tab-pane.fade#knowMore(role='tabpanel', aria-labelledby='know-more')
             .container-fluid
-                .row.align-items-center.text-align-center.mt-5.justify-content-center
-                    .col-sm-12.col-md-10.text-center
-                        p.m-0 Data derived from &nbsp;
-                            a.text-white-75.source-link(target="_blank", href='https://www.wakehealth.edu/Coronavirus/Myths-and-Facts') Wake Forest Baptist Health
                 #accordion-know-more.myaccordion.mx-3.mb-5
                     .row.d-flex.justify-content-center.mt-5
                         .col-sm-12.col-md-8.justify-content-center
@@ -538,6 +534,9 @@ block content
                                             p It appears that children may be less susceptible to being infected with COVID-19. Their exposure to a wide variety of different respiratory viruses circulating in daycare centers and schools may have a protective effect.  
 
                                             p Older individuals and those with pre-existing medical conditions may be more vulnerable to this virus. To protect yourself and others against the virus, follow good hand and respiratory hygiene (view tips on the CDC site). 
+                    .col-sm-12.text-center
+                        p.m-0 Data derived from &nbsp;
+                            a.text-white-75.source-link(target="_blank", href='https://www.wakehealth.edu/Coronavirus/Myths-and-Facts') Wake Forest Baptist Health
         .tab-pane.fade#faqUs(role='tabpanel', aria-labelledby='faq-us')
             .container-fluid
                 #accordion-us.myaccordion.mx-3.mb-5
@@ -581,7 +580,7 @@ block content
                                             button.d-flex.align-items-center.justify-content-between.btn.btn-link.p-3.text-left(data-toggle='collapse', data-target='#collapseUs4', aria-expanded='false', aria-controls='collapseUs4') What is the purpose of your project?
                                     #collapseUs4.collapse(aria-labelledby='headingUs4', data-parent='#accordion-us')
                                         .card-body.text-body
-                                            p Like most of you out there, when it all started I was afraid of the Coronavirus while trying to adjust to the big shift in my outdoorsy lifestyle. Being locked up inside, following the numbers day in and out and being glued to the news didnt help much. Although information was plentiful, not all of it was available in one place which is what sparked me to build this website.
+                                            p Like most of you out there, when it all started I was afraid of the Coronavirus while trying to adjust to the big shift in my mostly outdoorsy lifestyle. Being locked up inside, following the numbers day in and out and being glued to the news didnt help much. Although information was plentiful, not all of it was available in one place which is what sparked me to build this website.
                                 .card
                                     #headingUs3.card-header.p-0
                                         h2.mb-0.w-100
@@ -595,7 +594,7 @@ block content
                                             button.d-flex.align-items-center.justify-content-between.btn.btn-link.p-3.text-left(data-toggle='collapse', data-target='#collapseUs5', aria-expanded='false', aria-controls='collapseUs5') How can I buy you coffee?
                                     #collapseUs5.collapse(aria-labelledby='headingUs5', data-parent='#accordion-us')
                                         .card-body.text-body
-                                            p Ummm, well for starters, I am loyal to tea. As much as I appreciate your thoughtfulness, it would really make my day if you use the same money to help someone in need during these unprecedented times.
+                                            p Ummm, well for starters, I am loyal to tea. As much as I appreciate your thoughtfulness, it would really make my day if you could use the same money to help someone in need during these unprecedented times. Any kind of help/deed, big or small could go a long way.
                                 .card
                                     #headingUs6.card-header.p-0
                                         h2.mb-0.w-100
@@ -607,14 +606,14 @@ block content
                                             a(href="mailto:c19.information@gmail.com") c19.information@gmail.com
         .tab-pane.fade.show.active#faqCovid(role='tabpanel', aria-labelledby='faq-covid')
             .container-fluid
-                .row.align-items-center.text-align-center.mt-5.justify-content-center
+                .row.align-items-center.text-align-center.mt-2.justify-content-center
                     .col-sm-12.col-md-10.text-center
-                        p.m-0 For most updated information, please visit&nbsp;
+                        p.m-0 For most up to date information, please visit&nbsp;
                             a.text-white-75.source-link(target="_blank", href='https://www.who.int/emergencies/diseases/novel-coronavirus-2019') WHO
                             | &nbsp;or&nbsp;
                             a.text-white-75.source-link(target="_blank", href='https://www.cdc.gov/coronavirus/2019-nCoV/index.html') CDC
                 #accordion-covid.myaccordion.mx-3.mb-5
-                    .row.d-flex.justify-content-center.mt-5
+                    .row.d-flex.justify-content-center.mt-3
                         .col-sm-12.col-md-8.justify-content-center
                             h1.text-white.mt-4
                                 span.d-block.mb-3.text-center.text-md-left Basics
@@ -997,6 +996,14 @@ append scripts
                     .toggleClass("icon-circle-up");
             });
         });
+        $(window).on('load', function() {
+            let $logo = $('#brand-logo');
+            $logo.removeClass('rotating');
+            $logo.hover(function() {
+                $(this).addClass('rotating'), $(this).removeClass('rotating');
+            });
+        });
+
     script(src='js/scripts.js', type="text/javascript")
 
 
