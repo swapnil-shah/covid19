@@ -1,3 +1,136 @@
+$(document).ready(function() {
+	axios.get('https://api.covid19india.org/data.json').then((response) => {
+		cardStats(response.data);
+		countryDataSet(response.data);
+	});
+	newsResults();
+	notificationsAdvisories();
+
+	$('#confirmedRadio').click(function() {
+		myChart.destroy();
+		if ($('#sinceBeginning').is(':checked')) {
+			generateChart(labelsDate, casesConfirmed, myChart.config.type, 'Confirmed', gradientBlue, borderBlue);
+		}
+		if ($('#sinceMonth').is(':checked')) {
+			generateChart(labelsDateMonth, confirmedMonth, myChart.config.type, 'Confirmed', gradientBlue, borderBlue);
+		}
+		if ($('#sinceWeeks').is(':checked')) {
+			generateChart(labelsDateWeeks, confirmedWeeks, myChart.config.type, 'Confirmed', gradientBlue, borderBlue);
+		}
+		myChart.update();
+	});
+	$('#recoveredRadio').click(function() {
+		myChart.destroy();
+		if ($('#sinceBeginning').is(':checked')) {
+			generateChart(labelsDate, casesRecovered, myChart.config.type, 'Recovered', gradientGreen, borderGreen);
+		}
+		if ($('#sinceMonth').is(':checked')) {
+			generateChart(
+				labelsDateMonth,
+				recoveredMonth,
+				myChart.config.type,
+				'Recovered',
+				gradientGreen,
+				borderGreen
+			);
+		}
+		if ($('#sinceWeeks').is(':checked')) {
+			generateChart(
+				labelsDateWeeks,
+				recoveredWeeks,
+				myChart.config.type,
+				'Recovered',
+				gradientGreen,
+				borderGreen
+			);
+		}
+		myChart.update();
+	});
+	$('#deathsRadio').click(function() {
+		myChart.destroy();
+		if ($('#sinceBeginning').is(':checked')) {
+			generateChart(labelsDate, casesDeaths, myChart.config.type, 'Deaths', gradientRed, borderRed);
+		}
+		if ($('#sinceMonth').is(':checked')) {
+			generateChart(labelsDateMonth, deathsMonth, myChart.config.type, 'Deaths', gradientRed, borderRed);
+		}
+		if ($('#sinceWeeks').is(':checked')) {
+			generateChart(labelsDateWeeks, deathsWeeks, myChart.config.type, 'Deaths', gradientRed, borderRed);
+		}
+		myChart.update();
+	});
+	$('#sinceBeginning').click(function() {
+		populateNumbers(
+			numbersConfirmed.toLocaleString(),
+			numbersRecovered.toLocaleString(),
+			numbersDeceased.toLocaleString(),
+			'From the Beginning'
+		);
+		myChart.destroy();
+		if ($('#confirmedRadio').is(':checked')) {
+			generateChart(labelsDate, casesConfirmed, myChart.config.type, 'Confirmed', gradientBlue, borderBlue);
+		}
+		if ($('#recoveredRadio').is(':checked')) {
+			generateChart(labelsDate, casesRecovered, myChart.config.type, 'Recovered', gradientGreen, borderGreen);
+		}
+		if ($('#deathsRadio').is(':checked')) {
+			generateChart(labelsDate, casesDeaths, myChart.config.type, 'Deaths', gradientRed, borderRed);
+		}
+		myChart.update();
+	});
+	$('#sinceMonth').click(function() {
+		populateNumbers(
+			numbersConfirmedMonth.toLocaleString(),
+			numbersRecoveredMonth.toLocaleString(),
+			numbersDeathsMonth.toLocaleString(),
+			'Recent Month'
+		);
+		myChart.destroy();
+		if ($('#confirmedRadio').is(':checked')) {
+			generateChart(labelsDateMonth, confirmedMonth, myChart.config.type, 'Confirmed', gradientBlue, borderBlue);
+		}
+		if ($('#recoveredRadio').is(':checked')) {
+			generateChart(
+				labelsDateMonth,
+				recoveredMonth,
+				myChart.config.type,
+				'Recovered',
+				gradientGreen,
+				borderGreen
+			);
+		}
+		if ($('#deathsRadio').is(':checked')) {
+			generateChart(labelsDateMonth, deathsMonth, myChart.config.type, 'Deaths', gradientRed, borderRed);
+		}
+		myChart.update();
+	});
+	$('#sinceWeeks').click(function() {
+		populateNumbers(
+			numbersConfirmedWeeks.toLocaleString(),
+			numbersRecoveredWeeks.toLocaleString(),
+			numbersDeathsWeeks.toLocaleString(),
+			'Recent 2 Weeks'
+		);
+		myChart.destroy();
+		if ($('#confirmedRadio').is(':checked')) {
+			generateChart(labelsDateWeeks, confirmedWeeks, myChart.config.type, 'Confirmed', gradientBlue, borderBlue);
+		}
+		if ($('#recoveredRadio').is(':checked')) {
+			generateChart(
+				labelsDateWeeks,
+				recoveredWeeks,
+				myChart.config.type,
+				'Recovered',
+				gradientGreen,
+				borderGreen
+			);
+		}
+		if ($('#deathsRadio').is(':checked')) {
+			generateChart(labelsDateWeeks, deathsWeeks, myChart.config.type, 'Deaths', gradientRed, borderRed);
+		}
+		myChart.update();
+	});
+});
 const newsUri = 'https://newsapi.org/v2/top-headlines?q=COVID&country=in&apiKey=7e2e5ed46901476baa79347a66cc2b2c';
 const API_KEY_SMARTTABLE = 'cf8e77731fb345d381334aff5e844f3f';
 let canvas = document.getElementById('myChart');
@@ -24,9 +157,9 @@ let casesConfirmed = [];
 let casesDeaths = [];
 let casesRecovered = [];
 let labelsDate = [];
-let numbersConfirmedBeginning = 0;
-let numbersDeathsBeginning = 0;
-let numbersRecoveredBeginning = 0;
+let numbersConfirmed = 0;
+let numbersDeceased = 0;
+let numbersRecovered = 0;
 let confirmedMonth = [];
 let deathsMonth = [];
 let recoveredMonth = [];
@@ -41,95 +174,52 @@ let labelsDateWeeks = [];
 let numbersConfirmedWeeks = 0;
 let numbersDeathsWeeks = 0;
 let numbersRecoveredWeeks = 0;
-//Populate numbers to legend on chart
-//US cases
-function populateNumbers(confirmed, recovered, deaths, text) {
-	document.getElementById('total-confirmed').innerHTML = `<span style="color:${borderBlue}">${confirmed}</span>`;
-	document.getElementById('total-recovered').innerHTML = `<span style="color:${borderGreen}">${recovered}</span>`;
-	document.getElementById('total-deaths').innerHTML = `<span style="color:${borderRed}">${deaths}</span>`;
-	document.getElementById('total-date').innerHTML = `${text}`;
-}
-function newsResults() {
-	axios
-		.get(newsUri)
-		.then((response) => {
-			document.getElementById('card-deck').text = 'Loading..';
-			let newsCards = document.getElementById('card-deck');
-			let newsResultsNumber = document.getElementById('news-results-number');
-			newsCards.innerHtml = `<div class="spinner-border" role="status">
-			<span class="sr-only">Loading...</span>
-		</div>`;
-			let output = '';
-			newsResultsNumber.innerText = `${response.data.totalResults} results found`;
-			response.data.articles.forEach(function(item) {
-				output += `
-						<div class="col-sm-12 my-3 pl-0 pr-1">
-							<a class="card lift lift-sm p-3 news-card" href="${item.url}" target="_blank">
-								<h3 class="text-dark">${item.title}</h3>
-								<p class="text-gray-600 mb-1"">${item.description}</p>
-								<p class="text-primary mb-3">View full article</p>
-								<p class="mb-0 text-muted small"><i class="far fa-newspaper"></i> Published by <span class="font-weight-600 text-gray-600">${item
-									.source.name}</span> ${timeDifference(item.publishedAt)}</p>
-								</>
-							</a>
-						</div>
-						`;
-			});
-			newsCards.innerHTML = output;
-		})
-		.catch((error) => {
-			if (error.response) {
-				console.log(
-					'The request was made and the server responded with a status code that falls out of the range of 2xx'
-				);
-				console.log('Error Data: ', error.response.data);
-				console.log('Error Status: ', error.response.status);
-				console.log('Error Headers: ', error.response.headers);
-			} else if (error.request) {
-				console.log(
-					'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
-				);
-				console.log('Error Request: ', error.request);
-			} else {
-				console.log('Something happened in setting up the request that triggered an Error');
-				console.log('Error Message: ', error.message);
-			}
-			console.log('Error config: ', error.config);
-		});
-}
-function notificationsAdvisories() {
-	axios
-		.get('https://api.rootnet.in/covid19-in/notifications')
-		.then((response) => {
-			let output = '';
-			response.data.data.notifications.forEach(function(report) {
-				output += `<a class="list-group-item list-group-item-action" target="_blank" href="${report.link}">${report.title}</a>
-						`;
-			});
-			document.getElementById('right-panel-reports').innerHTML = output;
-			document.getElementById('notification-last-updated').innerHTML = `Updated ${timeDifference(
-				response.data.lastRefreshed
-			)}`;
-		})
-		.catch((error) => {
-			if (error.response) {
-				console.log(
-					'The request was made and the server responded with a status code that falls out of the range of 2xx'
-				);
-				console.log('Error Data: ', error.response.data);
-				console.log('Error Status: ', error.response.status);
-				console.log('Error Headers: ', error.response.headers);
-			} else if (error.request) {
-				console.log(
-					'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
-				);
-				console.log('Error Request: ', error.request);
-			} else {
-				console.log('Something happened in setting up the request that triggered an Error');
-				console.log('Error Message: ', error.message);
-			}
-			console.log('Error config: ', error.config);
-		});
+
+function cardStats(data) {
+	data.statewise.forEach(function(states) {
+		if (states.statecode === 'TT') {
+			document.getElementById('last-updated').innerHTML =
+				'Last updated <span class="text-gray-800">' + states.lastupdatedtime + '</span>';
+			document.getElementById('number-active').innerText = parseInt(states.active).toLocaleString();
+			document.getElementById('number-confirmed').innerText = parseInt(states.confirmed).toLocaleString();
+			document.getElementById('number-recovered').innerText = parseInt(states.recovered).toLocaleString();
+			document.getElementById('number-deaths').innerText = parseInt(states.deaths).toLocaleString();
+			parseInt(states.deltaconfirmed)
+				? (document.getElementById('today-confirmed').innerText =
+						'+' + parseInt(states.deltaconfirmed).toLocaleString())
+				: (document.getElementById('today-confirmed').innerText = '');
+			parseInt(states.deltadeaths)
+				? (document.getElementById('today-deaths').innerText =
+						'+' + parseInt(states.deltadeaths).toLocaleString())
+				: (document.getElementById('today-deaths').innerText = '');
+			parseInt(states.deltarecovered)
+				? (document.getElementById('today-recovered').innerText =
+						'+' + parseInt(states.deltarecovered).toLocaleString())
+				: (document.getElementById('today-recovered').innerText = '');
+			document.getElementById('per-active').innerHTML = '';
+			document.getElementById('per-confirmed').innerHTML =
+				Math.sign(percentageChangeTotal(parseInt(states.confirmed), parseInt(states.deltaconfirmed))) === 1
+					? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
+							parseInt(states.confirmed),
+							parseInt(states.deltaconfirmed)
+						)}%)`
+					: (document.getElementById('today-deaths').innerText = '');
+			document.getElementById('per-recovered').innerHTML =
+				Math.sign(percentageChangeTotal(parseInt(states.recovered), parseInt(states.deltarecovered))) === 1
+					? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
+							parseInt(states.recovered),
+							parseInt(states.deltarecovered)
+						)}%)`
+					: '';
+			document.getElementById('per-deaths').innerHTML =
+				Math.sign(percentageChangeTotal(parseInt(states.deaths), parseInt(states.deltadeaths))) === 1
+					? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
+							parseInt(states.deaths),
+							parseInt(states.deltadeaths)
+						)}%)`
+					: '';
+		}
+	});
 }
 function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradientBorder) {
 	var data = {
@@ -369,135 +459,208 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 		myChart.update();
 	});
 }
-
-function cardStats(data) {
+function countryDataSet(data) {
+	let filteredArr = [];
 	data.statewise.forEach(function(states) {
-		if (states.statecode === 'TT') {
-			document.getElementById('last-updated').innerHTML =
-				'Last updated <span class="text-gray-800">' + states.lastupdatedtime + '</span>';
-			document.getElementById('number-active').innerText = parseInt(states.active).toLocaleString();
-			document.getElementById('number-confirmed').innerText = parseInt(states.confirmed).toLocaleString();
-			document.getElementById('number-recovered').innerText = parseInt(states.recovered).toLocaleString();
-			document.getElementById('number-deaths').innerText = parseInt(states.deaths).toLocaleString();
-			parseInt(states.deltaconfirmed)
-				? (document.getElementById('today-confirmed').innerText =
-						'+' + parseInt(states.deltaconfirmed).toLocaleString())
-				: (document.getElementById('today-confirmed').innerText = '');
-			parseInt(states.deltadeaths)
-				? (document.getElementById('today-deaths').innerText =
-						'+' + parseInt(states.deltadeaths).toLocaleString())
-				: (document.getElementById('today-deaths').innerText = '');
-			parseInt(states.deltarecovered)
-				? (document.getElementById('today-recovered').innerText =
-						'+' + parseInt(states.deltarecovered).toLocaleString())
-				: (document.getElementById('today-recovered').innerText = '');
-			document.getElementById('per-active').innerHTML = '';
-			document.getElementById('per-confirmed').innerHTML =
-				Math.sign(percentageChangeTotal(parseInt(states.confirmed), parseInt(states.deltaconfirmed))) === 1
-					? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
-							parseInt(states.confirmed),
-							parseInt(states.deltaconfirmed)
-						)}%)`
-					: (document.getElementById('today-deaths').innerText = '');
-			document.getElementById('per-recovered').innerHTML =
-				Math.sign(percentageChangeTotal(parseInt(states.recovered), parseInt(states.deltarecovered))) === 1
-					? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
-							parseInt(states.recovered),
-							parseInt(states.deltarecovered)
-						)}%)`
-					: '';
-			document.getElementById('per-deaths').innerHTML =
-				Math.sign(percentageChangeTotal(parseInt(states.deaths), parseInt(states.deltadeaths))) === 1
-					? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
-							parseInt(states.deaths),
-							parseInt(states.deltadeaths)
-						)}%)`
-					: '';
+		if (states.statecode !== 'TT') {
+			filteredArr.push(states);
 		}
 	});
-}
-function countryDataSet(data) {
-	$(document).ready(function() {
-		let filteredArr = [];
-		data.statewise.forEach(function(states) {
-			if (states.statecode !== 'TT') {
-				filteredArr.push(states);
+	let lastArrTested = data.tested[data.tested.length - 1];
+	let lastArrTimeSeries = data.cases_time_series[data.cases_time_series.length - 1];
+	numbersConfirmed = parseInt(lastArrTimeSeries.totalconfirmed).toLocaleString();
+	numbersDeceased = parseInt(lastArrTimeSeries.totaldeceased).toLocaleString();
+	numbersRecovered = parseInt(lastArrTimeSeries.totalrecovered).toLocaleString();
+	//Get months/30 days
+
+	$('#icmrReport').html(
+		`A total of <span class="text-dark">${parseInt(
+			lastArrTested.totalsamplestested
+		).toLocaleString()}</span> samples have been tested as of ${lastArrTested.updatetimestamp}. View official report by ICMR <a href="${lastArrTested.source}" target="_blank">here</a>`
+	);
+	data.cases_time_series.slice(Math.max(data.cases_time_series.length - 30, 1)).forEach(function(daily) {
+		confirmedMonth.push(daily.dailyconfirmed);
+		numbersConfirmedMonth += parseInt(daily.dailyconfirmed);
+		deathsMonth.push(daily.dailydeceased);
+		numbersDeathsMonth += parseInt(daily.dailydeceased);
+		recoveredMonth.push(daily.dailyrecovered);
+		numbersRecoveredMonth += parseInt(daily.dailyrecovered);
+		labelsDateMonth.push(daily.date);
+	});
+
+	//Get 14 days
+	data.cases_time_series.slice(Math.max(data.cases_time_series.length - 14, 1)).forEach(function(daily) {
+		confirmedWeeks.push(daily.dailyconfirmed);
+		numbersConfirmedWeeks += parseInt(daily.dailyconfirmed);
+		deathsWeeks.push(daily.dailydeceased);
+		numbersDeathsWeeks += parseInt(daily.dailydeceased);
+		recoveredWeeks.push(daily.dailyrecovered);
+		numbersRecoveredWeeks += parseInt(daily.dailyrecovered);
+		labelsDateWeeks.push(daily.date);
+	});
+
+	//Get since beginning
+	data.cases_time_series.forEach(function(daily) {
+		casesConfirmed.push(daily.dailyconfirmed);
+		casesDeaths.push(daily.dailydeceased);
+		casesRecovered.push(daily.dailyrecovered);
+		labelsDate.push(daily.date);
+	});
+
+	//Default Chart
+	generateChart(labelsDateMonth, confirmedMonth, null, 'Confirmed', gradientBlue, borderBlue);
+
+	//Default legend numbers
+	populateNumbers(
+		numbersConfirmedMonth.toLocaleString(),
+		numbersRecoveredMonth.toLocaleString(),
+		numbersDeathsMonth.toLocaleString(),
+		'Recent Month'
+	);
+	Chart.defaults.global.defaultFontColor = 'grey';
+	Chart.defaults.global.animation.duration = 2500;
+
+	//States Datatable
+	let table = $('#dataTableCountry').DataTable({
+		data: filteredArr,
+		pagingType: 'numbers',
+		pageLength: 10,
+		language: {
+			searchPlaceholder: 'e.g. maharashtra',
+			loadingRecords: '<i class="icon-spinner spinner-animate"></i>'
+		},
+		columns: [
+			{
+				title: 'State <span class="text-muted small">(Last updated)</span>',
+				data: 'state',
+				render: function(data, type, row) {
+					if (type === 'type' || type === 'sort') {
+						return data;
+					}
+					return `${data}<div class="text-muted mb-0 small">
+						(${row.lastupdatedtime})</div><p class="mb-0"><span class="small text-primary border-top-0 border-bottom border-right-0 border-left-0 border-blue">See Districts</span></p>`;
+				}
+			},
+			{
+				title: 'Confirmed',
+				data: 'confirmed',
+				render: function(data, type, row) {
+					if (type === 'type' || type === 'sort') {
+						return data;
+					}
+					return parseInt(row.deltaconfirmed)
+						? `${parseInt(
+								data
+							).toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
+								row.deltaconfirmed
+							).toLocaleString()}<span class="font-weight-light small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
+								parseInt(row.confirmed),
+								parseInt(row.deltaconfirmed)
+							)}%)</span></p>`
+						: parseInt(data).toLocaleString();
+				}
+			},
+			{
+				title: 'Active',
+				data: 'active',
+				render: function(data, type, row) {
+					if (type === 'type' || type === 'sort') {
+						return data;
+					}
+					return `${parseInt(data).toLocaleString()}`;
+				}
+			},
+			{
+				title: 'Recovered',
+				data: 'recovered',
+				data: 'confirmed',
+				render: function(data, type, row) {
+					if (type === 'type' || type === 'sort') {
+						return data;
+					}
+					return parseInt(row.deltarecovered)
+						? `${parseInt(
+								data
+							).toLocaleString()}<p class="font-weight-600 text-success mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
+								row.deltarecovered
+							).toLocaleString()}<span class="font-weight-light text-success small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
+								parseInt(row.recovered),
+								parseInt(row.deltarecovered)
+							)}%)</span></p>`
+						: parseInt(data).toLocaleString();
+				}
+			},
+			{
+				title: 'Deaths',
+				data: 'deaths',
+				render: function(data, type, row) {
+					if (type === 'type' || type === 'sort') {
+						return data;
+					}
+					return parseInt(row.deltadeaths)
+						? `${parseInt(
+								data
+							).toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
+								row.deltadeaths
+							).toLocaleString()}<span class="font-weight-light text-danger small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
+								parseInt(row.deaths),
+								parseInt(row.deltadeaths)
+							)}%)</span></p>`
+						: parseInt(data).toLocaleString();
+				}
 			}
+		],
+		order: [ [ 1, 'desc' ] ]
+	});
+	subDataTable(table)
+}
+
+function subDataTable(table) {
+	statesData = $.parseJSON(
+		$.ajax({
+			type: 'GET',
+			url: 'https://api.covid19india.org/v2/state_district_wise.json',
+			async: false,
+			beforeSend: function(xhr) {},
+			dataType: 'json',
+			success: function(data) {
+				statesData = data.responseText;
+			},
+			error: function(xhr, status, error) {
+				if (xhr.status == 404) {
+					$('#dataTableState').html(
+						'<div class="text-center text-dark py-4">Sorry, no state data is available for this state.</div>'
+					);
+				} else {
+					$('#dataTableState').html(
+						'<div class="text-center text-dark py-4">Sorry, something went wrong. Please try again later.</div>'
+					);
+				}
+			}
+		}).responseText
+	);
+	// District datatable on click
+	$('#dataTableCountry tbody').on('click', 'tr', function() {
+		let stateCode = table.row(this).data().statecode;
+		$('#stateName').text(table.row(this).data().state);
+		let filterState = statesData.filter(function(state) {
+			return state.statecode === stateCode;
 		});
-		let lastArrTested = data.tested[data.tested.length - 1];
-		let lastArrTimeSeries = data.cases_time_series[data.cases_time_series.length - 1];
-		let numbersConfirmed = parseInt(lastArrTimeSeries.totalconfirmed).toLocaleString();
-		let numbersDeceased = parseInt(lastArrTimeSeries.totaldeceased).toLocaleString();
-		let numbersRecovered = parseInt(lastArrTimeSeries.totalrecovered).toLocaleString();
-		//Get months/30 days
-		data.cases_time_series.slice(Math.max(data.cases_time_series.length - 30, 1)).forEach(function(daily) {
-			confirmedMonth.push(daily.dailyconfirmed);
-			numbersConfirmedMonth += parseInt(daily.dailyconfirmed);
-			deathsMonth.push(daily.dailydeceased);
-			numbersDeathsMonth += parseInt(daily.dailydeceased);
-			recoveredMonth.push(daily.dailyrecovered);
-			numbersRecoveredMonth += parseInt(daily.dailyrecovered);
-			labelsDateMonth.push(daily.date);
-		});
 
-		//Get 14 days
-		data.cases_time_series.slice(Math.max(data.cases_time_series.length - 14, 1)).forEach(function(daily) {
-			confirmedWeeks.push(daily.dailyconfirmed);
-			numbersConfirmedWeeks += parseInt(daily.dailyconfirmed);
-			deathsWeeks.push(daily.dailydeceased);
-			numbersDeathsWeeks += parseInt(daily.dailydeceased);
-			recoveredWeeks.push(daily.dailyrecovered);
-			numbersRecoveredWeeks += parseInt(daily.dailyrecovered);
-			labelsDateWeeks.push(daily.date);
-		});
-
-		//Get since beginning
-		data.cases_time_series.forEach(function(daily) {
-			casesConfirmed.push(daily.dailyconfirmed);
-			casesDeaths.push(daily.dailydeceased);
-			casesRecovered.push(daily.dailyrecovered);
-			labelsDate.push(daily.date);
-		});
-
-		//Default Chart
-		generateChart(labelsDateMonth, confirmedMonth, null, 'Confirmed', gradientBlue, borderBlue);
-
-		//Default legend numbers
-		populateNumbers(
-			numbersConfirmedMonth.toLocaleString(),
-			numbersRecoveredMonth.toLocaleString(),
-			numbersDeathsMonth.toLocaleString(),
-			'Recent Month'
-		);
-		Chart.defaults.global.defaultFontColor = 'grey';
-		Chart.defaults.global.animation.duration = 2500;
-		//ICMR report in datatable
-		$('#icmrReport').html(
-			`A total of <span class="text-dark">${parseInt(
-				lastArrTested.totalsamplestested
-			).toLocaleString()}</span> samples have been tested as of ${lastArrTested.updatetimestamp}. View official report by ICMR <a href="${lastArrTested.source}" target="_blank">here</a>`
-		);
-
-		//States Datatable
-		let table = $('#dataTableCountry').DataTable({
-			data: filteredArr,
+		$('#stateModal').modal();
+		$('#dataTableState').DataTable({
+			destroy: true,
+			data: filterState[0].districtData,
 			pagingType: 'numbers',
 			pageLength: 10,
 			language: {
-				searchPlaceholder: 'e.g. maharashtra',
+				searchPlaceholder: 'search district',
 				loadingRecords: '<i class="icon-spinner spinner-animate"></i>'
 			},
 			columns: [
 				{
-					title: 'State <span class="text-muted small">(Last updated)</span>',
-					data: 'state',
-					render: function(data, type, row) {
-						if (type === 'type' || type === 'sort') {
-							return data;
-						}
-						return `${data}<div class="text-muted mb-0 small">
-						(${row.lastupdatedtime})</div><p class="mb-0"><span class="small text-primary border-top-0 border-bottom border-right-0 border-left-0 border-blue">See Districts</span></p>`;
-					}
+					title: 'District',
+					data: 'district'
 				},
 				{
 					title: 'Confirmed',
@@ -506,14 +669,14 @@ function countryDataSet(data) {
 						if (type === 'type' || type === 'sort') {
 							return data;
 						}
-						return parseInt(row.deltaconfirmed)
+						return parseInt(row.delta.confirmed)
 							? `${parseInt(
 									data
-								).toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
-									row.deltaconfirmed
-								).toLocaleString()}<span class="font-weight-light small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
+								).toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
+									row.delta.confirmed
+								).toLocaleString()}<span class="font-weight-light text-danger small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
 									parseInt(row.confirmed),
-									parseInt(row.deltaconfirmed)
+									parseInt(row.delta.confirmed)
 								)}%)</span></p>`
 							: parseInt(data).toLocaleString();
 					}
@@ -531,38 +694,37 @@ function countryDataSet(data) {
 				{
 					title: 'Recovered',
 					data: 'recovered',
-					data: 'confirmed',
 					render: function(data, type, row) {
 						if (type === 'type' || type === 'sort') {
 							return data;
 						}
-						return parseInt(row.deltarecovered)
+						return parseInt(row.delta.recovered)
 							? `${parseInt(
 									data
 								).toLocaleString()}<p class="font-weight-600 text-success mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
-									row.deltarecovered
+									row.delta.recovered
 								).toLocaleString()}<span class="font-weight-light text-success small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
 									parseInt(row.recovered),
-									parseInt(row.deltarecovered)
+									parseInt(row.delta.recovered)
 								)}%)</span></p>`
 							: parseInt(data).toLocaleString();
 					}
 				},
 				{
 					title: 'Deaths',
-					data: 'deaths',
+					data: 'deceased',
 					render: function(data, type, row) {
 						if (type === 'type' || type === 'sort') {
 							return data;
 						}
-						return parseInt(row.deltadeaths)
+						return parseInt(row.delta.deceased)
 							? `${parseInt(
 									data
-								).toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
-									row.deltadeaths
-								).toLocaleString()}<span class="font-weight-light text-danger small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
-									parseInt(row.deaths),
-									parseInt(row.deltadeaths)
+								).toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
+									row.delta.deceased
+								).toLocaleString()}<span class="font-weight-light text-muted small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
+									parseInt(row.deceased),
+									parseInt(row.delta.deceased)
 								)}%)</span></p>`
 							: parseInt(data).toLocaleString();
 					}
@@ -570,280 +732,95 @@ function countryDataSet(data) {
 			],
 			order: [ [ 1, 'desc' ] ]
 		});
-		$('#confirmedRadio').click(function() {
-			myChart.destroy();
-			if ($('#sinceBeginning').is(':checked')) {
-				generateChart(labelsDate, casesConfirmed, myChart.config.type, 'Confirmed', gradientBlue, borderBlue);
-			}
-			if ($('#sinceMonth').is(':checked')) {
-				generateChart(
-					labelsDateMonth,
-					confirmedMonth,
-					myChart.config.type,
-					'Confirmed',
-					gradientBlue,
-					borderBlue
-				);
-			}
-			if ($('#sinceWeeks').is(':checked')) {
-				generateChart(
-					labelsDateWeeks,
-					confirmedWeeks,
-					myChart.config.type,
-					'Confirmed',
-					gradientBlue,
-					borderBlue
-				);
-			}
-			myChart.update();
-		});
-		$('#recoveredRadio').click(function() {
-			myChart.destroy();
-			if ($('#sinceBeginning').is(':checked')) {
-				generateChart(labelsDate, casesRecovered, myChart.config.type, 'Recovered', gradientGreen, borderGreen);
-			}
-			if ($('#sinceMonth').is(':checked')) {
-				generateChart(
-					labelsDateMonth,
-					recoveredMonth,
-					myChart.config.type,
-					'Recovered',
-					gradientGreen,
-					borderGreen
-				);
-			}
-			if ($('#sinceWeeks').is(':checked')) {
-				generateChart(
-					labelsDateWeeks,
-					recoveredWeeks,
-					myChart.config.type,
-					'Recovered',
-					gradientGreen,
-					borderGreen
-				);
-			}
-			myChart.update();
-		});
-		$('#deathsRadio').click(function() {
-			myChart.destroy();
-			if ($('#sinceBeginning').is(':checked')) {
-				generateChart(labelsDate, casesDeaths, myChart.config.type, 'Deaths', gradientRed, borderRed);
-			}
-			if ($('#sinceMonth').is(':checked')) {
-				generateChart(labelsDateMonth, deathsMonth, myChart.config.type, 'Deaths', gradientRed, borderRed);
-			}
-			if ($('#sinceWeeks').is(':checked')) {
-				generateChart(labelsDateWeeks, deathsWeeks, myChart.config.type, 'Deaths', gradientRed, borderRed);
-			}
-			myChart.update();
-		});
-		$('#sinceBeginning').click(function() {
-			populateNumbers(
-				numbersConfirmed.toLocaleString(),
-				numbersRecovered.toLocaleString(),
-				numbersDeceased.toLocaleString(),
-				'From the Beginning'
-			);
-			myChart.destroy();
-			if ($('#confirmedRadio').is(':checked')) {
-				generateChart(labelsDate, casesConfirmed, myChart.config.type, 'Confirmed', gradientBlue, borderBlue);
-			}
-			if ($('#recoveredRadio').is(':checked')) {
-				generateChart(labelsDate, casesRecovered, myChart.config.type, 'Recovered', gradientGreen, borderGreen);
-			}
-			if ($('#deathsRadio').is(':checked')) {
-				generateChart(labelsDate, casesDeaths, myChart.config.type, 'Deaths', gradientRed, borderRed);
-			}
-			myChart.update();
-		});
-		$('#sinceMonth').click(function() {
-			populateNumbers(
-				numbersConfirmedMonth.toLocaleString(),
-				numbersRecoveredMonth.toLocaleString(),
-				numbersDeathsMonth.toLocaleString(),
-				'Recent Month'
-			);
-			myChart.destroy();
-			if ($('#confirmedRadio').is(':checked')) {
-				generateChart(
-					labelsDateMonth,
-					confirmedMonth,
-					myChart.config.type,
-					'Confirmed',
-					gradientBlue,
-					borderBlue
-				);
-			}
-			if ($('#recoveredRadio').is(':checked')) {
-				generateChart(
-					labelsDateMonth,
-					recoveredMonth,
-					myChart.config.type,
-					'Recovered',
-					gradientGreen,
-					borderGreen
-				);
-			}
-			if ($('#deathsRadio').is(':checked')) {
-				generateChart(labelsDateMonth, deathsMonth, myChart.config.type, 'Deaths', gradientRed, borderRed);
-			}
-			myChart.update();
-		});
-		$('#sinceWeeks').click(function() {
-			populateNumbers(
-				numbersConfirmedWeeks.toLocaleString(),
-				numbersRecoveredWeeks.toLocaleString(),
-				numbersDeathsWeeks.toLocaleString(),
-				'Recent 2 Weeks'
-			);
-			myChart.destroy();
-			if ($('#confirmedRadio').is(':checked')) {
-				generateChart(
-					labelsDateWeeks,
-					confirmedWeeks,
-					myChart.config.type,
-					'Confirmed',
-					gradientBlue,
-					borderBlue
-				);
-			}
-			if ($('#recoveredRadio').is(':checked')) {
-				generateChart(
-					labelsDateWeeks,
-					recoveredWeeks,
-					myChart.config.type,
-					'Recovered',
-					gradientGreen,
-					borderGreen
-				);
-			}
-			if ($('#deathsRadio').is(':checked')) {
-				generateChart(labelsDateWeeks, deathsWeeks, myChart.config.type, 'Deaths', gradientRed, borderRed);
-			}
-			myChart.update();
-		});
-		// AJAX to get district data and save in variable
-		statesData = $.parseJSON(
-			$.ajax({
-				type: 'GET',
-				url: 'https://api.covid19india.org/v2/state_district_wise.json',
-				async: false,
-				beforeSend: function(xhr) {},
-				dataType: 'json',
-				success: function(data) {
-					statesData = data.responseText;
-				},
-				error: function(xhr, status, error) {
-					if (xhr.status == 404) {
-						$('#dataTableState').html(
-							'<div class="text-center text-dark py-4">Sorry, no state data is available for this state.</div>'
-						);
-					} else {
-						$('#dataTableState').html(
-							'<div class="text-center text-dark py-4">Sorry, something went wrong. Please try again later.</div>'
-						);
-					}
-				}
-			}).responseText
-		);
-
-		// District datatable on click
-		$('#dataTableCountry tbody').on('click', 'tr', function() {
-			let stateCode = table.row(this).data().statecode;
-			$('#stateName').text(table.row(this).data().state);
-			let filterState = statesData.filter(function(state) {
-				return state.statecode === stateCode;
-			});
-
-			$('#stateModal').modal();
-			$('#dataTableState').DataTable({
-				destroy: true,
-				data: filterState[0].districtData,
-				pagingType: 'numbers',
-				pageLength: 10,
-				language: {
-					searchPlaceholder: 'search district',
-					loadingRecords: '<i class="icon-spinner spinner-animate"></i>'
-				},
-				columns: [
-					{
-						title: 'District',
-						data: 'district'
-					},
-					{
-						title: 'Confirmed',
-						data: 'confirmed',
-						render: function(data, type, row) {
-							if (type === 'type' || type === 'sort') {
-								return data;
-							}
-							return parseInt(row.delta.confirmed)
-								? `${parseInt(
-										data
-									).toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
-										row.delta.confirmed
-									).toLocaleString()}<span class="font-weight-light text-danger small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
-										parseInt(row.confirmed),
-										parseInt(row.delta.confirmed)
-									)}%)</span></p>`
-								: parseInt(data).toLocaleString();
-						}
-					},
-					{
-						title: 'Active',
-						data: 'active',
-						render: function(data, type, row) {
-							if (type === 'type' || type === 'sort') {
-								return data;
-							}
-							return `${parseInt(data).toLocaleString()}`;
-						}
-					},
-					{
-						title: 'Recovered',
-						data: 'recovered',
-						render: function(data, type, row) {
-							if (type === 'type' || type === 'sort') {
-								return data;
-							}
-							return parseInt(row.delta.recovered)
-								? `${parseInt(
-										data
-									).toLocaleString()}<p class="font-weight-600 text-success mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
-										row.delta.recovered
-									).toLocaleString()}<span class="font-weight-light text-success small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
-										parseInt(row.recovered),
-										parseInt(row.delta.recovered)
-									)}%)</span></p>`
-								: parseInt(data).toLocaleString();
-						}
-					},
-					{
-						title: 'Deaths',
-						data: 'deceased',
-						render: function(data, type, row) {
-							if (type === 'type' || type === 'sort') {
-								return data;
-							}
-							return parseInt(row.delta.deceased)
-								? `${parseInt(
-										data
-									).toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
-										row.delta.deceased
-									).toLocaleString()}<span class="font-weight-light text-muted small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
-										parseInt(row.deceased),
-										parseInt(row.delta.deceased)
-									)}%)</span></p>`
-								: parseInt(data).toLocaleString();
-						}
-					}
-				],
-				order: [ [ 1, 'desc' ] ]
-			});
-		});
-		newsResults();
-		notificationsAdvisories();
 	});
+}
+function populateNumbers(confirmed, recovered, deaths, text) {
+	document.getElementById('total-confirmed').innerHTML = `<span style="color:${borderBlue}">${confirmed}</span>`;
+	document.getElementById('total-recovered').innerHTML = `<span style="color:${borderGreen}">${recovered}</span>`;
+	document.getElementById('total-deaths').innerHTML = `<span style="color:${borderRed}">${deaths}</span>`;
+	document.getElementById('total-date').innerHTML = `${text}`;
+}
+function newsResults() {
+	axios
+		.get(newsUri)
+		.then((response) => {
+			document.getElementById('card-deck').text = 'Loading..';
+			let newsCards = document.getElementById('card-deck');
+			let newsResultsNumber = document.getElementById('news-results-number');
+			newsCards.innerHtml = `<div class="spinner-border" role="status">
+			<span class="sr-only">Loading...</span>
+		</div>`;
+			let output = '';
+			newsResultsNumber.innerText = `${response.data.totalResults} results found`;
+			response.data.articles.forEach(function(item) {
+				output += `
+						<div class="col-sm-12 my-3 pl-0 pr-1">
+							<a class="card lift lift-sm p-3 news-card" href="${item.url}" target="_blank">
+								<h3 class="text-dark">${item.title}</h3>
+								<p class="text-gray-600 mb-1"">${item.description}</p>
+								<p class="text-primary mb-3">View full article</p>
+								<p class="mb-0 text-muted small"><i class="far fa-newspaper"></i> Published by <span class="font-weight-600 text-gray-600">${item
+									.source.name}</span> ${timeDifference(item.publishedAt)}</p>
+								</>
+							</a>
+						</div>
+						`;
+			});
+			newsCards.innerHTML = output;
+		})
+		.catch((error) => {
+			if (error.response) {
+				console.log(
+					'The request was made and the server responded with a status code that falls out of the range of 2xx'
+				);
+				console.log('Error Data: ', error.response.data);
+				console.log('Error Status: ', error.response.status);
+				console.log('Error Headers: ', error.response.headers);
+			} else if (error.request) {
+				console.log(
+					'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+				);
+				console.log('Error Request: ', error.request);
+			} else {
+				console.log('Something happened in setting up the request that triggered an Error');
+				console.log('Error Message: ', error.message);
+			}
+			console.log('Error config: ', error.config);
+		});
+}
+function notificationsAdvisories() {
+	axios
+		.get('https://api.rootnet.in/covid19-in/notifications')
+		.then((response) => {
+			let output = '';
+			response.data.data.notifications.forEach(function(report) {
+				output += `<a class="list-group-item list-group-item-action" target="_blank" href="${report.link}">${report.title}</a>
+						`;
+			});
+			document.getElementById('right-panel-reports').innerHTML = output;
+			document.getElementById('notification-last-updated').innerHTML = `Updated ${timeDifference(
+				response.data.lastRefreshed
+			)}`;
+		})
+		.catch((error) => {
+			if (error.response) {
+				console.log(
+					'The request was made and the server responded with a status code that falls out of the range of 2xx'
+				);
+				console.log('Error Data: ', error.response.data);
+				console.log('Error Status: ', error.response.status);
+				console.log('Error Headers: ', error.response.headers);
+			} else if (error.request) {
+				console.log(
+					'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+				);
+				console.log('Error Request: ', error.request);
+			} else {
+				console.log('Something happened in setting up the request that triggered an Error');
+				console.log('Error Message: ', error.message);
+			}
+			console.log('Error config: ', error.config);
+		});
 }
 
 $(window).on('load', function() {

@@ -163,32 +163,6 @@ script(type="text/javascript").
         return acronym;
     }
     axios.get('https://api.covid19india.org/data.json').then(response => {
-        paintMap(response.data);
-        window.onload = function() {
-            cardStats(response.data);
-            countryDataSet(response.data);
-        };
-    })
-    .catch((error) => {
-        if (error.response) {
-            console.log(
-                'The request was made and the server responded with a status code that falls out of the range of 2xx'
-            );
-            console.log('Error Data: ', error.response.data);
-            console.log('Error Status: ', error.response.status);
-            console.log('Error Headers: ', error.response.headers);
-        } else if (error.request) {
-            console.log(
-                'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
-            );
-            console.log('Error Request: ', error.request);
-        } else {
-            console.log('Something happened in setting up the request that triggered an Error');
-            console.log('Error Message: ', error.message);
-        }
-        console.log('Error config: ', error.config);
-    });
-    function paintMap(data){
         var mymap = L.map('covidCountryMap').setView([ 20.59, 78.96 ], 5);
         let mapboxAccessToken =
             'pk.eyJ1Ijoic3dhcG5pbDciLCJhIjoiY2s5ZnRtZXh1MGVuYTNkbGNhNWtrcmt0diJ9.fzy5HcciZYupAiuzpVmlWA';
@@ -228,7 +202,7 @@ script(type="text/javascript").
             return output;
         }
 
-        let filteredArr = data.statewise.filter(function(states) {
+        let filteredArr = response.data.statewise.filter(function(states) {
             return states.statecode !== 'TT' && states.statecode !== 'UN';
         });
         filteredArr.forEach(function(state) {
@@ -247,4 +221,23 @@ script(type="text/javascript").
                 .bindTooltip(htmlPopup(state.state, state.confirmed, state.active, state.recovered, state.deaths));
         });
         var info = L.control({ position: 'bottomright' });
-    }
+    })
+    .catch((error) => {
+        if (error.response) {
+            console.log(
+                'The request was made and the server responded with a status code that falls out of the range of 2xx'
+            );
+            console.log('Error Data: ', error.response.data);
+            console.log('Error Status: ', error.response.status);
+            console.log('Error Headers: ', error.response.headers);
+        } else if (error.request) {
+            console.log(
+                'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+            );
+            console.log('Error Request: ', error.request);
+        } else {
+            console.log('Something happened in setting up the request that triggered an Error');
+            console.log('Error Message: ', error.message);
+        }
+        console.log('Error config: ', error.config);
+    });
