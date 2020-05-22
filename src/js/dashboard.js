@@ -1,4 +1,127 @@
-// const totalCases = 'https://corona-api.com/timeline';
+$(document).ready(function() {
+	axios
+		.get('https://corona-api.com/timeline')
+		.then((response) => {
+			cardStats(response.data.data);
+			chartDataSet(response.data.data);
+		})
+		.catch((error) => {
+			if (error.response) {
+				console.log(
+					'The request was made and the server responded with a status code that falls out of the range of 2xx'
+				);
+				console.log('Error Data: ', error.response.data);
+				console.log('Error Status: ', error.response.status);
+				console.log('Error Headers: ', error.response.headers);
+			} else if (error.request) {
+				console.log(
+					'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+				);
+				console.log('Error Request: ', error.request);
+			} else {
+				console.log('Something happened in setting up the request that triggered an Error');
+				console.log('Error Message: ', error.message);
+			}
+			console.log('Error config: ', error.config);
+		});
+	worldDatatable(worldDataTable[0]);
+	fillNewsCards();
+	fillTravelNotices();
+
+	$('#selectNewsRegion').on('change', function() {
+		let value = $(this).val();
+		document.getElementById('card-deck').innerHTML =
+			'<div class="text-center"><i class="icon-spinner spinner-animate"></i></div>';
+		const newsUri = 'https://api.smartable.ai/coronavirus/news/' + value;
+
+		axios
+			.get(newsUri, {
+				headers: {
+					'Subscription-Key': API_KEY_SMARTTABLE
+				}
+			})
+			.then((response) => {
+				getNewsResults(response.data);
+			})
+			.catch((error) => {
+				if (error.response) {
+					console.log(
+						'The request was made and the server responded with a status code that falls out of the range of 2xx'
+					);
+					console.log(error.response.data);
+					console.log(error.response.status);
+					console.log(error.response.headers);
+				} else if (error.request) {
+					console.log(
+						'The request was made but no response was received `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+					);
+					console.log(error.request);
+				} else {
+					console.log('Something happened in setting up the request that triggered an Error');
+					console.log('Error', error.message);
+				}
+				console.log(error.config);
+			});
+	});
+	$('#ddChartCountries').on('change', function() {
+		let value = $(this).val();
+		if (value == 'global') {
+			axios
+				.get('https://corona-api.com/timeline')
+				.then((response) => {
+					chartDataSet(response.data.data);
+				})
+				.catch((error) => {
+					if (error.response) {
+						console.log(
+							'The request was made and the server responded with a status code that falls out of the range of 2xx'
+						);
+						console.log('Error Data: ', error.response.data);
+						console.log('Error Status: ', error.response.status);
+						console.log('Error Headers: ', error.response.headers);
+					} else if (error.request) {
+						console.log(
+							'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+						);
+						console.log('Error Request: ', error.request);
+					} else {
+						console.log('Something happened in setting up the request that triggered an Error');
+						console.log('Error Message: ', error.message);
+					}
+					console.log('Error config: ', error.config);
+				});
+		} else {
+			axios
+				.get('https://corona-api.com/countries/' + value.toLowerCase() + '?include=timeline')
+				.then((response) => {
+					getCountries(response.data);
+				})
+				.catch((error) => {
+					if (error.response) {
+						console.log(
+							'The request was made and the server responded with a status code that falls out of the range of 2xx'
+						);
+						console.log('Error Data: ', error.response.data);
+						console.log('Error Status: ', error.response.status);
+						console.log('Error Headers: ', error.response.headers);
+					} else if (error.request) {
+						console.log(
+							'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+						);
+						console.log('Error Request: ', error.request);
+					} else {
+						console.log('Something happened in setting up the request that triggered an Error');
+						console.log('Error Message: ', error.message);
+					}
+					console.log('Error config: ', error.config);
+				});
+		}
+		$('input:radio[name=timeframe]').filter('[value=month]').prop('checked', true);
+		$('input:radio[name=caseTypeRadio]').filter('[value=confirmed]').prop('checked', true);
+		$('input:radio[name=chartTypeRadio]').filter('[value=bar]').prop('checked', true);
+		$('#linearRadio, #logarithmicRadio').attr('disabled', '');
+	});
+});
 const newsUri = 'https://api.smartable.ai/coronavirus/news/global';
 const API_KEY_SMARTTABLE = 'cf8e77731fb345d381334aff5e844f3f';
 let canvas = document.getElementById('myChart');
@@ -344,7 +467,7 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 		myChart.update();
 	});
 }
-let getNewsResults = (data) => {
+function getNewsResults(data) {
 	let newsCards = document.getElementById('card-deck');
 	let newsResultsNumber = document.getElementById('news-results-number');
 	let optionName = $('#selectNewsRegion option:selected').text();
@@ -354,7 +477,7 @@ let getNewsResults = (data) => {
 		data.news.forEach(function(item) {
 			output += `
 				<div class="col-sm-12 my-3 pl-0 pr-1">
-					<a class="card lift lift-sm p-3 news-card" href="${item.webUrl}" target="_blank">
+					<a class="card lift lift-sm p-3 news-card border-bottom-lg" href="${item.webUrl}" target="_blank" style="border-color: rgba(31, 45, 65, 0.5) !important;">
 						<h3 class="text-dark">${item.title}</h3>
 						<p class="text-gray-600 mb-1"">${item.excerpt}</p>
 						<p class="text-primary mb-3">View full article</p>
@@ -370,8 +493,8 @@ let getNewsResults = (data) => {
 		output += `<div class="col-sm-12 p-4 mx-auto text-muted">No data available for this region. Please selet another option.</div>`;
 	}
 	newsCards.innerHTML = output;
-};
-let fillNewsCards = () => {
+}
+function fillNewsCards() {
 	axios
 		.get(newsUri, {
 			headers: {
@@ -401,34 +524,10 @@ let fillNewsCards = () => {
 			}
 			console.log(error.config);
 		});
-};
+}
 
 //Dasboard cases
-axios
-	.get('https://corona-api.com/timeline')
-	.then((response) => {
-		cardStats(response.data.data);
-		chartDataSet(response.data.data);
-	})
-	.catch((error) => {
-		if (error.response) {
-			console.log(
-				'The request was made and the server responded with a status code that falls out of the range of 2xx'
-			);
-			console.log('Error Data: ', error.response.data);
-			console.log('Error Status: ', error.response.status);
-			console.log('Error Headers: ', error.response.headers);
-		} else if (error.request) {
-			console.log(
-				'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
-			);
-			console.log('Error Request: ', error.request);
-		} else {
-			console.log('Something happened in setting up the request that triggered an Error');
-			console.log('Error Message: ', error.message);
-		}
-		console.log('Error config: ', error.config);
-	});
+
 function cardStats(data) {
 	document.getElementById('last-updated').innerHTML =
 		'Last updated <span class="text-gray-800">' + timeDifference(data[0].updated_at) + '</span>';
@@ -460,14 +559,31 @@ function cardStats(data) {
 	document.getElementById('per-active').innerHTML = '';
 }
 
-function fillSituationReports() {
+function fillTravelNotices() {
 	axios
-		.get('https://covid19api.io/api/v1/SituationReports')
+		.get('https://covid19api.io/api/v1/TravelHealthNotices')
 		.then((response) => {
 			let output = '';
-			response.data.reports.forEach(function(report) {
-				output += `<a class="list-group-item list-group-item-action" target="_blank" href="${report.pdf}"><i class="icon-file-pdf mr-2"></i>${report.report}<span class="float-right small text-muted">${report.date}</span></a>
-						`;
+			response.data.data.travelHealthNotices.alert.forEach(function(notice) {
+				output += `<div class="list-group-item list-group-item-action border-top-0 border-bottom-0 border-right-0 border-left-lg border-red my-1">
+							<h6>${notice.title}</h6>
+							<p class="mb-0">${notice.summary}</p>
+							<p class="small text-muted float-right">${notice.date}</p>
+						</div>`;
+			});
+			response.data.data.travelHealthNotices.warning.forEach(function(notice) {
+				output += `<div class="list-group-item list-group-item-action border-top-0 border-bottom-0 border-right-0 border-left-lg border-yellow my-1">
+							<h6>${notice.title}</h6>
+							<p class="mb-0">${notice.summary}</p>
+							<p class="small text-muted float-right">${notice.date}</p>
+						</div>`;
+			});
+			response.data.data.travelHealthNotices.watch.forEach(function(notice) {
+				output += `<div class="list-group-item list-group-item-action border-top-0 border-bottom-0 border-right-0 border-left-lg border-dark my-1">
+							<h6>${notice.title}</h6>
+							<p class="mb-0">${notice.summary}</p>
+							<p class="small text-muted float-right">${notice.date}</p>
+						</div>`;
 			});
 			document.getElementById('right-panel-reports').innerHTML = output;
 		})
@@ -476,21 +592,22 @@ function fillSituationReports() {
 				console.log(
 					'The request was made and the server responded with a status code that falls out of the range of 2xx'
 				);
-				console.log(error.response.data);
-				console.log(error.response.status);
-				console.log(error.response.headers);
+				console.log('Error Data: ', error.response.data);
+				console.log('Error Status: ', error.response.status);
+				console.log('Error Headers: ', error.response.headers);
 			} else if (error.request) {
 				console.log(
-					'The request was made but no response was received `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+					'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
 				);
-				console.log(error.request);
+				console.log('Error Request: ', error.request);
 			} else {
 				console.log('Something happened in setting up the request that triggered an Error');
-				console.log('Error', error.message);
+				console.log('Error Message: ', error.message);
 			}
-			console.log(error.config);
+			console.log('Error config: ', error.config);
 		});
 }
+
 //Line Chart
 function getCountries(data) {
 	let filteredArr = [];
@@ -720,192 +837,90 @@ function getCountries(data) {
 }
 
 function chartDataSet(data) {
-	$(document).ready(function() {
-		getCountries(data);
-	});
+	getCountries(data);
 }
 function worldDatatable(data) {
-	$(document).ready(function() {
-		$('#dataTableWorldTimeline').DataTable({
-			data: data.data,
-			responsive: true,
-			pagingType: 'numbers',
-			pageLength: 10,
-			stateSave: true,
-			language: {
-				searchPlaceholder: 'e.g. usa',
-				loadingRecords: '<i class="icon-spinner spinner-animate"></i>'
-			},
-			columns: [
-				{
-					data: 'name',
-					title: 'Country <small class="text-dark font-weight-600">(Population)</small>',
-					render: function(data, type, row) {
-						if (type === 'type' || type === 'sort') {
-							return data;
-						}
-						return row.code
-							? `<div class="d-inline-block"><img src="https://www.countryflags.io/${row.code.toLocaleLowerCase()}/shiny/24.png" style="vertical-align:bottom; margin-right:5px;" onerror="this.src='../assets/img/flag_placeholder_20x20.png'"/>${data} <span class="text-gray-600"><small class="text-dark font-weight-600">(${populationFormat(
-									row.population
-								)})</small></span></div>`
-							: `<span class="d-inline-block"><img src="../assets/img/flag_placeholder_20x20.png" style="vertical-align:bottom; margin-right:5px;" onerror="this.src='../assets/img/flag_placeholder_20x20.png'"/>${data} <span class="text-gray-600"><small class="text-dark font-weight-600">(${populationFormat(
-									row.tests
-								)})</small></span></span>`;
+	$('#dataTableWorldTimeline').DataTable({
+		data: data,
+		responsive: true,
+		pagingType: 'numbers',
+		pageLength: 10,
+		stateSave: true,
+		language: {
+			searchPlaceholder: 'e.g. usa',
+			loadingRecords: '<i class="icon-spinner spinner-animate"></i>'
+		},
+		columns: [
+			{
+				data: 'name',
+				title: 'Country <small class="text-dark font-weight-600">(Population)</small>',
+				render: function(data, type, row) {
+					if (type === 'type' || type === 'sort') {
+						return data;
 					}
-				},
-				{
-					data: 'latest_data.confirmed',
-					title: 'Confirmed',
-					render: function(data, type, row) {
-						if (type === 'type' || type === 'sort') {
-							return data;
-						}
-						return row.today.confirmed
-							? `${data.toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.today.confirmed.toLocaleString()}<span class="font-weight-light small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
-									row.latest_data.confirmed,
-									row.today.confirmed
-								)}%)</span></p>`
-							: `${data ? data.toLocaleString() : ''}`;
-					}
-				},
-				{
-					data: 'latest_data.critical',
-					title: 'Active',
-					render: function(data, type, row) {
-						if (type === 'type' || type === 'sort') {
-							return data;
-						}
-						return `${data ? data.toLocaleString() : ''}`;
-					}
-				},
-				{
-					data: 'latest_data.recovered',
-					title: 'Recovered',
-					render: function(data, type, row) {
-						if (type === 'type' || type === 'sort') {
-							return data;
-						}
-						return `${data ? data.toLocaleString() : ''}`;
-					}
-				},
-				{
-					data: 'latest_data.deaths',
-					title: 'Deaths',
-					render: function(data, type, row) {
-						if (type === 'type' || type === 'sort') {
-							return data;
-						}
-						return row.today.deaths
-							? `${data.toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.today.deaths.toLocaleString()}<span class="font-weight-light text-danger small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
-									row.latest_data.deaths,
-									row.today.deaths
-								)}%)</span></p>`
-							: `${data ? data.toLocaleString() : ''}`;
-					}
+					return row.code
+						? `<div class="d-inline-block"><img src="https://www.countryflags.io/${row.code.toLocaleLowerCase()}/shiny/24.png" style="vertical-align:bottom; margin-right:5px;" onerror="this.src='../assets/img/flag_placeholder_20x20.png'"/>${data} <span class="text-gray-600"><small class="text-dark font-weight-600">(${populationFormat(
+								row.population
+							)})</small></span></div>`
+						: `<span class="d-inline-block"><img src="../assets/img/flag_placeholder_20x20.png" style="vertical-align:bottom; margin-right:5px;" onerror="this.src='../assets/img/flag_placeholder_20x20.png'"/>${data} <span class="text-gray-600"><small class="text-dark font-weight-600">(${populationFormat(
+								row.tests
+							)})</small></span></span>`;
 				}
-			],
-			order: [ [ 1, 'desc' ] ]
-		});
+			},
+			{
+				data: 'latest_data.confirmed',
+				title: 'Confirmed',
+				render: function(data, type, row) {
+					if (type === 'type' || type === 'sort') {
+						return data;
+					}
+					return row.today.confirmed
+						? `${data.toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.today.confirmed.toLocaleString()}<span class="font-weight-light small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
+								row.latest_data.confirmed,
+								row.today.confirmed
+							)}%)</span></p>`
+						: `${data ? data.toLocaleString() : ''}`;
+				}
+			},
+			{
+				data: 'latest_data.critical',
+				title: 'Active',
+				render: function(data, type, row) {
+					if (type === 'type' || type === 'sort') {
+						return data;
+					}
+					return `${data ? data.toLocaleString() : ''}`;
+				}
+			},
+			{
+				data: 'latest_data.recovered',
+				title: 'Recovered',
+				render: function(data, type, row) {
+					if (type === 'type' || type === 'sort') {
+						return data;
+					}
+					return `${data ? data.toLocaleString() : ''}`;
+				}
+			},
+			{
+				data: 'latest_data.deaths',
+				title: 'Deaths',
+				render: function(data, type, row) {
+					if (type === 'type' || type === 'sort') {
+						return data;
+					}
+					return row.today.deaths
+						? `${data.toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.today.deaths.toLocaleString()}<span class="font-weight-light text-danger small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
+								row.latest_data.deaths,
+								row.today.deaths
+							)}%)</span></p>`
+						: `${data ? data.toLocaleString() : ''}`;
+				}
+			}
+		],
+		order: [ [ 1, 'desc' ] ]
 	});
 }
-$(document).ready(function() {
-	fillNewsCards();
-	fillSituationReports();
-	$('#selectNewsRegion').on('change', function() {
-		let value = $(this).val();
-		document.getElementById('card-deck').innerHTML =
-			'<div class="text-center"><i class="icon-spinner spinner-animate"></i></div>';
-		const newsUri = 'https://api.smartable.ai/coronavirus/news/' + value;
-
-		axios
-			.get(newsUri, {
-				headers: {
-					'Subscription-Key': API_KEY_SMARTTABLE
-				}
-			})
-			.then((response) => {
-				getNewsResults(response.data);
-			})
-			.catch((error) => {
-				if (error.response) {
-					console.log(
-						'The request was made and the server responded with a status code that falls out of the range of 2xx'
-					);
-					console.log(error.response.data);
-					console.log(error.response.status);
-					console.log(error.response.headers);
-				} else if (error.request) {
-					console.log(
-						'The request was made but no response was received `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
-					);
-					console.log(error.request);
-				} else {
-					console.log('Something happened in setting up the request that triggered an Error');
-					console.log('Error', error.message);
-				}
-				console.log(error.config);
-			});
-	});
-	$('#ddChartCountries').on('change', function() {
-		let value = $(this).val();
-		if (value == 'global') {
-			axios
-				.get('https://corona-api.com/timeline')
-				.then((response) => {
-					chartDataSet(response.data.data);
-				})
-				.catch((error) => {
-					if (error.response) {
-						console.log(
-							'The request was made and the server responded with a status code that falls out of the range of 2xx'
-						);
-						console.log('Error Data: ', error.response.data);
-						console.log('Error Status: ', error.response.status);
-						console.log('Error Headers: ', error.response.headers);
-					} else if (error.request) {
-						console.log(
-							'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
-						);
-						console.log('Error Request: ', error.request);
-					} else {
-						console.log('Something happened in setting up the request that triggered an Error');
-						console.log('Error Message: ', error.message);
-					}
-					console.log('Error config: ', error.config);
-				});
-		} else {
-			axios
-				.get('https://corona-api.com/countries/' + value.toLowerCase() + '?include=timeline')
-				.then((response) => {
-					getCountries(response.data);
-				})
-				.catch((error) => {
-					if (error.response) {
-						console.log(
-							'The request was made and the server responded with a status code that falls out of the range of 2xx'
-						);
-						console.log('Error Data: ', error.response.data);
-						console.log('Error Status: ', error.response.status);
-						console.log('Error Headers: ', error.response.headers);
-					} else if (error.request) {
-						console.log(
-							'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
-						);
-						console.log('Error Request: ', error.request);
-					} else {
-						console.log('Something happened in setting up the request that triggered an Error');
-						console.log('Error Message: ', error.message);
-					}
-					console.log('Error config: ', error.config);
-				});
-		}
-		$('input:radio[name=timeframe]').filter('[value=month]').prop('checked', true);
-		$('input:radio[name=caseTypeRadio]').filter('[value=confirmed]').prop('checked', true);
-		$('input:radio[name=chartTypeRadio]').filter('[value=bar]').prop('checked', true);
-		$('#linearRadio, #logarithmicRadio').attr('disabled', '');
-	});
-});
-
 $(window).on('load', function() {
 	let $logo = $('#brand-logo');
 	$logo.removeClass('rotating');

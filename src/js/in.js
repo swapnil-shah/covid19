@@ -1,11 +1,7 @@
 $(document).ready(function() {
-	axios.get('https://api.covid19india.org/data.json').then((response) => {
-		cardStats(response.data);
-		countryDataSet(response.data);
-	});
+	cardStats(countryDataTable[0]);
+	countryDataSet(countryDataTable[0]);
 	newsResults();
-	notificationsAdvisories();
-
 	$('#confirmedRadio').click(function() {
 		myChart.destroy();
 		if ($('#sinceBeginning').is(':checked')) {
@@ -130,9 +126,8 @@ $(document).ready(function() {
 		}
 		myChart.update();
 	});
-});
-const newsUri = 'https://newsapi.org/v2/top-headlines?q=COVID&country=in&apiKey=7e2e5ed46901476baa79347a66cc2b2c';
-const API_KEY_SMARTTABLE = 'cf8e77731fb345d381334aff5e844f3f';
+const newsUri =
+	'https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/top-headlines?q=COVID&country=in&apiKey=7e2e5ed46901476baa79347a66cc2b2c';
 let canvas = document.getElementById('myChart');
 let ctx = canvas.getContext('2d');
 let myChart;
@@ -612,7 +607,7 @@ function countryDataSet(data) {
 		],
 		order: [ [ 1, 'desc' ] ]
 	});
-	subDataTable(table)
+	subDataTable(table);
 }
 
 function subDataTable(table) {
@@ -742,8 +737,9 @@ function populateNumbers(confirmed, recovered, deaths, text) {
 }
 function newsResults() {
 	axios
-		.get(newsUri)
+		.get(newsUri, { mode: 'cors' })
 		.then((response) => {
+			console.log('newsResults -> response', response);
 			document.getElementById('card-deck').text = 'Loading..';
 			let newsCards = document.getElementById('card-deck');
 			let newsResultsNumber = document.getElementById('news-results-number');
@@ -755,7 +751,7 @@ function newsResults() {
 			response.data.articles.forEach(function(item) {
 				output += `
 						<div class="col-sm-12 my-3 pl-0 pr-1">
-							<a class="card lift lift-sm p-3 news-card" href="${item.url}" target="_blank">
+							<a class="card lift lift-sm p-3 news-card border-bottom-lg" href="${item.url}" target="_blank" style="border-color: rgba(31, 45, 65, 0.5) !important;">
 								<h3 class="text-dark">${item.title}</h3>
 								<p class="text-gray-600 mb-1"">${item.description}</p>
 								<p class="text-primary mb-3">View full article</p>
@@ -769,40 +765,8 @@ function newsResults() {
 			newsCards.innerHTML = output;
 		})
 		.catch((error) => {
-			if (error.response) {
-				console.log(
-					'The request was made and the server responded with a status code that falls out of the range of 2xx'
-				);
-				console.log('Error Data: ', error.response.data);
-				console.log('Error Status: ', error.response.status);
-				console.log('Error Headers: ', error.response.headers);
-			} else if (error.request) {
-				console.log(
-					'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
-				);
-				console.log('Error Request: ', error.request);
-			} else {
-				console.log('Something happened in setting up the request that triggered an Error');
-				console.log('Error Message: ', error.message);
-			}
-			console.log('Error config: ', error.config);
-		});
-}
-function notificationsAdvisories() {
-	axios
-		.get('https://api.rootnet.in/covid19-in/notifications')
-		.then((response) => {
-			let output = '';
-			response.data.data.notifications.forEach(function(report) {
-				output += `<a class="list-group-item list-group-item-action" target="_blank" href="${report.link}">${report.title}</a>
-						`;
-			});
-			document.getElementById('right-panel-reports').innerHTML = output;
-			document.getElementById('notification-last-updated').innerHTML = `Updated ${timeDifference(
-				response.data.lastRefreshed
-			)}`;
-		})
-		.catch((error) => {
+			document.getElementById('news-results-number').innerHTML =
+				'Failed to fetch the data.<br>Error Message: ' + error.message;
 			if (error.response) {
 				console.log(
 					'The request was made and the server responded with a status code that falls out of the range of 2xx'

@@ -11,50 +11,9 @@ block config
     - var topNavRegion = 'COVID19 INDIA'
     
 append css
-    link(href='https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i', rel='stylesheet')
-    link(rel='stylesheet', href='https://unpkg.com/leaflet@1.6.0/dist/leaflet.css', integrity='sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==', crossorigin='')
-    script(src='https://unpkg.com/axios/dist/axios.min.js')
-    script(src='https://unpkg.com/leaflet@1.6.0/dist/leaflet.js', integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==", type="text/javascript", crossorigin="")
     include in-map-js.pug
     link(href='css/styles.min.css', rel='stylesheet')
     link(href='https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css', rel='stylesheet', crossorigin='anonymous')
-    style(type='text/css').
-        @-webkit-keyframes rotating {
-            from {
-                -webkit-transform: rotate(0deg);
-                -o-transform: rotate(0deg);
-                transform: rotate(0deg);
-            }
-            to {
-                -webkit-transform: rotate(360deg);
-                -o-transform: rotate(360deg);
-                transform: rotate(360deg);
-            }
-        }
-        @keyframes rotating {
-            from {
-                -ms-transform: rotate(0deg);
-                -moz-transform: rotate(0deg);
-                -webkit-transform: rotate(0deg);
-                -o-transform: rotate(0deg);
-                transform: rotate(0deg);
-            }
-            to {
-                -ms-transform: rotate(360deg);
-                -moz-transform: rotate(360deg);
-                -webkit-transform: rotate(360deg);
-                -o-transform: rotate(360deg);
-                transform: rotate(360deg);
-            }
-        }
-        .rotating {
-            -webkit-animation: rotating 3s linear infinite;
-            -moz-animation: rotating 3s linear infinite;
-            -ms-animation: rotating 3s linear infinite;
-            -o-animation: rotating 3s linear infinite;
-            animation: rotating 3s linear infinite;
-        }
-
 block content
     .container-fluid.mt-4
         .card.mb-4
@@ -191,12 +150,11 @@ block content
             .col-sm-12
                 .card.mb-4
                     .card-header.bg-dark
-                        h5.text-white In The Press
+                        h5.text-white Top COVID19 related News
                     .card-body
                         .row.d-flex.justify-content-between
-                            .col-sm-12.col-md-8.pr-md-5
+                            .col-sm-12
                                 .card.mt-4.mb-2.right-panel-reports-container.border-top-0.border-right-0.border-bottom-0.border-left-0.px-0
-                                    h4.card-title.p-3.text-dark.bg-light Top COVID19 related News
                                     .card-deck-container
                                         .text-gray-600.small#news-results-number.pt-1.pl-3
                                         #card-deck.my-2.pr-md-2
@@ -204,17 +162,7 @@ block content
                                         em Data derived from&nbsp;
                                             a.w-100.pt-2(href="https://newsapi.org/" target="_blank") News API
                                                 i.icon-new-tab.ml-1
-                            .col-sm-12.col-md-4.px-0
-                                .card.mt-4.mb-2.right-panel-reports-container.border-top-0.border-right-0.border-bottom-0.border-left-0.px-0
-                                    h4.card-title.p-3.text-dark.bg-light Notifications & advisories
-                                    .card-deck-container
-                                        .d-flex.align-items-start.pb-1.small#notification-last-updated
-                                        .list-group.list-group-flush#right-panel-reports.mr-md-2
-                                    p.small.pt-2.pr-2.mb-0.text-right
-                                        em Data derived from&nbsp;
-                                            a.w-100.pt-2(href="https://api.covid19india.org" target="_blank") COVID19-India API
-                                                i.icon-new-tab.ml-1
-                //- Extra large modal
+        //- Extra large modal
         .modal.fade#stateModal(tabindex='-1', role='dialog', aria-labelledby='stateModal', aria-hidden='true')
             .modal-dialog.modal-xl(role='document')
                 .modal-content
@@ -228,12 +176,10 @@ block content
                     .modal-footer
                         button.btn.btn-primary(type='button', data-dismiss='modal') Close
 append scripts
-    //- Load Chart.js via CDN
     script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
-    
-    script(src='js/in.min.js')
-    //- script(src='js/utilities.js')
-    //- script(src='js/in.js')
-    //- script(src='js/scripts.js')
+    //- script(src='js/in.min.js')
+    script(src='js/utilities.js')
+    script(src='js/in.js')
+    script(src='js/scripts.js')

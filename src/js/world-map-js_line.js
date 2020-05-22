@@ -68,7 +68,7 @@ let getNewsResults = (data) => {
 		data.news.forEach(function(item) {
 			output += `
 				<div class="col-sm-12 my-3 pl-0 pr-1">
-					<a class="card lift lift-sm p-3 news-card" href="${item.webUrl}" target="_blank">
+					<a class="card lift lift-sm p-3 news-card border-top-0 border-bottom-0 border-right-0 border-left-lg border-blue" href="${item.webUrl}" target="_blank">
 						<h3 class="text-dark">${item.title}</h3>
 						<p class="text-gray-600 mb-1"">${item.excerpt}</p>
 						<p class="text-primary mb-3">View full article</p>

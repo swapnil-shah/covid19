@@ -12,7 +12,8 @@ block config
     
 append css
     include us-map-js.pug
-
+    link(href='css/styles.min.css', rel='stylesheet')
+    link(href='https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css', rel='stylesheet', crossorigin='anonymous')
 block content
     .container-fluid.mt-4
         .card.mb-4
@@ -172,41 +173,23 @@ block content
             .col-sm-12
                 .card.mb-4
                     .card-header.bg-dark.d-block
-                        h5.text-white.mb-0  In The Press
+                        h5.text-white.mb-0  Top COVID19 related News
                     .card-body
                         .row.d-flex.justify-content-between
-                            .col-sm-12.col-md-8.pr-md-5
-                                .card.mt-4.mb-2.right-panel-reports-container.border-top-0.border-right-0.border-bottom-0.border-left-0.px-0
-                                    h4.card-title.p-3.text-dark.bg-light Top COVID19 related News
+                            .col-sm-12
+                                .card.mb-2.right-panel-reports-container.border-top-0.border-right-0.border-bottom-0.border-left-0.px-0
                                     .card-deck-container
                                         p.font-italic.font-weight-300.text-left.mb-1
                                             small Select a state
-                                        .select
+                                        .select.w-25
                                             select#selectNewsRegion
                                                 option(value="US" selected) USA
                                         .text-gray-600.small#news-results-number.pt-1.pl-3
-                                        #card-deck.my-2.pr-md-2
+                                        #card-deck.my-2.pr-md-2.text-gray-600
                                     p.small.pt-2.pr-2.mb-0.text-right
                                         em Data derived from&nbsp;
                                             a.w-100.pt-2(href="https://smartable.ai/" target="_blank") Smartable AI
                                                 i.icon-new-tab.ml-1
-                            .col-sm-12.col-md-4.px-0
-                                .card.mt-4.mb-2.right-panel-reports-container.border-top-0.border-right-0.border-bottom-0.border-left-0.px-0
-                                    h4.card-title.p-3.text-dark.bg-light Travel Health Notices
-                                    .card-deck-container
-                                        .d-flex.align-items-center.justify-content-center.pb-1
-                                            span.bg-red.ml-4.mr-2(style="width: 10px;height: 7px;display: inline-block;vertical-align: middle;") 
-                                            span.small.text-muted Alert
-                                            span.bg-yellow.ml-4.mr-2(style="width: 10px;height: 7px;display: inline-block;vertical-align: middle;") 
-                                            span.small.text-muted Warning
-                                            span.bg-dark.ml-4.mr-2(style="width: 10px;height: 7px;display: inline-block;vertical-align: middle;") 
-                                            span.small.text-muted Watch
-                                        .list-group.list-group-flush.small#right-panel-reports.mr-md-2
-                                    p.small.pt-2.pr-2.mb-0.text-right
-                                        em Data derived from&nbsp;
-                                            a.w-100.pt-2(href="https://covid19-docs.chrismichael.now.sh/" target="_blank") covid19-api
-                                                i.icon-new-tab.ml-1
-        
                 //- Extra large modal
         .modal.fade#stateModal(tabindex='-1', role='dialog', aria-labelledby='stateModal', aria-hidden='true')
             .modal-dialog.modal-xl(role='document')
@@ -219,14 +202,16 @@ block content
                         .datatable.table-responsive.pb-3
                             table#dataTableState.table.table-bordered.table-hover(width='100%', cellspacing='0')
                     .modal-footer
-                        button.btn.btn-primary(type='button', data-dismiss='modal') Close
+                        button.btn.btn-primary(type='button', data-dismiss='modal') Close.
+
 
 append scripts
     //- Load Chart.js via CDN
     script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
-    script(src='js/us.min.js')
-    //- script(src='js/utilities.js')
-    //- script(src='js/us.js')
-    //- script(src='js/scripts.js')
+    //- script(src='js/us.min.js')
+    script(src='js/utilities.js')
+    script(src='js/us.js')
+    script(src='js/scripts.js')
+    

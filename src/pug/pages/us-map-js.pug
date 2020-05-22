@@ -1,8 +1,65 @@
 script.
-
-    axios.get('https://disease.sh/v2/jhucsse/counties?yesterday=true')
+    axios
+        .get('https://disease.sh/v2/jhucsse/counties?yesterday=true')
         .then((response) => {
-            countiesData(response);
+            var mymap = L.map('covidCountryMap').setView([ 37.8, -96 ], 4);
+            let mapboxAccessToken =
+                'pk.eyJ1Ijoic3dhcG5pbDciLCJhIjoiY2s5ZnRtZXh1MGVuYTNkbGNhNWtrcmt0diJ9.fzy5HcciZYupAiuzpVmlWA';
+            L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
+                id: 'mapbox/dark-v10',
+                attribution:
+                    'Map data <a target="_blank" href="https://disease.sh/">Novel COVID API</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                minZoom: 1,
+                noWrap: true,
+                bounds: [ [ -90, -180 ], [ 90, 180 ] ]
+            }).addTo(mymap);
+            var myRenderer = L.canvas({ padding: 0.5 });
+            var width = document.documentElement.clientWidth;
+            if (width < 768) {
+                mymap.setZoom(3);
+            }
+            mymap.touchZoom.disable();
+            mymap.scrollWheelZoom.disable();
+            function htmlPopup(county, province, confirmed, recovered, deaths) {
+                let output = '';
+                if (county !== null) {
+                    output += `<b>${county}</b>, `;
+                }
+                if (province !== null) {
+                    output += `<b>${province}</b>`;
+                }
+                if (confirmed !== null) {
+                    output += `<br/>Confirmed: ${confirmed.toLocaleString()}`;
+                }
+                if (recovered !== null) {
+                    output += `<br/>Recovered: ${recovered.toLocaleString()}`;
+                }
+                if (deaths !== null) {
+                    output += `<br/>Deaths: ${deaths.toLocaleString()}`;
+                }
+                return output;
+            }
+            response.data.forEach(function(county) {
+                var latlng = L.latLng({ lat: county.coordinates.latitude, lng: county.coordinates.longitude });
+                var circle = L.circleMarker(latlng, {
+                    fillOpacity: 0.3,
+                    radius: 5,
+                    stroke: false,
+                    fillColor: '#ff8725',
+                    renderer: myRenderer
+                })
+                    .addTo(mymap)
+                    .bindTooltip(
+                        htmlPopup(
+                            county.county,
+                            county.province,
+                            county.stats.confirmed,
+                            county.stats.recovered,
+                            county.stats.deaths
+                        )
+                    );
+            });
+            var info = L.control({ position: 'bottomright' });
         })
         .catch((error) => {
             if (error.response) {
@@ -23,63 +80,3 @@ script.
             }
             console.log('Error config: ', error.config);
         });
-    function countiesData(response) {
-        var mymap = L.map('covidCountryMap').setView([ 37.8, -96 ], 4);
-        let mapboxAccessToken =
-            'pk.eyJ1Ijoic3dhcG5pbDciLCJhIjoiY2s5ZnRtZXh1MGVuYTNkbGNhNWtrcmt0diJ9.fzy5HcciZYupAiuzpVmlWA';
-        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
-            id: 'mapbox/dark-v10',
-            attribution:
-                'Map data <a target="_blank" href="https://disease.sh/">Novel COVID API</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-            minZoom: 1,
-            noWrap: true,
-            bounds: [ [ -90, -180 ], [ 90, 180 ] ]
-        }).addTo(mymap);
-        var myRenderer = L.canvas({ padding: 0.5 });
-        var width = document.documentElement.clientWidth;
-        if (width < 768) {
-            mymap.setZoom(3);
-        }
-        mymap.touchZoom.disable();
-        mymap.scrollWheelZoom.disable();
-        function htmlPopup(county, province, confirmed, recovered, deaths) {
-            let output = '';
-            if (county !== null) {
-                output += `<b>${county}</b>, `;
-            }
-            if (province !== null) {
-                output += `<b>${province}</b>`;
-            }
-            if (confirmed !== null) {
-                output += `<br/>Confirmed: ${confirmed.toLocaleString()}`;
-            }
-            if (recovered !== null) {
-                output += `<br/>Recovered: ${recovered.toLocaleString()}`;
-            }
-            if (deaths !== null) {
-                output += `<br/>Deaths: ${deaths.toLocaleString()}`;
-            }
-            return output;
-        }
-        response.data.forEach(function(county) {
-            var latlng = L.latLng({ lat: county.coordinates.latitude, lng: county.coordinates.longitude });
-            var circle = L.circleMarker(latlng, {
-                fillOpacity: 0.3,
-                radius: 5,
-                stroke: false,
-                fillColor: '#ff8725',
-                renderer: myRenderer
-            })
-                .addTo(mymap)
-                .bindTooltip(
-                    htmlPopup(
-                        county.county,
-                        county.province,
-                        county.stats.confirmed,
-                        county.stats.recovered,
-                        county.stats.deaths
-                    )
-                );
-        });
-        var info = L.control({ position: 'bottomright' });
-    }

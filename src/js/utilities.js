@@ -50,14 +50,14 @@ function timeDifference(date) {
 			: Math.round(elapsed / msPerHour) + ' hours ago';
 	} else if (elapsed < msPerMonth) {
 		return Math.round(elapsed / msPerDay) === 1
-			? 'approximately ' + Math.round(elapsed / msPerDay) + ' day ago'
-			: 'approximately ' + Math.round(elapsed / msPerDay) + ' days ago';
+			? Math.round(elapsed / msPerDay) + ' day ago'
+			: Math.round(elapsed / msPerDay) + ' days ago';
 	} else if (elapsed < msPerYear) {
 		return Math.round(elapsed / msPerMonth) === 1
-			? 'approximately ' + Math.round(elapsed / msPerMonth) + ' month ago'
-			: 'approximately ' + Math.round(elapsed / msPerMonth) + ' months ago';
+			? Math.round(elapsed / msPerMonth) + ' month ago'
+			: Math.round(elapsed / msPerMonth) + ' months ago';
 	} else {
-		return 'approximately ' + Math.round(elapsed / msPerYear) + ' years ago';
+		return Math.round(elapsed / msPerYear) + ' years ago';
 	}
 }
 
