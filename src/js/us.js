@@ -155,7 +155,7 @@ $(document).ready(function() {
 			order: [ [ 1, 'desc' ] ]
 		});
 	});
-	fillNewsCards();
+	// fillNewsCards();
 	addStates();
 	$('#selectNewsRegion').on('change', function() {
 		let value = $(this).val();
@@ -594,7 +594,6 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 	});
 }
 function dataSet(data) {
-	console.log('dataSet -> data', data);
 	let filteredArr = data.timeline.slice(1);
 	let asOfDate = '';
 	document.getElementById('sinceBeginningDate').innerHTML = `Until ${formatDate(filteredArr[0].updated_at)}`;
