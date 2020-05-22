@@ -526,11 +526,10 @@ function fillNewsCards() {
 		});
 }
 
-//Dasboard cases
-
-function cardStats(data) {
+function cardStats(dataSet) {
+	let data = dataSet.slice(1);
 	document.getElementById('last-updated').innerHTML =
-		'Last updated <span class="text-gray-800">' + timeDifference(data[0].updated_at) + '</span>';
+		'As of <span class="text-gray-800">' + formatDate(data[0].updated_at) + '</span>';
 	document.getElementById('number-active').innerText = data[0].active.toLocaleString();
 	document.getElementById('number-confirmed').innerText = data[0].confirmed.toLocaleString();
 	document.getElementById('number-recovered').innerText = data[0].recovered.toLocaleString();
@@ -611,6 +610,8 @@ function fillTravelNotices() {
 //Line Chart
 function getCountries(data) {
 	let filteredArr = [];
+	let asOfDate = '';
+	let sinceBeginingLabel = document.getElementById('sinceBeginningDate');
 	confirmedMonth = [];
 	deathsMonth = [];
 	recoveredMonth = [];
@@ -632,13 +633,18 @@ function getCountries(data) {
 	numbersConfirmedWeeks = 0;
 	numbersDeathsWeeks = 0;
 	numbersRecoveredWeeks = 0;
+
 	if (Array.isArray(data)) {
-		filteredArr = data;
+		filteredArr = data.slice(1);
+		asOfDate = `Until ${formatDate(filteredArr[0].updated_at)}`;
+		sinceBeginingLabel.innerHTML = `Until ${formatDate(filteredArr[0].updated_at)}`;
 		numbersConfirmed = filteredArr[0].confirmed;
 		numbersDeceased = filteredArr[0].deaths;
 		numbersRecovered = filteredArr[0].recovered;
 	} else {
-		filteredArr = data.data.timeline;
+		filteredArr = data.data.timeline.slice(1);
+		asOfDate = `Until ${formatDate(filteredArr[0].updated_at)}`;
+		sinceBeginingLabel.innerHTML = `Until ${formatDate(filteredArr[0].updated_at)}`;
 		numbersConfirmed = data.data.latest_data.confirmed;
 		numbersDeceased = data.data.latest_data.deaths;
 		numbersRecovered = data.data.latest_data.recovered;
@@ -768,7 +774,7 @@ function getCountries(data) {
 			numbersConfirmed.toLocaleString(),
 			numbersRecovered.toLocaleString(),
 			numbersDeceased.toLocaleString(),
-			'From the Beginning'
+			asOfDate
 		);
 		myChart.destroy();
 		if ($('#confirmedRadio').is(':checked')) {

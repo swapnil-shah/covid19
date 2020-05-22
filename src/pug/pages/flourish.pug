@@ -20,7 +20,6 @@ block content
         })
         .then((response) => {
             var cases = [];
-
             response.data.data
             .sort(function (a, b) {
                 return b.timeline.length - a.timeline.length;
@@ -31,14 +30,17 @@ block content
                 var o2 = {ImageURL: "https://www.countryflags.io/"+i.code+"/shiny/64.png"};
                 let o3 = {};
                 let arrayRev = i.timeline.reverse();
-                arrayRev.forEach(function (t) {
+                arrayRev.filter(function(inProgress){
+                   return !inProgress.is_in_progress;
+                })
+                .forEach(function (t) {
+                console.log("t", t)
                     o3[formatDateToString(t.date)] = t.confirmed;
                 });
                 var obj = Object.assign({}, o1, o2, o3);
                 cases.push(obj);
                 }
             });
-            console.log(cases);
             var textedJson = JSON.stringify(cases);
             document.getElementById("myTextarea").innerText = textedJson;
             // console.log(JSON.stringify(cases));

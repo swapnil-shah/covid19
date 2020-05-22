@@ -237,41 +237,33 @@ let numbersDeathsWeeks = 0;
 let numbersRecoveredWeeks = 0;
 //US cases
 
-function cardStats(data) {
+function cardStats(dataSet) {
+	let data = dataSet.timeline.slice(1);
 	document.getElementById('last-updated').innerHTML =
-		'Last updated <span class="text-gray-800">' + timeDifference(data.timeline[0].updated_at) + '</span>';
-	document.getElementById('number-active').innerText = data.timeline[0].active.toLocaleString();
-	document.getElementById('number-confirmed').innerText = data.timeline[0].confirmed.toLocaleString();
-	document.getElementById('number-recovered').innerText = data.timeline[0].recovered.toLocaleString();
-	document.getElementById('number-deaths').innerText = data.timeline[0].deaths.toLocaleString();
-	if (data.timeline[0].new_confirmed) {
-		document.getElementById('today-confirmed').innerText = '+' + data.timeline[0].new_confirmed.toLocaleString();
+		'As of <span class="text-gray-800">' + formatDate(data[0].updated_at) + '</span>';
+	document.getElementById('number-active').innerText = data[0].active.toLocaleString();
+	document.getElementById('number-confirmed').innerText = data[0].confirmed.toLocaleString();
+	document.getElementById('number-recovered').innerText = data[0].recovered.toLocaleString();
+	document.getElementById('number-deaths').innerText = data[0].deaths.toLocaleString();
+	if (data[0].new_confirmed) {
+		document.getElementById('today-confirmed').innerText = '+' + data[0].new_confirmed.toLocaleString();
 		document.getElementById('per-confirmed').innerHTML =
-			Math.sign(percentageChangeTotal(data.timeline[0].confirmed, data.timeline[0].new_confirmed)) === 1
-				? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
-						data.timeline[0].confirmed,
-						data.timeline[0].new_confirmed
-					)}%)`
+			Math.sign(percentageChangeTotal(data[0].confirmed, data[0].new_confirmed)) === 1
+				? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(data[0].confirmed, data[0].new_confirmed)}%)`
 				: '';
 	}
-	if (data.timeline[0].new_recovered) {
-		document.getElementById('today-recovered').innerText = '+' + data.timeline[0].new_recovered.toLocaleString();
+	if (data[0].new_recovered) {
+		document.getElementById('today-recovered').innerText = '+' + data[0].new_recovered.toLocaleString();
 		document.getElementById('per-recovered').innerHTML =
-			Math.sign(percentageChangeTotal(data.timeline[0].confirmed, data.timeline[0].new_recovered)) === 1
-				? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
-						data.timeline[0].confirmed,
-						data.timeline[0].new_recovered
-					)}%)`
+			Math.sign(percentageChangeTotal(data[0].confirmed, data[0].new_recovered)) === 1
+				? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(data[0].confirmed, data[0].new_recovered)}%)`
 				: '';
 	}
-	if (data.timeline[0].new_deaths) {
-		document.getElementById('today-deaths').innerText = '+' + data.timeline[0].new_deaths.toLocaleString();
+	if (data[0].new_deaths) {
+		document.getElementById('today-deaths').innerText = '+' + data[0].new_deaths.toLocaleString();
 		document.getElementById('per-deaths').innerHTML =
-			Math.sign(percentageChangeTotal(data.timeline[0].deaths, data.timeline[0].new_deaths)) === 1
-				? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
-						data.timeline[0].deaths,
-						data.timeline[0].new_deaths
-					)}%)`
+			Math.sign(percentageChangeTotal(data[0].deaths, data[0].new_deaths)) === 1
+				? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(data[0].deaths, data[0].new_deaths)}%)`
 				: '';
 	}
 	document.getElementById('per-active').innerHTML = '';
@@ -602,11 +594,15 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 	});
 }
 function dataSet(data) {
-	let numbersConfirmed = data.latest_data.confirmed;
-	let numbersDeceased = data.latest_data.deaths;
-	let numbersRecovered = data.latest_data.recovered;
+	console.log('dataSet -> data', data);
+	let filteredArr = data.timeline.slice(1);
+	let asOfDate = '';
+	document.getElementById('sinceBeginningDate').innerHTML = `Until ${formatDate(filteredArr[0].updated_at)}`;
+	let numbersConfirmed = filteredArr[0].confirmed;
+	let numbersDeceased = filteredArr[0].deaths;
+	let numbersRecovered = filteredArr[0].recovered;
 	//Get months/30 days
-	data.timeline.slice(0, 30).forEach(function(daily) {
+	filteredArr.slice(0, 30).forEach(function(daily) {
 		confirmedMonth.push(daily.new_confirmed);
 		deathsMonth.push(daily.new_deaths);
 		recoveredMonth.push(daily.new_recovered);
@@ -617,7 +613,7 @@ function dataSet(data) {
 	});
 
 	//Get 14 days
-	data.timeline.slice(0, 14).forEach(function(daily) {
+	filteredArr.slice(0, 14).forEach(function(daily) {
 		confirmedWeeks.push(daily.new_confirmed);
 		deathsWeeks.push(daily.new_deaths);
 		recoveredWeeks.push(daily.new_recovered);
@@ -628,7 +624,7 @@ function dataSet(data) {
 	});
 
 	//Get since beginning
-	data.timeline.forEach(function(daily) {
+	filteredArr.forEach(function(daily) {
 		casesConfirmed.push(daily.new_confirmed);
 		casesDeaths.push(daily.new_deaths);
 		casesRecovered.push(daily.new_recovered);
@@ -715,7 +711,7 @@ function dataSet(data) {
 			numbersConfirmed.toLocaleString(),
 			numbersRecovered.toLocaleString(),
 			numbersDeceased.toLocaleString(),
-			'From the Beginning'
+			asOfDate
 		);
 		myChart.destroy();
 		if ($('#confirmedRadio').is(':checked')) {
