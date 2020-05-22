@@ -76,7 +76,7 @@ function countryLineData(data) {
 		labelsDate.push(daily.date);
 	});
 
-	Chart.defaults.global.defaultFontColor = 'grey';
+	Chart.defaults.global.defaultFontColor = '#dddfeb';
 	function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradientBorder) {
 		var data = {
 			labels: labelset,

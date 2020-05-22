@@ -155,7 +155,7 @@ $(document).ready(function() {
 			order: [ [ 1, 'desc' ] ]
 		});
 	});
-	// fillNewsCards();
+	fillNewsCards();
 	addStates();
 	$('#selectNewsRegion').on('change', function() {
 		let value = $(this).val();
@@ -360,7 +360,7 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 			bodyFontColor: '#858796',
 			titleMarginBottom: 10,
 			titleFontColor: '#6e707e',
-			titleFontSize: 14,
+			titleFontSize: 16,
 			borderColor: '#dddfeb',
 			borderWidth: 1,
 			caretPadding: 10,
@@ -650,7 +650,7 @@ function dataSet(data) {
 		numbersDeathsMonth.toLocaleString(),
 		'Recent Month'
 	);
-	Chart.defaults.global.defaultFontColor = 'grey';
+	Chart.defaults.global.defaultFontColor = '#dddfeb';
 	Chart.defaults.global.animation.duration = 2500;
 	$('#confirmedRadio').click(function() {
 		myChart.destroy();

@@ -2,25 +2,26 @@ extends ../layouts/dashboard.pug
 
 block config
     - var bodyClass = 'nav-fixed'
-    - var pageTitle = 'COVID19 World Dashboard'
+    - var pageTitle = 'COVID-19 Global Dashboard'
     - var sidenavStyle = 'sidenav-light'
     - var pageHeaderStyle = 'page-header-dark'
     - var pageHeaderBackground = 'bg-gradient-primary-to-secondary'
     - var footerStyle = 'footer-dark bg-dark'
-    - var topNavRegion = 'COVID19 World'
+    - var topNavRegionTitle = 'COVID-19'
+    - var topNavRegionSubTitle = 'Global Dashboard'
     
 append css
     include world-map-js.pug
-    link(href='css/styles.css', rel='stylesheet')
+    link(href='css/styles.min.css', rel='stylesheet')
     link(href='https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css', rel='stylesheet', crossorigin='anonymous')
 block content
     .container-fluid.mt-4
         .card.mb-4
             .card-header.bg-dark.d-block
                 h3.text-white.mb-0  Cases around the World
-                p.text-white.text-muted.mb-0 Tap/hover on the marker for more information
+                p.text-white.text-muted.mb-0.pt-1 Tap/hover on the marker for more information
             .card-body.p-3
-                #covidWorldMap(style="height:50vh")
+                #covidWorldMap(style="height:70vh")
                 #last-updated.text-center.pt-3.pb-1
                 .row.justify-content-center.p-0.pt-2
                     .card-stats.col-md-3
@@ -70,21 +71,21 @@ block content
                 .card.pb-2.mb-4(style="background-color: #191a1a !important;")
                     .card-header.bg-dark.d-block
                         h3.text-white.mb-0  Timeline of Top 15 affected Countries
-                        p.text-white.text-muted.mb-0 Click the play button (bottom left) to run the Timeline 
+                        p.text-white.text-muted.mb-0.pt-1 Click the play button (bottom left) to run the Timeline 
                     .card-body#flourish-bar-chart-race.mx-auto
                         .flourish-embed.flourish-bar-chart-race( data-src='visualisation/2293729', data-url='https://flo.uri.sh/visualisation/2293729/embed')
             .col-sm-12
                 .card.pb-2.mb-4
                     .card-header.bg-dark.d-block
                         h3.text-white.mb-0  Daily Trend of Cases
-                        p.text-white.text-muted.mb-0 Filter by Region, Type & Scale
+                        p.text-white.text-muted.mb-0.pt-1 Filter by Region, Type & Scale
                     .card-body(style="background-color: #191a1a !important;")
                         .row
                             .col-sm-12.col-md-9.p-0
                                 canvas#myChart.tuatara.p-1(width='100%', height='30rem')
                                 .row.text-center
                                     .col.mt-2
-                                        p.font-italic.font-weight-300.mb-1.text-white
+                                        p.font-italic.font-weight-300.mb-1.text-white.pt-1
                                             | Select Country
                                         .select
                                             select#ddChartCountries
@@ -168,7 +169,7 @@ block content
                         .row.d-flex.justify-content-between
                             .col-sm-12.col-md-8.pr-md-5
                                 .card.mt-4.mb-2.right-panel-reports-container.border-top-0.border-right-0.border-bottom-0.border-left-0.px-0
-                                    h4.card-title.p-3.text-dark.bg-light Top COVID19 related News
+                                    h4.card-title.p-3.text-dark.bg-light Top COVID-19 related News
                                     .card-deck-container
                                         p.font-italic.font-weight-300.text-left.mb-1
                                             small Select a region
@@ -204,8 +205,8 @@ append scripts
     script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
-    //- script(src='js/dashboard.min.js')
+    script(src='js/dashboard.min.js')
 
-    script(src='js/utilities.js')
-    script(src='js/dashboard.js')
-    script(src='js/scripts.js')
+    //- script(src='js/utilities.js')
+    //- script(src='js/dashboard.js')
+    //- script(src='js/scripts.js')

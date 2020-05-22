@@ -2,13 +2,14 @@ extends ../layouts/dashboard.pug
 
 block config
     - var bodyClass = 'nav-fixed bg-dark'
-    - var pageTitle = 'About covid'
+    - var pageTitle = 'About this Project'
     - var sidenavStyle = 'sidenav-light'
     - var topnavStyle = 'navbar-light bg-white'
     - var pageHeaderStyle = 'page-header-dark'
     - var pageHeaderBackground = 'bg-gradient-primary-to-secondary'
     - var footerStyle = 'footer-dark bg-dark'
-    - var topNavRegion = 'COVID19 FAQ'
+    - var topNavRegionTitle = 'COVID-19'
+    - var topNavRegionSubTitle = 'FAQ\'s'
     
 append css
     style.
@@ -118,7 +119,6 @@ block content
     .container-fluid
         .row.text-center.p-3
             .col-sm-12.text-center
-                h1.text-white Frequently Asked Questions (COVID-19)
     ul.nav.nav-pills.card-header-pills.d-flex.justify-content-center.pt-2.m-0(role='tablist')
         li.nav-item
             a.nav-link.bg-dark.text-white.active#faq-covid(href='#faqCovid', data-toggle='tab', role='tab', aria-controls='overview', aria-selected='true') GET TO KNOW
@@ -447,6 +447,7 @@ block content
                     .row.d-flex.justify-content-center.mt-5
                         .col-sm-12.col-md-8.justify-content-center
                             h1.text-white.mt-4
+                                span.d-block.mb-3.text-center.text-md-left Myths vs Facts
                                 .card
                                     #headingKnowMore1.card-header.p-0
                                         h2.mb-0.w-100
@@ -552,6 +553,7 @@ block content
                     .row.d-flex.justify-content-center.mt-5
                         .col-sm-12.col-md-8.justify-content-center
                             h1.text-white.mt-4
+                                span.d-block.mb-3.text-center.text-md-left About this Project
                                 .card
                                     #headingUs1.card-header.p-0
                                         h2.mb-0.w-100
@@ -617,7 +619,7 @@ block content
             .container-fluid
                 .row.align-items-center.text-align-center.mt-2.justify-content-center
                     .col-sm-12.col-md-10.text-center
-                        p.m-0 For most up to date information, please visit&nbsp;
+                        p.mt-4.m-0 For most up to date information, please visit&nbsp;
                             a.text-white-75.source-link(target="_blank", href='https://www.who.int/emergencies/diseases/novel-coronavirus-2019') WHO
                             | &nbsp;or&nbsp;
                             a.text-white-75.source-link(target="_blank", href='https://www.cdc.gov/coronavirus/2019-nCoV/index.html') CDC

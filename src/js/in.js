@@ -126,6 +126,7 @@ $(document).ready(function() {
 		}
 		myChart.update();
 	});
+});
 const newsUri =
 	'https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/top-headlines?q=COVID&country=in&apiKey=7e2e5ed46901476baa79347a66cc2b2c';
 let canvas = document.getElementById('myChart');
@@ -238,7 +239,7 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 			bodyFontColor: '#858796',
 			titleMarginBottom: 10,
 			titleFontColor: '#6e707e',
-			titleFontSize: 14,
+			titleFontSize: 16,
 			borderColor: '#dddfeb',
 			borderWidth: 1,
 			caretPadding: 10,
@@ -512,7 +513,7 @@ function countryDataSet(data) {
 		numbersDeathsMonth.toLocaleString(),
 		'Recent Month'
 	);
-	Chart.defaults.global.defaultFontColor = 'grey';
+	Chart.defaults.global.defaultFontColor = '#dddfeb';
 	Chart.defaults.global.animation.duration = 2500;
 
 	//States Datatable

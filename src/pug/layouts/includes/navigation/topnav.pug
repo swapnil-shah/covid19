@@ -2,8 +2,10 @@ nav(class=['topnav', 'navbar', 'navbar-expand', 'shadow'] class="navbar-light bg
 
     //- Sidenav Toggle Button
     button#sidebarMenu.btn.btn-icon.btn-transparent-dark.mr-lg-2(href='#')
-        i.icon-menu(data-icon="&#xe9bd;")
-    h4.text-dark.text-uppercase #{topNavRegion}
+        i.icon-menu(data-icon="&#xe9bd;", style="font-size:1.5rem")
+    h4.text-dark.text-uppercase.text-center #{topNavRegionTitle}
+        br
+        span(style="font-size:1rem;") #{topNavRegionSubTitle}
     //- Navbar Brand Image or Text
     a.navbar-brand(href='/')
         img#brand-logo.rotating(src="../../../../assets/img/virus-logo.svg" height="48")

@@ -2,13 +2,14 @@ extends ../layouts/dashboard.pug
 
 block config
     - var bodyClass = 'nav-fixed'
-    - var pageTitle = 'COVID19 USA Dashboard'
+    - var pageTitle = 'COVID-19 USA Dashboard'
     - var sidenavStyle = 'sidenav-light'
     - var topnavStyle = 'navbar-light bg-white'
     - var pageHeaderStyle = 'page-header-dark'
     - var pageHeaderBackground = 'bg-gradient-primary-to-secondary'
     - var footerStyle = 'footer-dark bg-dark'
-    - var topNavRegion = 'COVID19 USA'
+    - var topNavRegionTitle = 'COVID-19'
+    - var topNavRegionSubTitle = 'USA Dashboard'
     
 append css
     include us-map-js.pug
@@ -19,9 +20,9 @@ block content
         .card.mb-4
             .card-header.bg-dark.d-block
                 h3.text-white.mb-0 Cases in the USA
-                p.text-white.text-muted.mb-0 Tap/hover on the marker for more information
+                p.text-white.text-muted.mb-0.pt-1 Tap/hover on the marker for more information
             .card-body.p-3
-                #covidCountryMap(style="height:50vh")
+                #covidCountryMap(style="height:70vh")
                 #last-updated.text-center.pt-3.pb-1
                 .row.justify-content-center.p-0.pt-2
                     .card-stats.col-md-3
@@ -95,7 +96,7 @@ block content
                 .card.pb-2.mb-4
                     .card-header.bg-dark.d-block.d-block
                         h3.text-white.mb-0  Daily Trend of Cases
-                        p.text-white.text-muted.mb-0 Filter by Region, Type & Scale
+                        p.text-white.text-muted.mb-0.pt-1 Filter by Region, Type & Scale
                     .card-body(style="background-color: #191a1a !important;")
                         .row
                             .col-sm-12.col-md-9.p-0
@@ -173,7 +174,7 @@ block content
             .col-sm-12
                 .card.mb-4
                     .card-header.bg-dark.d-block
-                        h5.text-white.mb-0  Top COVID19 related News
+                        h5.text-white.mb-0  Top COVID-19 related News
                     .card-body
                         .row.d-flex.justify-content-between
                             .col-sm-12
@@ -210,8 +211,8 @@ append scripts
     script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
-    //- script(src='js/us.min.js')
-    script(src='js/utilities.js')
-    script(src='js/us.js')
-    script(src='js/scripts.js')
+    script(src='js/us.min.js')
+    //- script(src='js/utilities.js')
+    //- script(src='js/us.js')
+    //- script(src='js/scripts.js')
     

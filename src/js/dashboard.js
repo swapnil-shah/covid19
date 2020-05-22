@@ -227,10 +227,10 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 		maintainAspectRatio: false,
 		tooltips: {
 			backgroundColor: 'rgb(255,255,255)',
-			bodyFontColor: '#858796',
+			bodyFontColor: '#dddfeb',
 			titleMarginBottom: 10,
-			titleFontColor: '#6e707e',
-			titleFontSize: 14,
+			titleFontColor: '#dddfeb',
+			titleFontSize: 16,
 			borderColor: '#dddfeb',
 			borderWidth: 1,
 			caretPadding: 10,
@@ -698,7 +698,7 @@ function getCountries(data) {
 		numbersDeathsMonth.toLocaleString(),
 		'Recent Month'
 	);
-	Chart.defaults.global.defaultFontColor = 'grey';
+	Chart.defaults.global.defaultFontColor = '#dddfeb';
 	Chart.defaults.global.animation.duration = 2500;
 	Chart.plugins.register({
 		afterDraw: function(chart) {
