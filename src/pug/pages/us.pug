@@ -10,6 +10,8 @@ block config
     - var footerStyle = 'footer-dark bg-dark'
     - var topNavRegionTitle = 'COVID-19'
     - var topNavRegionSubTitle = 'USA Dashboard'
+    - var metaTitle = 'The COVID-19 USA Dashboard'
+    - var metaDescription = 'As the virus that causes COVID-19 spreads worldwide, this dashboard seeks to offer a one-stop snapshot of confirmed cases in the USA, with county specific data and news'
     
 append css
     include us-map-js.pug
@@ -200,7 +202,7 @@ block content
                         button.close(type='button', data-dismiss='modal', aria-label='Close')
                             span.text-white-75.icon-cross(aria-hidden='true')
                     .modal-body
-                        .datatable.table-responsive.pb-3
+                        .datatable.table-responsive.pb-3#subDataTable
                             table#dataTableState.table.table-bordered.table-hover(width='100%', cellspacing='0')
                     .modal-footer
                         button.btn.btn-primary(type='button', data-dismiss='modal') Close.

@@ -8,7 +8,6 @@ $(document).ready(function() {
 	});
 	fillNewsCards();
 	fillTravelNotices();
-
 	$('#selectNewsRegion').on('change', function() {
 		let value = $(this).val();
 		document.getElementById('card-deck').innerHTML =
