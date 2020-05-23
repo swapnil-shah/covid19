@@ -511,10 +511,10 @@ function getNewsResults(data) {
 					<a class="card lift lift-sm p-3 news-card border-bottom-lg" href="${item.webUrl}" target="_blank" style="border-color: rgba(31, 45, 65, 0.5) !important;">
 						<h3 class="text-dark">${item.title}</h3>
 						<p class="text-gray-600 mb-1"">${item.excerpt}</p>
-						<p class="text-primary mb-3">View full article</p>
-						<p class="mb-0 text-muted small"><i class="far fa-newspaper"></i> Published by <span class="font-weight-600 text-gray-600">${item
+						<p class="mb-0 text-muted small mb-3"><i class="far fa-newspaper"></i> Published by <span class="font-weight-600 text-gray-600">${item
 							.provider.name}</span> ${timeDifference(item.publishedDateTime)}</p>
-						</>
+							</>
+						<p class="text-primary">View full article</p>
 					</a>
 				</div>
 				`;

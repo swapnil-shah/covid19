@@ -794,16 +794,12 @@ function getNewsResults(data) {
 				<div class="col-sm-12 my-3 pl-0 pr-1">
 					<a class="card lift lift-sm p-3 news-card border-bottom-lg" href="${item.webUrl}" target="_blank" style="border-color: rgba(31, 45, 65, 0.5) !important;">
 						<div class="row no-gutters align-items-center py-2">
-							<div class="col-sm-12">
-								<div class="card-body p-2 pl-md-3 text-center text-md-left">
-									<h5 class="card-title">${item.title}</h5>
-									<p class="text-gray-600 mb-1">${item.excerpt}</p>
-									<p class="text-primary mb-3">View full article</p>
-									<p class="mb-0 text-muted small"><i class="far fa-newspaper"></i> Published by <span class="font-weight-600 text-gray-600">${item
-										.provider.name}</span> ${timeDifference(item.publishedDateTime)}
-									</p>
-								</div>
-							</div>
+							<h5 class="card-title">${item.title}</h5>
+							<p class="text-gray-600 mb-1">${item.excerpt}</p>
+							<p class="mb-0 text-muted small mb-3"><i class="far fa-newspaper"></i> Published by <span class="font-weight-600 text-gray-600">${item
+								.provider.name}</span> ${timeDifference(item.publishedDateTime)}
+								</p>
+							<p class="text-primary">View full article</p>
 						</div>
 					</a>
 				</div>
