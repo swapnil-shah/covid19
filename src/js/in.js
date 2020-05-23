@@ -1,6 +1,8 @@
 $(document).ready(function() {
-	cardStats(countryDataTable[0]);
-	countryDataSet(countryDataTable[0]);
+	getStatsDataSet().then((data) => {
+		cardStats(data);
+		countryDataSet(data);
+	});
 	newsResults();
 	$('#confirmedRadio').click(function() {
 		myChart.destroy();
@@ -171,6 +173,32 @@ let numbersConfirmedWeeks = 0;
 let numbersDeathsWeeks = 0;
 let numbersRecoveredWeeks = 0;
 
+function getStatsDataSet() {
+	return axios
+		.get('https://api.covid19india.org/data.json')
+		.then((response) => {
+			return response.data;
+		})
+		.catch((error) => {
+			if (error.response) {
+				console.log(
+					'The request was made and the server responded with a status code that falls out of the range of 2xx'
+				);
+				console.log('Error Data: ', error.response.data);
+				console.log('Error Status: ', error.response.status);
+				console.log('Error Headers: ', error.response.headers);
+			} else if (error.request) {
+				console.log(
+					'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+				);
+				console.log('Error Request: ', error.request);
+			} else {
+				console.log('Something happened in setting up the request that triggered an Error');
+				console.log('Error Message: ', error.message);
+			}
+			console.log('Error config: ', error.config);
+		});
+}
 function cardStats(data) {
 	data.statewise.forEach(function(states) {
 		if (states.statecode === 'TT') {

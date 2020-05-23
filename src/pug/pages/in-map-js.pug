@@ -1,5 +1,4 @@
 script(type="text/javascript").
-    let countryDataTable = []
     function acronymToLatLong(acronym) {
         let states = {
             AN: {
@@ -164,7 +163,6 @@ script(type="text/javascript").
         return acronym;
     }
     axios.get('https://api.covid19india.org/data.json').then(response => {
-        countryDataTable.push(response.data)
         var mymap = L.map('covidCountryMap').setView([ 20.59, 78.96 ], 5);
         let mapboxAccessToken =
             'pk.eyJ1Ijoic3dhcG5pbDciLCJhIjoiY2s5ZnRtZXh1MGVuYTNkbGNhNWtrcmt0diJ9.fzy5HcciZYupAiuzpVmlWA';
