@@ -212,13 +212,13 @@ $(document).ready(function() {
 				},
 				tooltips: {
 					backgroundColor: 'rgb(255,255,255)',
-					bodyFontColor: '#858796',
+					bodyFontColor: '#485260',
 					borderColor: '#dddfeb',
 					borderWidth: 1,
 					xPadding: 15,
 					yPadding: 15,
 					displayColors: false,
-					caretPadding: 10,
+					caretPadding: 5,
 					mode: 'label',
 					callbacks: {
 						label: function(tooltipItem, data) {
@@ -255,13 +255,13 @@ $(document).ready(function() {
 				},
 				tooltips: {
 					backgroundColor: 'rgb(255,255,255)',
-					bodyFontColor: '#858796',
+					bodyFontColor: '#485260',
 					borderColor: '#dddfeb',
 					borderWidth: 1,
 					xPadding: 15,
 					yPadding: 15,
 					displayColors: false,
-					caretPadding: 10,
+					caretPadding: 5,
 					callbacks: {
 						label: function(tooltipItem, data) {
 							var dataLabel = data.labels[tooltipItem.index];

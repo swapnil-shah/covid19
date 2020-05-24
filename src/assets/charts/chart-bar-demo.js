@@ -96,17 +96,17 @@ var myBarChart = new Chart(ctx, {
 			display: false
 		},
 		tooltips: {
-			titleMarginBottom: 10,
+			titleMarginBottom: 5,
 			titleFontColor: '#6e707e',
 			titleFontSize: 16,
 			backgroundColor: 'rgb(255,255,255)',
-			bodyFontColor: '#858796',
+			bodyFontColor: '#485260',
 			borderColor: '#dddfeb',
 			borderWidth: 1,
 			xPadding: 15,
 			yPadding: 15,
 			displayColors: false,
-			caretPadding: 10,
+			caretPadding: 5,
 			callbacks: {
 				label: function(tooltipItem, chart) {
 					var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';

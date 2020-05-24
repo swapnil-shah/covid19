@@ -102,8 +102,8 @@ var myLineChart = new Chart(ctx, {
 		},
 		tooltips: {
 			backgroundColor: 'rgb(255,255,255)',
-			bodyFontColor: '#858796',
-			titleMarginBottom: 10,
+			bodyFontColor: '#485260',
+			titleMarginBottom: 5,
 			titleFontColor: '#6e707e',
 			titleFontSize: 16,
 			borderColor: '#dddfeb',
@@ -113,7 +113,7 @@ var myLineChart = new Chart(ctx, {
 			displayColors: false,
 			intersect: false,
 			mode: 'index',
-			caretPadding: 10,
+			caretPadding: 5,
 			callbacks: {
 				label: function(tooltipItem, chart) {
 					var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';

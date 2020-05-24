@@ -359,15 +359,19 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 	var options = {
 		responsive: true,
 		maintainAspectRatio: false,
+		title: {
+			display: true,
+			text: 'Tap/hover on the bar or point to see cases for that day'
+		},
 		tooltips: {
 			backgroundColor: 'rgb(255,255,255)',
-			bodyFontColor: '#858796',
-			titleMarginBottom: 10,
-			titleFontColor: '#6e707e',
-			titleFontSize: 16,
+			bodyFontColor: '#6e707e',
+			titleMarginBottom: 5,
+			titleFontColor: '#485260',
+			titleFontSize: 12,
 			borderColor: '#dddfeb',
 			borderWidth: 1,
-			caretPadding: 10,
+			caretPadding: 5,
 			displayColors: false,
 			xPadding: 10,
 			yPadding: 10,
@@ -416,6 +420,10 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 						}
 					}
 				},
+				title: {
+					display: true,
+					text: 'Tap/hover on the bar or point to see cases for that day'
+				},
 				scales: {
 					yAxes: [
 						{
@@ -461,6 +469,10 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 						}
 					}
 				},
+				title: {
+					display: true,
+					text: 'Tap/hover on the bar or point to see cases for that day'
+				},
 				scales: {
 					yAxes: [
 						{
@@ -496,6 +508,10 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 						}
 					}
 				},
+				title: {
+					display: true,
+					text: 'Tap/hover on the bar or point to see cases for that day'
+				},
 				scales: {
 					yAxes: [
 						{
@@ -530,6 +546,10 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 							);
 						}
 					}
+				},
+				title: {
+					display: true,
+					text: 'Tap/hover on the bar or point to see cases for that day'
 				},
 				scales: {
 					yAxes: [
@@ -655,7 +675,8 @@ function dataSet(data) {
 		'Recent Month'
 	);
 	Chart.defaults.global.defaultFontColor = '#dddfeb';
-	Chart.defaults.global.animation.duration = 2500;
+	Chart.defaults.global.defaultFontFamily = 'Nunito,-apple-system,Roboto,Helvetica Neue,Arial,sans-serif';
+	Chart.defaults.global.animation.duration = 2000;
 	$('#confirmedRadio').click(function() {
 		myChart.destroy();
 		if ($('#sinceBeginning').is(':checked')) {

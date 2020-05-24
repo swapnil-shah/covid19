@@ -258,13 +258,13 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 		maintainAspectRatio: false,
 		tooltips: {
 			backgroundColor: 'rgb(255,255,255)',
-			bodyFontColor: '#dddfeb',
-			titleMarginBottom: 10,
-			titleFontColor: '#dddfeb',
-			titleFontSize: 16,
+			bodyFontColor: '#6e707e',
+			titleMarginBottom: 5,
+			titleFontColor: '#485260',
+			titleFontSize: 12,
 			borderColor: '#dddfeb',
 			borderWidth: 1,
-			caretPadding: 10,
+			caretPadding: 5,
 			displayColors: false,
 			xPadding: 10,
 			yPadding: 10,
@@ -273,6 +273,10 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 					return data.datasets[tooltipItem.datasetIndex].label + ': ' + tooltipItem.yLabel.toLocaleString();
 				}
 			}
+		},
+		title: {
+			display: true,
+			text: 'Tap/hover on the bar or point to see cases for that day'
 		},
 		scales: {
 			yAxes: [
@@ -316,6 +320,10 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 							);
 						}
 					}
+				},
+				title: {
+					display: true,
+					text: 'Tap/hover on the bar or point to see cases for that day'
 				},
 				scales: {
 					yAxes: [
@@ -362,6 +370,10 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 						}
 					}
 				},
+				title: {
+					display: true,
+					text: 'Tap/hover on the bar or point to see cases for that day'
+				},
 				scales: {
 					yAxes: [
 						{
@@ -397,6 +409,10 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 						}
 					}
 				},
+				title: {
+					display: true,
+					text: 'Tap/hover on the bar or point to see cases for that day'
+				},
 				scales: {
 					yAxes: [
 						{
@@ -431,6 +447,10 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 							);
 						}
 					}
+				},
+				title: {
+					display: true,
+					text: 'Tap/hover on the bar or point to see cases for that day'
 				},
 				scales: {
 					yAxes: [
@@ -730,7 +750,8 @@ function getCountries(data) {
 		'Recent Month'
 	);
 	Chart.defaults.global.defaultFontColor = '#dddfeb';
-	Chart.defaults.global.animation.duration = 2500;
+	Chart.defaults.global.defaultFontFamily = 'Nunito,-apple-system,Roboto,Helvetica Neue,Arial,sans-serif';
+	Chart.defaults.global.animation.duration = 2000;
 	Chart.plugins.register({
 		afterDraw: function(chart) {
 			if (myChart.data.labels.length === 0) {

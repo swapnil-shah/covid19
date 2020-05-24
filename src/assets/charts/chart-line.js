@@ -39,7 +39,7 @@ let optionsLinear = {
 	},
 	tooltips: {
 		borderWidth: 1,
-		caretPadding: 10,
+		caretPadding: 5,
 		displayColors: false,
 		xPadding: 10,
 		yPadding: 10,
@@ -92,10 +92,10 @@ let optionsLog = {
 	tooltips: {
 		backgroundColor: 'rgb(255,255,255)',
 		titleFontColor: '#858796',
-		bodyFontColor: '#858796',
+		bodyFontColor: '#485260',
 		borderColor: '#dddfeb',
 		borderWidth: 1,
-		caretPadding: 10,
+		caretPadding: 5,
 		displayColors: false,
 		xPadding: 10,
 		yPadding: 10,

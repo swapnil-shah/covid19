@@ -77,6 +77,7 @@ function countryLineData(data) {
 	});
 
 	Chart.defaults.global.defaultFontColor = '#dddfeb';
+	Chart.defaults.global.defaultFontFamily = 'Nunito,-apple-system,Roboto,Helvetica Neue,Arial,sans-serif';
 	function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradientBorder) {
 		var data = {
 			labels: labelset,
@@ -96,7 +97,7 @@ function countryLineData(data) {
 			maintainAspectRatio: false,
 			tooltips: {
 				borderWidth: 1,
-				caretPadding: 10,
+				caretPadding: 5,
 				displayColors: false,
 				xPadding: 10,
 				yPadding: 10,
