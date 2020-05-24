@@ -2,7 +2,7 @@ const dasboardDataUri = 'https://corona-api.com/countries?include=timeline';
 const totalCases = 'https://corona-api.com/timeline';
 const countriesUri = 'https://corona-api.com/countries';
 const newsUri = 'https://api.smartable.ai/coronavirus/news/global';
-const API_KEY_SMARTTABLE = 'cf8e77731fb345d381334aff5e844f3f';
+const API_KEY_SMARTTABLE = '0c40c052c781432db1a7a005160b9778';
 
 let dashboardChartData = [];
 let dashboardLabelsDate = [];

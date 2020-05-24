@@ -172,7 +172,7 @@ $(document).ready(function() {
 	});
 });
 const newsUri = 'https://api.smartable.ai/coronavirus/news/US';
-const API_KEY_SMARTTABLE = 'cf8e77731fb345d381334aff5e844f3f';
+const API_KEY_SMARTTABLE = '0c40c052c781432db1a7a005160b9778';
 let canvas = document.getElementById('myChart');
 let ctx = canvas.getContext('2d');
 let myChart;

@@ -592,7 +592,7 @@ function countryDataSet(data) {
 			numbersConfirmed.toLocaleString(),
 			numbersRecovered.toLocaleString(),
 			numbersDeceased.toLocaleString(),
-			`From the Beginning <span class="icon-info ml-2" data-toggle="tooltip" data-placement="bottom" title="${asOfDate}" data-original-title="${asOfDate}"></span>
+			`From the Beginning <span class="small">(${asOfDate})</span>
 			`
 		);
 		$('[data-toggle="tooltip"]').tooltip();
@@ -791,7 +791,6 @@ function newsResults() {
 	axios
 		.get(newsUri, { mode: 'cors' })
 		.then((response) => {
-			console.log('newsResults -> response', response);
 			document.getElementById('card-deck').text = 'Loading..';
 			let newsCards = document.getElementById('card-deck');
 			let newsResultsNumber = document.getElementById('news-results-number');
