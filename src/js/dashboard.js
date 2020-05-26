@@ -6,7 +6,7 @@ $(document).ready(function() {
 	getStatsDataSet().then((data) => {
 		worldDatatable(data);
 	});
-	// fillNewsCards();
+	fillNewsCards();
 	fillTravelNotices();
 	$('#selectNewsRegion').on('change', function() {
 		let value = $(this).val();
@@ -869,7 +869,7 @@ function getCountries(data) {
 			numbersConfirmedWeeks.toLocaleString(),
 			numbersRecoveredWeeks.toLocaleString(),
 			numbersDeathsWeeks.toLocaleString(),
-			'Since 2 Weeks'
+			'Recent 2 Weeks'
 		);
 		myChart.destroy();
 		if ($('#confirmedRadio').is(':checked')) {

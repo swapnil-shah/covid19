@@ -134,7 +134,7 @@ $(document).ready(function() {
 			order: [ [ 1, 'desc' ] ]
 		});
 	});
-	// fillNewsCards();
+	fillNewsCards();
 	$('#selectNewsRegion').on('change', function() {
 		let value = $(this).val();
 		document.getElementById('card-deck').innerHTML =
