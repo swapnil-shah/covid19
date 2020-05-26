@@ -281,6 +281,7 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 		scales: {
 			yAxes: [
 				{
+					type: $('#linearRadio').is(':checked') ? 'linear' : 'logarithmic',
 					ticks: {
 						autoSkip: true,
 						beginAtZero: true,
@@ -340,19 +341,9 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 		});
 		myChart.update();
 	});
-	$(
-		'input:radio[name="chartTypeRadio"], input:radio[name="timeframe"], input:radio[name="caseTypeRadio"]'
-	).change(function() {
-		if ($('#lineRadio').is(':checked')) {
-			$('#linearRadio,  #logarithmicRadio').removeAttr('disabled');
-		} else {
-			$('#linearRadio').attr('checked');
-			$('#logarithmicRadio').removeAttr('checked');
-			$('#linearRadio, #logarithmicRadio').attr('disabled', '');
-		}
-	});
 	$('#lineRadio').click(function() {
 		myChart.destroy();
+		console.log('generateChart -> myChart', myChart);
 		myChart = new Chart(ctx, {
 			type: 'line',
 			data: data,
@@ -393,7 +384,7 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 	$('#linearRadio').click(function() {
 		myChart.destroy();
 		myChart = new Chart(ctx, {
-			type: 'line',
+			type: myChart.config.type === 'bar' ? 'bar' : 'line',
 			data: data,
 			options: {
 				responsive: true,
@@ -432,7 +423,7 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 	$('#logarithmicRadio').click(function() {
 		myChart.destroy();
 		myChart = new Chart(ctx, {
-			type: 'line',
+			type: myChart.config.type === 'bar' ? 'bar' : 'line',
 			data: data,
 			options: {
 				responsive: true,

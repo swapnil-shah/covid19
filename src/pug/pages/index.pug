@@ -148,10 +148,10 @@ block content
                                     .col.mt-2
                                         p.font-italic.font-weight-300.text-left.mt-4.mb-2 Scale (Line)
                                         .custom-control.custom-radio.custom-control-solid.text-white
-                                            input#linearRadio.custom-control-input(type='radio', name='scaleTypeRadio', value="linear" checked, disabled)
+                                            input#linearRadio.custom-control-input(type='radio', name='scaleTypeRadio', value="linear" checked)
                                             label.custom-control-label.font-weight-300(for='linearRadio') Linear 
                                         .custom-control.custom-radio.custom-control-solid.text-white
-                                            input#logarithmicRadio.custom-control-input(type='radio', name='scaleTypeRadio',value="logarithmic", disabled )
+                                            input#logarithmicRadio.custom-control-input(type='radio', name='scaleTypeRadio',value="logarithmic" )
                                             label.custom-control-label.font-weight-300(for='logarithmicRadio') Logarithmic
 
                     p.small.pt-2.pr-2.mb-0.text-right
@@ -214,8 +214,8 @@ append scripts
     script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
-    script(src='js/dashboard.min.js')
+    //- script(src='js/dashboard.min.js')
 
-    //- script(src='js/utilities.js')
-    //- script(src='js/dashboard.js')
-    //- script(src='js/scripts.js')
+    script(src='js/utilities.js')
+    script(src='js/dashboard.js')
+    script(src='js/scripts.js')
