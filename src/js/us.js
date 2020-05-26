@@ -134,8 +134,7 @@ $(document).ready(function() {
 			order: [ [ 1, 'desc' ] ]
 		});
 	});
-	fillNewsCards();
-	addStates();
+	// fillNewsCards();
 	$('#selectNewsRegion').on('change', function() {
 		let value = $(this).val();
 		document.getElementById('card-deck').innerHTML =
@@ -273,7 +272,7 @@ function cardStats(dataSet) {
 	document.getElementById('per-active').innerHTML = '';
 }
 
-let fillNewsCards = () => {
+function fillNewsCards() {
 	axios
 		.get(newsUri, {
 			headers: {
@@ -302,40 +301,7 @@ let fillNewsCards = () => {
 			}
 			console.log('Error config: ', error.config);
 		});
-};
-let addStates = () => {
-	axios
-		.get('https://covidtracking.com/api/v1/states/current.json')
-		.then(function(response) {
-			response.data.forEach(function(state) {
-				let regionNewsSelect = document.getElementById('selectNewsRegion');
-				regionNewsSelect.options[regionNewsSelect.options.length] = new Option(
-					acronymToFullName(state.state),
-					'US-' + state.state
-				);
-			});
-		})
-		.catch((error) => {
-			if (error.response) {
-				console.log(
-					'The request was made and the server responded with a status code that falls out of the range of 2xx'
-				);
-				console.log('Error Data: ', error.response.data);
-				console.log('Error Status: ', error.response.status);
-				console.log('Error Headers: ', error.response.headers);
-			} else if (error.request) {
-				console.log(
-					'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
-				);
-				console.log('Error Request: ', error.request);
-			} else {
-				console.log('Something happened in setting up the request that triggered an Error');
-				console.log('Error Message: ', error.message);
-			}
-			console.log('Error config: ', error.config);
-		});
-};
-
+}
 function populateNumbers(confirmed, recovered, deaths, text) {
 	document.getElementById('total-confirmed').innerHTML = `<span style="color:${borderBlue}">${confirmed}</span>`;
 	document.getElementById('total-recovered').innerHTML = `<span style="color:${borderGreen}">${recovered}</span>`;
@@ -619,8 +585,9 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 }
 function dataSet(data) {
 	let filteredArr = data.timeline.slice(1);
-	let asOfDate = '';
-	document.getElementById('sinceBeginningDate').innerHTML = `Until ${formatDate(filteredArr[0].updated_at)}`;
+	let asOfDate = `${formatDate(filteredArr[filteredArr.length - 1].updated_at)} to ${formatDate(
+		filteredArr[0].updated_at
+	)}`;
 	let numbersConfirmed = filteredArr[0].confirmed;
 	let numbersDeceased = filteredArr[0].deaths;
 	let numbersRecovered = filteredArr[0].recovered;
@@ -735,7 +702,7 @@ function dataSet(data) {
 			numbersConfirmed.toLocaleString(),
 			numbersRecovered.toLocaleString(),
 			numbersDeceased.toLocaleString(),
-			asOfDate
+			`From the Beginning <span class="small">(${asOfDate})</span>`
 		);
 		myChart.destroy();
 		if ($('#confirmedRadio').is(':checked')) {
@@ -807,7 +774,6 @@ function getNewsResults(data) {
 	let newsResultsNumber = document.getElementById('news-results-number');
 	let optionName = $('#selectNewsRegion option:selected').text();
 	let output = '';
-
 	if (data.news) {
 		newsResultsNumber.innerText = `${data.news.length} results found for ${optionName}`;
 		data.news.forEach(function(item) {

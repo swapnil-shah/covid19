@@ -592,8 +592,7 @@ function countryDataSet(data) {
 			numbersConfirmed.toLocaleString(),
 			numbersRecovered.toLocaleString(),
 			numbersDeceased.toLocaleString(),
-			`From the Beginning <span class="small">(${asOfDate})</span>
-			`
+			`From the Beginning <span class="small">(${asOfDate})</span>`
 		);
 		$('[data-toggle="tooltip"]').tooltip();
 		myChart.destroy();

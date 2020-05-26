@@ -6,7 +6,7 @@ $(document).ready(function() {
 	getStatsDataSet().then((data) => {
 		worldDatatable(data);
 	});
-	fillNewsCards();
+	// fillNewsCards();
 	fillTravelNotices();
 	$('#selectNewsRegion').on('change', function() {
 		let value = $(this).val();
@@ -662,7 +662,6 @@ function fillTravelNotices() {
 function getCountries(data) {
 	let filteredArr = [];
 	let asOfDate = '';
-	let sinceBeginingLabel = document.getElementById('sinceBeginningDate');
 	confirmedMonth = [];
 	deathsMonth = [];
 	recoveredMonth = [];
@@ -687,19 +686,18 @@ function getCountries(data) {
 
 	if (Array.isArray(data)) {
 		filteredArr = data.slice(1);
-		asOfDate = `Until ${formatDate(filteredArr[0].updated_at)}`;
-		sinceBeginingLabel.innerHTML = `Until ${formatDate(filteredArr[0].updated_at)}`;
 		numbersConfirmed = filteredArr[0].confirmed;
 		numbersDeceased = filteredArr[0].deaths;
 		numbersRecovered = filteredArr[0].recovered;
 	} else {
 		filteredArr = data.data.timeline.slice(1);
-		asOfDate = `Until ${formatDate(filteredArr[0].updated_at)}`;
-		sinceBeginingLabel.innerHTML = `Until ${formatDate(filteredArr[0].updated_at)}`;
 		numbersConfirmed = data.data.latest_data.confirmed;
 		numbersDeceased = data.data.latest_data.deaths;
 		numbersRecovered = data.data.latest_data.recovered;
 	}
+	asOfDate = `${formatDate(filteredArr[filteredArr.length - 1].updated_at)} to ${formatDate(
+		filteredArr[0].updated_at
+	)}`;
 
 	//Get months/30 days
 	filteredArr.slice(0, 30).forEach(function(daily) {
@@ -826,7 +824,7 @@ function getCountries(data) {
 			numbersConfirmed.toLocaleString(),
 			numbersRecovered.toLocaleString(),
 			numbersDeceased.toLocaleString(),
-			asOfDate
+			`From the Beginning <span class="small">(${asOfDate})</span>`
 		);
 		myChart.destroy();
 		if ($('#confirmedRadio').is(':checked')) {

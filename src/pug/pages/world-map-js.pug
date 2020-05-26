@@ -51,17 +51,6 @@ script(type="text/javascript").
                 .bindTooltip(
                     htmlPopup(country.name, country.code, country.latest_data.confirmed, country.latest_data.recovered, country.latest_data.deaths)
                 );
-
-            let ddChartCountriesSelect = document.getElementById('ddChartCountries');
-            let regionNewsSelect = document.getElementById('selectNewsRegion');
-            ddChartCountriesSelect.options[ddChartCountriesSelect.options.length] = new Option(
-                country.name,
-                country.code
-            );
-            regionNewsSelect.options[regionNewsSelect.options.length] = new Option(
-                country.name,
-                country.code
-            );
         });
         var info = L.control({ position: 'bottomright' });
     })
