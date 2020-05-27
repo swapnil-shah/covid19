@@ -394,6 +394,7 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 				scales: {
 					yAxes: [
 						{
+							type: $('#linearRadio').is(':checked') ? 'linear' : 'logarithmic',
 							ticks: {
 								callback: function(value) {
 									return value.toLocaleString();
