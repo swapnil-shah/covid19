@@ -3,7 +3,6 @@ extends ../layouts/dashboard.pug
 block config
     - var bodyClass = 'nav-fixed'
     - var pageTitle = 'COVID-19 Global Dashboard'
-    - var sidenavStyle = 'sidenav-light'
     - var pageHeaderStyle = 'page-header-dark'
     - var pageHeaderBackground = 'bg-gradient-primary-to-secondary'
     - var footerStyle = 'footer-dark bg-dark'
@@ -207,6 +206,20 @@ block content
                                         em Data derived from&nbsp;
                                             a.w-100.pt-2(href="https://covid19-docs.chrismichael.now.sh/" target="_blank") covid19-api
                                                 i.icon-new-tab.ml-1
+        .row
+            .col-sm-12
+                .card.pb-2.mb-4
+                    .card-body
+                        .d-flex.flex-column.bd-highlight.mb-0
+                            h2.pb-2.mb-2.border-bottom Quick Links
+                            ul
+                                li.py-1.bd-highlight
+                                    a(href="/us") USA Dashboard
+                                li.py-1.bd-highlight
+                                    a(href="/in") India Dashboard
+                                li.py-1.bd-highlight
+                                    a(href="/about") About COVID-19 and this Project
+
         
 
 append scripts
@@ -214,8 +227,8 @@ append scripts
     script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
-    //- script(src='js/dashboard.min.js')
+    script(src='js/dashboard.min.js')
 
-    script(src='js/utilities.js')
-    script(src='js/dashboard.js')
-    script(src='js/scripts.js')
+    //- script(src='js/utilities.js')
+    //- script(src='js/dashboard.js')
+    //- script(src='js/scripts.js')

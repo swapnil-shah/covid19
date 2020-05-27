@@ -893,6 +893,7 @@ function worldDatatable(data) {
 		pagingType: 'numbers',
 		pageLength: 10,
 		stateSave: true,
+
 		language: {
 			searchPlaceholder: 'e.g. usa',
 			loadingRecords: '<i class="icon-spinner spinner-animate"></i>'

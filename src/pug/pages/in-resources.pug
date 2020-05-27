@@ -1,0 +1,84 @@
+extends ../layouts/dashboard.pug
+
+block config
+    - var bodyClass = 'nav-fixed'
+    - var pageTitle = 'Emergency & Support Resources, India'
+    - var topnavStyle = 'navbar-light bg-white'
+    - var pageHeaderStyle = 'page-header-dark'
+    - var pageHeaderBackground = 'bg-gradient-primary-to-secondary'
+    - var footerStyle = 'footer-dark bg-dark'
+    - var topNavRegionTitle = 'Emergency & Support Resources'
+    - var topNavRegionSubTitle = 'India'
+    - var metaTitle = 'Emergency & Support Resources, India'
+    - var metaDescription = 'As the virus that causes COVID-19 spreads worldwide, this dashboard seeks to offer a one-stop snapshot of confirmed cases globally, with country specific data, news, advisories & emergency resources.'
+    
+append css
+    link(href='css/styles.min.css', rel='stylesheet')
+    link(href='https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css', rel='stylesheet', crossorigin='anonymous')
+block content
+    .container-fluid.mt-4
+        .row
+            .col-sm-12
+                .card.pb-2.mb-4
+                    .card-header.bg-dark.d-block
+                        h3.text-white.mb-0 Emergency Services 
+                        p.text-white.text-muted.mb-0.pt-1 Ambulance, Police, Fire Brigade, Hospitals & Helplines (COVID-19 & Cyclone Amphan)
+                    .card-body.pb-2
+                        .datatable.table-responsive.pb-3
+                            table#dataTableEmergency.table.table-bordered.table-hover(width='100%', cellspacing='0')
+                            #loaderEmergency.text-center
+                                i.icon-spinner.spinner-animate
+                    p.small.pt-2.pr-2.mb-0.text-right
+                        em Data derived from&nbsp;
+                            a.w-100.pt-2(href="https://github.com/amodm/api-covid19-in" target="_blank") api-covid19-in
+                                i.icon-new-tab.ml-1
+            .col-sm-12
+                .card.pb-2.mb-4
+                    .card-header.bg-dark.d-block
+                        h3.text-white.mb-0 COVID-19 related Services
+                        p.text-white.text-muted.mb-0.pt-1 Testing & Quarantine Facilities
+                    .card-body.pb-2
+                        .datatable.table-responsive.pb-3
+                            table#dataTableRelated.table.table-bordered.table-hover(width='100%', cellspacing='0')
+                            #loaderRelated.text-center
+                                i.icon-spinner.spinner-animate
+                    p.small.pt-2.pr-2.mb-0.text-right
+                        em Data derived from&nbsp;
+                            a.w-100.pt-2(href="https://github.com/amodm/api-covid19-in" target="_blank") api-covid19-in
+                                i.icon-new-tab.ml-1
+            .col-sm-12
+                .card.pb-2.mb-4
+                    .card-header.bg-dark.d-block
+                        h3.text-white.mb-0 Support Services
+                        p.text-white.text-muted.mb-0.pt-1 Free Food, Shelter Homes, Senior Citizen Support, Emotional Support, Transport, etc.
+                    .card-body.pb-2
+                        .datatable.table-responsive.pb-3
+                            table#dataTableSupport.table.table-bordered.table-hover(width='100%', cellspacing='0')
+                            #loaderSupport.text-center
+                                i.icon-spinner.spinner-animate
+                    p.small.pt-2.pr-2.mb-0.text-right
+                        em Data derived from&nbsp;
+                            a.w-100.pt-2(href="https://github.com/amodm/api-covid19-in" target="_blank") api-covid19-in
+                                i.icon-new-tab.ml-1
+        .row
+            .col-sm-12
+                .card.pb-2.mb-4
+                    .card-body
+                        .d-flex.flex-column.bd-highlight.mb-0
+                            h2.pb-2.mb-2.border-bottom Quick Links
+                            ul
+                                li.py-1.bd-highlight
+                                    a(href="/us") Global Dashboard
+                                li.py-1.bd-highlight
+                                    a(href="/in") India Dashboard
+                                li.py-1.bd-highlight
+                                    a(href="/us") USA Dashboard
+                                li.py-1.bd-highlight
+                                    a(href="/about") About COVID-19 and this Project
+append scripts
+    script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
+    script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
+    //- script(src='js/in-resources..min.js')
+    script(src='js/utilities.js')
+    script(src='js/in-resources.js')
+    script(src='js/scripts.js')
