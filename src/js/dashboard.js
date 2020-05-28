@@ -6,7 +6,7 @@ $(document).ready(function() {
 	getStatsDataSet().then((data) => {
 		worldDatatable(data);
 	});
-	fillNewsCards();
+	// fillNewsCards();
 	fillTravelNotices();
 	$('#selectNewsRegion').on('change', function() {
 		let value = $(this).val();
@@ -888,87 +888,89 @@ function chartDataSet(data) {
 	getCountries(data);
 }
 function worldDatatable(data) {
-	$('#dataTableWorldTimeline').DataTable({
-		data: data,
-		responsive: true,
-		pagingType: 'numbers',
-		pageLength: 10,
-		stateSave: true,
-
-		language: {
-			searchPlaceholder: 'e.g. usa',
-			loadingRecords: '<i class="icon-spinner spinner-animate"></i>'
-		},
-		columns: [
-			{
-				data: 'name',
-				title: 'Country <small class="text-dark font-weight-600">(Population)</small>',
-				render: function(data, type, row) {
-					if (type === 'type' || type === 'sort') {
-						return data;
-					}
-					return row.code
-						? `<div class="d-inline-block"><img src="https://www.countryflags.io/${row.code.toLocaleLowerCase()}/shiny/24.png" style="vertical-align:bottom; margin-right:5px;" onerror="this.src='../assets/img/flag_placeholder_20x20.png'"/>${data} <span class="text-gray-600"><small class="text-dark font-weight-600">(${populationFormat(
-								row.population
-							)})</small></span></div>`
-						: `<span class="d-inline-block"><img src="../assets/img/flag_placeholder_20x20.png" style="vertical-align:bottom; margin-right:5px;" onerror="this.src='../assets/img/flag_placeholder_20x20.png'"/>${data} <span class="text-gray-600"><small class="text-dark font-weight-600">(${populationFormat(
-								row.tests
-							)})</small></span></span>`;
-				}
+	$('#dataTableWorldTimeline')
+		.on('init.dt', function() {
+			$('#loader').hide();
+		})
+		.DataTable({
+			data: data,
+			responsive: true,
+			pagingType: 'numbers',
+			pageLength: 10,
+			stateSave: true,
+			language: {
+				searchPlaceholder: 'e.g. usa'
 			},
-			{
-				data: 'latest_data.confirmed',
-				title: 'Confirmed',
-				render: function(data, type, row) {
-					if (type === 'type' || type === 'sort') {
-						return data;
+			columns: [
+				{
+					data: 'name',
+					title: 'Country <small class="text-dark font-weight-600">(Population)</small>',
+					render: function(data, type, row) {
+						if (type === 'type' || type === 'sort') {
+							return data;
+						}
+						return row.code
+							? `<div class="d-inline-block"><img src="https://www.countryflags.io/${row.code.toLocaleLowerCase()}/shiny/24.png" style="vertical-align:bottom; margin-right:5px;" onerror="this.src='../assets/img/flag_placeholder_20x20.png'"/>${data} <span class="text-gray-600"><small class="text-dark font-weight-600">(${populationFormat(
+									row.population
+								)})</small></span></div>`
+							: `<span class="d-inline-block"><img src="../assets/img/flag_placeholder_20x20.png" style="vertical-align:bottom; margin-right:5px;" onerror="this.src='../assets/img/flag_placeholder_20x20.png'"/>${data} <span class="text-gray-600"><small class="text-dark font-weight-600">(${populationFormat(
+									row.tests
+								)})</small></span></span>`;
 					}
-					return row.today.confirmed
-						? `${data.toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.today.confirmed.toLocaleString()}<span class="font-weight-light small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
-								row.latest_data.confirmed,
-								row.today.confirmed
-							)}%)</span></p>`
-						: `${data ? data.toLocaleString() : ''}`;
-				}
-			},
-			{
-				data: 'latest_data.critical',
-				title: 'Active',
-				render: function(data, type, row) {
-					if (type === 'type' || type === 'sort') {
-						return data;
+				},
+				{
+					data: 'latest_data.confirmed',
+					title: 'Confirmed',
+					render: function(data, type, row) {
+						if (type === 'type' || type === 'sort') {
+							return data;
+						}
+						return row.today.confirmed
+							? `${data.toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.today.confirmed.toLocaleString()}<span class="font-weight-light small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
+									row.latest_data.confirmed,
+									row.today.confirmed
+								)}%)</span></p>`
+							: `${data ? data.toLocaleString() : ''}`;
 					}
-					return `${data ? data.toLocaleString() : ''}`;
-				}
-			},
-			{
-				data: 'latest_data.recovered',
-				title: 'Recovered',
-				render: function(data, type, row) {
-					if (type === 'type' || type === 'sort') {
-						return data;
+				},
+				{
+					data: 'latest_data.critical',
+					title: 'Active',
+					render: function(data, type, row) {
+						if (type === 'type' || type === 'sort') {
+							return data;
+						}
+						return `${data ? data.toLocaleString() : ''}`;
 					}
-					return `${data ? data.toLocaleString() : ''}`;
-				}
-			},
-			{
-				data: 'latest_data.deaths',
-				title: 'Deaths',
-				render: function(data, type, row) {
-					if (type === 'type' || type === 'sort') {
-						return data;
+				},
+				{
+					data: 'latest_data.recovered',
+					title: 'Recovered',
+					render: function(data, type, row) {
+						if (type === 'type' || type === 'sort') {
+							return data;
+						}
+						return `${data ? data.toLocaleString() : ''}`;
 					}
-					return row.today.deaths
-						? `${data.toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.today.deaths.toLocaleString()}<span class="font-weight-light text-danger small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
-								row.latest_data.deaths,
-								row.today.deaths
-							)}%)</span></p>`
-						: `${data ? data.toLocaleString() : ''}`;
+				},
+				{
+					data: 'latest_data.deaths',
+					title: 'Deaths',
+					render: function(data, type, row) {
+						if (type === 'type' || type === 'sort') {
+							return data;
+						}
+						return row.today.deaths
+							? `${data.toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.today.deaths.toLocaleString()}<span class="font-weight-light text-danger small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
+									row.latest_data.deaths,
+									row.today.deaths
+								)}%)</span></p>`
+							: `${data ? data.toLocaleString() : ''}`;
+					}
 				}
-			}
-		],
-		order: [ [ 1, 'desc' ] ]
-	});
+			],
+			order: [ [ 1, 'desc' ] ]
+		});
 }
 $(window).on('load', function() {
 	let $logo = $('#brand-logo');

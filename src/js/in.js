@@ -432,97 +432,101 @@ function countryDataSet(data) {
 	Chart.defaults.global.animation.duration = 2000;
 
 	//States Datatable
-	let table = $('#dataTableCountry').DataTable({
-		data: filteredArr,
-		pagingType: 'numbers',
-		pageLength: 10,
-		language: {
-			searchPlaceholder: 'e.g. maharashtra',
-			loadingRecords: '<i class="icon-spinner spinner-animate"></i>'
-		},
-		columns: [
-			{
-				title: 'State <span class="text-muted small">(Last updated)</span>',
-				data: 'state',
-				render: function(data, type, row) {
-					if (type === 'type' || type === 'sort') {
-						return data;
-					}
-					return `${data}<div class="text-muted mb-0 small">
+	let table = $('#dataTableCountry')
+		.on('init.dt', function() {
+			$('#loader').hide();
+		})
+		.DataTable({
+			data: filteredArr,
+			pagingType: 'numbers',
+			pageLength: 10,
+			language: {
+				searchPlaceholder: 'e.g. maharashtra',
+				loadingRecords: '<i class="icon-spinner spinner-animate"></i>'
+			},
+			columns: [
+				{
+					title: 'State <span class="text-muted small">(Last updated)</span>',
+					data: 'state',
+					render: function(data, type, row) {
+						if (type === 'type' || type === 'sort') {
+							return data;
+						}
+						return `${data}<div class="text-muted mb-0 small">
 						(${row.lastupdatedtime})</div><p class="mb-0"><span class="small text-primary border-top-0 border-bottom border-right-0 border-left-0 border-blue">See Districts</span></p>`;
-				}
-			},
-			{
-				title: 'Confirmed',
-				data: 'confirmed',
-				render: function(data, type, row) {
-					if (type === 'type' || type === 'sort') {
-						return data;
 					}
-					return parseInt(row.deltaconfirmed)
-						? `${parseInt(
-								data
-							).toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
-								row.deltaconfirmed
-							).toLocaleString()}<span class="font-weight-light small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
-								parseInt(row.confirmed),
-								parseInt(row.deltaconfirmed)
-							)}%)</span></p>`
-						: parseInt(data).toLocaleString();
-				}
-			},
-			{
-				title: 'Active',
-				data: 'active',
-				render: function(data, type, row) {
-					if (type === 'type' || type === 'sort') {
-						return data;
+				},
+				{
+					title: 'Confirmed',
+					data: 'confirmed',
+					render: function(data, type, row) {
+						if (type === 'type' || type === 'sort') {
+							return data;
+						}
+						return parseInt(row.deltaconfirmed)
+							? `${parseInt(
+									data
+								).toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
+									row.deltaconfirmed
+								).toLocaleString()}<span class="font-weight-light small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
+									parseInt(row.confirmed),
+									parseInt(row.deltaconfirmed)
+								)}%)</span></p>`
+							: parseInt(data).toLocaleString();
 					}
-					return `${parseInt(data).toLocaleString()}`;
-				}
-			},
-			{
-				title: 'Recovered',
-				data: 'recovered',
-				data: 'confirmed',
-				render: function(data, type, row) {
-					if (type === 'type' || type === 'sort') {
-						return data;
+				},
+				{
+					title: 'Active',
+					data: 'active',
+					render: function(data, type, row) {
+						if (type === 'type' || type === 'sort') {
+							return data;
+						}
+						return `${parseInt(data).toLocaleString()}`;
 					}
-					return parseInt(row.deltarecovered)
-						? `${parseInt(
-								data
-							).toLocaleString()}<p class="font-weight-600 text-success mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
-								row.deltarecovered
-							).toLocaleString()}<span class="font-weight-light text-success small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
-								parseInt(row.recovered),
-								parseInt(row.deltarecovered)
-							)}%)</span></p>`
-						: parseInt(data).toLocaleString();
-				}
-			},
-			{
-				title: 'Deaths',
-				data: 'deaths',
-				render: function(data, type, row) {
-					if (type === 'type' || type === 'sort') {
-						return data;
+				},
+				{
+					title: 'Recovered',
+					data: 'recovered',
+					data: 'confirmed',
+					render: function(data, type, row) {
+						if (type === 'type' || type === 'sort') {
+							return data;
+						}
+						return parseInt(row.deltarecovered)
+							? `${parseInt(
+									data
+								).toLocaleString()}<p class="font-weight-600 text-success mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
+									row.deltarecovered
+								).toLocaleString()}<span class="font-weight-light text-success small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
+									parseInt(row.recovered),
+									parseInt(row.deltarecovered)
+								)}%)</span></p>`
+							: parseInt(data).toLocaleString();
 					}
-					return parseInt(row.deltadeaths)
-						? `${parseInt(
-								data
-							).toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
-								row.deltadeaths
-							).toLocaleString()}<span class="font-weight-light text-danger small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
-								parseInt(row.deaths),
-								parseInt(row.deltadeaths)
-							)}%)</span></p>`
-						: parseInt(data).toLocaleString();
+				},
+				{
+					title: 'Deaths',
+					data: 'deaths',
+					render: function(data, type, row) {
+						if (type === 'type' || type === 'sort') {
+							return data;
+						}
+						return parseInt(row.deltadeaths)
+							? `${parseInt(
+									data
+								).toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
+									row.deltadeaths
+								).toLocaleString()}<span class="font-weight-light text-danger small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
+									parseInt(row.deaths),
+									parseInt(row.deltadeaths)
+								)}%)</span></p>`
+							: parseInt(data).toLocaleString();
+					}
 				}
-			}
-		],
-		order: [ [ 1, 'desc' ] ]
-	});
+			],
+			order: [ [ 1, 'desc' ] ]
+		});
 	subDataTable(table);
 
 	$('#confirmedRadio').click(function() {

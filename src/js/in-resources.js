@@ -80,40 +80,27 @@ function resourcesDataSet(data) {
 			pageLength: 10,
 			processing: true,
 			language: {
-				searchPlaceholder: 'e.g. helpline',
-				loadingRecords: '<i class="icon-spinner spinner-animate"></i>'
+				searchPlaceholder: 'e.g. helpline'
 			},
 			columns: [
 				{
 					title: 'Category',
 					data: 'category',
-					render: function(data, type, row) {
-						if (type === 'type' || type === 'sort') {
-							return data;
-						}
-						return `${data}`;
-					},
-					width: '30%'
+					width: '25%'
+				},
+				{
+					title: 'State',
+					data: 'state',
+					width: '10%'
 				},
 				{
 					title: 'City',
 					data: 'city',
-					render: function(data, type, row) {
-						return data
-							? `${data}<div class="text-muted mb-0">${row.state}</div>`
-							: `<div class="text-muted mb-0">${row.state}</div>`;
-					},
 					width: '10%'
 				},
 				{
 					title: 'Service Provided',
 					data: 'descriptionandorserviceprovided',
-					render: function(data, type, row) {
-						if (type === 'type' || type === 'sort') {
-							return data;
-						}
-						return `${data}`;
-					},
 					width: '40%'
 				},
 				{
@@ -123,16 +110,16 @@ function resourcesDataSet(data) {
 						if (type === 'type' || type === 'sort') {
 							return data;
 						}
-						return row.phonenumber
+						return row.phonenumber && row.phonenumber.length >= 10
 							? `<div class="pt-1"><span class="icon-sphere mr-2"></span><a href="${data}" target="_blank">Website</a></div><div class="pt-1"><span class="icon-phone mr-2"></span>${row.phonenumber
 									.split(',')
-									.shift()}`
+									.shift()
+									.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3')}`
 							: `<div class="pt-1"><span class="icon-sphere mr-2"></span><a href="${data}" target="_blank">Website</div></div>`;
 					},
-					width: '20%'
+					width: '15%'
 				}
-			],
-			order: [ [ 0, 'asc' ] ]
+			]
 		});
 	$('#dataTableRelated')
 		.on('init.dt', function() {
@@ -143,40 +130,27 @@ function resourcesDataSet(data) {
 			pagingType: 'numbers',
 			pageLength: 10,
 			language: {
-				searchPlaceholder: 'e.g. testing',
-				loadingRecords: '<i class="icon-spinner spinner-animate"></i>'
+				searchPlaceholder: 'e.g. testing'
 			},
 			columns: [
 				{
 					title: 'Category',
 					data: 'category',
-					render: function(data, type, row) {
-						if (type === 'type' || type === 'sort') {
-							return data;
-						}
-						return `${data}`;
-					},
-					width: '30%'
+					width: '25%'
+				},
+				{
+					title: 'State',
+					data: 'state',
+					width: '10%'
 				},
 				{
 					title: 'City',
 					data: 'city',
-					render: function(data, type, row) {
-						return data
-							? `${data}<div class="text-muted mb-0">${row.state}</div>`
-							: `<div class="text-muted mb-0">${row.state}</div>`;
-					},
 					width: '10%'
 				},
 				{
 					title: 'Service Provided',
 					data: 'descriptionandorserviceprovided',
-					render: function(data, type, row) {
-						if (type === 'type' || type === 'sort') {
-							return data;
-						}
-						return `${data}`;
-					},
 					width: '40%'
 				},
 				{
@@ -186,16 +160,16 @@ function resourcesDataSet(data) {
 						if (type === 'type' || type === 'sort') {
 							return data;
 						}
-						return row.phonenumber
+						return row.phonenumber && row.phonenumber.length >= 10
 							? `<div class="pt-1"><span class="icon-sphere mr-2"></span><a href="${data}" target="_blank">Website</a></div><div class="pt-1"><span class="icon-phone mr-2"></span>${row.phonenumber
 									.split(',')
-									.shift()}`
+									.shift()
+									.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3')}`
 							: `<div class="pt-1"><span class="icon-sphere mr-2"></span><a href="${data}" target="_blank">Website</div></div>`;
 					},
-					width: '20%'
+					width: '15%'
 				}
-			],
-			order: [ [ 0, 'asc' ] ]
+			]
 		});
 	$('#dataTableSupport')
 		.on('init.dt', function() {
@@ -206,40 +180,27 @@ function resourcesDataSet(data) {
 			pagingType: 'numbers',
 			pageLength: 10,
 			language: {
-				searchPlaceholder: 'e.g. food or senior citizen',
-				loadingRecords: '<i class="icon-spinner spinner-animate"></i>'
+				searchPlaceholder: 'e.g. food or senior citizen'
 			},
 			columns: [
 				{
 					title: 'Category',
 					data: 'category',
-					render: function(data, type, row) {
-						if (type === 'type' || type === 'sort') {
-							return data;
-						}
-						return `${data}`;
-					},
-					width: '30%'
+					width: '25%'
+				},
+				{
+					title: 'State',
+					data: 'state',
+					width: '10%'
 				},
 				{
 					title: 'City',
 					data: 'city',
-					render: function(data, type, row) {
-						return data
-							? `${data}<div class="text-muted mb-0">${row.state}</div>`
-							: `<div class="text-muted mb-0">${row.state}</div>`;
-					},
 					width: '10%'
 				},
 				{
 					title: 'Service Provided',
 					data: 'descriptionandorserviceprovided',
-					render: function(data, type, row) {
-						if (type === 'type' || type === 'sort') {
-							return data;
-						}
-						return `${data}`;
-					},
 					width: '40%'
 				},
 				{
@@ -249,16 +210,16 @@ function resourcesDataSet(data) {
 						if (type === 'type' || type === 'sort') {
 							return data;
 						}
-						return row.phonenumber
+						return row.phonenumber && row.phonenumber.length >= 10
 							? `<div class="pt-1"><span class="icon-sphere mr-2"></span><a href="${data}" target="_blank">Website</a></div><div class="pt-1"><span class="icon-phone mr-2"></span>${row.phonenumber
 									.split(',')
-									.shift()}`
+									.shift()
+									.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3')}`
 							: `<div class="pt-1"><span class="icon-sphere mr-2"></span><a href="${data}" target="_blank">Website</div></div>`;
 					},
-					width: '20%'
+					width: '15%'
 				}
-			],
-			order: [ [ 0, 'asc' ] ]
+			]
 		});
 }
 

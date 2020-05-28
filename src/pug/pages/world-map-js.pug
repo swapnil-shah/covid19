@@ -51,6 +51,12 @@ script(type="text/javascript").
                 .bindTooltip(
                     htmlPopup(country.name, country.code, country.latest_data.confirmed, country.latest_data.recovered, country.latest_data.deaths)
                 );
+            //- mymap.on('zoomend', function() {
+            //-     var currentZoom = mymap.getZoom();
+            //-     console.log("currentZoom", currentZoom)
+            //-     console.log("calculated", initialRadius + currentZoom)
+            //-     circle.setRadius(Math.sqrt(casesRadius) * 0.02 * currentZoom);
+            //- });
         });
         var info = L.control({ position: 'bottomright' });
     })
