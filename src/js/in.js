@@ -440,7 +440,7 @@ function countryDataSet(data) {
 			pagingType: 'numbers',
 			pageLength: 10,
 			language: {
-				searchPlaceholder: 'e.g. maharashtra',
+				searchPlaceholder: 'e.g. sikkim',
 				loadingRecords: '<i class="icon-spinner spinner-animate"></i>'
 			},
 			columns: [
@@ -782,8 +782,11 @@ function populateNumbers(confirmed, recovered, deaths, text) {
 	document.getElementById('total-date').innerHTML = `${text}`;
 }
 function newsResults() {
-	let newsUri =
-		'https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/top-headlines?q=COVID&country=in&apiKey=7e2e5ed46901476baa79347a66cc2b2c';
+	const news_key = 'apiKey=7e2e5ed46901476baa79347a66cc2b2c';
+	const news_keyword = 'q=covid19%20and%20india';
+	const news_language = 'language=en';
+	const news_sort = 'sortBy=publishedAt';
+	const newsUri = `https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/everything?${news_key}&${news_keyword}&${news_language}&${news_sort}`;
 	axios
 		.get(newsUri, { mode: 'cors' })
 		.then((response) => {

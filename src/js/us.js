@@ -136,12 +136,10 @@ $(document).ready(function() {
 	});
 	fillNewsCards();
 	$('#selectNewsRegion').on('change', function() {
-		let value = $(this).val();
-		document.getElementById('card-deck').innerHTML =
-			'<div class="text-center"><i class="icon-spinner spinner-animate" style="font-size:2rem"></i></div>';
-		const stateNews =
-			'https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/everything?apiKey=7e2e5ed46901476baa79347a66cc2b2c&q=covid%20and%20' +
-			value;
+		let value = (document.getElementById('card-deck').innerHTML =
+			'<div class="text-center"><i class="icon-spinner spinner-animate" style="font-size:2rem"></i></div>');
+		const news_state = $(this).val();
+		const stateNews = `https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/everything?${news_key}&${news_keyword}${news_state}&${news_language}&${news_sort}`;
 		axios
 			.get(stateNews, { mode: 'cors' })
 			.then((response) => {
@@ -168,9 +166,13 @@ $(document).ready(function() {
 			});
 	});
 });
-const usaNews =
-	'https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/everything?apiKey=7e2e5ed46901476baa79347a66cc2b2c&q=covid%20and%20usa';
-const API_KEY_SMARTTABLE = '0c40c052c781432db1a7a005160b9778';
+
+const news_key = 'apiKey=7e2e5ed46901476baa79347a66cc2b2c';
+const news_region = 'usa';
+const news_keyword = 'q=covid19%20and%20';
+const news_language = 'language=en';
+const news_sort = 'sortBy=publishedAt';
+const usaNews = `https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/everything?${news_key}&${news_keyword}${news_region}&${news_language}&${news_sort}`;
 let canvas = document.getElementById('myChart');
 let ctx = canvas.getContext('2d');
 let myChart;
@@ -273,11 +275,7 @@ function cardStats(dataSet) {
 
 function fillNewsCards() {
 	axios
-		.get(usaNews, {
-			headers: {
-				'Subscription-Key': API_KEY_SMARTTABLE
-			}
-		})
+		.get(usaNews)
 		.then((response) => {
 			getNewsResults(response.data);
 		})
