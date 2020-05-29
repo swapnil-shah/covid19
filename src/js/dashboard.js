@@ -597,29 +597,33 @@ function fillTravelNotices() {
 	axios
 		.get('https://covid19api.io/api/v1/TravelHealthNotices')
 		.then((response) => {
-			let output = '';
+			let outputAlert = '';
+			let outputWarning = '';
+			let outputWatch = '';
 			response.data.data.travelHealthNotices.alert.forEach(function(notice) {
-				output += `<div class="list-group-item border-top-0 border-bottom-0 border-right-0 border-left-lg border-red my-2">
-							<h6>${notice.title}</h6>
+				outputAlert += `<div class="list-group-item border-top-0 border-bottom-0 border-right-0 border-left-lg border-red my-2">
+							<h5>${notice.title}</h5>
 							<p class="mb-0">${notice.summary}</p>
 							<p class="small text-muted float-right mb-0">${notice.date}</p>
-						</div>`;
+						</div><hr>`;
 			});
+			document.getElementById('alertPill').innerHTML = outputAlert;
 			response.data.data.travelHealthNotices.warning.forEach(function(notice) {
-				output += `<div class="list-group-item border-top-0 border-bottom-0 border-right-0 border-left-lg border-yellow my-2">
-							<h6>${notice.title}</h6>
+				outputWarning += `<div class="list-group-item border-top-0 border-bottom-0 border-right-0 border-left-lg border-orange my-2">
+							<h5>${notice.title}</h5>
 							<p class="mb-0">${notice.summary}</p>
 							<p class="small text-muted float-right mb-0">${notice.date}</p>
-						</div>`;
+						</div><hr>`;
 			});
+			document.getElementById('warningPill').innerHTML = outputWarning;
 			response.data.data.travelHealthNotices.watch.forEach(function(notice) {
-				output += `<div class="list-group-item border-top-0 border-bottom-0 border-right-0 border-left-lg border-dark my-2">
-							<h6>${notice.title}</h6>
+				outputWatch += `<div class="list-group-item border-top-0 border-bottom-0 border-right-0 border-left-lg border-yellow my-2">
+							<h5>${notice.title}</h5>
 							<p class="mb-0">${notice.summary}</p>
 							<p class="small text-muted float-right mb-0">${notice.date}</p>
-						</div>`;
+						</div><hr>`;
 			});
-			document.getElementById('right-panel-reports').innerHTML = output;
+			document.getElementById('watchPill').innerHTML = outputWatch;
 		})
 		.catch((error) => {
 			if (error.response) {

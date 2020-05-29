@@ -218,23 +218,6 @@
 	color: #fff !important;
 }
 
-.card-deck-container {
-	max-height: 40rem;
-	overflow: auto;
-	&::-webkit-scrollbar {
-		width: 5px;
-	}
-	&::-webkit-scrollbar-track {
-		// -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-		border: 0.5em solid rgba(31, 45, 65, 0.06);
-		border-radius: 10px;
-	}
-
-	&::-webkit-scrollbar-thumb {
-		background-color: rgba(31, 45, 65, 0.2);
-		border-radius: 10px;
-	}
-}
 #pie-numbers.list-group-flush .list-group-item {
 	border: none;
 	padding: 0.5rem 0 0.5rem 1rem;
@@ -393,6 +376,44 @@ h3.modal-title {
 	font-size: 2rem;
 }
 
+//Travel notice panels
+.nav-pills .nav-link {
+	&#alert-pill.active {
+		background: #dc3545;
+		color: #fff;
+	}
+
+	&#warning-pill.active {
+		background: #f76400;
+		color: #fff;
+	}
+
+	&#watch-pill.active {
+		background: #f4a100;
+		color: #fff;
+	}
+
+	&#alert-pill {
+		color: #dc3545;
+		border: 1px solid #dc3545;
+		background: #fff;
+		letter-spacing: 1px;
+	}
+
+	&#warning-pill {
+		color: #f76400;
+		border: 1px solid #f76400;
+		background: #fff;
+		letter-spacing: 1px;
+	}
+
+	&#watch-pill {
+		color: #f4a100;
+		border: 1px solid #f4a100;
+		background: #fff;
+		letter-spacing: 1px;
+	}
+}
 @media only screen and (max-width: 600px) {
 	h3 {
 		font-size: 1.2rem;
