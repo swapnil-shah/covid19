@@ -782,7 +782,7 @@ function populateNumbers(confirmed, recovered, deaths, text) {
 	document.getElementById('total-date').innerHTML = `${text}`;
 }
 function newsResults() {
-	newsUri =
+	let newsUri =
 		'https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/top-headlines?q=COVID&country=in&apiKey=7e2e5ed46901476baa79347a66cc2b2c';
 	axios
 		.get(newsUri, { mode: 'cors' })
