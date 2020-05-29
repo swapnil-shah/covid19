@@ -205,6 +205,7 @@ function getStatsDataSet() {
 			console.log('Error config: ', error.config);
 		});
 }
+
 function getGlobalTimeline() {
 	return axios
 		.get('https://corona-api.com/timeline')
@@ -518,7 +519,7 @@ function getNewsResults(data) {
 	data.articles.forEach(function(item) {
 		output += `
 			<a class="card h-100 lift mx-md-3 ml-0 mr-3" href="${item.url}" target="_blank">
-				<img class="card-img-top img-fluid" src="${item.urlToImage}" alt=""  onerror="this.src='../assets/img/news_image_placeholder_128x128.png';this.style='object-fit: none;background:#F5F5F5'" style="background:#F5F5F5">
+				<img class="card-img-top img-fluid lazy" data-src="${item.urlToImage}" alt=""  onerror="this.src='../assets/img/news_image_placeholder_128x128.png';this.style='object-fit: none;background:#F5F5F5'" style="background:#F5F5F5">
 				<div class="card-body">
 					<h5 class="card-title mb-2">${item.title}</h5>
 					<p class="text-muted small pb-0 mb-4"><span class="font-weight-600 text-gray-600"><span class="icon-newspaper mr-1"></span>${item
@@ -532,6 +533,7 @@ function getNewsResults(data) {
 				`;
 	});
 	newsCards.innerHTML = output;
+	lazyLoad();
 }
 function fillNewsCards() {
 	axios
@@ -964,10 +966,3 @@ function worldDatatable(data) {
 			order: [ [ 1, 'desc' ] ]
 		});
 }
-$(window).on('load', function() {
-	let $logo = $('#brand-logo');
-	$logo.removeClass('rotating');
-	$logo.hover(function() {
-		$(this).addClass('rotating'), $(this).removeClass('rotating');
-	});
-});
