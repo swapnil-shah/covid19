@@ -155,17 +155,25 @@ block content
                 .card.mb-4
                     .card-header.bg-dark
                         h5.text-white Top COVID-19 related News
-                    .card-body.pr-2
-                        .row.d-flex.justify-content-between
-                            .col-sm-12
-                                .card.mt-4.mb-2.right-panel-reports-container.border-top-0.border-right-0.border-bottom-0.border-left-0.px-0
-                                    .card-deck-container
-                                        .text-gray-600.small#news-results-number.pt-1.pl-3
-                                        #card-deck.my-2.pr-2
-                                    p.small.pt-2.pr-2.mb-0.text-right
-                                        em Data derived from&nbsp;
-                                            a.w-100.pt-2(href="https://newsapi.org/" target="_blank") News API
-                                                i.icon-new-tab.ml-1
+                    .card-body.px-md-5(style="position:relative;")
+                        #news-results-number.pt-2.pl-3.text-gray-600.small
+                        .row.news-deck-outer
+                            .news-deck-inner#card-deck.card-deck.mt-2.mb-0(style="flex-flow: initial;")
+                                - for(var x = 0; x < 4; x++)
+                                    div.card.h-100.lift.mx-md-3.mx-2
+                                        div.card-img-top.img-fluid(style='background:#F5F5F5;height:150px')
+                                            i.icon-spinner.spinner-animate.align-self-center
+                                        .card-body
+                                            h5.card-title.mb-2
+                                                i.icon-spinner.spinner-animate
+                        div.deck-control-left.arrow.d-sm-none.d-md-flex
+                            span.icon-circle-left
+                        div.deck-control-right.arrow.d-sm-none.d-md-flex
+                            span.icon-circle-right
+                p.small.pt-2.pr-2.mb-1.text-right
+                    em Data derived from&nbsp;
+                        a.w-100.pt-2(href="https://newsapi.org/" target="_blank") News API
+                            i.icon-new-tab.ml-1
         .row
             .col-sm-12
                 .card.pb-2.mb-4
@@ -198,7 +206,7 @@ append scripts
     script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
-    script(src='js/in.min.js')
-    //- script(src='js/utilities.js')
-    //- script(src='js/in.js')
-    //- script(src='js/scripts.js')
+    //- script(src='js/in.min.js')
+    script(src='js/utilities.js')
+    script(src='js/in.js')
+    script(src='js/scripts.js')

@@ -11,8 +11,6 @@ block config
     - var metaTitle = 'The COVID-19 Global Dashboard'
     - var metaDescription = 'As the virus that causes COVID-19 spreads worldwide, this dashboard seeks to offer a one-stop snapshot of confirmed cases globally, with country specific data, news and advisories.'
     - var countryNameCode =[{"code":"AF","name":"Afghanistan"},{"code":"AL","name":"Albania"},{"code":"DZ","name":"Algeria"},{"code":"AS","name":"American Samoa"},{"code":"AD","name":"Andorra"},{"code":"AO","name":"Angola"},{"code":"AI","name":"Anguilla"},{"code":"AQ","name":"Antarctica"},{"code":"AG","name":"Antigua and Barbuda"},{"code":"AR","name":"Argentina"},{"code":"AM","name":"Armenia"},{"code":"AW","name":"Aruba"},{"code":"AU","name":"Australia"},{"code":"AT","name":"Austria"},{"code":"AZ","name":"Azerbaijan"},{"code":"BS","name":"Bahamas"},{"code":"BH","name":"Bahrain"},{"code":"BD","name":"Bangladesh"},{"code":"BB","name":"Barbados"},{"code":"BY","name":"Belarus"},{"code":"BE","name":"Belgium"},{"code":"BZ","name":"Belize"},{"code":"BJ","name":"Benin"},{"code":"BM","name":"Bermuda"},{"code":"BT","name":"Bhutan"},{"code":"BO","name":"Bolivia"},{"code":"BQ","name":"Bonaire, Sint Eustatius and Saba"},{"code":"BA","name":"Bosnia and Herzegovina"},{"code":"BW","name":"Botswana"},{"code":"BV","name":"Bouvet Island"},{"code":"BR","name":"Brazil"},{"code":"IO","name":"British Indian Ocean Territory"},{"code":"VG","name":"British Virgin Islands"},{"code":"BN","name":"Brunei "},{"code":"BG","name":"Bulgaria"},{"code":"BF","name":"Burkina Faso"},{"code":"BI","name":"Burundi"},{"code":"CF","name":"CAR"},{"code":"KH","name":"Cambodia"},{"code":"CM","name":"Cameroon"},{"code":"CA","name":"Canada"},{"code":"CV","name":"Cape Verde"},{"code":"KY","name":"Cayman Islands"},{"code":"TD","name":"Chad"},{"code":"CL","name":"Chile"},{"code":"CN","name":"China"},{"code":"CX","name":"Christmas Island"},{"code":"CC","name":"Cocos (Keeling) Islands"},{"code":"CO","name":"Colombia"},{"code":"KM","name":"Comoros"},{"code":"CG","name":"Congo"},{"code":"CK","name":"Cook Islands"},{"code":"CR","name":"Costa Rica"},{"code":"HR","name":"Croatia"},{"code":"CU","name":"Cuba"},{"code":"CW","name":"Curaçao"},{"code":"CY","name":"Cyprus"},{"code":"CZ","name":"Czechia"},{"code":"CI","name":"Côte d'Ivoire"},{"code":"CD","name":"DRC"},{"code":"DK","name":"Denmark"},{"code":"DJ","name":"Djibouti"},{"code":"DM","name":"Dominica"},{"code":"DO","name":"Dominican Republic"},{"code":"EC","name":"Ecuador"},{"code":"EG","name":"Egypt"},{"code":"SV","name":"El Salvador"},{"code":"GQ","name":"Equatorial Guinea"},{"code":"ER","name":"Eritrea"},{"code":"EE","name":"Estonia"},{"code":"ET","name":"Ethiopia"},{"code":"FK","name":"Falkland Islands"},{"code":"FO","name":"Faroe Islands"},{"code":"FJ","name":"Fiji"},{"code":"FI","name":"Finland"},{"code":"FR","name":"France"},{"code":"GF","name":"French Guiana"},{"code":"PF","name":"French Polynesia"},{"code":"TF","name":"French Southern Territories"},{"code":"GA","name":"Gabon"},{"code":"GM","name":"Gambia"},{"code":"GE","name":"Georgia"},{"code":"DE","name":"Germany"},{"code":"GH","name":"Ghana"},{"code":"GI","name":"Gibraltar"},{"code":"GR","name":"Greece"},{"code":"GL","name":"Greenland"},{"code":"GD","name":"Grenada"},{"code":"GP","name":"Guadeloupe"},{"code":"GU","name":"Guam"},{"code":"GT","name":"Guatemala"},{"code":"GG","name":"Guernsey"},{"code":"GN","name":"Guinea"},{"code":"GW","name":"Guinea-Bissau"},{"code":"GY","name":"Guyana"},{"code":"HT","name":"Haiti"},{"code":"HM","name":"Heard Island and McDonald Islands"},{"code":"HN","name":"Honduras"},{"code":"HK","name":"Hong Kong"},{"code":"HU","name":"Hungary"},{"code":"IS","name":"Iceland"},{"code":"IN","name":"India"},{"code":"ID","name":"Indonesia"},{"code":"IR","name":"Iran"},{"code":"IQ","name":"Iraq"},{"code":"IE","name":"Ireland"},{"code":"IM","name":"Isle of Man"},{"code":"IL","name":"Israel"},{"code":"IT","name":"Italy"},{"code":"JM","name":"Jamaica"},{"code":"JP","name":"Japan"},{"code":"JE","name":"Jersey"},{"code":"JO","name":"Jordan"},{"code":"KZ","name":"Kazakhstan"},{"code":"KE","name":"Kenya"},{"code":"KI","name":"Kiribati"},{"code":"KP","name":"Korea, Democratic People's Republic of"},{"code":"KW","name":"Kuwait"},{"code":"KG","name":"Kyrgyzstan"},{"code":"LA","name":"Laos"},{"code":"LV","name":"Latvia"},{"code":"LB","name":"Lebanon"},{"code":"LS","name":"Lesotho"},{"code":"LR","name":"Liberia"},{"code":"LY","name":"Libya"},{"code":"LI","name":"Liechtenstein"},{"code":"LT","name":"Lithuania"},{"code":"LU","name":"Luxembourg"},{"code":"MO","name":"Macao"},{"code":"MG","name":"Madagascar"},{"code":"MW","name":"Malawi"},{"code":"MY","name":"Malaysia"},{"code":"MV","name":"Maldives"},{"code":"ML","name":"Mali"},{"code":"MT","name":"Malta"},{"code":"MH","name":"Marshall Islands"},{"code":"MQ","name":"Martinique"},{"code":"MR","name":"Mauritania"},{"code":"MU","name":"Mauritius"},{"code":"YT","name":"Mayotte"},{"code":"MX","name":"Mexico"},{"code":"FM","name":"Micronesia, Federated States of"},{"code":"MD","name":"Moldova"},{"code":"MC","name":"Monaco"},{"code":"MN","name":"Mongolia"},{"code":"ME","name":"Montenegro"},{"code":"MS","name":"Montserrat"},{"code":"MA","name":"Morocco"},{"code":"MZ","name":"Mozambique"},{"code":"MM","name":"Myanmar"},{"code":"NA","name":"Namibia"},{"code":"NR","name":"Nauru"},{"code":"NP","name":"Nepal"},{"code":"NL","name":"Netherlands"},{"code":"NC","name":"New Caledonia"},{"code":"NZ","name":"New Zealand"},{"code":"NI","name":"Nicaragua"},{"code":"NE","name":"Niger"},{"code":"NG","name":"Nigeria"},{"code":"NU","name":"Niue"},{"code":"NF","name":"Norfolk Island"},{"code":"MK","name":"North Macedonia"},{"code":"MP","name":"Northern Mariana Islands"},{"code":"NO","name":"Norway"},{"code":"OM","name":"Oman"},{"code":"PK","name":"Pakistan"},{"code":"PW","name":"Palau"},{"code":"PS","name":"Palestine"},{"code":"PA","name":"Panama"},{"code":"PG","name":"Papua New Guinea"},{"code":"PY","name":"Paraguay"},{"code":"PE","name":"Peru"},{"code":"PH","name":"Philippines"},{"code":"PN","name":"Pitcairn"},{"code":"PL","name":"Poland"},{"code":"PT","name":"Portugal"},{"code":"PR","name":"Puerto Rico"},{"code":"QA","name":"Qatar"},{"code":"RO","name":"Romania"},{"code":"RU","name":"Russia"},{"code":"RW","name":"Rwanda"},{"code":"RE","name":"Réunion"},{"code":"KR","name":"S. Korea"},{"code":"BL","name":"Saint Barth"},{"code":"SH","name":"Saint Helena, Ascension and Tristan da Cunha"},{"code":"KN","name":"Saint Kitts and Nevis"},{"code":"LC","name":"Saint Lucia"},{"code":"MF","name":"Saint Martin"},{"code":"PM","name":"Saint Pierre Miquelon"},{"code":"VC","name":"Saint Vincent Grenadines"},{"code":"WS","name":"Samoa"},{"code":"SM","name":"San Marino"},{"code":"ST","name":"Sao Tome and Principe"},{"code":"SA","name":"Saudi Arabia"},{"code":"SN","name":"Senegal"},{"code":"RS","name":"Serbia"},{"code":"SC","name":"Seychelles"},{"code":"SL","name":"Sierra Leone"},{"code":"SG","name":"Singapore"},{"code":"SX","name":"Sint Maarten"},{"code":"SK","name":"Slovakia"},{"code":"SI","name":"Slovenia"},{"code":"SB","name":"Solomon Islands"},{"code":"SO","name":"Somalia"},{"code":"ZA","name":"South Africa"},{"code":"GS","name":"South Georgia and the South Sandwich Islands"},{"code":"SS","name":"South Sudan"},{"code":"ES","name":"Spain"},{"code":"LK","name":"Sri Lanka"},{"code":"SD","name":"Sudan"},{"code":"SR","name":"Suriname"},{"code":"SJ","name":"Svalbard and Jan Mayen"},{"code":"SZ","name":"Swaziland"},{"code":"SE","name":"Sweden"},{"code":"CH","name":"Switzerland"},{"code":"SY","name":"Syria"},{"code":"TW","name":"Taiwan"},{"code":"TJ","name":"Tajikistan"},{"code":"TZ","name":"Tanzania"},{"code":"TH","name":"Thailand"},{"code":"TL","name":"Timor-Leste"},{"code":"TG","name":"Togo"},{"code":"TK","name":"Tokelau"},{"code":"TO","name":"Tonga"},{"code":"TT","name":"Trinidad and Tobago"},{"code":"TN","name":"Tunisia"},{"code":"TR","name":"Turkey"},{"code":"TM","name":"Turkmenistan"},{"code":"TC","name":"Turks and Caicos"},{"code":"TV","name":"Tuvalu"},{"code":"VI","name":"U.S. Virgin Islands"},{"code":"GB","name":"UK"},{"code":"US","name":"USA"},{"code":"UG","name":"Uganda"},{"code":"UA","name":"Ukraine"},{"code":"AE","name":"United Arab Emirates"},{"code":"UM","name":"United States Minor Outlying Islands"},{"code":"UY","name":"Uruguay"},{"code":"UZ","name":"Uzbekistan"},{"code":"VU","name":"Vanuatu"},{"code":"VA","name":"Vatican City"},{"code":"VE","name":"Venezuela"},{"code":"VN","name":"Vietnam"},{"code":"WF","name":"Wallis and Futuna"},{"code":"EH","name":"Western Sahara"},{"code":"YE","name":"Yemen"},{"code":"ZM","name":"Zambia"},{"code":"ZW","name":"Zimbabwe"},{"code":"AX","name":"Åland Islands"}]
-
-    - var newsThirtyCountries = [{"code":"BD","name":"Bangladesh"},{"code":"BY","name":"Belarus"},{"code":"BE","name":"Belgium"},{"code":"BR","name":"Brazil"},{"code":"CA","name":"Canada"},{"code":"CL","name":"Chile"},{"code":"CN","name":"China"},{"code":"EC","name":"Ecuador"},{"code":"FR","name":"France"},{"code":"DE","name":"Germany"},{"code":"IN","name":"India"},{"code":"IR","name":"Iran"},{"code":"IE","name":"Ireland"},{"code":"IT","name":"Italy"},{"code":"MX","name":"Mexico"},{"code":"NL","name":"Netherlands"},{"code":"PK","name":"Pakistan"},{"code":"PE","name":"Peru"},{"code":"PT","name":"Portugal"},{"code":"QA","name":"Qatar"},{"code":"RU","name":"Russia"},{"code":"SA","name":"Saudi Arabia"},{"code":"SG","name":"Singapore"},{"code":"ES","name":"Spain"},{"code":"SE","name":"Sweden"},{"code":"CH","name":"Switzerland"},{"code":"TR","name":"Turkey"},{"code":"AE","name":"UAE"},{"code":"GB","name":"UK"},{"code":"US","name":"USA"}]
     
 append css
     include world-map-js.pug
@@ -75,7 +73,7 @@ block content
                 .card.pb-2.mb-4(style="background-color: #191a1a !important;")
                     .card-header.bg-dark.d-block
                         h3.text-white.mb-0  Timeline of Top 15 affected Countries
-                        p.text-white.text-muted.mb-0.pt-1 Click the play button (bottom left) to run the Timeline 
+                        //- p.text-white.text-muted.mb-0.pt-1 Click the play button (bottom left) to run the Timeline 
                     .card-body#flourish-bar-chart-race.mx-auto
                         .flourish-embed.flourish-bar-chart-race( data-src='visualisation/2293729', data-url='https://flo.uri.sh/visualisation/2293729/embed')
             .col-sm-12
@@ -172,42 +170,51 @@ block content
             .col-sm-12
                 .card.mb-4
                     .card-header.bg-dark.d-block
-                        h5.text-white.mb-0  In The Press
-                    .card-body.pr-2
-                        .row.d-flex.justify-content-between
-                            .col-sm-12.col-md-8.pr-md-5
-                                .card.mt-4.mb-2.right-panel-reports-container.border-top-0.border-right-0.border-bottom-0.border-left-0.px-0
-                                    h4.card-title.p-3.text-dark.bg-light Top COVID-19 related News
-                                    .card-deck-container
-                                        p.font-italic.font-weight-300.text-left.mb-1
-                                            small Select a region
-                                        .select.w-50
-                                            select#selectNewsRegion
-                                                option(value="global" selected) Global
-                                                each country in newsThirtyCountries
-                                                    option(value=country.code) #{country.name}
-                                        .text-gray-600.small#news-results-number.pt-2.pl-3
-                                        #card-deck.my-2.pr-2
-                                    p.small.pt-2.pr-2.mb-0.text-right
-                                        em Data derived from&nbsp;
-                                            a.w-100.pt-2(href="https://smartable.ai/" target="_blank") Smartable AI
-                                                i.icon-new-tab.ml-1
-                            .col-sm-12.col-md-4
-                                .card.mt-4.mb-2.right-panel-reports-container.border-top-0.border-right-0.border-bottom-0.border-left-0.px-0
-                                    h4.card-title.p-3.text-dark.bg-light Travel Health Notices
-                                    .card-deck-container
-                                        .d-flex.align-items-center.justify-content-center.pb-1
-                                            span.bg-red.ml-4.mr-2(style="width: 10px;height: 7px;display: inline-block;vertical-align: middle;") 
-                                            span.small.text-muted Alert
-                                            span.bg-yellow.ml-4.mr-2(style="width: 10px;height: 7px;display: inline-block;vertical-align: middle;") 
-                                            span.small.text-muted Warning
-                                            span.bg-dark.ml-4.mr-2(style="width: 10px;height: 7px;display: inline-block;vertical-align: middle;") 
-                                            span.small.text-muted Watch
-                                        .list-group.list-group-flush.small#right-panel-reports.mr-md-2
-                                    p.small.pt-2.pr-2.mb-0.text-right
-                                        em Data derived from&nbsp;
-                                            a.w-100.pt-2(href="https://covid19-docs.chrismichael.now.sh/" target="_blank") covid19-api
-                                                i.icon-new-tab.ml-1
+                        h5.text-white.mb-0  Top COVID-19 related News
+                    .card-body.px-md-5(style="position:relative;")
+                        p.font-italic.font-weight-300.text-left.mb-1
+                            small Select a region
+                        .select.w-50
+                            select#selectNewsRegion
+                                option(value="global" selected) Global
+                                each country in countryNameCode
+                                    option(value=country.name) #{country.name}
+                        #news-results-number.pt-2.pl-3.text-gray-600.small
+                        .row.news-deck-outer
+                            .news-deck-inner#card-deck.card-deck.mt-2.mb-0(style="flex-flow: initial;")
+                                - for(var x = 0; x < 4; x++)
+                                    div.card.h-100.lift.mx-md-3.mx-2
+                                        div.card-img-top.img-fluid(style='background:#F5F5F5;height:150px')
+                                            i.icon-spinner.spinner-animate.align-self-center
+                                        .card-body
+                                            h5.card-title.mb-2
+                                                i.icon-spinner.spinner-animate
+                        div.deck-control-left.arrow.d-sm-none.d-md-flex
+                            span.icon-circle-left
+                        div.deck-control-right.arrow.d-sm-none.d-md-flex
+                            span.icon-circle-right
+                    p.small.pt-2.pr-2.mb-1.text-right
+                        em Data derived from&nbsp;
+                            a.w-100.pt-2(href="https://smartable.ai/" target="_blank") Smartable AI
+                                i.icon-new-tab.ml-1
+            .col-sm-12
+                .card.mb-4
+                    .card-header.bg-dark.d-block
+                        h5.text-white.mb-0  Travel Health Notices
+                    .card-body
+                        .card-deck-container
+                            .d-flex.align-items-center.p-3.bg-white(style="position: -webkit-sticky;position:sticky;top:0;z-index: 1;")
+                                span.bg-red.mr-2(style="width: 10px;height: 7px;display: inline-block;vertical-align: middle;") 
+                                span.small.text-muted Alert
+                                span.bg-yellow.ml-4.mr-2(style="width: 10px;height: 7px;display: inline-block;vertical-align: middle;") 
+                                span.small.text-muted Warning
+                                span.bg-dark.ml-4.mr-2(style="width: 10px;height: 7px;display: inline-block;vertical-align: middle;") 
+                                span.small.text-muted Watch
+                            .list-group.list-group-flush.small#right-panel-reports.mr-md-2
+                        p.small.pt-2.pr-2.mb-0.text-right
+                            em Data derived from&nbsp;
+                                a.w-100.pt-2(href="https://covid19-docs.chrismichael.now.sh/" target="_blank") covid19-api
+                                    i.icon-new-tab.ml-1
         .row
             .col-sm-12
                 .card.pb-2.mb-4
@@ -229,8 +236,8 @@ append scripts
     script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
-    script(src='js/dashboard.min.js')
+    //- script(src='js/dashboard.min.js')
 
-    //- script(src='js/utilities.js')
-    //- script(src='js/dashboard.js')
-    //- script(src='js/scripts.js')
+    script(src='js/utilities.js')
+    script(src='js/dashboard.js')
+    script(src='js/scripts.js')

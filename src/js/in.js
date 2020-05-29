@@ -5,8 +5,7 @@ $(document).ready(function() {
 	});
 	newsResults();
 });
-const newsUri =
-	'https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/top-headlines?q=COVID&country=in&apiKey=7e2e5ed46901476baa79347a66cc2b2c';
+
 let canvas = document.getElementById('myChart');
 let ctx = canvas.getContext('2d');
 let myChart;
@@ -783,6 +782,8 @@ function populateNumbers(confirmed, recovered, deaths, text) {
 	document.getElementById('total-date').innerHTML = `${text}`;
 }
 function newsResults() {
+	newsUri =
+		'https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/top-headlines?q=COVID&country=in&apiKey=7e2e5ed46901476baa79347a66cc2b2c';
 	axios
 		.get(newsUri, { mode: 'cors' })
 		.then((response) => {
@@ -793,26 +794,27 @@ function newsResults() {
 			<span class="sr-only">Loading...</span>
 		</div>`;
 			let output = '';
-			newsResultsNumber.innerText = `${response.data.totalResults} results found`;
+			newsResultsNumber.innerText = `Showing ${response.data.totalResults} articles`;
 			response.data.articles.forEach(function(item) {
 				output += `
-						<div class="col-sm-12 my-3 pl-0 pr-1">
-							<a class="card lift lift-sm p-3 news-card border-bottom-lg" href="${item.url}" target="_blank" style="border-color: rgba(31, 45, 65, 0.5) !important;">
-								<h3 class="text-dark">${item.title}</h3>
-								<p class="text-gray-600 mb-1"">${item.description}</p>
-								<p class="mb-0 text-muted small mb-3"><i class="far fa-newspaper"></i> Published by <span class="font-weight-600 text-gray-600">${item
-									.source.name}</span> ${timeDifference(item.publishedAt)}</p>
-									</>
-								<p class="text-primary">View full article</p>
+							<a class="card h-100 lift mx-md-3 ml-0 mr-3" href="${item.url}" target="_blank">
+								<img class="card-img-top img-fluid" src="${item.urlToImage}" alt=""  onerror="this.src='../assets/img/news_image_placeholder_128x128.png';this.style='object-fit: none;background:#F5F5F5'" style="background:#F5F5F5">
+								<div class="card-body">
+									<h5 class="card-title mb-2">${item.title}</h5>
+									<p class="text-muted small pb-0 mb-4"><span class="font-weight-600 text-gray-600"><span class="icon-newspaper mr-1"></span>${item
+										.source.name}</span> ${timeDifference(item.publishedAt)}</p>
+									<p class="card-text mb-1">${item.description}</p>
+								</div>
+								<div class="card-footer">
+									<p class="text-primary text-center mb-0">View full article<span class="icon-new-tab ml-1"></span></p>
+								</div>
 							</a>
-						</div>
 						`;
 			});
 			newsCards.innerHTML = output;
 		})
 		.catch((error) => {
-			document.getElementById('news-results-number').innerHTML =
-				'Failed to fetch the data.<br>Error Message: ' + error.message;
+			newsCards.innerHTML = 'Failed to fetch the data.<br>Error Message: ' + error.message;
 			if (error.response) {
 				console.log(
 					'The request was made and the server responded with a status code that falls out of the range of 2xx'

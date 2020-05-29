@@ -60,4 +60,22 @@
 		$(this).addClass('show');
 		$('[data-target="#' + this.id + '"]').removeClass('collapsed');
 	});
+
+	$('.deck-control-right').click(function() {
+		$('.news-deck-outer').animate(
+			{
+				scrollLeft: '+=500px'
+			},
+			'slow'
+		);
+	});
+
+	$('.deck-control-left').click(function() {
+		$('.news-deck-outer').animate(
+			{
+				scrollLeft: '-=500px'
+			},
+			'slow'
+		);
+	});
 })(jQuery);

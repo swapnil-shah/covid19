@@ -6,20 +6,18 @@ $(document).ready(function() {
 	getStatsDataSet().then((data) => {
 		worldDatatable(data);
 	});
-	// fillNewsCards();
+	fillNewsCards();
 	fillTravelNotices();
 	$('#selectNewsRegion').on('change', function() {
 		let value = $(this).val();
 		document.getElementById('card-deck').innerHTML =
-			'<div class="text-center"><i class="icon-spinner spinner-animate"></i></div>';
-		const newsUri = 'https://api.smartable.ai/coronavirus/news/' + value;
+			'<div class="text-center"><i class="icon-spinner spinner-animate" style="font-size:2rem"></i></div>';
+		const countryNews =
+			'https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/everything?apiKey=7e2e5ed46901476baa79347a66cc2b2c&q=covid%20and%20' +
+			value;
 
 		axios
-			.get(newsUri, {
-				headers: {
-					'Subscription-Key': API_KEY_SMARTTABLE
-				}
-			})
+			.get(countryNews, { mode: 'cors' })
 			.then((response) => {
 				getNewsResults(response.data);
 			})
@@ -102,7 +100,8 @@ $(document).ready(function() {
 		$('#linearRadio, #logarithmicRadio').attr('disabled', '');
 	});
 });
-const newsUri = 'https://api.smartable.ai/coronavirus/news/global';
+const globalNews =
+	'https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/top-headlines?q=covid&apiKey=7e2e5ed46901476baa79347a66cc2b2c';
 const API_KEY_SMARTTABLE = '0c40c052c781432db1a7a005160b9778';
 let canvas = document.getElementById('myChart');
 let ctx = canvas.getContext('2d');
@@ -515,35 +514,28 @@ function getNewsResults(data) {
 	let newsResultsNumber = document.getElementById('news-results-number');
 	let optionName = $('#selectNewsRegion option:selected').text();
 	let output = '';
-	if (data.news.length > 0) {
-		newsResultsNumber.innerText = `${data.news.length} results found for ${optionName}`;
-		data.news.forEach(function(item) {
-			output += `
-				<div class="col-sm-12 my-3 pl-0 pr-1">
-					<a class="card lift lift-sm p-3 news-card border-bottom-lg" href="${item.webUrl}" target="_blank" style="border-color: rgba(31, 45, 65, 0.5) !important;">
-						<h3 class="text-dark">${item.title}</h3>
-						<p class="text-gray-600 mb-1"">${item.excerpt}</p>
-						<p class="mb-0 text-muted small mb-3"><i class="far fa-newspaper"></i> Published by <span class="font-weight-600 text-gray-600">${item
-							.provider.name}</span> ${timeDifference(item.publishedDateTime)}</p>
-							</>
-						<p class="text-primary">View full article</p>
-					</a>
+	newsResultsNumber.innerText = `Showing ${data.articles.length} articles for ${optionName}`;
+	data.articles.forEach(function(item) {
+		output += `
+			<a class="card h-100 lift mx-md-3 ml-0 mr-3" href="${item.url}" target="_blank">
+				<img class="card-img-top img-fluid" src="${item.urlToImage}" alt=""  onerror="this.src='../assets/img/news_image_placeholder_128x128.png';this.style='object-fit: none;background:#F5F5F5'" style="background:#F5F5F5">
+				<div class="card-body">
+					<h5 class="card-title mb-2">${item.title}</h5>
+					<p class="text-muted small pb-0 mb-4"><span class="font-weight-600 text-gray-600"><span class="icon-newspaper mr-1"></span>${item
+						.source.name}</span> ${timeDifference(item.publishedAt)}</p>
+					<p class="card-text mb-1">${item.description}</p>
 				</div>
+				<div class="card-footer">
+					<p class="text-primary text-center mb-0">View full article<span class="icon-new-tab ml-1"></span></p>
+				</div>
+			</a>
 				`;
-		});
-	} else {
-		newsResultsNumber.innerText = '';
-		output += `<div class="col-sm-12 p-4 mx-auto text-muted">No data available for this region. Please selet another option.</div>`;
-	}
+	});
 	newsCards.innerHTML = output;
 }
 function fillNewsCards() {
 	axios
-		.get(newsUri, {
-			headers: {
-				'Subscription-Key': API_KEY_SMARTTABLE
-			}
-		})
+		.get(globalNews, { mode: 'cors' })
 		.then((response) => {
 			document.getElementById('card-deck').innerText = 'Loading..';
 			getNewsResults(response.data);
@@ -607,24 +599,24 @@ function fillTravelNotices() {
 		.then((response) => {
 			let output = '';
 			response.data.data.travelHealthNotices.alert.forEach(function(notice) {
-				output += `<div class="list-group-item list-group-item-action border-top-0 border-bottom-0 border-right-0 border-left-lg border-red my-1">
+				output += `<div class="list-group-item border-top-0 border-bottom-0 border-right-0 border-left-lg border-red my-2">
 							<h6>${notice.title}</h6>
 							<p class="mb-0">${notice.summary}</p>
-							<p class="small text-muted float-right">${notice.date}</p>
+							<p class="small text-muted float-right mb-0">${notice.date}</p>
 						</div>`;
 			});
 			response.data.data.travelHealthNotices.warning.forEach(function(notice) {
-				output += `<div class="list-group-item list-group-item-action border-top-0 border-bottom-0 border-right-0 border-left-lg border-yellow my-1">
+				output += `<div class="list-group-item border-top-0 border-bottom-0 border-right-0 border-left-lg border-yellow my-2">
 							<h6>${notice.title}</h6>
 							<p class="mb-0">${notice.summary}</p>
-							<p class="small text-muted float-right">${notice.date}</p>
+							<p class="small text-muted float-right mb-0">${notice.date}</p>
 						</div>`;
 			});
 			response.data.data.travelHealthNotices.watch.forEach(function(notice) {
-				output += `<div class="list-group-item list-group-item-action border-top-0 border-bottom-0 border-right-0 border-left-lg border-dark my-1">
+				output += `<div class="list-group-item border-top-0 border-bottom-0 border-right-0 border-left-lg border-dark my-2">
 							<h6>${notice.title}</h6>
 							<p class="mb-0">${notice.summary}</p>
-							<p class="small text-muted float-right">${notice.date}</p>
+							<p class="small text-muted float-right mb-0">${notice.date}</p>
 						</div>`;
 			});
 			document.getElementById('right-panel-reports').innerHTML = output;
