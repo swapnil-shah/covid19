@@ -815,6 +815,7 @@ function newsResults() {
 						`;
 			});
 			newsCards.innerHTML = output;
+			lazyLoad();
 		})
 		.catch((error) => {
 			newsCards.innerHTML = 'Failed to fetch the data.<br>Error Message: ' + error.message;
