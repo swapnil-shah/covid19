@@ -3,29 +3,40 @@ nav.sidenav.shadow-right.sidenav-dark
     .sidenav-menu
         
         .nav.accordion#accordionSidenav
+
             a.text-right
                 button#sidebarClose.btn.btn-icon.btn-transparent-dark.mr-lg-2.py-4(href='#',style="color: hsla(0,0%,100%,.5) !important;")
                     i.icon-cross(style="position:absolute")
-            .sidenav-menu-heading.pb-0
-                | Dashboard
-            a.nav-link.py-2.pl-2.mr-0.my-1.ml-1(href='/')
-                .nav-link-icon
-                    i.icon-earth
-                | Global
-            a.nav-link.py-2.pl-2.mr-0.my-1.ml-1(href='/us')
-                .nav-link-icon
-                    img(src="https://www.countryflags.io/us/flat/16.png")
-                | USA
+            .py-2.my-1
+                .sidenav-menu-heading.pb-0.text-white
+                    .nav-link-icon.d-inline-block
+                        i.icon-earth.mr-1 
+                        | Global
+                nav.sidenav-menu-nested.nav.border-left-0
+                    a.nav-link.py-2.pl-2.mr-0.my-1.ml-1(href='/') Dashboard
 
-            a.nav-link.py-2.pl-2.mr-0.my-1.ml-1(href='/in')
-                .nav-link-icon
-                    img(src="https://www.countryflags.io/in/flat/16.png")
-                | INDIA
-            nav.sidenav-menu-nested.nav.ml-5
-                a.nav-link(href='/in-resources') Resources
-            .sidenav-menu-heading.pb-0
-                | ABOUT
-            a.nav-link.py-2.pl-2.mr-0.my-1.ml-1(href='/about')
-                .nav-link-icon
-                    i.icon-info
-                | COVID-19 and Project
+            .py-2.my-1
+                .sidenav-menu-heading.pb-0.text-white
+                    .nav-link-icon.d-inline-block
+                        img.mr-1(src="https://www.countryflags.io/us/flat/16.png", style="vertical-align:top") 
+                        | USA
+                nav.sidenav-menu-nested.nav.border-left-0
+                    a.nav-link.py-2.pl-2.mr-0.my-1.ml-1(href='/us') Dashboard
+
+            .py-2.my-1
+                .sidenav-menu-heading.pb-0.text-white
+                    .nav-link-icon.d-inline-block
+                        img.mr-1(src="https://www.countryflags.io/in/flat/16.png", style="vertical-align:top") 
+                        | INDIA
+                nav.sidenav-menu-nested.nav.border-left-0
+                    a.nav-link.py-2.pl-2.mr-0.my-1.ml-1(href='/in') Dashboard
+                nav.sidenav-menu-nested.nav.border-left-0
+                    a.nav-link.py-2.pl-2.mr-0.my-1.ml-1(href='/in-resources') Resources
+
+            .py-2.my-1    
+                .sidenav-menu-heading.pb-0.text-white
+                    .nav-link-icon.d-inline-block
+                        i.icon-info 
+                        | ABOUT
+                nav.sidenav-menu-nested.nav.border-left-0
+                    a.nav-link.py-2.pl-2.mr-0.my-1.ml-1(href='/about') COVID-19 and Project

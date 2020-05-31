@@ -395,24 +395,31 @@ h3.modal-title {
 
 	&#alert-pill {
 		color: #dc3545;
-		border: 1px solid #dc3545;
+		border: 2px solid #dc3545;
 		background: #fff;
 		letter-spacing: 1px;
 	}
 
 	&#warning-pill {
 		color: #f76400;
-		border: 1px solid #f76400;
+		border: 2px solid #f76400;
 		background: #fff;
 		letter-spacing: 1px;
 	}
 
 	&#watch-pill {
 		color: #f4a100;
-		border: 1px solid #f4a100;
+		border: 2px solid #f4a100;
 		background: #fff;
 		letter-spacing: 1px;
 	}
+}
+
+#return-to-top {
+	cursor: pointer;
+}
+#return-to-top:hover {
+	background: rgba(104, 114, 129, 0.1);
 }
 @media only screen and (max-width: 600px) {
 	h3 {
