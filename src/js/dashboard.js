@@ -536,12 +536,12 @@ function getNewsResults(data) {
 }
 function fillNewsCards() {
 	axios
-		.get(globalNews, { 'X-Requested-With': 'XMLHttpRequest' })
+		.get(globalNews, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
 		.then((response) => {
 			getNewsResults(response.data);
 		})
 		.catch((error) => {
-			document.getElementById('card-deck').innerHTML =
+			document.getElementById('news-results-number').innerHTML =
 				'Failed to fetch the data.<br>Error Message: ' + error.message;
 			if (error.response) {
 				console.log(

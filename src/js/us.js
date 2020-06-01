@@ -275,11 +275,13 @@ function cardStats(dataSet) {
 
 function fillNewsCards() {
 	axios
-		.get(usaNews)
+		.get(usaNews, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
 		.then((response) => {
 			getNewsResults(response.data);
 		})
 		.catch((error) => {
+			document.getElementById('news-results-number').innerHTML =
+				'Failed to fetch the data.<br>Error Message: ' + error.message;
 			if (error.response) {
 				console.log(
 					'The request was made and the server responded with a status code that falls out of the range of 2xx'

@@ -788,7 +788,7 @@ function newsResults() {
 	const news_sort = 'sortBy=publishedAt';
 	const newsUri = `https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/everything?${news_key}&${news_keyword}&${news_language}&${news_sort}`;
 	axios
-		.get(newsUri, { mode: 'cors' })
+		.get(newsUri, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
 		.then((response) => {
 			document.getElementById('card-deck').text = 'Loading..';
 			let newsCards = document.getElementById('card-deck');
@@ -818,7 +818,8 @@ function newsResults() {
 			lazyLoad();
 		})
 		.catch((error) => {
-			newsCards.innerHTML = 'Failed to fetch the data.<br>Error Message: ' + error.message;
+			document.getElementById('news-results-number').innerHTML =
+				'Failed to fetch the data.<br>Error Message: ' + error.message;
 			if (error.response) {
 				console.log(
 					'The request was made and the server responded with a status code that falls out of the range of 2xx'
