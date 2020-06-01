@@ -3,7 +3,7 @@ $(document).ready(function() {
 		cardStats(data);
 		countryDataSet(data);
 	});
-	newsResults();
+	// newsResults();
 });
 
 let canvas = document.getElementById('myChart');
