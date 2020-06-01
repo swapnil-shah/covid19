@@ -535,9 +535,16 @@ function getNewsResults(data) {
 	lazyLoad();
 }
 function fillNewsCards() {
+	var myHeaders = new Headers();
+	myHeaders.append('X-Requested-With', 'XMLHttpRequest');
 	axios
-		.get(globalNews, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+		.request({
+			url: globalNews,
+			method: 'GET',
+			headers: myHeaders
+		})
 		.then((response) => {
+			console.log('fillNewsCards -> response', response);
 			getNewsResults(response.data);
 		})
 		.catch((error) => {
