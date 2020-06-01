@@ -537,15 +537,20 @@ function getNewsResults(data) {
 function fillNewsCards() {
 	var myHeaders = new Headers();
 	myHeaders.append('X-Requested-With', 'XMLHttpRequest');
-	axios
-		.request({
-			url: globalNews,
-			method: 'GET',
-			headers: myHeaders
-		})
-		.then((response) => {
-			console.log('fillNewsCards -> response', response);
-			getNewsResults(response.data);
+
+	var requestOptions = {
+		method: 'GET',
+		headers: myHeaders,
+		redirect: 'follow'
+	};
+
+	fetch(
+		'https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/top-headlines?q=covid&apiKey=7e2e5ed46901476baa79347a66cc2b2c&sortBy=publishedAt&language=en&origin=x-requested-with&X-Requested-With=XMLHttpRequest',
+		requestOptions
+	)
+		.then((response) => response.json())
+		.then((result) => {
+			getNewsResults(result);
 		})
 		.catch((error) => {
 			document.getElementById('news-results-number').innerHTML =
