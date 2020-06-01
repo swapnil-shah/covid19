@@ -101,7 +101,7 @@ const news_key = 'apiKey=7e2e5ed46901476baa79347a66cc2b2c';
 const news_keyword = 'q=covid19%20and%20';
 const news_language = 'language=en';
 const news_sort = 'sortBy=publishedAt';
-const globalNews = `https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/top-headlines?q=covid&${news_key}&${news_sort}&${news_language}`;
+const globalNews = `https://newsapi.org/v2/top-headlines?q=covid&${news_key}&${news_sort}&${news_language}`;
 let canvas = document.getElementById('myChart');
 let ctx = canvas.getContext('2d');
 let myChart;
@@ -535,22 +535,10 @@ function getNewsResults(data) {
 	lazyLoad();
 }
 function fillNewsCards() {
-	var myHeaders = new Headers();
-	myHeaders.append('X-Requested-With', 'XMLHttpRequest');
-
-	var requestOptions = {
-		method: 'GET',
-		headers: myHeaders,
-		redirect: 'follow'
-	};
-
-	fetch(
-		'https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/top-headlines?q=covid&apiKey=7e2e5ed46901476baa79347a66cc2b2c&sortBy=publishedAt&language=en&origin=x-requested-with&X-Requested-With=XMLHttpRequest',
-		requestOptions
-	)
-		.then((response) => response.json())
-		.then((result) => {
-			getNewsResults(result);
+	axios
+		.get(globalNews)
+		.then((response) => {
+			getNewsResults(response.data);
 		})
 		.catch((error) => {
 			document.getElementById('news-results-number').innerHTML =
