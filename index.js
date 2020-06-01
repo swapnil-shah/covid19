@@ -2,7 +2,13 @@ var express = require('express');
 var app = express();
 var port = process.env.PORT || 3002;
 var cors = require('cors');
-app.use(cors());
-app.listen(port);
 var distDir = __dirname + '/dist/';
 app.use(express.static(distDir, { extensions: [ 'html' ] }));
+app.use(cors());
+app.listen(port);
+app.use(function(req, res, next) {
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+	res.header('Access-Control-Allow-Headers', 'Content-Type');
+	next();
+});
