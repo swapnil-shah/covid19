@@ -33,7 +33,7 @@ block content
                 arrayRev.filter(function(inProgress){
                    return !inProgress.is_in_progress;
                 }).forEach(function (t) {
-                    o3[formatDateToString(t.updated_at)] = t.confirmed;
+                    o3[formatDateToString(t.date)] = t.confirmed;
                 });
                 var obj = Object.assign({}, o1, o2, o3);
                 cases.push(obj);

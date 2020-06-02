@@ -416,10 +416,38 @@ h3.modal-title {
 }
 
 #return-to-top {
+	z-index: 999;
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	background: #f7f7f7;
+	width: 50px;
+	height: 50px;
+	display: block;
+	text-decoration: none;
+	-webkit-border-radius: 35px;
+	-moz-border-radius: 35px;
+	border-radius: 35px;
+	display: none;
+	padding-right: 1.35rem;
 	cursor: pointer;
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+#return-to-top i {
+	color: #000;
+	margin: 0;
+	position: relative;
+	top: 13px;
+	left: 15px;
+	font-size: 19px;
+	cursor: pointer;
+	z-index: 999;
 }
 #return-to-top:hover {
-	background: rgba(104, 114, 129, 0.1);
+	background: rgba(0, 0, 0, 0.9);
+}
+#return-to-top:hover i {
+	color: #fff;
 }
 @media only screen and (max-width: 600px) {
 	h3 {
@@ -532,6 +560,16 @@ h3.modal-title {
 	.news-deck-inner {
 		.card {
 			width: 18rem;
+		}
+	}
+	#return-to-top {
+		right: 5px;
+		bottom: 8rem;
+		width: 40px;
+		height: 40px;
+		i {
+			top: 10px;
+			left: 10px;
 		}
 	}
 }

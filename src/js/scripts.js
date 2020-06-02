@@ -78,6 +78,13 @@
 			'slow'
 		);
 	});
+	$(window).scroll(function() {
+		if ($(this).scrollTop() >= 1000) {
+			$('#return-to-top').fadeIn(200);
+		} else {
+			$('#return-to-top').fadeOut(200);
+		}
+	});
 	$('#return-to-top').click(function() {
 		$('html, body').animate({ scrollTop: 0 }, 600);
 		return false;

@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	continentsDoughnut();
 	getGlobalTimeline().then((data) => {
 		cardStats(data);
 		chartDataSet(data);
@@ -6,7 +7,7 @@ $(document).ready(function() {
 	getStatsDataSet().then((data) => {
 		worldDatatable(data);
 	});
-	// fillNewsCards();
+	fillNewsCards();
 	fillTravelNotices();
 	$('#selectNewsRegion').on('change', function() {
 		document.getElementById('card-deck').innerHTML =
@@ -237,6 +238,96 @@ function populateNumbers(confirmed, recovered, deaths, text) {
 	document.getElementById('total-recovered').innerHTML = `<span style="color:${borderGreen}">${recovered}</span>`;
 	document.getElementById('total-deaths').innerHTML = `<span style="color:${borderRed}">${deaths}</span>`;
 	document.getElementById('total-date').innerHTML = `${text}`;
+}
+
+function continentsDoughnut() {
+	return axios
+		.get('https://disease.sh/v2/continents?yesterday=true&sort=cases&allowNull=true')
+		.then((response) => {
+			let continentsLabel = [];
+			let continentsCases = [];
+			response.data.forEach(function(continent) {
+				continentsLabel.push(continent.continent);
+				continentsCases.push(continent.cases);
+			});
+			// 6. Doughnut chart
+			var doughnutChart = new Chart(document.getElementById('doughnut-chart'), {
+				type: 'doughnut',
+				data: {
+					labels: continentsLabel,
+					datasets: [
+						{
+							label: 'Confrimed',
+							backgroundColor: [
+								'#facd60',
+								'#1ac0c6',
+								'#58b368',
+								'#555577',
+								'#ff70a6',
+								'#fb7756',
+								'#c6ceb6'
+							],
+							data: continentsCases
+						}
+					]
+				},
+				options: {
+					maintainAspectRatio: false,
+					legend: {
+						display: true,
+						labels: {
+							fontColor: '#fff',
+							padding: 20
+						}
+					},
+					title: {
+						display: true,
+						text: 'Confirmed Cases',
+						fontColor: '#fff'
+					},
+					tooltips: {
+						backgroundColor: 'rgb(255,255,255)',
+						bodyFontColor: '#6e707e',
+						titleMarginBottom: 5,
+						titleFontColor: '#485260',
+						titleFontSize: 12,
+						borderColor: '#dddfeb',
+						borderWidth: 1,
+						caretPadding: 5,
+						xPadding: 10,
+						yPadding: 10,
+						callbacks: {
+							label: function(tooltipItem, data) {
+								return (
+									data.datasets[tooltipItem.datasetIndex].label +
+									': ' +
+									data['datasets'][0]['data'][tooltipItem['index']].toLocaleString()
+								);
+							}
+						}
+					}
+				}
+			});
+		})
+		.catch((error) => {
+			if (error.response) {
+				console.log(
+					'The request was made and the server responded with a status code that falls out of the range of 2xx'
+				);
+				console.log('Error Data: ', error.response.data);
+				console.log('Error Status: ', error.response.status);
+				console.log('Error Headers: ', error.response.headers);
+			} else if (error.request) {
+				console.log(
+					'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+				);
+				console.log('Error Request: ', error.request);
+			} else {
+				console.log('Something happened in setting up the request that triggered an Error');
+				console.log('Error Message: ', error.message);
+			}
+			console.log('Error config: ', error.config);
+		});
 }
 function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradientBorder) {
 	var data = {
