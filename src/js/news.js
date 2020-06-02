@@ -4,7 +4,7 @@ function fillNewsCards() {
 	const news_keyword = 'q=covid19%20and%20';
 	const news_language = 'language=en';
 	const news_sort = 'sortBy=publishedAt';
-	const globalNews = `https://newsapi.org/v2/top-headlines?q=covid&${news_key}&${news_sort}&${news_language}`;
+	const globalNews = `https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/top-headlines?q=covid&${news_key}&${news_sort}&${news_language}`;
 	axios
 		.get(globalNews)
 		.then((response) => {

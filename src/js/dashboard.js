@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	// continentsDoughnut();
+	continentsDoughnut();
 	getGlobalTimeline().then((data) => {
 		cardStats(data);
 		chartDataSet(data);
