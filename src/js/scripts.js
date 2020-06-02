@@ -85,7 +85,8 @@
 			$('#return-to-top').fadeOut(200);
 		}
 	});
-	$('#return-to-top').click(function() {
+	$('#return-to-top').click(function(e) {
+		e.preventDefault();
 		$('html, body').animate({ scrollTop: 0 }, 600);
 		return false;
 	});

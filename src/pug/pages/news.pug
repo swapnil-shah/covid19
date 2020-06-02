@@ -1,171 +1,42 @@
 extends ../layouts/dashboard.pug
 
 block config
-    - var bodyClass = 'nav-fixed ddd'
-    - var pageTitle = 'Dashboard'
-    - var pageIcon = 'activity'
-    - var pageSummary = 'Example dashboard overview and content summary'
-    - var sidenavStyle = 'sidenav-light'
-    - var topnavStyle = 'navbar-light bg-white'
+    - var bodyClass = 'nav-fixed'
+    - var pageTitle = 'COVID-19 Global Dashboard'
     - var pageHeaderStyle = 'page-header-dark'
     - var pageHeaderBackground = 'bg-gradient-primary-to-secondary'
-    - var footerStyle = 'footer-light'
-
+    - var footerStyle = 'footer-dark bg-dark'
+    - var topNavRegionTitle = 'COVID-19'
+    - var topNavRegionSubTitle = 'Global Dashboard'
+    - var metaTitle = 'The COVID-19 Global Dashboard'
+    - var metaDescription = 'As the virus that causes COVID-19 spreads worldwide, this dashboard seeks to offer a one-stop snapshot of confirmed cases globally, with country specific data, news and advisories.'
+    
+append css
+    link(href='css/styles.min.css', rel='stylesheet')
 block content
-    include includes/page-header
-    .container-fluid.mt-5
-
-        .d-flex.justify-content-between.align-items-sm-center.flex-column.flex-sm-row.mb-4
-            .mr-4.mb-3.mb-sm-0
-                h1.mb-0 Dashboard
-                .small
-                    span.font-weight-500.text-primary Friday
-                    |  &middot; September 20, 2020 &middot; 12:16 PM
-            .dropdown
-                a#dropdownMenuLink.btn.btn-white.btn-sm.font-weight-500.line-height-normal.p-3.dropdown-toggle(href='#', role='button', data-toggle='dropdown', data-display='static', aria-haspopup='true', aria-expanded='false')
-                    i.text-primary.mr-2(data-feather='calendar')
-                    | Jan - Feb 2020
-                .dropdown-menu.dropdown-menu-sm-right.animated--fade-in(aria-labelledby='dropdownMenuLink')
-                    a.dropdown-item(href='#!') Last 30 days
-                    a.dropdown-item(href='#!') Last week
-                    a.dropdown-item(href='#!') This year
-                    a.dropdown-item(href='#!') Yesterday
-                    .dropdown-divider
-                    a.dropdown-item(href='#!') Custom
-
-
-        .alert.alert-primary.border-0.mb-4.mt-5.px-md-5
-            .position-relative
-                .row.align-items-center.justify-content-between
-                    .col.position-relative
-                        h2.text-primary Welcome back, your dashboard is ready!
-                        p.text-gray-700 Great job, your affiliate dashboard is ready to go! You can view sales, generate links, prepare coupons, and download affiliate reports using this dashboard.
-                        a.btn.btn-teal(href='#!')
-                            | Get started
-                            i.ml-1(data-feather='arrow-right')
-                    .col.d-none.d-md-block.text-right.pt-3
-                        img.img-fluid.mt-n5(src='assets/img/drawkit/color/drawkit-mobile-article-colour.svg', style='max-width: 25rem;')
-
-        .row#cards-news
-            .col-sm-12.mb-3
-                .card.border-top-0.border-bottom-0.border-right-0.border-left-lg.border-purple.h-100
-                    .card-body
-                        .d-flex.align-items-center
-                            .flex-grow-1
-                                .small.font-weight-bold.text-purple.mb-1 Wisconsin Is Set to Vote on Tuesday After Court Overrules Governor’s Postponement - The New York Times
-                                .h5 Gov. Tony Evers, a Democrat, ordered the presidential primary and thousands of local races delayed, but a conservative majority on the state’s Supreme Court said he could not unilaterally reschedule elections.
-                                .text-xs.font-weight-bold.text-success.d-inline-flex.align-items-center
-                                    i.mr-1(data-feather='trending-up')
-                                    | 12%
-                            .ml-2
-                                i.fas.fa-dollar-sign.fa-2x.text-gray-200
-
-            .col-sm-12.mb-3
-                .card.card-collapsable.border-top-0.border-bottom-0.border-right-0.border-left-lg.border-blue.h-100
-                    .card-body
-                        .d-flex.align-items-center.collapsed(href='#collapseCardExample', data-toggle='collapse', role='button', aria-expanded='false', aria-controls='collapseCardExample' style="cursor:pointer")
-                            .flex-grow-1
-                                .font-weight-bold.text-blue.mb-1 Wisconsin Is Set to Vote on Tuesday After Court Overrules Governor’s Postponement - The New York Times
-                                .h5 Gov. Tony Evers, a Democrat, ordered the presidential primary and thousands of local races delayed, but a conservative majority on the state’s Supreme Court said he could not unilaterally reschedule elections.
-                                #collapseCardExample.collapse
-                                    | Gov. Tony Evers, a Democrat, ordered the presidential primary and thousands of local races delayed, but a conservative majority on the state’s Supreme Court said he could not unilaterally reschedule elections.
-                            .ml-2
-                                i.fas.fa-dollar-sign.fa-2x.text-gray-200
-            .col-sm-12.mb-3
-                .card.border-top-0.border-bottom-0.border-right-0.border-left-lg.border-green.h-100
-                    .card-body
-                        .d-flex.align-items-center
-                            .flex-grow-1
-                                .small.font-weight-bold.text-green.mb-1 Clicks
-                                .h5 11,291
-                                .text-xs.font-weight-bold.text-success.d-inline-flex.align-items-center
-                                    i.mr-1(data-feather='trending-up')
-                                    | 12%
-                            .ml-2
-                                i.fas.fa-mouse-pointer.fa-2x.text-gray-200
-
-            .col-sm-12.mb-3
-
-                .card.border-top-0.border-bottom-0.border-right-0.border-left-lg.border-yellow.h-100
-                    .card-body
-                        .d-flex.align-items-center
-                            .flex-grow-1
-                                .small.font-weight-bold.text-yellow.mb-1 Conversion rate
-                                .h5 1.23%
-                                .text-xs.font-weight-bold.text-danger.d-inline-flex.align-items-center
-                                    i.mr-1(data-feather='trending-down')
-                                    | 1%
-                            .ml-2
-                                i.fas.fa-percentage.fa-2x.text-gray-200
-
-        .row
-
-            .col-lg-4.col-xl-3.mb-4
-
-                .card.bg-secondary.o-visible.mb-4
-                    .card-body
-                        h4.text-white Report generation
-                        p.text-white-50
-                            | Ready to get started? Let us know now! It's time to start building that dashboard you've been waiting to create!
-                        img.float-left(src='assets/img/drawkit/color/drawkit-developer-woman-flush.svg', style='width: 8rem; margin-left: -2.5rem; margin-bottom: -5.5rem;')
-                    .card-footer.bg-transparent.pt-0.border-0.text-right
-                        a.btn.btn-primary(href='#!') Continue
-
+    .container-fluid.mt-4
+        .card.mb-4
+            .col-sm-12
                 .card.mb-4
-                    .card-header
-                        | Affiliate Reports
-                    .list-group.list-group-flush.small
-                        a(href='#!').list-group-item.list-group-item-action.border-top
-                            i.fas.fa-dollar-sign.fa-fw.text-blue.mr-2
-                            | Earnings Reports
-                        a(href='#!').list-group-item.list-group-item-action
-                            i.fas.fa-tag.fa-fw.text-purple.mr-2
-                            | Average Sale Price
-                        a(href='#!').list-group-item.list-group-item-action
-                            i.fas.fa-mouse-pointer.fa-fw.text-green.mr-2
-                            | Engagement (Clicks &amp; Impressions)
-                        a(href='#!').list-group-item.list-group-item-action
-                            i.fas.fa-percentage.fa-fw.text-yellow.mr-2
-                            | Conversion Rate
-                        a(href='#!').list-group-item.list-group-item-action
-                            i.fas.fa-chart-pie.fa-fw.text-pink.mr-2
-                            | Segments
-                    .card-footer
-                        a(href='#!').text-xs.d-flex.align-items-center.justify-content-between
-                            | View More Reports
-                            i.fas.fa-long-arrow-alt-right
-
-                .card.bg-secondary.border-0
-                    .card-body
-                        h5.text-white-50 Budget reporting
-                        .mb-4
-                            span.display-4.text-white $48k
-                            span.text-white-50  per year
-                        .progress.bg-white-25.rounded-pill(style='height: 0.5rem;')
-                            .progress-bar.bg-white.w-75.rounded-pill(role='progressbar', aria-valuenow='75', aria-valuemin='0', aria-valuemax='100')
-
-            .col-lg-8.col-xl-9.mb-4
-
-                .card.mb-4
-                    .card-header 
-                        | Sales reporting
-                    .card-body
-                        .chart-area
-                            canvas#myAreaChart(width='100%', height='30')
-                
-                .card
-                    .card-header 
-                        | Sales reporting
-                    .card-body
-                        .chart-area
-                            canvas#myBarChart(width='100%', height='30')
+                    .card-header.bg-dark.d-block
+                        h5.text-white.mb-0  Top COVID-19 related News
+                    .card-body.px-md-5(style="position:relative;")
+                        p.font-italic.font-weight-300.text-left.mb-1
+                            small Select a region
+                        #news-results-number.p-3.text-gray-600.small
+                        .row.news-deck-outer
+                            .news-deck-inner#card-deck.card-deck.mt-2.mb-0(style="flex-flow: initial;")
+                        div.deck-control-left.arrow.d-sm-none.d-md-flex
+                            span.icon-circle-left
+                        div.deck-control-right.arrow.d-sm-none.d-md-flex
+                            span.icon-circle-right
+                    p.small.pt-2.pr-2.mb-1.text-right
+                        em Data derived from&nbsp;
+                            a.w-100.pt-2(href="https://smartable.ai/" target="_blank") Smartable AI
+                                i.icon-new-tab.ml-1
+    
 
 append scripts
+    script(src='js/utilities.js')
     script(src='js/news.js')
-    //- script(src='js/chart.js', type="text/javascript")
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
-    //- Load Chart.js via CDN
-    script(src='assets/charts/chart-area-demo.js')
-    //- Load custom Chart.js styling and demo data
-    script(src='assets/charts/chart-area-demo.js')
-    script(src='assets/charts/chart-bar-demo.js')
+    script(src='js/scripts.js')

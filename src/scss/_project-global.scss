@@ -431,6 +431,7 @@ h3.modal-title {
 	display: none;
 	padding-right: 1.35rem;
 	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+	cursor: pointer;
 }
 #return-to-top i {
 	color: #000;
@@ -559,6 +560,7 @@ h3.modal-title {
 		bottom: 8rem;
 		width: 40px;
 		height: 40px;
+		cursor: none;
 		i {
 			top: 10px;
 			left: 10px;

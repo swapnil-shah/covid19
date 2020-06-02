@@ -1,54 +1,54 @@
-const newsUri = 'https://api.smartable.ai/coronavirus/news/US';
-const API_KEY_SMARTTABLE = '0c40c052c781432db1a7a005160b9778';
-let header = new Headers();
-header.append('Accept', 'application/json');
-
-let newsReq = new Request(newsUri, {
-	method: 'GET',
-	headers: header,
-	mode: 'cors'
-});
 //Dasboad Table
-let fillNewsCards = () => {
-	fetch(newsReq, {
-		headers: {
-			'Subscription-Key': API_KEY_SMARTTABLE
-		}
-	})
+function fillNewsCards() {
+	const news_key = 'apiKey=7e2e5ed46901476baa79347a66cc2b2c';
+	const news_keyword = 'q=covid19%20and%20';
+	const news_language = 'language=en';
+	const news_sort = 'sortBy=publishedAt';
+	const globalNews = `https://newsapi.org/v2/top-headlines?q=covid&${news_key}&${news_sort}&${news_language}`;
+	axios
+		.get(globalNews)
 		.then((response) => {
-			if (response.ok) {
-				return response.json();
+			getNewsResults(response.data);
+		})
+		.catch((error) => {
+			document.getElementById('news-results-number').innerHTML =
+				'Failed to fetch the data.<br>Error Message: ' + error.message;
+			if (error.response) {
+				console.log(
+					'The request was made and the server responded with a status code that falls out of the range of 2xx'
+				);
+				console.log(error.response.data);
+				console.log(error.response.status);
+				console.log(error.response.headers);
+			} else if (error.request) {
+				console.log(
+					'The request was made but no response was received `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+				);
+				console.log(error.request);
 			} else {
-				throw new Error('BAD HTTP');
+				console.log('Something happened in setting up the request that triggered an Error');
+				console.log('Error', error.message);
 			}
-		})
-		.then((jsonData) => {
-			getNewsResults(jsonData);
-		})
-		.catch((err) => {
-			console.log('ERROR:', err.message);
+			console.log(error.config);
 		});
-};
+}
 function getNewsResults(data) {
 	let output = '';
-	let newsCards = document.getElementById('cards-news');
-	data.news.forEach(function(item) {
+	let newsCards = document.getElementById('card-deck');
+	data.articles.forEach(function(item) {
 		output += `
-        <div class="col-sm-12 mb-3">
-            <div class="card card-collapsable border-top-0 border-bottom-0 border-right-0 border-left-lg border-blue h-100">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-grow-1">
-                            <div class="font-weight-bold text-blue mb-1">${item.title}</div>
-                            <div class="h5">${item.excerpt}</div>
-                        </div>
-                        <div class="ml-2">${formatDateToString(
-							item.publishedDateTime
-						)}<i class="fas fa-dollar-sign fa-2x text-gray-200"></i></div>
-                    </div>
-                </div>
-            </div>
-        </div>`;
+		<a class="card h-100 lift mx-md-3 ml-0 mr-3" href="${item.url}" target="_blank">
+			<img class="card-img-top img-fluid lazy" data-src="${item.urlToImage}" alt=""  onerror="this.src='../assets/img/news_image_placeholder_128x128.png';this.style='object-fit: none;background:#F5F5F5'" style="background:#F5F5F5">
+			<div class="card-body">
+				<h5 class="card-title mb-2">${item.title}</h5>
+				<p class="text-muted small pb-0 mb-4"><span class="font-weight-600 text-gray-600"><span class="icon-newspaper mr-1"></span>${item
+					.source.name}</span> ${timeDifference(item.publishedAt)}</p>
+				<p class="card-text mb-1">${item.description}</p>
+			</div>
+			<div class="card-footer">
+				<p class="text-primary text-center mb-0">View full article<span class="icon-new-tab ml-1"></span></p>
+			</div>
+		</a>`;
 	});
 	if (newsCards) newsCards.innerHTML = newsCards.innerHTML + output;
 }
