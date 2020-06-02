@@ -7,7 +7,7 @@ $(document).ready(function() {
 	getStatsDataSet().then((data) => {
 		worldDatatable(data);
 	});
-	fillNewsCards();
+	// fillNewsCards();
 	fillTravelNotices();
 	$('#selectNewsRegion').on('change', function() {
 		document.getElementById('card-deck').innerHTML =

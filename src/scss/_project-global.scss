@@ -430,7 +430,6 @@ h3.modal-title {
 	border-radius: 35px;
 	display: none;
 	padding-right: 1.35rem;
-	cursor: pointer;
 	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 #return-to-top i {
@@ -440,7 +439,6 @@ h3.modal-title {
 	top: 13px;
 	left: 15px;
 	font-size: 19px;
-	cursor: pointer;
 	z-index: 999;
 }
 @media only screen and (max-width: 600px) {
