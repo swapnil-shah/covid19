@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	continentsDoughnut();
+	// continentsDoughnut();
 	getGlobalTimeline().then((data) => {
 		cardStats(data);
 		chartDataSet(data);
@@ -7,7 +7,7 @@ $(document).ready(function() {
 	getStatsDataSet().then((data) => {
 		worldDatatable(data);
 	});
-	// fillNewsCards();
+	fillNewsCards();
 	fillTravelNotices();
 	$('#selectNewsRegion').on('change', function() {
 		document.getElementById('card-deck').innerHTML =
@@ -244,13 +244,15 @@ function continentsDoughnut() {
 	return axios
 		.get('https://disease.sh/v2/continents?yesterday=true&sort=cases&allowNull=true')
 		.then((response) => {
+			console.log('continentsDoughnut -> response', response);
+			let charts = [];
 			let continentsLabel = [];
 			let continentsCases = [];
 			response.data.forEach(function(continent) {
+				console.log('continentsDoughnut -> continent', continent);
 				continentsLabel.push(continent.continent);
 				continentsCases.push(continent.cases);
 			});
-			// 6. Doughnut chart
 			var doughnutChart = new Chart(document.getElementById('doughnut-chart'), {
 				type: 'doughnut',
 				data: {
@@ -308,6 +310,7 @@ function continentsDoughnut() {
 					}
 				}
 			});
+			charts.push(doughnutChart);
 		})
 		.catch((error) => {
 			if (error.response) {
