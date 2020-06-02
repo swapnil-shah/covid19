@@ -88,7 +88,6 @@
 	$('#return-to-top').click(function(e) {
 		e.preventDefault();
 		$('html, body').animate({ scrollTop: 0 }, 600);
-		return false;
 	});
 })(jQuery);
 function lazyLoad() {
