@@ -16,7 +16,7 @@ function addTestingCards(stateUrl = 'new-york', stateName = 'New York') {
 			console.log('addTestingCards -> response', response);
 			$('#testing-locations').empty();
 			$('#showingResults').html(
-				`Testing Locations for <span class="text-dark border-bottom border-dark">${stateName}</span>`
+				`Testing Locations in <span class="text-dark border-bottom border-dark">${stateName}</span>`
 			);
 			response.data.forEach(function(testingLocation) {
 				let output = '';

@@ -22,7 +22,7 @@
 		"autoprefixer": "9.7.4",
 		"babel-cli": "^6.26.0",
 		"babel-preset-env": "^1.7.0",
-		"bootstrap": "^4.4.1",
+		"bootstrap": "^4.5.0",
 		"chokidar": "3.3.1",
 		"concurrently": "5.1.0",
 		"cors": "^2.8.5",
@@ -30,19 +30,19 @@
 		"dotenv": "^8.2.0",
 		"express": "^4.17.1",
 		"postcss": "7.0.27",
-		"postcss-cli": "^7.1.0",
+		"postcss-cli": "^7.1.1",
 		"prettier": "1.19.1",
 		"pug": "2.0.4",
-		"sal.js": "^0.7.5",
+		"sal.js": "^0.7.6",
 		"sass": "1.26.0",
 		"shelljs": "0.8.3",
-		"terser": "^4.6.13",
+		"terser": "^4.7.0",
 		"upath": "1.2.0"
 	},
 	"devDependencies": {
 		"@fullhuman/postcss-purgecss": "^2.2.0",
 		"browser-sync": "2.26.7",
 		"purgecss": "^2.2.1",
-		"tailwindcss": "^1.4.5"
+		"tailwindcss": "^1.4.6"
 	}
 }

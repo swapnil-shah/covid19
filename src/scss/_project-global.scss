@@ -315,7 +315,6 @@ h3.modal-title {
 		position: relative;
 		display: inline-flex;
 		width: 25rem;
-		cursor: pointer;
 		-webkit-transition: 450ms all;
 		transition: 450ms all;
 		-webkit-transform-origin: center left;
@@ -346,7 +345,7 @@ h3.modal-title {
 	-ms-flex-pack: center;
 	justify-content: center;
 	width: 3rem;
-	color: #687281;
+	color: #c5ccd6;
 	text-align: center;
 	transition: opacity .15s ease;
 	cursor: pointer;
@@ -355,7 +354,7 @@ h3.modal-title {
 .deck-control-left:hover,
 .deck-control-right:hover {
 	text-decoration: none;
-	color: #0d0e10;
+	color: #687281;
 }
 
 .deck-control-left {
@@ -420,9 +419,9 @@ h3.modal-title {
 	position: fixed;
 	bottom: 20px;
 	right: 20px;
-	background: #f7f7f7;
-	width: 50px;
-	height: 50px;
+	background: rgba(255, 255, 255, 0.9);
+	width: 40px;
+	height: 40px;
 	display: block;
 	text-decoration: none;
 	-webkit-border-radius: 35px;
@@ -434,13 +433,14 @@ h3.modal-title {
 	cursor: pointer;
 }
 #return-to-top i {
-	color: #000;
+	color: #424242;
 	margin: 0;
 	position: relative;
-	top: 13px;
-	left: 15px;
+	top: 10px;
+	left: 5px;
 	font-size: 19px;
 	z-index: 999;
+	font-size: 2rem;
 }
 @media only screen and (max-width: 600px) {
 	h3 {
@@ -561,9 +561,5 @@ h3.modal-title {
 		width: 40px;
 		height: 40px;
 		cursor: none;
-		i {
-			top: 10px;
-			left: 10px;
-		}
 	}
 }

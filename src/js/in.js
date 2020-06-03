@@ -3,7 +3,7 @@ $(document).ready(function() {
 		cardStats(data);
 		countryDataSet(data);
 	});
-	// newsResults();
+	fillNewsCards();
 });
 
 let canvas = document.getElementById('myChart');
@@ -781,41 +781,16 @@ function populateNumbers(confirmed, recovered, deaths, text) {
 	document.getElementById('total-deaths').innerHTML = `<span style="color:${borderRed}">${deaths}</span>`;
 	document.getElementById('total-date').innerHTML = `${text}`;
 }
-function newsResults() {
-	const news_key = 'apiKey=7e2e5ed46901476baa79347a66cc2b2c';
-	const news_keyword = 'q=covid19%20and%20india';
-	const news_language = 'language=en';
-	const news_sort = 'sortBy=publishedAt';
-	const newsUri = `https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/everything?${news_key}&${news_keyword}&${news_language}&${news_sort}`;
+function fillNewsCards() {
 	axios
-		.get(newsUri, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+		.get('https://api.smartable.ai/coronavirus/news/IN', {
+			headers: {
+				'Cache-Control': 'no-cache',
+				'Subscription-Key': '0c40c052c781432db1a7a005160b9778'
+			}
+		})
 		.then((response) => {
-			document.getElementById('card-deck').text = 'Loading..';
-			let newsCards = document.getElementById('card-deck');
-			let newsResultsNumber = document.getElementById('news-results-number');
-			newsCards.innerHtml = `<div class="spinner-border" role="status">
-			<span class="sr-only">Loading...</span>
-		</div>`;
-			let output = '';
-			newsResultsNumber.innerText = `Showing ${response.data.totalResults} articles`;
-			response.data.articles.forEach(function(item) {
-				output += `
-							<a class="card h-100 lift mx-md-3 ml-0 mr-3" href="${item.url}" target="_blank">
-								<img class="card-img-top img-fluid lazy" data-src="${item.urlToImage}" alt=""  onerror="this.src='../assets/img/news_image_placeholder_128x128.png';this.style='object-fit: none;background:#F5F5F5'" style="background:#F5F5F5">
-								<div class="card-body">
-									<h5 class="card-title mb-2">${item.title}</h5>
-									<p class="text-muted small pb-0 mb-4"><span class="font-weight-600 text-gray-600"><span class="icon-newspaper mr-1"></span>${item
-										.source.name}</span> ${timeDifference(item.publishedAt)}</p>
-									<p class="card-text mb-1">${item.description}</p>
-								</div>
-								<div class="card-footer">
-									<p class="text-primary text-center mb-0">View full article<span class="icon-new-tab ml-1"></span></p>
-								</div>
-							</a>
-						`;
-			});
-			newsCards.innerHTML = output;
-			lazyLoad();
+			getNewsResults(response.data);
 		})
 		.catch((error) => {
 			document.getElementById('news-results-number').innerHTML =
@@ -824,18 +799,49 @@ function newsResults() {
 				console.log(
 					'The request was made and the server responded with a status code that falls out of the range of 2xx'
 				);
-				console.log('Error Data: ', error.response.data);
-				console.log('Error Status: ', error.response.status);
-				console.log('Error Headers: ', error.response.headers);
+				console.log(error.response.data);
+				console.log(error.response.status);
+				console.log(error.response.headers);
 			} else if (error.request) {
 				console.log(
-					'The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+					'The request was made but no response was received `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
 				);
-				console.log('Error Request: ', error.request);
+				console.log(error.request);
 			} else {
 				console.log('Something happened in setting up the request that triggered an Error');
-				console.log('Error Message: ', error.message);
+				console.log('Error', error.message);
 			}
-			console.log('Error config: ', error.config);
+			console.log(error.config);
 		});
+}
+function getNewsResults(data) {
+	let newsCards = document.getElementById('card-deck');
+	let newsResultsNumber = document.getElementById('news-results-number');
+	let optionName = $('#selectNewsRegion option:selected').text();
+	let output = '';
+	newsResultsNumber.innerText = `Showing ${data.news.length} articles for ${optionName}`;
+	if (data.news.length) {
+		data.news.forEach(function(item) {
+			// <img class="card-img-top img-fluid lazy" data-src="${item.images}" alt=""  onerror="this.src='../assets/img/news_image_placeholder_128x128.png';this.style='object-fit: none;background:#F5F5F5'" style="background:#F5F5F5"></img>
+			output += `
+			<div class="card h-100 lift mx-md-3 ml-0 mr-3">
+				<div class="card-body">
+					<h5 class="card-title mb-2">${item.title}</h5>
+					<p class="text-muted small pb-0 mb-4"><a href="//${item.provider
+						.domain}" class="font-weight-600 text-gray-600" target="_blank"><span class="icon-newspaper mr-1"></span>${item
+				.provider.name}</a> ${timeDifference(item.publishedDateTime)}</p>
+					<p class="card-text mb-1">${item.excerpt}</p>
+				</div>
+				<div class="card-footer text-center">
+					<a href="${item.webUrl}" target="_blank" class="text-center mb-0">View full article<span class="icon-new-tab ml-1"></span></a>
+				</div>
+			</div>
+				`;
+		});
+	} else {
+		newsResultsNumber.innerHTML =
+			'<div class="col-sm-12 p-4 mx-auto text-muted">No data available for this region. Please select another option.</div>`';
+	}
+	newsCards.innerHTML = output;
+	// lazyLoad();
 }

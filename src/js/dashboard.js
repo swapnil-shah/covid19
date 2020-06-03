@@ -7,15 +7,20 @@ $(document).ready(function() {
 	getStatsDataSet().then((data) => {
 		worldDatatable(data);
 	});
-	// fillNewsCards();
+	fillNewsCards();
 	fillTravelNotices();
 	$('#selectNewsRegion').on('change', function() {
 		document.getElementById('card-deck').innerHTML =
 			'<div class="text-center"><i class="icon-spinner spinner-animate" style="font-size:2rem"></i></div>';
 		const news_country = $(this).val();
-		const countryNews = `https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/everything?${news_key}&${news_keyword}${news_country}&${news_language}&${news_sort}`;
+		// const countryNews = `https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/everything?${news_key}&${news_keyword}${news_country}&${news_language}&${news_sort}`;
 		axios
-			.get(countryNews, { mode: 'cors' })
+			.get(`https://api.smartable.ai/coronavirus/news/${news_country}`, {
+				headers: {
+					'Cache-Control': 'no-cache',
+					'Subscription-Key': '0c40c052c781432db1a7a005160b9778'
+				}
+			})
 			.then((response) => {
 				getNewsResults(response.data);
 			})
@@ -244,12 +249,10 @@ function continentsDoughnut() {
 	return axios
 		.get('https://disease.sh/v2/continents?yesterday=true&sort=cases&allowNull=true')
 		.then((response) => {
-			console.log('continentsDoughnut -> response', response);
 			let charts = [];
 			let continentsLabel = [];
 			let continentsCases = [];
 			response.data.forEach(function(continent) {
-				console.log('continentsDoughnut -> continent', continent);
 				continentsLabel.push(continent.continent);
 				continentsCases.push(continent.cases);
 			});
@@ -608,29 +611,40 @@ function getNewsResults(data) {
 	let newsResultsNumber = document.getElementById('news-results-number');
 	let optionName = $('#selectNewsRegion option:selected').text();
 	let output = '';
-	newsResultsNumber.innerText = `Showing ${data.articles.length} articles for ${optionName}`;
-	data.articles.forEach(function(item) {
-		output += `
-			<a class="card h-100 lift mx-md-3 ml-0 mr-3" href="${item.url}" target="_blank">
-				<img class="card-img-top img-fluid lazy" data-src="${item.urlToImage}" alt=""  onerror="this.src='../assets/img/news_image_placeholder_128x128.png';this.style='object-fit: none;background:#F5F5F5'" style="background:#F5F5F5">
+	newsResultsNumber.innerText = `Showing ${data.news.length} articles for ${optionName}`;
+	if (data.news.length) {
+		data.news.forEach(function(item) {
+			// <img class="card-img-top img-fluid lazy" data-src="${item.images}" alt=""  onerror="this.src='../assets/img/news_image_placeholder_128x128.png';this.style='object-fit: none;background:#F5F5F5'" style="background:#F5F5F5"></img>
+			output += `
+			<div class="card h-100 lift mx-md-3 ml-0 mr-3">
 				<div class="card-body">
 					<h5 class="card-title mb-2">${item.title}</h5>
-					<p class="text-muted small pb-0 mb-4"><span class="font-weight-600 text-gray-600"><span class="icon-newspaper mr-1"></span>${item
-						.source.name}</span> ${timeDifference(item.publishedAt)}</p>
-					<p class="card-text mb-1">${item.description}</p>
+					<p class="text-muted small pb-0 mb-4"><a href="//${item.provider
+						.domain}" class="font-weight-600 text-gray-600" target="_blank"><span class="icon-newspaper mr-1"></span>${item
+				.provider.name}</a> ${timeDifference(item.publishedDateTime)}</p>
+					<p class="card-text mb-1">${item.excerpt}</p>
 				</div>
-				<div class="card-footer">
-					<p class="text-primary text-center mb-0">View full article<span class="icon-new-tab ml-1"></span></p>
+				<div class="card-footer text-center">
+					<a href="${item.webUrl}" target="_blank" class="text-center mb-0">View full article<span class="icon-new-tab ml-1"></span></a>
 				</div>
-			</a>
+			</div>
 				`;
-	});
+		});
+	} else {
+		newsResultsNumber.innerHTML =
+			'<div class="col-sm-12 p-4 mx-auto text-muted">No data available for this region. Please select another option.</div>`';
+	}
 	newsCards.innerHTML = output;
-	lazyLoad();
+	// lazyLoad();
 }
 function fillNewsCards() {
 	axios
-		.get(globalNews)
+		.get('https://api.smartable.ai/coronavirus/news/global', {
+			headers: {
+				'Cache-Control': 'no-cache',
+				'Subscription-Key': '0c40c052c781432db1a7a005160b9778'
+			}
+		})
 		.then((response) => {
 			getNewsResults(response.data);
 		})
