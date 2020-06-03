@@ -17,7 +17,7 @@ $(document).ready(function() {
 		pageLength: 10,
 		stateSave: true,
 		language: {
-			searchPlaceholder: 'e.g. new jersey',
+			searchPlaceholder: 'e.g. utah',
 			loadingRecords: '<i class="icon-spinner spinner-animate"></i>'
 		},
 		columns: [

@@ -1,0 +1,56 @@
+extends ../layouts/dashboard.pug
+
+block config
+    - var bodyClass = 'nav-fixed'
+    - var pageTitle = 'COVID-19 Testing Locations'
+    - var pageHeaderStyle = 'page-header-dark'
+    - var pageHeaderBackground = 'bg-gradient-primary-to-secondary'
+    - var footerStyle = 'footer-dark bg-dark'
+    - var topNavRegionTitle = 'COVID-19'
+    - var topNavRegionSubTitle = 'USA Testing Locations'
+    - var metaTitle = 'COVID-19 Testing Locations'
+    - var pageHeaderBackground = 'bg-gradient-primary-to-secondary'
+    - var metaDescription = 'As the virus that causes COVID-19 spreads worldwide, this dashboard seeks to offer a one-stop snapshot of confirmed cases globally, with country specific data, news and advisories.'
+    - var stateNameCode = [{value:'alabama',name:'Alabama'},{value:'alaska',name:'Alaska'},{value:'arizona',name:'Arizona'},{value:'arkansas',name:'Arkansas'},{value:'california',name:'California'},{value:'colorado',name:'Colorado'},{value:'connecticut',name:'Connecticut'},{value:'delaware',name:'Delaware'},{value:'district-of-columbia',name:'District of Columbia'},{value:'florida',name:'Florida'},{value:'georgia',name:'Georgia'},{value:'guam',name:'Guam'},{value:'hawaii',name:'Hawaii'},{value:'idaho',name:'Idaho'},{value:'illinois',name:'Illinois'},{value:'indiana',name:'Indiana'},{value:'iowa',name:'Iowa'},{value:'kansas',name:'Kansas'},{value:'kentucky',name:'Kentucky'},{value:'louisiana',name:'Louisiana'},{value:'maine',name:'Maine'},{value:'maryland',name:'Maryland'},{value:'massachusetts',name:'Massachusetts'},{value:'michigan',name:'Michigan'},{value:'minnesota',name:'Minnesota'},{value:'mississippi',name:'Mississippi'},{value:'missouri',name:'Missouri'},{value:'montana',name:'Montana'},{value:'nebraska',name:'Nebraska'},{value:'nevada',name:'Nevada'},{value:'new-hampshire',name:'New Hampshire'},{value:'new-jersey',name:'New Jersey'},{value:'new-mexico',name:'New Mexico'},{value:'new-york',name:'New York'},{value:'north-carolina',name:'North Carolina'},{value:'north-dakota',name:'North Dakota'},{value:'ohio',name:'Ohio'},{value:'oklahoma',name:'Oklahoma'},{value:'oregon',name:'Oregon'},{value:'pennsylvania',name:'Pennsylvania'},{value:'puerto-rico',name:'Puerto Rico'},{value:'rhode-island',name:'Rhode Island'},{value:'south-carolina',name:'South Carolina'},{value:'south-dakota',name:'South Dakota'},{value:'tennessee',name:'Tennessee'},{value:'texas',name:'Texas'},{value:'utah',name:'Utah'},{value:'vermont',name:'Vermont'},{value:'virginia',name:'Virginia'},{value:'washington',name:'Washington'},{value:'west-virginia',name:'West Virginia'},{value:'wisconsin',name:'Wisconsin'},{value:'wyoming',name:'Wyoming'}]
+       
+append css
+    link(href='css/styles.min.css', rel='stylesheet')
+    link(href='https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css', rel='stylesheet', crossorigin='anonymous')
+block content
+    .page-header.pb-10.bg-white.shadow-sm
+        .container-fluid
+            .page-header-content
+                h5.page-header-subtitle.text-dark.text-md-center.d-block.mb-4s.mx-3.mb-2
+                    | This is crowdsourced, regularly-updated listing of COVID-19 testing locations in the USA powered by&nbsp;
+                    a.text-orange(href="https://github.com/postmanlabs/covid-19-apis/tree/develop/src/components/TestingSites", target="_blank") Postman team
+                        i.icon-new-tab.ml-1
+                p.text-md-center.mx-3
+                    | You can read the fine print 
+                    a.text-orange(href="#", type='button', data-toggle='modal', data-target='#finePrint') here
+                .row.justify-content-center
+                    .col-lg-6.col-md-8.col-sm-12.mx-3
+                        .select.w-100.shadow-sm
+                            select#selectState 
+                                option(selected="true" disabled="disabled") Select a state 
+                                each state in stateNameCode
+                                    option(value=state.value) #{state.name}
+    .container-fluid.mt-n10
+        h1.page-header-title.text-dark.text-center.d-block.mb-4.text-body#showingResults
+        .row.justify-content-center
+            .col-lg-10.col-sm-12#testing-locations
+
+    #finePrint.modal.fade(tabindex='-1', role='dialog', aria-labelledby='finePrintLabel', aria-hidden='true')
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    h5#finePrintLabel.modal-title Legal
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        span(aria-hidden='true') ×
+                .modal-body The information provided using this website is only intended to be general information for the public and is not intended to take the place of written law or regulations. Please use it at your own discretion. Not everyone needs to be tested for COVID-19. This site provides some information that might help in making decisions about seeking care or testing.
+                .modal-footer
+                    button.btn.btn-primary(type='button', data-dismiss='modal') Close
+                
+append scripts
+    script(src='js/utilities.js')
+    script(src='js/us-testing-locations.js')
+    script(src='js/scripts.js')

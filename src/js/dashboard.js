@@ -259,7 +259,7 @@ function continentsDoughnut() {
 					labels: continentsLabel,
 					datasets: [
 						{
-							label: 'Confrimed',
+							label: 'Confirmed',
 							backgroundColor: [
 								'#facd60',
 								'#1ac0c6',
@@ -991,7 +991,7 @@ function worldDatatable(data) {
 			pageLength: 10,
 			stateSave: true,
 			language: {
-				searchPlaceholder: 'e.g. usa'
+				searchPlaceholder: 'e.g. mali'
 			},
 			columns: [
 				{
