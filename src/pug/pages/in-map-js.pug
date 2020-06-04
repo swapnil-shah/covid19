@@ -218,6 +218,15 @@ script(type="text/javascript").
             })
                 .addTo(mymap)
                 .bindTooltip(htmlPopup(state.state, state.confirmed, state.active, state.recovered, state.deaths));
+            let initialRadius = circle.options.radius
+            mymap.on('zoomend', function() {
+                var currentZoom = mymap.getZoom();
+                if(currentZoom > 3){
+                    circle.setStyle({radius: initialRadius*currentZoom});
+                }else{
+                    circle.setStyle({radius:initialRadius});
+                }
+            });
         });
         var info = L.control({ position: 'bottomright' });
     })

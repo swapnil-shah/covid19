@@ -57,6 +57,15 @@ script.
                             county.stats.deaths
                         )
                     );
+                    mymap.on('zoomend', function() {
+                        var currentZoom = mymap.getZoom();
+                        console.log("currentZoom", currentZoom)
+                        if(currentZoom > 5){
+                            circle.setStyle({radius: currentZoom+5});
+                        }else{
+                            circle.setStyle({radius: 5});
+                        }
+                    });
             });
             var info = L.control({ position: 'bottomright' });
         })

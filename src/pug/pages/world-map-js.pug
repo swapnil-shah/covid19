@@ -51,12 +51,15 @@ script(type="text/javascript").
                 .bindTooltip(
                     htmlPopup(country.name, country.code, country.latest_data.confirmed, country.latest_data.recovered, country.latest_data.deaths)
                 );
-            //- mymap.on('zoomend', function() {
-            //-     var currentZoom = mymap.getZoom();
-            //-     console.log("currentZoom", currentZoom)
-            //-     console.log("calculated", initialRadius + currentZoom)
-            //-     circle.setRadius(Math.sqrt(casesRadius) * 0.02 * currentZoom);
-            //- });
+            let initialRadius = circle.options.radius
+            mymap.on('zoomend', function() {
+                var currentZoom = mymap.getZoom();
+                if(currentZoom > 5){
+                    circle.setStyle({radius: currentZoom+5});
+                }else{
+                    circle.setStyle({radius:initialRadius});
+                }
+            });
         });
         var info = L.control({ position: 'bottomright' });
     })
