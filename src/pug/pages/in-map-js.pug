@@ -171,7 +171,7 @@ script(type="text/javascript").
             attribution:
                 'Map data <a target="_blank" href="https://api.covid19india.org/">COVID-19-India API</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             minZoom: 4,
-            maxZoom: 7,
+            maxZoom: 8,
             noWrap: true,
             bounds: [ [ -90, -180 ], [ 90, 180 ] ]
         }).addTo(mymap);
@@ -221,8 +221,8 @@ script(type="text/javascript").
             let initialRadius = circle.options.radius
             mymap.on('zoomend', function() {
                 var currentZoom = mymap.getZoom();
-                if(currentZoom > 3){
-                    circle.setStyle({radius: initialRadius*currentZoom});
+                if(currentZoom > 6){
+                    circle.setStyle({radius: initialRadius*currentZoom/5});
                 }else{
                     circle.setStyle({radius:initialRadius});
                 }

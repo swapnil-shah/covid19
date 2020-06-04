@@ -10,4 +10,7 @@ var cors = require('cors');
 app.use(cors());
 var distDir = __dirname + '/dist/';
 app.use(express.static(distDir, { extensions: [ 'html' ] }));
+app.use(function(req, res) {
+	res.status(404).render('404');
+});
 app.listen(port);
