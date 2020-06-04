@@ -151,6 +151,9 @@ block content
                         em Data derived from&nbsp;
                             a.w-100.pt-2(href="https://api.covid19india.org" target="_blank") COVID19-India API
                                 i.icon-new-tab.ml-1
+                            |,&nbsp;
+                            a.w-100.pt-2(href="https://github.com/COVID19-SARS-CoV-2/web-covid-api/blob/master/india_apis.md" target="_blank") web-covid-api
+                                i.icon-new-tab.ml-1
             .col-sm-12
                 .card.mb-4
                     .card-header.bg-dark
@@ -159,15 +162,13 @@ block content
                         #news-results-number.p-3.text-gray-600.small
                         .row.news-deck-outer
                             .news-deck-inner#card-deck.card-deck.mt-2.mb-0(style="flex-flow: initial;")
-                                div.card.h-100.lift.mx-md-3.mx-2
-                                    div.card-img-top.img-fluid(style='background:#F5F5F5;height:150px')
-                                        i.icon-spinner.spinner-animate.align-self-center
+                                .card.h-100.lift.mx-md-3.mx-2
                                     .card-body
                                         h5.card-title.mb-2
                                             i.icon-spinner.spinner-animate
-                        div.deck-control-left.arrow.d-sm-none.d-md-flex
+                        .deck-control-left.arrow.d-sm-none.d-md-flex
                             span.icon-circle-left
-                        div.deck-control-right.arrow.d-sm-none.d-md-flex
+                        .deck-control-right.arrow.d-sm-none.d-md-flex
                             span.icon-circle-right
                     p.small.pt-2.pr-2.mb-1.text-right
                         em Data derived from&nbsp;
@@ -199,13 +200,14 @@ block content
                     .modal-body
                         .datatable.table-responsive.pb-3#subDataTable
                             table#dataTableState.table.table-bordered.table-hover(width='100%', cellspacing='0')
+                            #loaderDistrict.text-center Loading...
                     .modal-footer
                         button.btn.btn-primary(type='button', data-dismiss='modal') Close
 append scripts
     script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js', crossorigin='anonymous')
     script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js', crossorigin='anonymous')
-    //- script(src='js/in.min.js')
+    script(src='js/in.min.js')
     //- script(src='js/utilities.js')
     //- script(src='js/in.js')
     //- script(src='js/scripts.js')

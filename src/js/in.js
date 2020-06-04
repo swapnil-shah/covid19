@@ -657,122 +657,142 @@ function countryDataSet(data) {
 }
 
 function subDataTable(table) {
-	statesData = $.parseJSON(
-		$.ajax({
-			type: 'GET',
-			url: 'https://api.covid19india.org/v2/state_district_wise.json',
-			async: false,
-			beforeSend: function(xhr) {},
-			dataType: 'json',
-			success: function(data) {
-				statesData = data.responseText;
-			},
-			error: function(xhr, status, error) {
-				if (xhr.status == 404) {
-					$('#dataTableState').html(
-						'<div class="text-center text-dark py-4">Sorry, no state data is available for this state.</div>'
-					);
-				} else {
-					$('#dataTableState').html(
-						'<div class="text-center text-dark py-4">Sorry, something went wrong. Please try again later.</div>'
-					);
-				}
-			}
-		}).responseText
-	);
 	// District datatable on click
 	$('#dataTableCountry tbody').on('click', 'tr', function() {
-		let stateCode = table.row(this).data().statecode;
-		$('#stateName').text(table.row(this).data().state);
-		let filterState = statesData.filter(function(state) {
-			return state.statecode === stateCode;
-		});
-
+		let stateName = table.row(this).data().state;
+		$('#stateName').text(stateName);
 		$('#stateModal').modal();
-		$('#dataTableState').DataTable({
-			destroy: true,
-			data: filterState[0].districtData,
-			pagingType: 'numbers',
-			pageLength: 10,
-			language: {
-				searchPlaceholder: 'search district',
-				loadingRecords: '<i class="icon-spinner spinner-animate"></i>'
-			},
-			columns: [
-				{
-					title: 'District',
-					data: 'district'
-				},
-				{
-					title: 'Confirmed',
-					data: 'confirmed',
-					render: function(data, type, row) {
-						if (type === 'type' || type === 'sort') {
-							return data;
-						}
-						return parseInt(row.delta.confirmed)
-							? `${parseInt(
-									data
-								).toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
-									row.delta.confirmed
-								).toLocaleString()}<span class="font-weight-light text-danger small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
-									parseInt(row.confirmed),
-									parseInt(row.delta.confirmed)
-								)}%)</span></p>`
-							: parseInt(data).toLocaleString();
+		axios({
+			url: 'https://covidstat.info/graphql',
+			method: 'post',
+			data: {
+				query: `query {
+					state(countryName: "India", stateName: "${stateName}") {
+					  state
+					  cases
+					  deaths
+					  districts {
+						district
+						cases
+						todayCases
+						deaths
+						todayDeaths
+						recovered
+						todayRecovered
+						active
+					  }
 					}
-				},
-				{
-					title: 'Active',
-					data: 'active',
-					render: function(data, type, row) {
-						if (type === 'type' || type === 'sort') {
-							return data;
-						}
-						return `${parseInt(data).toLocaleString()}`;
-					}
-				},
-				{
-					title: 'Recovered',
-					data: 'recovered',
-					render: function(data, type, row) {
-						if (type === 'type' || type === 'sort') {
-							return data;
-						}
-						return parseInt(row.delta.recovered)
-							? `${parseInt(
-									data
-								).toLocaleString()}<p class="font-weight-600 text-success mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
-									row.delta.recovered
-								).toLocaleString()}<span class="font-weight-light text-success small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
-									parseInt(row.recovered),
-									parseInt(row.delta.recovered)
-								)}%)</span></p>`
-							: parseInt(data).toLocaleString();
-					}
-				},
-				{
-					title: 'Deaths',
-					data: 'deceased',
-					render: function(data, type, row) {
-						if (type === 'type' || type === 'sort') {
-							return data;
-						}
-						return parseInt(row.delta.deceased)
-							? `${parseInt(
-									data
-								).toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${parseInt(
-									row.delta.deceased
-								).toLocaleString()}<span class="font-weight-light text-muted small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
-									parseInt(row.deceased),
-									parseInt(row.delta.deceased)
-								)}%)</span></p>`
-							: parseInt(data).toLocaleString();
-					}
+				  }`
+			}
+		})
+			.then((result) => {
+				if (result.data.data.state) {
+					let stateTable = $('#dataTableState')
+						.on('init.dt', function() {
+							$('#loaderDistrict').hide();
+						})
+						.DataTable({
+							language: {
+								searchPlaceholder: 'search district',
+								loadingRecords: 'Loading..'
+							},
+							data: result.data.data.state.districts,
+							pagingType: 'numbers',
+							pageLength: 10,
+							columns: [
+								{
+									title: 'District',
+									data: 'district'
+								},
+								{
+									title: 'Confirmed',
+									data: 'cases',
+									render: function(data, type, row) {
+										if (type === 'type' || type === 'sort') {
+											return data;
+										}
+										return row.todayCases
+											? `${data.toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.todayCases.toLocaleString()}<span class="font-weight-light text-danger small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
+													row.cases,
+													row.todayCases
+												)}%)</span></p>`
+											: data.toLocaleString();
+									}
+								},
+								{
+									title: 'Active',
+									data: 'active',
+									render: function(data, type, row) {
+										if (type === 'type' || type === 'sort') {
+											return data;
+										}
+										return `${data.toLocaleString()}`;
+									}
+								},
+								{
+									title: 'Recovered',
+									data: 'recovered',
+									render: function(data, type, row) {
+										if (type === 'type' || type === 'sort') {
+											return data;
+										}
+										return row.todayRecovered
+											? `${data.toLocaleString()}<p class="font-weight-600 text-success mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.todayRecovered.toLocaleString()}<span class="font-weight-light text-success small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
+													row.recovered,
+													row.todayRecovered
+												)}%)</span></p>`
+											: data.toLocaleString();
+									}
+								},
+								{
+									title: 'Deaths',
+									data: 'deaths',
+									render: function(data, type, row) {
+										if (type === 'type' || type === 'sort') {
+											return data;
+										}
+										return row.todayDeaths
+											? `${data.toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.todayDeaths.toLocaleString()}<span class="font-weight-light text-muted small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
+													row.deaths,
+													row.todayDeaths
+												)}%)</span></p>`
+											: data.toLocaleString();
+									}
+								}
+							],
+							order: [ [ 1, 'desc' ] ]
+						});
+					$('#stateModal').on('hidden.bs.modal', function(e) {
+						stateTable.clear().destroy();
+						$('#loaderDistrict').show();
+					});
+				} else {
+					$('#loaderDistrict').hide();
+					$('#dataTableState').html(
+						'<div class="text-center text-dark py-4">Sorry, no data is available for this state.</div>'
+					);
 				}
-			],
-			order: [ [ 1, 'desc' ] ]
-		});
+			})
+			.catch((error) => {
+				if (error.response) {
+					console.log(
+						'The request was made and the server responded with a status code that falls out of the range of 2xx'
+					);
+
+					console.log(error.response.data);
+					console.log(error.response.status);
+					console.log(error.response.headers);
+				} else if (error.request) {
+					console.log(
+						'The request was made but no response was received `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js'
+					);
+					console.log(error.request);
+				} else {
+					console.log('Something happened in setting up the request that triggered an Error');
+					console.log('Error', error.message);
+				}
+				console.log(error.config);
+			});
 	});
 }
 function populateNumbers(confirmed, recovered, deaths, text) {

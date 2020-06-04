@@ -9,9 +9,9 @@ app.use(function(req, res, next) {
 var cors = require('cors');
 app.use(cors());
 var distDir = __dirname + '/dist/';
+app.use(express.static(distDir, { extensions: [ 'html' ] }));
 app.use(function(req, res) {
 	res.status(404);
-	res.render('404', { title: '404: File Not Found' });
+	res.sendFile(distDir + '404.html');
 });
-app.use(express.static(distDir, { extensions: [ 'html' ] }));
 app.listen(port);
