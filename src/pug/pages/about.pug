@@ -149,28 +149,27 @@ block content
                                         .card
                                             div(id="heading"+topics.id+index).card-header.p-0
                                                 h2.mb-0.w-100
-                                                    button.d-flex.align-items-center.justify-content-between.btn.btn-link.p-3.text-left(data-toggle='collapse', data-target='#collapse'+topics.id+index, aria-expanded=(titleIndex==0) ? 'true': 'false', aria-controls='collapse'+topics.id+index)=item.question
-                                            .collapse(class = (index==0) ? 'show': '', id="collapse"+topics.id+index, aria-labelledby='heading'+topics.id+index, data-parent='#accordion-'+getToKnow.tab)
+                                                    button.d-flex.align-items-center.justify-content-between.btn.btn-link.p-3.text-left(data-toggle='collapse', data-target='#collapse'+topics.id+index, aria-expanded=(titleIndex==0 && index==0 ) ? 'true': 'false', aria-controls='collapse'+topics.id+index)=item.question
+                                            .collapse(class = (titleIndex==0 && index==0 ) ? 'show': 'hide', id="collapse"+topics.id+index, aria-labelledby='heading'+topics.id+index, data-parent='#accordion-'+getToKnow.tab)
                                                 .card-body.text-body!=item.answer
 
 
 
-
-        //-  About this Project                   
-        .tab-pane.fade(role='tabpanel', aria-labelledby="about"+thisProject.tab, id=thisProject.tab)
+        //- Be Safe
+        .tab-pane.fade(role='tabpanel', aria-labelledby="about"+beSafe.tab, id=beSafe.tab)
             .container-fluid
-                .myaccordion.mx-3.mb-5(id='accordion-'+thisProject.tab)
-                    .row.d-flex.justify-content-center.mt-5
-                        .col-sm-12.col-md-8.justify-content-center
-                            each topics,titleIndex in thisProject.data
+                .myaccordion.mx-3.mb-5(id='accordion-'+beSafe.tab)
+                    each topics,titleIndex in beSafe.data
+                        .row.d-flex.justify-content-center.mt-5
+                            .col-sm-12.col-md-8.justify-content-center
                                 h1.text-white.mt-4
                                     span.d-block.mb-3.text-center.text-md-left=topics.title
                                     each item, index in topics.content
                                         .card
                                             div(id="heading"+topics.id+index).card-header.p-0
                                                 h2.mb-0.w-100
-                                                    button.d-flex.align-items-center.justify-content-between.btn.btn-link.p-3.text-left(data-toggle='collapse', data-target='#collapse'+topics.id+index, aria-expanded=(titleIndex==0) ? 'true': 'false', aria-controls='collapse'+topics.id+index)=item.question
-                                            .collapse(class = (index==0) ? 'show': '', id="collapse"+topics.id+index, aria-labelledby='heading'+topics.id+index, data-parent='#accordion-'+thisProject.tab)
+                                                    button.d-flex.align-items-center.justify-content-between.btn.btn-link.p-3.text-left(data-toggle='collapse', data-target='#collapse'+topics.id+index, aria-expanded=(titleIndex==0 && index==0 ) ? 'true': 'false', aria-controls='collapse'+topics.id+index)=item.question
+                                            .collapse(class = (titleIndex==0 && index==0 ) ? 'show': '', id="collapse"+topics.id+index, aria-labelledby='heading'+topics.id+index, data-parent='#accordion-'+beSafe.tab)
                                                 .card-body.text-body!=item.answer
                             
         //-  Learn More              
@@ -186,31 +185,28 @@ block content
                                         .card
                                             div(id="heading"+topics.id+index).card-header.p-0
                                                 h2.mb-0.w-100
-                                                    button.d-flex.align-items-center.justify-content-between.btn.btn-link.p-3.text-left(data-toggle='collapse', data-target='#collapse'+topics.id+index, aria-expanded=(titleIndex==0) ? 'true': 'false', aria-controls='collapse'+topics.id+index)=item.question
-                                            .collapse(class = (index==0) ? 'show': '', id="collapse"+topics.id+index, aria-labelledby='heading'+topics.id+index, data-parent='#accordion-'+learnMore.tab)
+                                                    button.d-flex.align-items-center.justify-content-between.btn.btn-link.p-3.text-left(data-toggle='collapse', data-target='#collapse'+topics.id+index, aria-expanded=(titleIndex==0 && index==0 ) ? 'true': 'false', aria-controls='collapse'+topics.id+index)=item.question
+                                            .collapse(class = (titleIndex==0 && index==0 ) ? 'show': '', id="collapse"+topics.id+index, aria-labelledby='heading'+topics.id+index, data-parent='#accordion-'+learnMore.tab)
                                                 .card-body.text-body!=item.answer
                     .col-sm-12.text-center
                         p.m-0 Data derived from &nbsp;
                             a.text-white-75.source-link(target="_blank", href='https://www.wakehealth.edu/Coronavirus/Myths-and-Facts') Wake Forest Baptist Health
 
-
-
-
-        //- Be Safe
-        .tab-pane.fade.show.active(role='tabpanel', aria-labelledby="about"+beSafe.tab, id=beSafe.tab)
+        //-  About this Project                   
+        .tab-pane.fade(role='tabpanel', aria-labelledby="about"+thisProject.tab, id=thisProject.tab)
             .container-fluid
-                .myaccordion.mx-3.mb-5(id='accordion-'+beSafe.tab)
-                    each topics,titleIndex in beSafe.data
-                        .row.d-flex.justify-content-center.mt-5
-                            .col-sm-12.col-md-8.justify-content-center
+                .myaccordion.mx-3.mb-5(id='accordion-'+thisProject.tab)
+                    .row.d-flex.justify-content-center.mt-5
+                        .col-sm-12.col-md-8.justify-content-center
+                            each topics,titleIndex in thisProject.data
                                 h1.text-white.mt-4
                                     span.d-block.mb-3.text-center.text-md-left=topics.title
                                     each item, index in topics.content
                                         .card
                                             div(id="heading"+topics.id+index).card-header.p-0
                                                 h2.mb-0.w-100
-                                                    button.d-flex.align-items-center.justify-content-between.btn.btn-link.p-3.text-left(data-toggle='collapse', data-target='#collapse'+topics.id+index, aria-expanded=(titleIndex==0) ? 'true': 'false', aria-controls='collapse'+topics.id+index)=item.question
-                                            .collapse(class = (index==0) ? 'show': '', id="collapse"+topics.id+index, aria-labelledby='heading'+topics.id+index, data-parent='#accordion-'+beSafe.tab)
+                                                    button.d-flex.align-items-center.justify-content-between.btn.btn-link.p-3.text-left(data-toggle='collapse', data-target='#collapse'+topics.id+index, aria-expanded=(titleIndex==0 && index==0 ) ? 'true': 'false', aria-controls='collapse'+topics.id+index)=item.question
+                                            .collapse(class = (titleIndex==0 && index==0 ) ? 'show': '', id="collapse"+topics.id+index, aria-labelledby='heading'+topics.id+index, data-parent='#accordion-'+thisProject.tab)
                                                 .card-body.text-body!=item.answer
         
 append scripts
