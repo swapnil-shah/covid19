@@ -440,7 +440,6 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 	});
 	$('#lineRadio').click(function() {
 		myChart.destroy();
-		console.log('generateChart -> myChart', myChart);
 		myChart = new Chart(ctx, {
 			type: 'line',
 			data: data,

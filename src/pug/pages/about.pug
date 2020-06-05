@@ -11,6 +11,7 @@ block config
     - var topNavRegionSubTitle = 'FAQ\'s'
     - var metaTitle = 'Frequently asked questions regarding the COVID-19'
     - var metaDescription = 'As the world copes with the impact of the novel coronavirus (COVID-19) pandemic, we know that you have a lot of questions about what it means for you and the people you care about. Here you will find answers to a few.'
+    - var faqUs = [{title:'About this Project',id:'Us',content:[{question:'Are you official?',answer:'<p>No</p>'},{question:'What are your sources? How is the data gathered for this project?',answer:'<p>We use a variety of sources to gather the data. Each section on this website has a "Data Source" link at the the right bottom. Few of them is listed below.</p>'},{question:'What is the purpose of your project?',answer:'<p>Like most of you out there, when it all started I was afraid of the Coronavirus while trying to adjust to the big shift in my mostly outdoorsy lifestyle. Being locked up inside, following the numbers day in and out and being glued to the news didnt help much. Although information was plentiful, not all of it was available in one place which is what sparked me to build this website.</p>'},{question:'How can I buy you coffee?',answer:'<p>Ummm, well for starters, I am loyal to tea. As much as I appreciate your thoughtfulness, it would really make my day if you could use the same money to help someone in need during these unprecedented times. Any kind of help/deed, big or small could go a long way.</p>'},{question:'How can I contact you?',answer:'<p>My Contact Number is: 1**-***-***0. In case you couldn\'t crack that, here is my email:&nbsp;<a href="mailto:c19.information@gmail.com">c19.information@gmail.com</a></p>'},],name:'Person1',position:'Software Eng'}]
     
 append css
     style.
@@ -553,71 +554,18 @@ block content
                 #accordion-us.myaccordion.mx-3.mb-5
                     .row.d-flex.justify-content-center.mt-5
                         .col-sm-12.col-md-8.justify-content-center
-                            h1.text-white.mt-4
-                                span.d-block.mb-3.text-center.text-md-left About this Project
-                                .card
-                                    #headingUs1.card-header.p-0
-                                        h2.mb-0.w-100
-                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.p-3.text-left(data-toggle='collapse', data-target='#collapseUs1', aria-expanded='true', aria-controls='collapseUs1') Are you official?
-                                    #collapseUs1.collapse.show(aria-labelledby='headingUs1', data-parent='#accordion-us')
-                                        .card-body.text-body
-                                            p No
-                                .card
-                                    #headingUs2.card-header.p-0
-                                        h2.mb-0.w-100
-                                            button.d-flex.align-items-center.collapsed.justify-content-between.btn.btn-link.p-3.text-left(data-toggle='collapse', data-target='#collapseUs2', aria-expanded='false', aria-controls='collapseUs2') What are your sources? How is the data gathered for this project?
-                                    #collapseUs2.collapse(aria-labelledby='headingUs2', data-parent='#accordion-us')
-                                        .card-body.text-body
-                                            p We use a variety of sources to gather the data. Each section on this website has a "Data Source" link at the the right bottom. Few of them is listed below.
-                                            ul
-                                                li
-                                                    a(href="https://disease.sh/" target="_blank") Novel COVID API
-                                                li
-                                                    a(href="https://github.com/mathdroid/covid-19-api" target="_blank") covid-19-api by Mathdroid
-                                                li
-                                                    a(href="https://api.covid19india.org/" target="_blank") COVID19-India API
-                                                li
-                                                    a(href="https://covid19-docs.chrismichael.now.sh/" target="_blank") covid19 by ChrisMichaelPerezSantiago
-                                                li
-                                                    a(href="https://smartable.ai/" target="_blank") Smartable AI
-                                                li
-                                                    a(href="https://about-corona.net/" target="_blank") about-corona
-                                                li
-                                                    a(href="https://covidtracking.com/api" target="_blank") COVID Tracking Project
-                                                li
-                                                    a(href="https://github.com/amodm/api-covid19-in" target="_blank") api-covid19-in
-                                                li
-                                                    a(href="https://github.com/postmanlabs/covid-19-apis/tree/develop/src/components/TestingSites" target="_blank") postmanlabs covid-19-apis
-                                .card
-                                    #headingUs4.card-header.p-0
-                                        h2.mb-0.w-100
-                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.p-3.text-left(data-toggle='collapse', data-target='#collapseUs4', aria-expanded='false', aria-controls='collapseUs4') What is the purpose of your project?
-                                    #collapseUs4.collapse(aria-labelledby='headingUs4', data-parent='#accordion-us')
-                                        .card-body.text-body
-                                            p Like most of you out there, when it all started I was afraid of the Coronavirus while trying to adjust to the big shift in my mostly outdoorsy lifestyle. Being locked up inside, following the numbers day in and out and being glued to the news didnt help much. Although information was plentiful, not all of it was available in one place which is what sparked me to build this website.
-                                .card
-                                    #headingUs3.card-header.p-0
-                                        h2.mb-0.w-100
-                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.p-3.text-left(data-toggle='collapse', data-target='#collapseUs3', aria-expanded='false', aria-controls='collapseUs3') Who are you?
-                                    #collapseUs3.collapse(aria-labelledby='headingUs3', data-parent='#accordion-us')
-                                        .card-body.text-body
-                                            p I work at a non-profit & build bespoke websites to earn a living. On a more personal level, I am a photography enthusiast who loves capturing interesting moments for fun!
-                                .card
-                                    #headingUs5.card-header.p-0
-                                        h2.mb-0.w-100
-                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.p-3.text-left(data-toggle='collapse', data-target='#collapseUs5', aria-expanded='false', aria-controls='collapseUs5') How can I buy you coffee?
-                                    #collapseUs5.collapse(aria-labelledby='headingUs5', data-parent='#accordion-us')
-                                        .card-body.text-body
-                                            p Ummm, well for starters, I am loyal to tea. As much as I appreciate your thoughtfulness, it would really make my day if you could use the same money to help someone in need during these unprecedented times. Any kind of help/deed, big or small could go a long way.
-                                .card
-                                    #headingUs6.card-header.p-0
-                                        h2.mb-0.w-100
-                                            button.d-flex.align-items-center.justify-content-between.btn.btn-link.p-3.text-left(data-toggle='collapse', data-target='#collapseUs6', aria-expanded='false', aria-controls='collapseUs6') How can I contact you?
-                                    #collapseUs6.collapse(aria-labelledby='headingUs6', data-parent='#accordion-us')
-                                        .card-body.text-body
-                                            p 
-                                            | My Contact Number is: 1**-***-***0. In case you couldn't crack that, here is my email:&nbsp;
-                                            a(href="mailto:c19.information@gmail.com") c19.information@gmail.com
+                            each topics in faqUs
+                                h1.text-white.mt-4
+                                    span.d-block.mb-3.text-center.text-md-left=topics.title
+                                    each item, index in topics.content
+                                        .card
+                                            div(id="heading"+topics.id+index).card-header.p-0
+                                                h2.mb-0.w-100
+                                                    //- - var expanded = (index==0) ? 'true': 'false'
+                                                    button.d-flex.align-items-center.justify-content-between.btn.btn-link.p-3.text-left(data-toggle='collapse', data-target='#collapse'+topics.id+index, aria-expanded=(index==0) ? 'true': 'false', aria-controls='collapse'+topics.id+index)=item.question
+                                            .collapse(class = (index==0) ? 'show': '', id="collapse"+topics.id+index, aria-labelledby='heading'+topics.id+index, data-parent='#accordion-us')
+                                                .card-body.text-body!=item.answer
+                            
         .tab-pane.fade.show.active#faqCovid(role='tabpanel', aria-labelledby='faq-covid')
             .container-fluid
                 .row.align-items-center.text-align-center.mt-2.justify-content-center
@@ -1019,5 +967,4 @@ append scripts
         });
 
     script(src='js/scripts.js', type="text/javascript")
-
 
