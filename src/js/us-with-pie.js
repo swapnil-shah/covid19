@@ -42,7 +42,7 @@ function pieLegend(tot, pos, neg, hosp, ven, icu, hospCurrent, venCurrent, icuCu
 }
 //US cases
 let fillNumberOfCases = (function() {
-	fetch('https://disease.sh/v2/countries/usa?yesterday=true&strict=true')
+	fetch('https://corona.lmao.ninja/v2/countries/usa?yesterday=true&strict=true')
 		.then((response) => {
 			if (response.ok) {
 				return response.json();
@@ -381,7 +381,7 @@ $(document).ready(function() {
 $(document).ready(function() {
 	$('#dataTableCountry').DataTable({
 		ajax: {
-			url: 'https://disease.sh/v2/states?yesterday=true',
+			url: 'https://corona.lmao.ninja/v2/states?yesterday=true',
 			type: 'GET',
 			cache: false,
 			dataSrc: function(json) {

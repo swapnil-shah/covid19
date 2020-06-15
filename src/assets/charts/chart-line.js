@@ -191,7 +191,8 @@ function countriesLineData(countries) {
 	let query = sortedArr.join();
 	function getCountries(countryQueries) {
 		lineChartData = [];
-		const API_URL_MOST_AFFECTED = 'https://disease.sh/v2/historical/' + countryQueries + '?lastdays=' + daysNum;
+		const API_URL_MOST_AFFECTED =
+			'https://corona.lmao.ninja/v2/historical/' + countryQueries + '?lastdays=' + daysNum;
 		fetch(API_URL_MOST_AFFECTED).then((response) => response.json()).then((countries) => {
 			lineLabelsCase = Object.keys(countries[0].timeline.cases);
 			lineLabelsDeaths = Object.keys(countries[0].timeline.deaths);

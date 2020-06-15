@@ -247,7 +247,7 @@ function populateNumbers(confirmed, recovered, deaths, text) {
 
 function continentsDoughnut() {
 	return axios
-		.get('https://disease.sh/v2/continents?yesterday=true&sort=cases&allowNull=true')
+		.get('https://corona.lmao.ninja/v2/continents?yesterday=true&sort=cases&allowNull=true')
 		.then((response) => {
 			let charts = [];
 			let continentsLabel = [];

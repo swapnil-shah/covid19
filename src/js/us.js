@@ -6,7 +6,7 @@ $(document).ready(function() {
 
 	let table = $('#dataTableCountry').DataTable({
 		ajax: {
-			url: 'https://disease.sh/v2/states?sort=cases&yesterday=true',
+			url: 'https://corona.lmao.ninja/v2/states?sort=cases&yesterday=true',
 			type: 'GET',
 			cache: false,
 			dataSrc: function(json) {
@@ -82,7 +82,7 @@ $(document).ready(function() {
 		$('#dataTableState').DataTable({
 			destroy: true,
 			ajax: {
-				url: 'https://disease.sh/v2/historical/usacounties/' + stateName.toLowerCase() + '?lastdays=1',
+				url: 'https://corona.lmao.ninja/v2/historical/usacounties/' + stateName.toLowerCase() + '?lastdays=1',
 				type: 'GET',
 				dataSrc: function(data) {
 					return data;

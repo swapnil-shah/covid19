@@ -205,3 +205,85 @@ $(document).ready(function() {
 		order: [ [ 1, 'desc' ] ] //order by column number
 	});
 });
+
+[
+	{
+		title: 'About this Project',
+		id: 'Us',
+		content: [
+			{
+				question: 'Are you official?',
+				answer: '<p>No</p>'
+			},
+			{
+				question: 'What are your sources? How is the data gathered for this project?',
+				answer:
+					'<p>We use a variety of sources to gather the data. Each section on this website has a "Data Source" link at the the right bottom. Few of them is listed below.</p><ul><li><a href="https://corona.lmao.ninja/" target="_blank">Novel COVID API</a></li><li><a href="https://github.com/mathdroid/covid-19target="_blank">covid-19-api by Mathdroid</a></li><li><a href="https://api.covid19india.org/" target="_blank">COVID19-Indiaa></li><li><a href="https://covid19-docs.chrismichael.now.sh/" target="_blank">coby ChrisMichaelPerezSantiago</a></li><li><a href="https://smartable.ai/" target="_blank">Smartable AI</a></li><li><a href="https://about-corona.net/" target="_blank">about-corona</a></li><li><a href="https://covidtracking.com/api" target="_blank">COVID TraProject</a></li><li><a href="https://github.com/amodm/api-covid1target="_blank">api-covid19-in</a></li><li><a href="https://github.com/postmanlabs/covid-19-apis/tree/develocomponents/TestingSites" target="_blank">postmanlabs covid-19-apis</a></li></ul>'
+			},
+			{
+				question: 'What is the purpose of your project?',
+				answer:
+					'<p>Like most of you out there, when it all started I was afraid of the Coronavirus while trying to adjust to the big shift in my mostly outdoorsy lifestyle. Being locked up inside, following the numbers day in and out and being glued to the news didnt help much. Although information was plentiful, not all of it was available in one place which is what sparked me to build this website.</p>'
+			},
+			{
+				question: 'How can I buy you coffee?',
+				answer:
+					'<p>Ummm, well for starters, I am loyal to tea. As much as I appreciate your thoughtfulness, it would really make my day if you could use the same money to help someone in need during these unprecedented times. Any kind of help/deed, big or small could go a long way.</p>'
+			},
+			{
+				question: 'How can I contact you?',
+				answer:
+					'<p>My Contact Number is: 1**-***-***0. In case you couldn\'t crack that, here is my email:&nbsp;<a href="mailto:c19.information@gmail.com">c19.information@gmail.com</a></p>'
+			}
+		],
+		name: 'Person1',
+		position: 'Software Eng'
+	}
+];
+
+[
+	{
+		title: 'About this Project',
+		id: 'faqUs',
+		content: [
+			{ question: 'Are you official?', answer: '<p>No</p>' },
+			{
+				question: 'What are your sources? How is the data gathered for this project?',
+				answer:
+					'<p>We use a variety of sources to gather the data. Each section on this website has a "Data Source" link at the the right bottom. Few of them is listed below.</p><ul><li><a href="https://corona.lmao.ninja/" target="_blank">Novel COVID API</a></li><li><a href="https://github.com/mathdroid/covid-19" target="_blank">covid-19-api by Mathdroid</a></li><li><a href="https://api.covid19india.org/" target="_blank">COVID19-India</a></li><li><a href="https://covid19-docs.chrismichael.now.sh/" target="_blank">coby ChrisMichaelPerezSantiago</a></li><li><a href="https://smartable.ai/" target="_blank">Smartable AI</a></li><li><a href="https://about-corona.net/" target="_blank">about-corona</a></li><li><a href="https://covidtracking.com/api" target="_blank">COVID TraProject</a></li><li><a href="https://github.com/amodm/api-covid1" target="_blank">api-covid19-in</a></li><li><a href="https://github.com/postmanlabs/covid-19-apis/tree/develocomponents/TestingSites" target="_blank">postmanlabs covid-19-apis</a></li></ul>'
+			},
+			{
+				question: 'What is the purpose of your project?',
+				answer:
+					'<p>Like most of you out there, when it all started I was afraid of the Coronavirus while trying to adjust to the big shift in my mostly outdoorsy lifestyle. Being locked up inside, following the numbers day in and out and being glued to the news didnt help much. Although information was plentiful, not all of it was available in one place which is what sparked me to build this website.</p>'
+			},
+			{
+				question: 'How can I buy you coffee?',
+				answer:
+					'<p>Ummm, well for starters, I am loyal to tea. As much as I appreciate your thoughtfulness, it would really make my day if you could use the same money to help someone in need during these unprecedented times. Any kind of help/deed, big or small could go a long way.</p>'
+			},
+			{
+				question: 'How can I contact you?',
+				answer:
+					'<p>My Contact Number is: 1**-***-***0. In case you couldn\'t crack that, here is my email:&nbsp;<a href="mailto:c19.information@gmail.com">c19.information@gmail.com</a></p>'
+			}
+		]
+	}
+];
+
+$(document).ready(function() {
+	$(
+		'#accordion-covid, #accordion-us',
+		'#accordion-know-more',
+		'#accordion-be-safe'
+	).on('hide.bs.collapse show.bs.collapse', (e) => {
+		$(e.target).prev().find('i:last-child').toggleClass('icon-circle-up');
+	});
+});
+$(window).on('load', function() {
+	let $logo = $('#brand-logo');
+	$logo.removeClass('rotating');
+	$logo.hover(function() {
+		$(this).addClass('rotating'), $(this).removeClass('rotating');
+	});
+});

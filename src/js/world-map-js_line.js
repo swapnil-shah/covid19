@@ -1,7 +1,7 @@
 // const totalCases = 'https://corona-api.com/timeline';
 const newsUri = 'https://api.smartable.ai/coronavirus/news/global';
 const API_KEY_SMARTTABLE = '0c40c052c781432db1a7a005160b9778';
-const getDashboardAll = 'https://disease.sh/v2/all';
+const getDashboardAll = 'https://corona.lmao.ninja/v2/all';
 
 let dashboardChartData = [];
 let dashboardChartCountryData = [];
@@ -519,9 +519,10 @@ function countriesDatatableChart(data) {
 	}
 	let query = sortedArr.join();
 	function getCountries(countryQueries) {
-		console.log('https://disease.sh/v2/historical/' + countryQueries + '?lastdays=' + daysNum);
+		console.log('https://corona.lmao.ninja/v2/historical/' + countryQueries + '?lastdays=' + daysNum);
 		lineChartData = [];
-		const API_URL_MOST_AFFECTED = 'https://disease.sh/v2/historical/' + countryQueries + '?lastdays=' + daysNum;
+		const API_URL_MOST_AFFECTED =
+			'https://corona.lmao.ninja/v2/historical/' + countryQueries + '?lastdays=' + daysNum;
 		axios
 			.get(API_URL_MOST_AFFECTED)
 			.then((response) => {
