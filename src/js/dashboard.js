@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
 	continentsDoughnut();
 	getGlobalTimeline().then((data) => {
 		cardStats(data);
@@ -8,8 +8,8 @@ $(document).ready(function() {
 		worldDatatable(data);
 	});
 	fillNewsCards();
-	fillTravelNotices();
-	$('#selectNewsRegion').on('change', function() {
+	// fillTravelNotices();
+	$('#selectNewsRegion').on('change', function () {
 		document.getElementById('card-deck').innerHTML =
 			'<div class="text-center"><i class="icon-spinner spinner-animate" style="font-size:2rem"></i></div>';
 		const news_country = $(this).val();
@@ -44,7 +44,7 @@ $(document).ready(function() {
 				console.log(error.config);
 			});
 	});
-	$('#ddChartCountries').on('change', function() {
+	$('#ddChartCountries').on('change', function () {
 		let value = $(this).val();
 		if (value == 'global') {
 			axios
@@ -252,7 +252,7 @@ function continentsDoughnut() {
 			let charts = [];
 			let continentsLabel = [];
 			let continentsCases = [];
-			response.data.forEach(function(continent) {
+			response.data.forEach(function (continent) {
 				continentsLabel.push(continent.continent);
 				continentsCases.push(continent.cases);
 			});
@@ -302,7 +302,7 @@ function continentsDoughnut() {
 						xPadding: 10,
 						yPadding: 10,
 						callbacks: {
-							label: function(tooltipItem, data) {
+							label: function (tooltipItem, data) {
 								return (
 									data.datasets[tooltipItem.datasetIndex].label +
 									': ' +
@@ -365,7 +365,7 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 			xPadding: 10,
 			yPadding: 10,
 			callbacks: {
-				label: function(tooltipItem, data) {
+				label: function (tooltipItem, data) {
 					return data.datasets[tooltipItem.datasetIndex].label + ': ' + tooltipItem.yLabel.toLocaleString();
 				}
 			}
@@ -381,7 +381,7 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 					ticks: {
 						autoSkip: true,
 						beginAtZero: true,
-						callback: function(value) {
+						callback: function (value) {
 							return value.toLocaleString();
 						}
 					}
@@ -399,7 +399,7 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 		options: options
 	});
 
-	$('#barRadio').click(function() {
+	$('#barRadio').click(function () {
 		myChart.destroy();
 		myChart = new Chart(ctx, {
 			type: 'bar',
@@ -409,7 +409,7 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 				maintainAspectRatio: false,
 				tooltips: {
 					callbacks: {
-						label: function(tooltipItem, data) {
+						label: function (tooltipItem, data) {
 							return (
 								data.datasets[tooltipItem.datasetIndex].label +
 								': ' +
@@ -427,7 +427,7 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 						{
 							type: $('#linearRadio').is(':checked') ? 'linear' : 'logarithmic',
 							ticks: {
-								callback: function(value) {
+								callback: function (value) {
 									return value.toLocaleString();
 								}
 							}
@@ -438,7 +438,7 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 		});
 		myChart.update();
 	});
-	$('#lineRadio').click(function() {
+	$('#lineRadio').click(function () {
 		myChart.destroy();
 		myChart = new Chart(ctx, {
 			type: 'line',
@@ -448,7 +448,7 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 				maintainAspectRatio: false,
 				tooltips: {
 					callbacks: {
-						label: function(tooltipItem, data) {
+						label: function (tooltipItem, data) {
 							return (
 								data.datasets[tooltipItem.datasetIndex].label +
 								': ' +
@@ -466,7 +466,7 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 						{
 							type: $('#linearRadio').is(':checked') ? 'linear' : 'logarithmic',
 							ticks: {
-								callback: function(value) {
+								callback: function (value) {
 									return value.toLocaleString();
 								}
 							}
@@ -477,7 +477,7 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 		});
 		myChart.update();
 	});
-	$('#linearRadio').click(function() {
+	$('#linearRadio').click(function () {
 		myChart.destroy();
 		myChart = new Chart(ctx, {
 			type: myChart.config.type === 'bar' ? 'bar' : 'line',
@@ -487,7 +487,7 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 				maintainAspectRatio: false,
 				tooltips: {
 					callbacks: {
-						label: function(tooltipItem, data) {
+						label: function (tooltipItem, data) {
 							return (
 								data.datasets[tooltipItem.datasetIndex].label +
 								': ' +
@@ -505,7 +505,7 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 						{
 							type: 'linear',
 							ticks: {
-								callback: function(value) {
+								callback: function (value) {
 									return value.toLocaleString();
 								}
 							}
@@ -516,7 +516,7 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 		});
 		myChart.update();
 	});
-	$('#logarithmicRadio').click(function() {
+	$('#logarithmicRadio').click(function () {
 		myChart.destroy();
 		myChart = new Chart(ctx, {
 			type: myChart.config.type === 'bar' ? 'bar' : 'line',
@@ -526,7 +526,7 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 				maintainAspectRatio: false,
 				tooltips: {
 					callbacks: {
-						label: function(tooltipItem, data) {
+						label: function (tooltipItem, data) {
 							return (
 								data.datasets[tooltipItem.datasetIndex].label +
 								': ' +
@@ -547,7 +547,7 @@ function generateChart(labelset, dataset, chartType, chartLabel, gradient, gradi
 								autoSkip: true,
 								source: 'auto',
 								suggestedMax: 10,
-								callback: function(value) {
+								callback: function (value) {
 									if (value == 2000000) return value.toLocaleString();
 									if (value == 1000000) return value.toLocaleString();
 									if (value == 900000) return value.toLocaleString();
@@ -612,15 +612,15 @@ function getNewsResults(data) {
 	let output = '';
 	newsResultsNumber.innerText = `Showing ${data.news.length} articles for ${optionName}`;
 	if (data.news.length) {
-		data.news.forEach(function(item) {
+		data.news.forEach(function (item) {
 			// <img class="card-img-top img-fluid lazy" data-src="${item.images}" alt=""  onerror="this.src='../assets/img/news_image_placeholder_128x128.png';this.style='object-fit: none;background:#F5F5F5'" style="background:#F5F5F5"></img>
 			output += `
 			<div class="card h-100 lift mx-md-3 ml-0 mr-3">
 				<div class="card-body">
 					<h5 class="card-title mb-2">${item.title}</h5>
 					<p class="text-muted small pb-0 mb-4"><a href="//${item.provider
-						.domain}" class="font-weight-600 text-gray-600" target="_blank"><span class="icon-newspaper mr-1"></span>${item
-				.provider.name}</a> ${timeDifference(item.publishedDateTime)}</p>
+					.domain}" class="font-weight-600 text-gray-600" target="_blank"><span class="icon-newspaper mr-1"></span>${item
+						.provider.name}</a> ${timeDifference(item.publishedDateTime)}</p>
 					<p class="card-text mb-1">${item.excerpt}</p>
 				</div>
 				<div class="card-footer text-center">
@@ -709,7 +709,7 @@ function fillTravelNotices() {
 			let outputAlert = '';
 			let outputWarning = '';
 			let outputWatch = '';
-			response.data.data.travelHealthNotices.alert.forEach(function(notice) {
+			response.data.data.travelHealthNotices.alert.forEach(function (notice) {
 				outputAlert += `<div class="list-group-item border-top-0 border-bottom-0 border-right-0 border-left-lg border-red my-2">
 							<h5>${notice.title}</h5>
 							<p class="mb-0">${notice.summary}</p>
@@ -717,7 +717,7 @@ function fillTravelNotices() {
 						</div><hr>`;
 			});
 			document.getElementById('alertPill').innerHTML = outputAlert;
-			response.data.data.travelHealthNotices.warning.forEach(function(notice) {
+			response.data.data.travelHealthNotices.warning.forEach(function (notice) {
 				outputWarning += `<div class="list-group-item border-top-0 border-bottom-0 border-right-0 border-left-lg border-orange my-2">
 							<h5>${notice.title}</h5>
 							<p class="mb-0">${notice.summary}</p>
@@ -725,7 +725,7 @@ function fillTravelNotices() {
 						</div><hr>`;
 			});
 			document.getElementById('warningPill').innerHTML = outputWarning;
-			response.data.data.travelHealthNotices.watch.forEach(function(notice) {
+			response.data.data.travelHealthNotices.watch.forEach(function (notice) {
 				outputWatch += `<div class="list-group-item border-top-0 border-bottom-0 border-right-0 border-left-lg border-yellow my-2">
 							<h5>${notice.title}</h5>
 							<p class="mb-0">${notice.summary}</p>
@@ -797,7 +797,7 @@ function getCountries(data) {
 	)}`;
 
 	//Get months/30 days
-	filteredArr.slice(0, 30).forEach(function(daily) {
+	filteredArr.slice(0, 30).forEach(function (daily) {
 		confirmedMonth.push(daily.new_confirmed);
 		deathsMonth.push(daily.new_deaths);
 		recoveredMonth.push(daily.new_recovered);
@@ -808,7 +808,7 @@ function getCountries(data) {
 	});
 
 	//Get 14 days
-	filteredArr.slice(0, 14).forEach(function(daily) {
+	filteredArr.slice(0, 14).forEach(function (daily) {
 		confirmedWeeks.push(daily.new_confirmed);
 		deathsWeeks.push(daily.new_deaths);
 		recoveredWeeks.push(daily.new_recovered);
@@ -819,7 +819,7 @@ function getCountries(data) {
 	});
 
 	//Get since beginning
-	filteredArr.forEach(function(daily) {
+	filteredArr.forEach(function (daily) {
 		casesConfirmed.push(daily.new_confirmed);
 		casesDeaths.push(daily.new_deaths);
 		casesRecovered.push(daily.new_recovered);
@@ -848,7 +848,7 @@ function getCountries(data) {
 	Chart.defaults.global.defaultFontFamily = 'Nunito,-apple-system,Roboto,Helvetica Neue,Arial,sans-serif';
 	Chart.defaults.global.animation.duration = 2000;
 	Chart.plugins.register({
-		afterDraw: function(chart) {
+		afterDraw: function (chart) {
 			if (myChart.data.labels.length === 0) {
 				// No data is present
 				var ctx = myChart.chart.ctx;
@@ -863,7 +863,7 @@ function getCountries(data) {
 			}
 		}
 	});
-	$('#confirmedRadio').click(function() {
+	$('#confirmedRadio').click(function () {
 		myChart.destroy();
 		if ($('#sinceBeginning').is(':checked')) {
 			generateChart(labelsDate, casesConfirmed, myChart.config.type, 'Confirmed', gradientBlue, borderBlue);
@@ -876,7 +876,7 @@ function getCountries(data) {
 		}
 		myChart.update();
 	});
-	$('#recoveredRadio').click(function() {
+	$('#recoveredRadio').click(function () {
 		myChart.destroy();
 		if ($('#sinceBeginning').is(':checked')) {
 			generateChart(labelsDate, casesRecovered, myChart.config.type, 'Recovered', gradientGreen, borderGreen);
@@ -903,7 +903,7 @@ function getCountries(data) {
 		}
 		myChart.update();
 	});
-	$('#deathsRadio').click(function() {
+	$('#deathsRadio').click(function () {
 		myChart.destroy();
 		if ($('#sinceBeginning').is(':checked')) {
 			generateChart(labelsDate, casesDeaths, myChart.config.type, 'Deaths', gradientRed, borderRed);
@@ -916,7 +916,7 @@ function getCountries(data) {
 		}
 		myChart.update();
 	});
-	$('#sinceBeginning').click(function() {
+	$('#sinceBeginning').click(function () {
 		populateNumbers(
 			numbersConfirmed.toLocaleString(),
 			numbersRecovered.toLocaleString(),
@@ -935,7 +935,7 @@ function getCountries(data) {
 		}
 		myChart.update();
 	});
-	$('#sinceMonth').click(function() {
+	$('#sinceMonth').click(function () {
 		populateNumbers(
 			numbersConfirmedMonth.toLocaleString(),
 			numbersRecoveredMonth.toLocaleString(),
@@ -961,7 +961,7 @@ function getCountries(data) {
 		}
 		myChart.update();
 	});
-	$('#sinceWeeks').click(function() {
+	$('#sinceWeeks').click(function () {
 		populateNumbers(
 			numbersConfirmedWeeks.toLocaleString(),
 			numbersRecoveredWeeks.toLocaleString(),
@@ -994,7 +994,7 @@ function chartDataSet(data) {
 }
 function worldDatatable(data) {
 	$('#dataTableWorldTimeline')
-		.on('init.dt', function() {
+		.on('init.dt', function () {
 			$('#loader').hide();
 		})
 		.DataTable({
@@ -1010,38 +1010,38 @@ function worldDatatable(data) {
 				{
 					data: 'name',
 					title: 'Country <small class="text-dark font-weight-600">(Population)</small>',
-					render: function(data, type, row) {
+					render: function (data, type, row) {
 						if (type === 'type' || type === 'sort') {
 							return data;
 						}
 						return row.code
 							? `<div class="d-inline-block"><img src="https://www.countryflags.io/${row.code.toLocaleLowerCase()}/shiny/24.png" style="vertical-align:bottom; margin-right:5px;" onerror="this.src='../assets/img/flag_placeholder_20x20.png'"/>${data} <span class="text-gray-600"><small class="text-dark font-weight-600">(${populationFormat(
-									row.population
-								)})</small></span></div>`
+								row.population
+							)})</small></span></div>`
 							: `<span class="d-inline-block"><img src="../assets/img/flag_placeholder_20x20.png" style="vertical-align:bottom; margin-right:5px;" onerror="this.src='../assets/img/flag_placeholder_20x20.png'"/>${data} <span class="text-gray-600"><small class="text-dark font-weight-600">(${populationFormat(
-									row.tests
-								)})</small></span></span>`;
+								row.tests
+							)})</small></span></span>`;
 					}
 				},
 				{
 					data: 'latest_data.confirmed',
 					title: 'Confirmed',
-					render: function(data, type, row) {
+					render: function (data, type, row) {
 						if (type === 'type' || type === 'sort') {
 							return data;
 						}
 						return row.today.confirmed
 							? `${data.toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.today.confirmed.toLocaleString()}<span class="font-weight-light small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
-									row.latest_data.confirmed,
-									row.today.confirmed
-								)}%)</span></p>`
+								row.latest_data.confirmed,
+								row.today.confirmed
+							)}%)</span></p>`
 							: `${data ? data.toLocaleString() : ''}`;
 					}
 				},
 				{
 					data: 'latest_data.critical',
 					title: 'Active',
-					render: function(data, type, row) {
+					render: function (data, type, row) {
 						if (type === 'type' || type === 'sort') {
 							return data;
 						}
@@ -1051,7 +1051,7 @@ function worldDatatable(data) {
 				{
 					data: 'latest_data.recovered',
 					title: 'Recovered',
-					render: function(data, type, row) {
+					render: function (data, type, row) {
 						if (type === 'type' || type === 'sort') {
 							return data;
 						}
@@ -1061,19 +1061,19 @@ function worldDatatable(data) {
 				{
 					data: 'latest_data.deaths',
 					title: 'Deaths',
-					render: function(data, type, row) {
+					render: function (data, type, row) {
 						if (type === 'type' || type === 'sort') {
 							return data;
 						}
 						return row.today.deaths
 							? `${data.toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.today.deaths.toLocaleString()}<span class="font-weight-light text-danger small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
-									row.latest_data.deaths,
-									row.today.deaths
-								)}%)</span></p>`
+								row.latest_data.deaths,
+								row.today.deaths
+							)}%)</span></p>`
 							: `${data ? data.toLocaleString() : ''}`;
 					}
 				}
 			],
-			order: [ [ 1, 'desc' ] ]
+			order: [[1, 'desc']]
 		});
 }
