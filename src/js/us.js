@@ -143,7 +143,7 @@ $(document).ready(function() {
   // 	let value = (document.getElementById('card-deck').innerHTML =
   // 		'<div class="text-center"><i class="icon-spinner spinner-animate" style="font-size:2rem"></i></div>');
   // 	const news_state = $(this).val();
-  // 	// const stateNews = `https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/everything?${news_key}&${news_keyword}${news_state}&${news_language}&${news_sort}`;
+  // 	// const stateNews = `https://newsapi.org/v2/everything?${news_key}&${news_keyword}${news_state}&${news_language}&${news_sort}`;
   // 	axios
   // 		.get(`https://api.smartable.ai/coronavirus/news/${news_state}`, {
   // 			headers: {
@@ -181,7 +181,7 @@ const news_region = "usa";
 const news_keyword = "q=covid19%20and%20";
 const news_language = "language=en";
 const news_sort = "sortBy=publishedAt";
-const usaNews = `https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/everything?${news_key}&${news_keyword}${news_region}&${news_language}&${news_sort}`;
+const usaNews = `https://newsapi.org/v2/everything?${news_key}&${news_keyword}${news_region}&${news_language}&${news_sort}`;
 let canvas = document.getElementById("myChart");
 let ctx = canvas.getContext("2d");
 let myChart;
