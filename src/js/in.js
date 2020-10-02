@@ -3,7 +3,7 @@ $(document).ready(function() {
     cardStats(data);
     countryDataSet(data);
   });
-  fillNewsCards();
+  //   fillNewsCards();
 });
 const news_key = "apiKey=7e2e5ed46901476baa79347a66cc2b2c";
 const news_region = "india";
