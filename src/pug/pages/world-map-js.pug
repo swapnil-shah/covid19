@@ -42,7 +42,7 @@ script(type="text/javascript").
             var latlng = L.latLng({ lat: country.coordinates.latitude, lng: country.coordinates.longitude });
             var circle = L.circleMarker(latlng, {
                 fillOpacity: 0.5,
-                radius: Math.sqrt(country.latest_data.confirmed) * 0.02,
+                radius: Math.sqrt(country.latest_data.confirmed) * 0.01,
                 stroke: false,
                 fillColor: '#d11a1a',
                 renderer: myRenderer

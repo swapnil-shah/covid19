@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
   getStatsDataSet().then((data) => {
     cardStats(data);
     dataSet(data);
@@ -9,7 +9,7 @@ $(document).ready(function() {
       url: "https://corona.lmao.ninja/v2/states?sort=cases&yesterday=true",
       type: "GET",
       cache: false,
-      dataSrc: function(json) {
+      dataSrc: function (json) {
         return json;
       },
     },
@@ -25,7 +25,7 @@ $(document).ready(function() {
         title:
           'State <small class="text-dark font-weight-600">(# Tested)</small>',
         data: "state",
-        render: function(data, type, row) {
+        render: function (data, type, row) {
           return `${data} <span class="text-gray-600"><small class="text-dark font-weight-600">(${populationFormat(
             row.tests
           )})</small></span><p class="mb-0"><span class="small text-primary border-top-0 border-bottom border-right-0 border-left-0 border-blue">See Counties</span></p>`;
@@ -34,22 +34,22 @@ $(document).ready(function() {
       {
         title: "Confirmed",
         data: "cases",
-        render: function(data, type, row) {
+        render: function (data, type, row) {
           if (type === "type" || type === "sort") {
             return data;
           }
           return row.todayCases
             ? `${data.toLocaleString()}<p class="font-weight-600 mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.todayCases.toLocaleString()}<span class="font-weight-light small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
-                row.cases,
-                row.todayCases
-              )}%)</span></p>`
+              row.cases,
+              row.todayCases
+            )}%)</span></p>`
             : `${data ? data.toLocaleString() : ""}`;
         },
       },
       {
         title: "Active",
         data: "active",
-        render: function(data, type, row) {
+        render: function (data, type, row) {
           if (type === "type" || type === "sort") {
             return data;
           }
@@ -59,15 +59,15 @@ $(document).ready(function() {
       {
         title: "Deaths",
         data: "deaths",
-        render: function(data, type, row) {
+        render: function (data, type, row) {
           if (type === "type" || type === "sort") {
             return data;
           }
           return row.todayDeaths
             ? `${data.toLocaleString()}<p class="font-weight-600 text-danger mb-0"><i data-icon="&#xea0a;" class="icon-plus"></i> ${row.todayDeaths.toLocaleString()}<span class="font-weight-light text-danger small"> (<i data-icon="&#xea3a;" class="icon-arrow-up2"></i> ${percentageChangeTotal(
-                row.deaths,
-                row.todayDeaths
-              )}%)</span></p>`
+              row.deaths,
+              row.todayDeaths
+            )}%)</span></p>`
             : `${data ? data.toLocaleString() : ""}`;
         },
       },
@@ -75,7 +75,7 @@ $(document).ready(function() {
     order: [[1, "desc"]],
   });
   // District datatable on click
-  $("#dataTableCountry tbody").on("click", "tr", function() {
+  $("#dataTableCountry tbody").on("click", "tr", function () {
     let stateName = table.row(this).data().state;
     $("#dataTableState").html("");
     $("#stateModal").modal();
@@ -88,10 +88,10 @@ $(document).ready(function() {
           stateName.toLowerCase() +
           "?lastdays=1",
         type: "GET",
-        dataSrc: function(data) {
+        dataSrc: function (data) {
           return data;
         },
-        error: function(xhr) {
+        error: function (xhr) {
           if (xhr.status == 404) {
             $("#dataTableState").html(
               '<div class="text-center text-dark py-4">Sorry, no county data is available for this state.</div>'
@@ -117,7 +117,7 @@ $(document).ready(function() {
         {
           title: "Confirmed",
           data: "timeline.cases",
-          render: function(data, type, row) {
+          render: function (data, type, row) {
             if (type === "type" || type === "sort") {
               return Object.values(row.timeline.cases);
             }
@@ -127,7 +127,7 @@ $(document).ready(function() {
         {
           title: "Deaths",
           data: "timeline.deaths",
-          render: function(data, type, row) {
+          render: function (data, type, row) {
             if (type === "type" || type === "sort") {
               return Object.values(row.timeline.deaths);
             }
@@ -270,41 +270,41 @@ function cardStats(dataSet) {
   document.getElementById(
     "number-deaths"
   ).innerText = data[0].deaths.toLocaleString();
-  if (data[0].new_confirmed) {
-    document.getElementById("today-confirmed").innerText =
-      "+" + data[0].new_confirmed.toLocaleString();
+  if (data[0].new_confirmed >= 0) {
+    const statsString = data[0].new_confirmed == 0 ? '' : "+" + data[0].new_confirmed.toLocaleString();
+    document.getElementById("today-confirmed").innerText = statsString
     document.getElementById("per-confirmed").innerHTML =
       Math.sign(
         percentageChangeTotal(data[0].confirmed, data[0].new_confirmed)
       ) === 1
         ? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
-            data[0].confirmed,
-            data[0].new_confirmed
-          )}%)`
+          data[0].confirmed,
+          data[0].new_confirmed
+        )}%)`
         : "";
   }
-  if (data[0].new_recovered) {
-    document.getElementById("today-recovered").innerText =
-      "+" + data[0].new_recovered.toLocaleString();
+  if (data[0].new_recovered >= 0) {
+    const statsString = data[0].new_recovered == 0 ? '' : "+" + data[0].new_recovered.toLocaleString();
+    document.getElementById("today-recovered").innerText = statsString
     document.getElementById("per-recovered").innerHTML =
       Math.sign(
         percentageChangeTotal(data[0].confirmed, data[0].new_recovered)
       ) === 1
         ? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
-            data[0].confirmed,
-            data[0].new_recovered
-          )}%)`
+          data[0].confirmed,
+          data[0].new_recovered
+        )}%)`
         : "";
   }
-  if (data[0].new_deaths) {
-    document.getElementById("today-deaths").innerText =
-      "+" + data[0].new_deaths.toLocaleString();
+  if (data[0].new_deaths >= 0) {
+    const statsString = data[0].new_deaths == 0 ? '' : "+" + data[0].new_deaths.toLocaleString();
+    document.getElementById("today-deaths").innerText = statsString
     document.getElementById("per-deaths").innerHTML =
       Math.sign(percentageChangeTotal(data[0].deaths, data[0].new_deaths)) === 1
         ? `(<i class="icon-arrow-up2"></i>${percentageChangeTotal(
-            data[0].deaths,
-            data[0].new_deaths
-          )}%)`
+          data[0].deaths,
+          data[0].new_deaths
+        )}%)`
         : "";
   }
   document.getElementById("per-active").innerHTML = "";
@@ -391,7 +391,7 @@ function generateChart(
       xPadding: 10,
       yPadding: 10,
       callbacks: {
-        label: function(tooltipItem, data) {
+        label: function (tooltipItem, data) {
           return (
             data.datasets[tooltipItem.datasetIndex].label +
             ": " +
@@ -407,7 +407,7 @@ function generateChart(
           ticks: {
             autoSkip: true,
             beginAtZero: true,
-            callback: function(value) {
+            callback: function (value) {
               return value.toLocaleString();
             },
           },
@@ -421,7 +421,7 @@ function generateChart(
     options: options,
   });
 
-  $("#barRadio").click(function() {
+  $("#barRadio").click(function () {
     myChart.destroy();
     myChart = new Chart(ctx, {
       type: "bar",
@@ -431,7 +431,7 @@ function generateChart(
         maintainAspectRatio: false,
         tooltips: {
           callbacks: {
-            label: function(tooltipItem, data) {
+            label: function (tooltipItem, data) {
               return (
                 data.datasets[tooltipItem.datasetIndex].label +
                 ": " +
@@ -449,7 +449,7 @@ function generateChart(
             {
               type: $("#linearRadio").is(":checked") ? "linear" : "logarithmic",
               ticks: {
-                callback: function(value) {
+                callback: function (value) {
                   return value.toLocaleString();
                 },
               },
@@ -460,7 +460,7 @@ function generateChart(
     });
     myChart.update();
   });
-  $("#lineRadio").click(function() {
+  $("#lineRadio").click(function () {
     myChart.destroy();
     myChart = new Chart(ctx, {
       type: "line",
@@ -470,7 +470,7 @@ function generateChart(
         maintainAspectRatio: false,
         tooltips: {
           callbacks: {
-            label: function(tooltipItem, data) {
+            label: function (tooltipItem, data) {
               return (
                 data.datasets[tooltipItem.datasetIndex].label +
                 ": " +
@@ -488,7 +488,7 @@ function generateChart(
             {
               type: $("#linearRadio").is(":checked") ? "linear" : "logarithmic",
               ticks: {
-                callback: function(value) {
+                callback: function (value) {
                   return value.toLocaleString();
                 },
               },
@@ -499,7 +499,7 @@ function generateChart(
     });
     myChart.update();
   });
-  $("#linearRadio").click(function() {
+  $("#linearRadio").click(function () {
     myChart.destroy();
     myChart = new Chart(ctx, {
       type: myChart.config.type === "bar" ? "bar" : "line",
@@ -509,7 +509,7 @@ function generateChart(
         maintainAspectRatio: false,
         tooltips: {
           callbacks: {
-            label: function(tooltipItem, data) {
+            label: function (tooltipItem, data) {
               return (
                 data.datasets[tooltipItem.datasetIndex].label +
                 ": " +
@@ -527,7 +527,7 @@ function generateChart(
             {
               type: "linear",
               ticks: {
-                callback: function(value) {
+                callback: function (value) {
                   return value.toLocaleString();
                 },
               },
@@ -538,7 +538,7 @@ function generateChart(
     });
     myChart.update();
   });
-  $("#logarithmicRadio").click(function() {
+  $("#logarithmicRadio").click(function () {
     myChart.destroy();
     myChart = new Chart(ctx, {
       type: myChart.config.type === "bar" ? "bar" : "line",
@@ -548,7 +548,7 @@ function generateChart(
         maintainAspectRatio: false,
         tooltips: {
           callbacks: {
-            label: function(tooltipItem, data) {
+            label: function (tooltipItem, data) {
               return (
                 data.datasets[tooltipItem.datasetIndex].label +
                 ": " +
@@ -569,7 +569,7 @@ function generateChart(
                 autoSkip: true,
                 source: "auto",
                 suggestedMax: 10,
-                callback: function(value) {
+                callback: function (value) {
                   if (value == 2000000) return value.toLocaleString();
                   if (value == 1000000) return value.toLocaleString();
                   if (value == 900000) return value.toLocaleString();
@@ -636,7 +636,7 @@ function dataSet(data) {
   let numbersDeceased = filteredArr[0].deaths;
   let numbersRecovered = filteredArr[0].recovered;
   //Get months/30 days
-  filteredArr.slice(0, 30).forEach(function(daily) {
+  filteredArr.slice(0, 30).forEach(function (daily) {
     confirmedMonth.push(daily.new_confirmed);
     deathsMonth.push(daily.new_deaths);
     recoveredMonth.push(daily.new_recovered);
@@ -647,7 +647,7 @@ function dataSet(data) {
   });
 
   //Get 14 days
-  filteredArr.slice(0, 14).forEach(function(daily) {
+  filteredArr.slice(0, 14).forEach(function (daily) {
     confirmedWeeks.push(daily.new_confirmed);
     deathsWeeks.push(daily.new_deaths);
     recoveredWeeks.push(daily.new_recovered);
@@ -658,7 +658,7 @@ function dataSet(data) {
   });
 
   //Get since beginning
-  filteredArr.forEach(function(daily) {
+  filteredArr.forEach(function (daily) {
     casesConfirmed.push(daily.new_confirmed);
     casesDeaths.push(daily.new_deaths);
     casesRecovered.push(daily.new_recovered);
@@ -696,7 +696,7 @@ function dataSet(data) {
   Chart.defaults.global.defaultFontFamily =
     "Nunito,-apple-system,Roboto,Helvetica Neue,Arial,sans-serif";
   Chart.defaults.global.animation.duration = 2000;
-  $("#confirmedRadio").click(function() {
+  $("#confirmedRadio").click(function () {
     myChart.destroy();
     if ($("#sinceBeginning").is(":checked")) {
       generateChart(
@@ -730,7 +730,7 @@ function dataSet(data) {
     }
     myChart.update();
   });
-  $("#recoveredRadio").click(function() {
+  $("#recoveredRadio").click(function () {
     myChart.destroy();
     if ($("#sinceBeginning").is(":checked")) {
       generateChart(
@@ -764,7 +764,7 @@ function dataSet(data) {
     }
     myChart.update();
   });
-  $("#deathsRadio").click(function() {
+  $("#deathsRadio").click(function () {
     myChart.destroy();
     if ($("#sinceBeginning").is(":checked")) {
       generateChart(
@@ -798,7 +798,7 @@ function dataSet(data) {
     }
     myChart.update();
   });
-  $("#sinceBeginning").click(function() {
+  $("#sinceBeginning").click(function () {
     populateNumbers(
       numbersConfirmed.toLocaleString(),
       numbersRecovered.toLocaleString(),
@@ -838,7 +838,7 @@ function dataSet(data) {
     }
     myChart.update();
   });
-  $("#sinceMonth").click(function() {
+  $("#sinceMonth").click(function () {
     populateNumbers(
       numbersConfirmedMonth.toLocaleString(),
       numbersRecoveredMonth.toLocaleString(),
@@ -878,7 +878,7 @@ function dataSet(data) {
     }
     myChart.update();
   });
-  $("#sinceWeeks").click(function() {
+  $("#sinceWeeks").click(function () {
     populateNumbers(
       numbersConfirmedWeeks.toLocaleString(),
       numbersRecoveredWeeks.toLocaleString(),
@@ -925,21 +925,19 @@ function getNewsResults(data) {
   let output = "";
   newsResultsNumber.innerText = `Showing ${data.articles.length} articles`;
   if (data.articles.length) {
-    data.articles.forEach(function(item) {
+    data.articles.forEach(function (item) {
       // <img class="card-img-top img-fluid lazy" data-src="${item.urlToImage}" alt=""  onerror="this.src='../assets/img/news_image_placeholder_128x128.png';this.style='object-fit: none;background:#F5F5F5'" style="background:#F5F5F5">
       if (item.title && item.content) {
         output += `<div class="card h-100 lift mx-md-3 ml-0 mr-3">
 		<div class="card-body">
 			<h5 class="card-title mb-2">${item.title}</h5>
-			<p class="text-muted small pb-0 mb-4"><span class="icon-newspaper mr-1"></span>${
-        item.source.name
-      } ${timeDifference(item.publishedDateTime)}</p>
+			<p class="text-muted small pb-0 mb-4"><span class="icon-newspaper mr-1"></span>${item.source.name
+          } ${timeDifference(item.publishedDateTime)}</p>
 			<p class="card-text mb-1">${item.content.split("[")[0]}</p>
 		</div>
 		<div class="card-footer text-center">
-			<a href="${
-        item.url
-      }" target="_blank" class="text-center mb-0">View full article<span class="icon-new-tab ml-1"></span></a>
+			<a href="${item.url
+          }" target="_blank" class="text-center mb-0">View full article<span class="icon-new-tab ml-1"></span></a>
 		</div>
 	</div>
 				`;
